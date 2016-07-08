@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="deployment.domain.information.usm.mare.ec.europa.eu"
+            targetNamespace="deployment.domain.information.usm.mare.ec.europa.eu"
+            version="1.0">
+    
+    <xsd:element name="application">
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="NameAndDescription">
+          <xsd:sequence>
+          	<xsd:element name="parent" type="Name" minOccurs="0" maxOccurs="1"/>
+          	<xsd:element name="retainDatasets" type="xsd:boolean" minOccurs="0" maxOccurs="1" default="false"/>
+            <xsd:element name="dataset" type="Dataset" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="option" type="Option" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="feature" type="Feature" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:complexType name="Dataset">
+    <xsd:complexContent>
+      <xsd:extension base="NameAndDescription">
+        <xsd:sequence>
+          <xsd:element name="category" type="xsd:string"/>
+          <xsd:element name="discriminator" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="Option">
+    <xsd:complexContent>
+      <xsd:extension base="NameAndDescription">
+        <xsd:sequence>
+          <xsd:element name="dataType" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="defaultValue" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="group" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="Feature">
+    <xsd:complexContent>
+      <xsd:extension base="NameAndDescription">
+	      <xsd:sequence>
+	          <xsd:element name="group" type="xsd:string" minOccurs="0"/>
+	      </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="NameAndDescription">
+    <xsd:sequence>
+      <xsd:element name="name" type="Name"/> 
+      <xsd:element name="description" type="Description" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:simpleType name="Status">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Enabled" />
+      <xsd:enumeration value="Disabled" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="Name">
+    <xsd:restriction base="xsd:token">
+      <xsd:maxLength value = "128"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Description">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value = "512"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+</xsd:schema>

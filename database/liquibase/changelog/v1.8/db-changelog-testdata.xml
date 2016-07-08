@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  
+  <changeSet id="why_do_users_need_viewConfig_to_read_globalSettings" author="emkrogean" context="test" runInTransaction="true" failOnError="true">
+
+        <insert tableName="role_t">
+            <column name="role_id" valueNumeric="10"/>
+            <column name="name" value="ConfigViewer"/>
+            <column name="description" value="Needed because otherwise we can't load globalSettings"/>
+            <column name="status" value="E"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="10"/>
+            <column name="feature_id" valueNumeric="214"/>
+        </insert>
+        
+        <sql>
+  		<![CDATA[delete from user_context_t c where c.role_id=10 and c.user_id < 30;
+                 insert into user_context_t(user_id, role_id)
+                       (select u.user_id, r.role_id from role_t r, user_t u 
+                        where r.role_id=10 
+                        and u.user_id < 30);]]>
+    </sql>
+      
+    
+    <rollback>
+      <sql><![CDATA[delete from user_context_t c where c.role_id=10 and c.user_id < 30;]]></sql>
+      <sql><![CDATA[Delete from permission_t where role_id = 10 and feature_id = 214]]></sql>
+      <sql><![CDATA[Delete from role_t where role_id = 10]]></sql>
+    </rollback>
+  </changeSet>
+
+			  
+ </databaseChangeLog>

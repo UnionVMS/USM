@@ -1,0 +1,218 @@
+dn: uid=ldap_enabled, ou=users, ou=system
+mail: LdapEnabled@mail.org
+mobile: 6976449954
+telephoneNumber: 2105566888
+uid: ldap_enabled
+userPassword:: e1NTSEF9dWlNaTlLdG1UYnVuVXladUhuNElLRWFKUVM1NVpQTmRIanJmRUE9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+facsimileTelephoneNumber: 2105566888
+givenName: ldap
+sn: Enabled
+cn: Ldap Enabled
+
+dn: uid=ldap_disabled, ou=users, ou=system
+mail: LdapDisabled@mail.org
+uid: ldap_disabled
+userPassword:: e1NTSEF9dWlNaTlLdG1UYnVuVXladUhuNElLRWFKUVM1NVpQTmRIanJmRUE9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+givenName: ldap
+sn: Disabled
+cn: Ldap Disabled
+
+dn: uid=quota_usr_grc, ou=users, ou=system
+uid: quota_usr_grc
+userPassword:: e1NTSEF9dWlNaTlLdG1UYnVuVXladUhuNElLRWFKUVM1NVpQTmRIanJmRUE9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: quota_usr_grc
+cn: quota_usr_grc
+
+dn: uid=vms_user_fra, ou=users, ou=system
+uid: vms_user_fra
+userPassword:: e1NTSEF9Sk5XZVFoSXRCdmNyYnE0THlTcTRwd2Y5ME5iYXBNM3AvM1JPRUE9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: vms_user_fra
+cn: vms_user_fra
+
+dn: uid=expired, ou=users, ou=system
+uid: expired
+userPassword:: e1NTSEF9REIyQXpyOUpKQmRmNjNJck5lVSs2cmVXVVRvOFN5bXVRbzNTM0E9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: expired
+cn: expired
+
+dn: uid=guest, ou=users, ou=system
+uid: guest
+userPassword:: e1NTSEF9TjdlL2E4WkV3Y3RuOHFkb3p2SnZGbVRXM0tLUUI3UUh5M21PVkE9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: guest
+cn: guest
+
+dn: uid=ldap_locked, ou=users, ou=system
+uid: ldap_locked
+userPassword:: e1NTSEF9dWlNaTlLdG1UYnVuVXladUhuNElLRWFKUVM1NVpQTmRIanJmRUE9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+givenName: ldap
+sn: Locked
+cn: Ldap Locked
+
+dn: uid=vms_admin_com, ou=users, ou=system
+uid: vms_admin_com
+userPassword:: e1NTSEF9KzNyR1JpRmhkb3BYVFE0QU9tekd0SGNsUEFQbnB3TUhwUDNVQmc9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: vms_admin_com
+cn: vms_admin_com
+
+dn: uid=vms_super_com, ou=users, ou=system
+uid: vms_super_com
+userPassword:: e1NTSEF9UXVWWHBJSHFzWU1xNmhpOS92Q205WURCdWVPUHF3MFFsQklxNEE9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: vms_super_com
+cn: vms_super_com
+
+dn: uid=vms_super_fra, ou=users, ou=system
+uid: vms_super_fra
+userPassword:: e1NTSEF9cm90S2VxU0g3M2tjODdLSHB2cDhBYmlzYkQrQk1qeDh4Y0graEE9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: vms_super_fra
+cn: vms_super_fra
+
+dn: uid=lockout, ou=users, ou=system
+uid: lockout
+userPassword:: e1NTSEF9d1BlMGZTRWt3N1NkOHhSNFgxdTRiQys1dzNkVElMSkwvVTNzWHc9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: lockout
+cn: lockout
+
+dn: uid=quota_usr_fra, ou=users, ou=system
+uid: quota_usr_fra
+userPassword:: e1NTSEF9ZDFqMDdmYzdFcm9GbW5iUjlTMy9JZ204QXBUOGRubTZNVStkOHc9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: quota_usr_fra
+cn: quota_usr_fra
+
+dn: uid=quota_man_com, ou=users, ou=system
+mail: quota_man_com@example.com
+uid: quota_man_com
+userPassword:: e1NTSEF9bG00RGRmbC9YQ0RvN1FuN296TTFEUjdqckZEVGNwSWIxUkZsMlE9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: quota_man_com
+cn: quota_man_com
+
+dn: uid=vms_admin_fra, ou=users, ou=system
+uid: vms_admin_fra
+userPassword:: e1NTSEF9Y3U3aUpZbWxxY0tzWXJpcEZ0YXVpdCsrUWN5azRKMnBYUXlJRGc9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: vms_admin_fra
+cn: vms_admin_fra
+
+dn: uid=vms_user_com, ou=users, ou=system
+uid: vms_user_com
+userPassword:: e1NTSEF9bE04Z3JMQ1ZzZ2F4Ykhyb1lEN0pOVnhtbzl5TXJQdUQ0QnpjUGc9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: vms_user_com
+cn: vms_user_com
+
+dn: uid=quota_usr_com, ou=users, ou=system
+uid: quota_usr_com
+userPassword:: e1NTSEF9cHdCTUlYYmVYeGxoMzdlU09uU0ZQYURMY3lhZy9VbVpzTDBUT1E9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: quota_usr_com
+cn: quota_usr_com
+
+dn: uid=usm_admin, ou=users, ou=system
+uid: usm_admin
+userPassword:: e1NTSEF9cHdCTUlYYmVYeGxoMzdlU09uU0ZQYURMY3lhZy9VbVpzTDBUT1E9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: usm_admin
+cn: usm_admin
+
+dn: uid=usm_user, ou=users, ou=system
+uid: usm_user
+userPassword:: e1NTSEF9cHdCTUlYYmVYeGxoMzdlU09uU0ZQYURMY3lhZy9VbVpzTDBUT1E9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: usm_user
+cn: usm_user
+
+dn: uid=usm_bootstrap, ou=users, ou=system
+uid: usm_bootstrap
+userPassword:: e1NTSEF9cHdCTUlYYmVYeGxoMzdlU09uU0ZQYURMY3lhZy9VbVpzTDBUT1E9PQ
+ ==
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+sn: usm_bootstrap
+cn: usm_bootstrap
+

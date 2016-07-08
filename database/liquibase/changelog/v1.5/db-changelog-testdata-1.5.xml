@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  
+  <changeSet id="forgotten_pass_person_add" author="emkrogean" context="test" runInTransaction="true" failOnError="true">
+
+    <insert tableName="person_t">
+      <column name="person_id" valueNumeric="26"/>
+      <column name="first_name" value="test1"/>
+      <column name="last_name" value="test1"/>
+      <column name="phone_number"/>
+      <column name="mobile_number"/>
+      <column name="fax_number"/>
+      <column name="e_mail" value="test1@test.es"/>
+      <column name="created_by" value="USM2"/>
+      <column name="created_on" valueDate="2015-10-05 15:28:38.303663"/>
+      <column name="modified_by"/>
+      <column name="modified_on"/>
+    </insert>
+    <insert tableName="person_t">
+      <column name="person_id" valueNumeric="27"/>
+      <column name="first_name" value="test2"/>
+      <column name="last_name" value="test2"/>
+      <column name="phone_number"/>
+      <column name="mobile_number"/>
+      <column name="fax_number"/>
+      <column name="e_mail" value="test2@test.es"/>
+      <column name="created_by" value="USM2"/>
+      <column name="created_on" valueDate="2015-10-05 15:28:38.303663"/>
+      <column name="modified_by"/>
+      <column name="modified_on"/>
+    </insert>
+      <insert tableName="person_t">
+      <column name="person_id" valueNumeric="28"/>
+      <column name="first_name" value="test3"/>
+      <column name="last_name" value="test3"/>
+      <column name="phone_number"/>
+      <column name="mobile_number"/>
+      <column name="fax_number"/>
+      <column name="e_mail" value="test3@test.es"/>
+      <column name="created_by" value="USM2"/>
+      <column name="created_on" valueDate="2015-10-05 15:28:38.303663"/>
+      <column name="modified_by"/>
+      <column name="modified_on"/>
+    </insert>
+    <rollback>
+      <sql><![CDATA[Delete from person_t where person_id = 26]]></sql>
+      <sql><![CDATA[Delete from person_t where person_id = 27]]></sql>
+      <sql><![CDATA[Delete from person_t where person_id = 28]]></sql>
+    </rollback>
+  </changeSet>
+  <changeSet id="forgotten_pass_user_add" author="emkrogean" context="test" runInTransaction="true" failOnError="true">
+    <insert tableName="user_t">
+      <column name="user_id" valueNumeric="26"/>
+      <column name="user_name" value="USM_TEST_1"/>
+      <column name="status" value="E"/>
+      <column name="organisation_id" valueNumeric="3"/>
+      <column name="person_id" valueNumeric="26"/>
+      <column name="active_from" valueDate="2015-10-05 02:00:00.0"/>
+      <column name="active_to" valueDate="2999-01-01 01:00:00.0"/>
+      <column name="last_logon"/>
+      <column name="lockout_to"/>
+      <column name="password_expiry" valueDate="2020-01-03 15:30:27.334"/>
+      <column name="PASSWORD" value="37f214acb261b57185a6cf2885b634dd"/>
+      <column name="lockout_reason"/>
+      <column name="logon_failure"/>
+      <column name="notes"/>
+      <column name="created_by" value="USM_ADMIN"/>
+      <column name="created_on" valueDate="2015-10-05 15:29:53.919"/>
+      <column name="modified_by" value="USM_ADMIN"/>
+      <column name="modified_on" valueDate="2015-10-05 15:30:27.334"/>
+      <column name="expiry_notification"/>
+    </insert>
+        <insert tableName="user_t">
+      <column name="user_id" valueNumeric="27"/>
+      <column name="user_name" value="USM_TEST_2"/>
+      <column name="status" value="E"/>
+      <column name="organisation_id" valueNumeric="3"/>
+      <column name="person_id" valueNumeric="27"/>
+      <column name="active_from" valueDate="2015-10-05 02:00:00.0"/>
+      <column name="active_to" valueDate="2999-01-01 01:00:00.0"/>
+      <column name="last_logon"/>
+      <column name="lockout_to"/>
+      <column name="password_expiry" valueDate="2020-01-03 15:30:27.334"/>
+      <column name="PASSWORD" value="37f214acb261b57185a6cf2885b634dd"/>
+      <column name="lockout_reason"/>
+      <column name="logon_failure"/>
+      <column name="notes"/>
+      <column name="created_by" value="USM_ADMIN"/>
+      <column name="created_on" valueDate="2015-10-05 15:29:53.919"/>
+      <column name="modified_by" value="USM_ADMIN"/>
+      <column name="modified_on" valueDate="2015-10-05 15:30:27.334"/>
+      <column name="expiry_notification"/>
+    </insert>
+        <insert tableName="user_t">
+      <column name="user_id" valueNumeric="28"/>
+      <column name="user_name" value="USM_TEST_3"/>
+      <column name="status" value="D"/>
+      <column name="organisation_id" valueNumeric="3"/>
+      <column name="person_id" valueNumeric="28"/>
+      <column name="active_from" valueDate="2015-10-05 02:00:00.0"/>
+      <column name="active_to" valueDate="2999-01-01 01:00:00.0"/>
+      <column name="last_logon"/>
+      <column name="lockout_to"/>
+      <column name="password_expiry" valueDate="2020-01-03 15:30:27.334"/>
+      <column name="PASSWORD" value="37f214acb261b57185a6cf2885b634dd"/>
+      <column name="lockout_reason"/>
+      <column name="logon_failure"/>
+      <column name="notes"/>
+      <column name="created_by" value="USM_ADMIN"/>
+      <column name="created_on" valueDate="2015-10-05 15:29:53.919"/>
+      <column name="modified_by" value="USM_ADMIN"/>
+      <column name="modified_on" valueDate="2015-10-05 15:30:27.334"/>
+      <column name="expiry_notification"/>
+    </insert>
+    <rollback>
+      <sql><![CDATA[Delete from user_t where user_id = 26]]></sql>
+      <sql><![CDATA[Delete from user_t where user_id = 27]]></sql>
+      <sql><![CDATA[Delete from user_t where user_id = 28]]></sql>
+    </rollback>
+  </changeSet>
+
+			  
+ </databaseChangeLog>

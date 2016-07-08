@@ -1,0 +1,8 @@
+To clean and install including the test data locally on postgres you can run:
+
+  mvn clean test -Ppostgres,local,testdata
+
+
+See https://webgate.ec.europa.eu/CITnet/confluence/display/UNIONVMS/Use%2C+configure+and+install+db-liquibase+project
+
+

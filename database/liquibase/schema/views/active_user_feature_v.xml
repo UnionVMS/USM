@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+
+    <changeSet author="emtudorsm" id="AufView" runOnChange="true">
+	   	<createView viewName="ACTIVE_USER_FEATURE_V">
+			select ur.USER_NAME, ur.APPLICATION_NAME, ur.ROLE_NAME, 
+			       ur.ROLE_ID, ur.SCOPE_ID, f.NAME as FEATURE_NAME 
+			from ACTIVE_USER_ROLE_V ur,
+			      PERMISSION_T p,
+			      FEATURE_T f
+			where p.ROLE_ID=ur.ROLE_ID
+			  and f.FEATURE_ID=p.FEATURE_ID   
+		</createView>
+		<rollback>
+			<dropView viewName="ACTIVE_USER_FEATURE_V"/>
+		</rollback>
+	</changeSet>
+	   	   	      	         	
+</databaseChangeLog>      

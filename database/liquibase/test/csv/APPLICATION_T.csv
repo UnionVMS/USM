@@ -1,0 +1,5 @@
+APPLICATION_ID,NAME,DESCRIPTION
+1,Quota,Quota Management application
+2,Union-VMS,Union VMS application
+3,Vessel,Union VMS Vessel Module
+4,Reporting,Union VMS Reporting Module

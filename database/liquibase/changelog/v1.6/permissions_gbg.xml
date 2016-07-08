@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+           http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd
+           http://www.liquibase.org/xml/ns/dbchangelog-ext 
+           http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!-- note that these are simply defining string properties that we will use with the valueComputed attribute -->
+    <property name="usm_admin_role_id" value="(select r.ROLE_ID from ROLE_T r where r.NAME='USM Administrator')" />
+    
+
+    <changeSet author="marche (generated)" id="1446040663888-10" context="test" runInTransaction="true"
+    failOnError="true">
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="226"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="228"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="231"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="234"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="294"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="203"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="292"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="295"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="297"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="19"/>
+        </insert>
+
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="201"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="203"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="204"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="205"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="206"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="207"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="208"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="209"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="210"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="211"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="214"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="226"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="228"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="231"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="234"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="235"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="239"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="242"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="244"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="249"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="255"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="258"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="261"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="264"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="267"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="276"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="279"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="286"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="292"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="294"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="295"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueComputed="${usm_admin_role_id}"/>
+            <column name="feature_id" valueNumeric="297"/>
+        </insert>
+
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="201"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="255"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="258"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="261"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="264"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="235"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="239"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="242"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="244"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="204"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="205"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="249"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="267"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="279"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="276"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="286"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="214"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="206"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="207"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="208"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="209"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="210"/>
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="211"/>
+        </insert>
+		<insert tableName="permission_t">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="feature_id" valueNumeric="215"/>
+        </insert>
+    <rollback>
+      <sql><![CDATA[Delete from permission_t where feature_id in (201,203,204,205,206,207,208,209,210,211,214,215,226,228,231,234,235,239,242,244,249,255,258,261,264,267,276,279,286,292,294,295,297)]]></sql>
+    </rollback>
+	</changeSet>
+</databaseChangeLog>

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <!-- note that these are simply defining string properties that we will use with the valueComputed attribute -->
+    <property name="sys_minus" value="NOW() - interval '" dbms="postgresql"/>
+    <property name="days" value=" days'" dbms="postgresql"/>
+    <property name="usm_browser_role_id" value="(select r.ROLE_ID from APPLICATION_T a, ROLE_T r where a.NAME='USM' and r.NAME='USM-UserBrowser' and r.APPLICATION_ID=a.APPLICATION_ID)" />
+    <property name="usm_man_role_id" value="(select r.ROLE_ID from APPLICATION_T a, ROLE_T r where a.NAME='USM' and r.NAME='USM-UserManager' and r.APPLICATION_ID=a.APPLICATION_ID)" />
+    <property name="sel_username" value="select u.USER_ID from USER_T u where u.USER_NAME" />
+
+
+  <changeSet id="organisation_data" author="emtudorsm" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <loadData tableName="ORGANISATION_T" file="/test/csv/ORGANISATION_T.csv"></loadData>
+    <rollback>
+      <sql><![CDATA[Delete from ORGANISATION_T where ORGANISATION_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet><changeSet id="person_data" author="emtudorsm" context="test"  runInTransaction="true" failOnError="true">
+    <loadData tableName="PERSON_T" file="/test/csv/PERSON_T.csv"></loadData>
+    <rollback>
+      <sql><![CDATA[Delete from PERSON_T where PERSON_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  
+  <changeSet id="endpoint_data" author="emtudorsm" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <loadData tableName="END_POINT_T" file="/test/csv/END_POINT_T.csv"></loadData>
+    <rollback>
+      <sql><![CDATA[Delete from END_POINT_T where END_POINT_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  <changeSet id="application_data" author="emtudorsm" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <validCheckSum>7:7ee5b5b34697d49c578e1253cca89d3f</validCheckSum>
+    <loadData tableName="APPLICATION_T" file="/test/csv/APPLICATION_T.csv"></loadData>
+    <rollback>
+      <sql><![CDATA[Delete from APPLICATION_T where APPLICATION_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  <changeSet id="feature_data" author="emtudorsm" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <validCheckSum>7:4d724efb9768c367d5a585a1e1930c1e</validCheckSum>
+    <validCheckSum>7:ebb0dc1bd432526622ed241a40e6542a</validCheckSum>
+    <loadData tableName="FEATURE_T" file="/test/csv/FEATURE_T.csv"></loadData>
+    <rollback>
+      <sql><![CDATA[Delete from FEATURE_T where FEATURE_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  <changeSet id="option_data" author="emtudorsm" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <loadData tableName="OPTION_T" file="/test/csv/OPTION_T.csv"></loadData>
+    <rollback>
+      <sql><![CDATA[Delete from OPTION_T where OPTION_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  <changeSet id="dataset_data" author="emtudorsm" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <loadData tableName="DATASET_T" file="/test/csv/DATASET_T.csv"></loadData>
+    <rollback>
+      <sql><![CDATA[Delete from DATASET_T where DATASET_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  <changeSet id="policy_data" author="emtudorsm" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <validCheckSum>7:ed84b4e78457890a5ad761feafb9a340</validCheckSum>
+    <loadData tableName="POLICY_T" file="/test/csv/POLICY_T.csv"></loadData>
+    <rollback>
+      <sql><![CDATA[Delete from POLICY_T where POLICY_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  <changeSet id="policy_data_update" author="krogean" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <sql>
+    <![CDATA[update POLICY_T set VALUE='ldaps://svm-midway.private:10636/'
+where SUBJECT='Authentication' and NAME='ldap.server.url';
+update POLICY_T set VALUE='ou=users;ou=system'
+where SUBJECT='Authentication' and NAME='ldap.context.root';
+update POLICY_T set VALUE='uid=admin;ou=system'
+where SUBJECT='Authentication' and NAME='ldap.bind.dn';
+update POLICY_T set VALUE='secret'
+where SUBJECT='Authentication' and NAME='ldap.bind.password';
+update POLICY_T set VALUE='(&(objectClass=person)(uid={0}))'
+where SUBJECT='Authentication' and NAME='ldap.query.filter';
+update POLICY_T set VALUE='sn,givenName,mail'
+where SUBJECT='Authentication' and NAME='ldap.query.attributes';]]>
+    </sql>
+    <rollback>
+      <sql><![CDATA[update POLICY_T set VALUE='ChangeMe'
+where SUBJECT='Authentication' and NAME='ldap.server.url';
+update POLICY_T set VALUE='ChangeMe'
+where SUBJECT='Authentication' and NAME='ldap.context.root';
+update POLICY_T set VALUE='ChangeMe'
+where SUBJECT='Authentication' and NAME='ldap.bind.dn';
+update POLICY_T set VALUE='ChangeMe'
+where SUBJECT='Authentication' and NAME='ldap.bind.password';
+update POLICY_T set VALUE='ChangeMe'
+where SUBJECT='Authentication' and NAME='ldap.query.filter';
+update POLICY_T set VALUE='ChangeMe'
+where SUBJECT='Authentication' and NAME='ldap.query.attributes';]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+    
+  <changeSet id="role_data" author="emtudorsm" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <validCheckSum>7:34dd0aacbec665706fd769af1790b72f</validCheckSum>
+    <loadData tableName="ROLE_T" file="/test/csv/ROLE_T.csv"></loadData>
+    <rollback>
+      <sql><![CDATA[Delete from ROLE_T where ROLE_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  <changeSet id="permission_data" author="emtudorsm" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <validCheckSum>7:69cfd372812cd3f9b018cb4584d4561b</validCheckSum>
+    <validCheckSum>7:85fd9379b71bc8bd84171f5c53ba3391</validCheckSum>
+    <loadData tableName="PERMISSION_T" file="/test/csv/PERMISSION_T.csv"></loadData>
+    <rollback>
+      <sql><![CDATA[Delete from PERMISSION_T where ROLE_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  <changeSet id="scope_data" author="emtudorsm" context="test"  runInTransaction="true" failOnError="true">
+  <validCheckSum>7:323d9dc64f020278ce83c47dac4c617f</validCheckSum>
+    <loadData tableName="SCOPE_T" file="/test/csv/SCOPE_T.csv">
+      <column name="scope_id" type="NUMERIC" />
+      <column name="name" type="STRING" />
+      <column name="description" type="STRING" />
+      <column name="application_id" type="NUMERIC" />
+      <column name="status" type="STRING" />
+      <column name="active_from" type="DATETIME"/>
+      <column name="active_to" type="DATETIME" />
+      <column name="data_from" type="DATETIME" />
+      <column name="data_to" type="DATETIME" />
+    </loadData>
+    <sql dbms="postgresql" >
+      UPDATE SCOPE_T set (ACTIVE_FROM, ACTIVE_TO, DATA_FROM, DATA_TO) =  (NOW(), (NOW() + interval '1 year'), NOW(), (NOW() + interval '1 year')) where SCOPE_ID = 2;
+      UPDATE SCOPE_T set (ACTIVE_FROM, ACTIVE_TO, DATA_FROM, DATA_TO) =  (NOW(), (NOW() + interval '1 year'), NOW(), (NOW() + interval '1 year')) where SCOPE_ID = 3;
+    </sql>
+    <rollback>
+      <sql><![CDATA[Delete from SCOPE_T where SCOPE_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  <changeSet id="scope_dataset_data" author="emtudorsm" context="test"  runInTransaction="true" failOnError="true">
+    <loadData tableName="SCOPE_DATASET_T" file="/test/csv/SCOPE_DATASET_T.csv"></loadData>
+    <rollback>
+      <sql><![CDATA[Delete from SCOPE_DATASET_T where SCOPE_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  <changeSet id="user_data" author="emtudorsm" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <validCheckSum>7:20e54682ae1f49ae80bb4c27e5c966ae</validCheckSum>
+    <validCheckSum>7:c3d486aeb24d4096baeecf67d5a06670</validCheckSum>
+    <loadData tableName="USER_T" file="/test/csv/USER_T.csv">
+    <column name="USER_ID" type="NUMERIC" />
+      <column name="USER_NAME" type="STRING" />
+      <column name="STATUS" type="STRING" />
+      <column name="ORGANISATION_ID" type="NUMERIC" />
+      <column name="PERSON_ID" type="NUMERIC" />
+      <column name="ACTIVE_FROM" type="DATETIME"/>
+      <column name="ACTIVE_TO" type="DATETIME" />
+      <column name="LAST_LOGON" type="DATETIME" />
+      <column name="LOCKOUT_TO" type="DATETIME" />
+      <column name="PASSWORD_EXPIRY" type="DATETIME" />
+      <column name="PASSWORD" type="STRING" />
+      <column name="LOCKOUT_REASON" type="STRING" />
+      <column name="LOGON_FAILURE" type="NUMERIC" />
+      <column name="NOTES" type="STRING" />
+    </loadData>
+    <sql dbms="postgresql" >
+      UPDATE USER_T set LOCKOUT_TO = (NOW() + interval '1 year') where USER_NAME in ('ldap_locked','lockout');
+      UPDATE USER_T set PASSWORD_EXPIRY = (NOW() - interval '1 day') where USER_NAME = 'expired';
+      UPDATE USER_T set (ACTIVE_FROM, ACTIVE_TO) =  ((NOW() - interval '1 year'), (NOW() - interval '1 day')) where USER_NAME = 'obsolete';
+      UPDATE USER_T set (ACTIVE_FROM, ACTIVE_TO) =  ((NOW() - interval '1 day'), (NOW() + interval '1 year')) where USER_NAME = 'current';
+    </sql>
+    <rollback>
+      <sql><![CDATA[Delete from USER_T where USER_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  <changeSet id="user_role_data" author="emtudorsm" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <loadData tableName="USER_ROLE_T" file="/test/csv/USER_ROLE_T.csv"></loadData>
+    <!-- TODO: do we need to assign a vmS test user to a usm role? -->
+    <insert tableName="USER_ROLE_T">
+      <column name="USER_ROLE_ID" value="4"></column>
+      <!-- this is user usm_admin -->
+      <column name="USER_ID" value="1" ></column>
+      <column name="ROLE_ID" valueComputed="${usm_man_role_id}"></column>
+    </insert>
+    <insert tableName="USER_ROLE_T">
+      <column name="USER_ROLE_ID" value="3"></column>
+      <!-- this is user usm_admin -->
+      <column name="USER_ID" value="1"></column>
+      <column name="ROLE_ID" valueComputed="${usm_browser_role_id}"></column>
+    </insert>
+    <insert tableName="USER_ROLE_T">
+      <column name="USER_ROLE_ID" value="2"></column>
+      <!-- this is user usm_user -->
+      <column name="USER_ID" value="2"></column>
+      <column name="ROLE_ID" valueComputed="${usm_browser_role_id}"></column>
+    </insert>
+    <insert tableName="USER_ROLE_T">
+      <column name="USER_ROLE_ID" value="5"></column>
+      <!-- this is user vms_admin_com -->
+      <column name="USER_ID" value="13"></column>
+      <column name="ROLE_ID" valueComputed="${usm_browser_role_id}"></column>
+    </insert>
+    <rollback>
+      <sql><![CDATA[Delete from USER_ROLE_T where USER_ROLE_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  
+  
+  <changeSet id="preference_data" author="emtudorsm" context="test"  runInTransaction="true" failOnError="true">
+    <loadData tableName="PREFERENCE_T" file="/test/csv/PREFERENCE_T.csv"></loadData>
+    <rollback>
+      <sql><![CDATA[Delete from PREFERENCE_T where PREFERENCE_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet><changeSet id="challenge_data" author="emtudorsm" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <loadData tableName="CHALLENGE_T" file="/test/csv/CHALLENGE_T.csv"></loadData>
+    <rollback>
+      <sql><![CDATA[Delete from CHALLENGE_T where CHALLENGE_ID < 100000]]></sql>
+    </rollback>
+    <comment>Data</comment>
+  </changeSet>
+  
+
+  <changeSet id="password_hist_data" author="emtudorsm" context="test"
+     runInTransaction="true"
+    failOnError="true">
+    <insert tableName="password_hist_t">
+        <column name="PASSWORD_HIST_ID" value="0"></column>
+        <column name="PASSWORD" value="CBBA6D57536106F93CDEB6E426C2750E"></column>
+        <column name="CHANGED_ON" valueComputed="(${sys_minus}30${days})"/>
+        <column name="USER_ID" valueComputed="(${sel_username}='vms_admin_com')"></column>
+    </insert>
+    <insert tableName="password_hist_t">
+        <column name="PASSWORD_HIST_ID" value="1"></column>
+        <column name="PASSWORD" value="CBBA6D57536106F93CDEB6E426C2750E"></column>
+        <column name="CHANGED_ON" valueComputed="(${sys_minus}22${days})"/>
+        <column name="USER_ID" valueComputed="(${sel_username}='guest')"></column>
+    </insert>
+    <insert tableName="password_hist_t">
+        <column name="PASSWORD_HIST_ID" value="2"></column>
+        <column name="PASSWORD" value="CBBA6D57536106F93CDEB6E426C2750E"></column>
+        <column name="CHANGED_ON" valueComputed="(${sys_minus}15${days})"/>
+        <column name="USER_ID" valueComputed="(${sel_username}='quota_man_com')"></column>
+    </insert>
+    <insert tableName="password_hist_t">
+        <column name="PASSWORD_HIST_ID" value="4"></column>
+        <column name="PASSWORD" value="CBBA6D57536106F93CDEB6E426C2750E"></column>
+        <column name="CHANGED_ON" valueComputed="(${sys_minus}30${days})"/>
+        <column name="USER_ID" valueComputed="(${sel_username}='quota_usr_com')"></column>
+    </insert>
+    <insert tableName="password_hist_t">
+        <column name="PASSWORD_HIST_ID" value="5"></column>
+        <column name="PASSWORD" value="CBBA6D57536106F93CDEB6E426C2750E"></column>
+        <column name="CHANGED_ON" valueComputed="(${sys_minus}18${days})"/>
+        <column name="USER_ID" valueComputed="(${sel_username}='quota_usr_fra')"></column>
+    </insert>
+    <insert tableName="password_hist_t">
+        <column name="PASSWORD_HIST_ID" value="6"></column>
+        <column name="PASSWORD" value="CBBA6D57536106F93CDEB6E426C2750E"></column>
+        <column name="CHANGED_ON" valueComputed="(${sys_minus}30${days})"/>
+        <column name="USER_ID" valueComputed="(${sel_username}='vms_admin_com')"></column>
+    </insert>
+    <insert tableName="password_hist_t">
+        <column name="PASSWORD_HIST_ID" value="7"></column>
+        <column name="PASSWORD" value="CBBA6D57536106F93CDEB6E426C2750E"></column>
+        <column name="CHANGED_ON" valueComputed="(${sys_minus}15${days})"/>
+        <column name="USER_ID" valueComputed="(${sel_username}='vms_admin_fra')"></column>
+    </insert>
+    <insert tableName="password_hist_t">
+        <column name="PASSWORD_HIST_ID" value="8"></column>
+        <column name="PASSWORD" value="CBBA6D57536106F93CDEB6E426C2750E"></column>
+        <column name="CHANGED_ON" valueComputed="(${sys_minus}60${days})"/>
+        <column name="USER_ID" valueComputed="(${sel_username}='vms_super_com')"></column>
+    </insert>
+    <insert tableName="password_hist_t">
+        <column name="PASSWORD_HIST_ID" value="9"></column>
+        <column name="PASSWORD" value="CBBA6D57536106F93CDEB6E426C2750E"></column>
+        <column name="CHANGED_ON" valueComputed="(${sys_minus}15${days})"/>
+        <column name="USER_ID" valueComputed="(${sel_username}='vms_super_fra')"></column>
+    </insert>
+    <insert tableName="password_hist_t">
+        <column name="PASSWORD_HIST_ID" value="10"></column>
+        <column name="PASSWORD" value="CBBA6D57536106F93CDEB6E426C2750E"></column>
+        <column name="CHANGED_ON" valueComputed="(${sys_minus}30${days})"/>
+        <column name="USER_ID" valueComputed="(${sel_username}='vms_user_com')"></column>
+    </insert>
+    <insert tableName="password_hist_t">
+        <column name="PASSWORD_HIST_ID" value="11"></column>
+        <column name="PASSWORD" value="CBBA6D57536106F93CDEB6E426C2750E"></column>
+        <column name="CHANGED_ON" valueComputed="(${sys_minus}90${days})"/>
+        <column name="USER_ID" valueComputed="(${sel_username}='vms_user_fra')"></column>
+    </insert>
+    
+    <rollback>
+      <sql><![CDATA[Delete from PASSWORD_HIST_T where PASSWORD_HIST_ID < 100000]]></sql>
+    </rollback>
+    </changeSet>
+
+</databaseChangeLog>

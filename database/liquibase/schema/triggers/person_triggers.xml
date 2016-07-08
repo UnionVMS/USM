@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+
+        
+   
+         	
+
+   <changeSet author="emtudorsm" id="postgresPersonTrigger1"  runOnChange="true" dbms="postgresql">
+   	<createProcedure>
+	  	CREATE OR REPLACE FUNCTION person_BI()
+			  RETURNS trigger AS
+			 $BODY$
+			begin
+			
+			  if NEW.person_id IS NULL 
+				then
+					begin
+						NEW.person_id :=nextval('SQ_person');
+					end;  
+				end if;
+			
+			
+			  IF NEW.created_on IS NULL
+			  THEN
+			      NEW.created_on := current_timestamp;
+			  END IF;	
+			
+			  if NEW.created_by is NULL
+			  THEN 
+			    NEW.created_by :=UPPER(current_user);
+			  ELSE
+			  	NEW.created_by :=UPPER(NEW.created_by);  
+			  END IF;  
+			  RETURN NEW;	
+			  EXCEPTION
+			     WHEN OTHERS THEN 
+			     RAISE WARNING 'person_BI: SQLSTATE %: %', SQLSTATE, SQLERRM;
+			     RETURN NULL;  	
+			end;$BODY$
+			  LANGUAGE plpgsql VOLATILE
+			  COST 100;
+			
+			CREATE TRIGGER person_BI BEFORE INSERT ON person_T
+			    FOR EACH ROW EXECUTE PROCEDURE person_BI(); 
+	   </createProcedure>
+	  <rollback>
+	  	drop trigger person_bi on person_t;
+		drop function person_bi();
+	  </rollback>
+	   </changeSet>      	
+   
+   <changeSet author="emtudorsm" id="postgresPersonTrigger2"  runOnChange="true" dbms="postgresql">
+   		<createProcedure>
+			  	CREATE OR REPLACE FUNCTION person_BU()
+			  RETURNS trigger AS
+			 $BODY$
+			begin
+			
+			  IF NEW.modified_on IS NULL or (OLD.modified_on = OLD.modified_on)
+			  THEN
+			      NEW.modified_on := current_timestamp;
+			  END IF;	
+			
+			  if NEW.modified_by is NULL or (NEW.modified_by = OLD.modified_by)
+			  THEN 
+			    NEW.modified_by :=UPPER(current_user);
+			  ELSE
+			  	NEW.modified_by :=UPPER(NEW.modified_by);  
+			  END IF;  
+			  RETURN NEW;	
+			  EXCEPTION
+			     WHEN OTHERS THEN 
+			     RAISE WARNING 'person_BU: SQLSTATE %: %', SQLSTATE, SQLERRM;
+			     RETURN NULL;  	
+			end;$BODY$
+			  LANGUAGE plpgsql VOLATILE
+			  COST 100;
+			
+			CREATE TRIGGER person_BU BEFORE UPDATE ON person_T
+			    FOR EACH ROW EXECUTE PROCEDURE person_BU(); 
+   	  </createProcedure>
+  	<rollback>
+  		drop trigger person_bu on person_t;
+		drop function person_bu();
+  	</rollback>
+   	
+   </changeSet>      	
+            	
+</databaseChangeLog>

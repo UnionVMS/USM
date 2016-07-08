@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+	
+	<changeSet author="emtudorsm" id="54">
+<createTable tableName="option_t" remarks="Holds information about a user customisable option defined and supported by a business application">
+  <column name="option_id" type="INTEGER" remarks="Unique record id (primary key)">
+    <constraints nullable="false"/>
+  </column>
+  <column name="name" type="VARCHAR(128)" remarks="The (application unique) name of the user customisable option">
+    <constraints nullable="false"/>
+  </column>
+  <column name="description" type="VARCHAR(512)" remarks="A free-text description of the user customisable option"/>
+  <column name="data_type" type="VARCHAR(32)" remarks="The type of values supported: String, Y/N, Number, Date, Time, JSON"/>
+  <column name="default_value" type="VARCHAR(512)" remarks="The default value of this option"/>
+  <column name="application_id" type="INTEGER">
+    <constraints nullable="false"/>
+  </column>
+  <column name="created_by" type="VARCHAR(32)" remarks="The name of the user who created the entry">
+    <constraints nullable="false"/>
+  </column>
+  <column name="created_on" type="TIMESTAMP" remarks="The date and time the entry was created">
+    <constraints nullable="false"/>
+  </column>
+  <column name="modified_by" type="VARCHAR(32)" remarks="The name of the user who performed the last update on the entry"/>
+  <column name="modified_on" type="TIMESTAMP" remarks="The date and time the entry was last updated"/>
+  
+  	
+</createTable>
+<rollback> <dropTable tableName="option_t" cascadeConstraints="true"/></rollback>
+</changeSet>
+<changeSet author="emtudorsm" id="55">
+<addPrimaryKey tableName="option_t" constraintName="pk_option" columnNames="option_id"/>
+</changeSet>
+
+<changeSet author="emtudorsm" id="56">
+<createIndex tableName="option_t" indexName="uk_option_app" unique="true">
+  <column name="application_id"/>
+  <column name="name"/>
+</createIndex>
+</changeSet>
+
+<changeSet author="emtudorsm" id="57">
+<createIndex tableName="option_t" indexName="fk_option_app">
+  <column name="application_id"/>
+</createIndex>
+</changeSet>
+
+<changeSet author="emtudorsm" id="79">
+<addForeignKeyConstraint baseTableName="option_t" constraintName="option_application_fk" baseColumnNames="application_id" referencedTableName="application_t" referencedColumnNames="application_id"/>
+</changeSet>
+
+<changeSet author="emtudorsm" id="541">
+		<createSequence sequenceName="sq_option" startValue="100000" incrementBy="1" minValue="1"/>
+		<rollback>
+			<dropSequence sequenceName="sq_option"/>
+	</rollback>
+	</changeSet>
+	
+</databaseChangeLog>

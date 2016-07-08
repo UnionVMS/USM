@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    
+    <include file="/schema/views/active_user_role_v.xml"/>
+    <include file="/schema/views/active_user_scope_v.xml"/>
+    <include file="/schema/views/active_user_feature_v.xml"/>     	
+    <include file="/schema/views/active_user_feature_resource_v.xml"/>
+	<include file="/schema/views/active_user_v.xml"/>
+	<include file="/schema/views/user_profile_v.xml"/>
+	
+</databaseChangeLog>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet author="emtudorsm" id="challenge_1" runInTransaction="true" failOnError="true">
+    <sql>
+  		<![CDATA[alter table challenge_t drop column hint;]]>
+    </sql>
+  </changeSet>
+
+  <changeSet author="emtudorsm" id="pending_details_1">
+    <createSequence sequenceName="sq_pending_details" startValue="100000" incrementBy="1" minValue="1"/>
+    <createTable tableName="pending_details_t" remarks="Holds contact information about a person, pending review.">
+      <column name="pending_details_id" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="user_name" type="VARCHAR(32)" remarks="The login name of the user">
+        <constraints nullable="false"/>
+      </column>
+      <column name="first_name" type="VARCHAR(32)" remarks="The first or given name of the person"/>
+      <column name="last_name" type="VARCHAR(32)" remarks="The last or family name of the person"/>
+      <column name="phone_number" type="VARCHAR(32)" remarks="The person phone number"/>
+      <column name="mobile_number" type="VARCHAR(32)" remarks="The person mobile phone number"/>
+      <column name="fax_number" type="VARCHAR(32)" remarks="The person fax number"/>
+      <column name="e_mail" type="VARCHAR(64)" remarks="The person e-mail address"/>
+      <column name="created_by" type="VARCHAR(32)" remarks="The name of the user who created the entry">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_on" type="TIMESTAMP" remarks="The date and time the entry was created">
+        <constraints nullable="false"/>
+      </column>
+      <column name="modified_by" type="VARCHAR(32)" remarks="The name of the user who performed the last update on the entry"/>
+      <column name="modified_on" type="TIMESTAMP" remarks="The date and time the entry was last updated"/>
+    </createTable>
+    <addPrimaryKey tableName="pending_details_t" constraintName="pk_pending_details" columnNames="pending_details_id"/>
+
+    <createIndex tableName="pending_details_t" indexName="uk_pending_details" unique="true">
+      <column name="user_name"/>
+    </createIndex>
+        
+    <rollback> 
+      <dropTable tableName="pending_details_t" cascadeConstraints="true"/>
+      <dropSequence sequenceName="sq_pending_details"/>
+    </rollback>
+  </changeSet>
+	    	
+  <changeSet author="emtudorsm" id="pending_details_4"  runOnChange="true" dbms="postgresql">
+    <createProcedure>
+      CREATE OR REPLACE FUNCTION pending_details_BI()
+      RETURNS trigger AS
+      $BODY$
+      begin
+			
+      if NEW.pending_details_id IS NULL 
+      then
+      begin
+      NEW.pending_details_id :=nextval('SQ_pending_details');
+      end;  
+      end if;
+			
+			
+      IF NEW.created_on IS NULL
+      THEN
+      NEW.created_on := current_timestamp;
+      END IF;	
+			
+      if NEW.created_by is NULL
+      THEN 
+      NEW.created_by :=UPPER(current_user);
+      ELSE
+      NEW.created_by :=UPPER(NEW.created_by);  
+      END IF;  
+      RETURN NEW;	
+      EXCEPTION
+      WHEN OTHERS THEN 
+      RAISE WARNING 'pending_details_BI: SQLSTATE %: %', SQLSTATE, SQLERRM;
+      RETURN NULL;  	
+      end;$BODY$
+      LANGUAGE plpgsql VOLATILE
+      COST 100;
+			
+      CREATE TRIGGER pending_details_BI BEFORE INSERT ON pending_details_T
+      FOR EACH ROW EXECUTE PROCEDURE pending_details_BI(); 
+    </createProcedure>
+    <rollback>
+      drop trigger pending_details_bi on pending_details_t;
+      drop function pending_details_bi();
+    </rollback>
+  </changeSet>      	
+   
+  <changeSet author="emtudorsm" id="pending_details_5"  runOnChange="true" dbms="postgresql">
+    <createProcedure>
+      CREATE OR REPLACE FUNCTION pending_details_BU()
+      RETURNS trigger AS
+      $BODY$
+      begin
+			
+      IF NEW.modified_on IS NULL or (OLD.modified_on = OLD.modified_on)
+      THEN
+      NEW.modified_on := current_timestamp;
+      END IF;	
+			
+      if NEW.modified_by is NULL or (NEW.modified_by = OLD.modified_by)
+      THEN 
+      NEW.modified_by :=UPPER(current_user);
+      ELSE
+      NEW.modified_by :=UPPER(NEW.modified_by);  
+      END IF;  
+      RETURN NEW;	
+      EXCEPTION
+      WHEN OTHERS THEN 
+      RAISE WARNING 'pending_details_BU: SQLSTATE %: %', SQLSTATE, SQLERRM;
+      RETURN NULL;  	
+      end;$BODY$
+      LANGUAGE plpgsql VOLATILE
+      COST 100;
+			
+      CREATE TRIGGER pending_details_BU BEFORE UPDATE ON pending_details_T
+      FOR EACH ROW EXECUTE PROCEDURE pending_details_BU(); 
+    </createProcedure>
+    <rollback>
+      drop trigger pending_details_bu on pending_details_t;
+      drop function pending_details_bu();
+    </rollback>
+  </changeSet>      	
+    
+ 
+</databaseChangeLog>

@@ -1,0 +1,16 @@
+*.settings/
+.svn/
+*target/
+*.project
+*.classpath
+*.externalToolBuilders/
+*.tern-project
+*.idea/
+web/administration/src/main/webapp/node_modules/
+web/administration/src/main/webapp/bower_components/
+web/administration/src/main/webapp/dist/
+web/administration/src/main/webapp/node/
+web/administration/src/main/webapp/testresults/
+*.factorypath
+*.pydevproject
+*arquillian.launch_file

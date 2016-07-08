@@ -1,0 +1,127 @@
+/*
+ * Developed by the European Commission - Directorate General for Maritime 
+ * Affairs and Fisheries © European Union, 2015-2016.
+ * 
+ * This file is part of the Integrated Fisheries Data Management (IFDM) Suite.
+ * The IFDM Suite is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or any later version.
+ * The IFDM Suite is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public 
+ * License along with the IFDM Suite. If not, see http://www.gnu.org/licenses/.
+ */
+package eu.europa.ec.mare.usm.administration.service.ldap;
+
+import eu.europa.ec.mare.usm.administration.domain.GetUserQuery;
+import eu.europa.ec.mare.usm.administration.domain.LdapUser;
+import eu.europa.ec.mare.usm.administration.domain.PolicyDefinition;
+import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
+import eu.europa.ec.mare.usm.administration.service.DeploymentFactory;
+import eu.europa.ec.mare.usm.administration.service.policy.DefinitionService;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import javax.ejb.EJB;
+import org.jboss.arquillian.junit.Arquillian;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+
+/**
+ * Unit test for the EJB implementation of the LdapUserInfoService.
+ */
+@RunWith(Arquillian.class)
+public class LdapUserInfoServiceTest extends DeploymentFactory {
+  private static final String POLICY_SUBJECT = "Administration";
+  private static final String USM_ADMIN = "usm_admin";
+
+  @EJB
+  private LdapUserInfoService testSubject;
+  
+  @EJB
+  private DefinitionService policyService;
+  
+  private PolicyDefinition savedDefinition;
+
+  public LdapUserInfoServiceTest() 
+  {
+  }
+  
+  @Before
+  public void setUp() throws IOException 
+  {
+    savedDefinition = policyService.getDefinition(POLICY_SUBJECT);
+
+    InputStream is = getClass().getResourceAsStream("/ApacheDS.properties");
+    Properties props = new Properties();
+    props.load(is);
+    
+    ServiceRequest<PolicyDefinition> request = new ServiceRequest<>();
+    request.setRequester(USM_ADMIN);
+    request.setBody(new PolicyDefinition());
+    request.getBody().setSubject(POLICY_SUBJECT);
+    request.getBody().setProperties(props);
+    policyService.setDefinition(request);
+
+    assertTrue("LDAP is not enabled", testSubject.isEnabled());
+  }
+  
+  @After
+  public void tearDown() 
+  {
+    ServiceRequest<PolicyDefinition> request = new ServiceRequest<>();
+    request.setRequester(USM_ADMIN);
+    request.setBody(savedDefinition);
+
+    policyService.setDefinition(request);
+  }
+
+  /**
+   * Tests the isEnabled method.
+   */
+  @Test
+  public void testIsEnabled() 
+  {
+    boolean result = testSubject.isEnabled();
+    assertTrue("LDAP is not enabled", result);
+  }
+
+  /**
+   * Tests the getLdapUserInfo method.
+   */
+  @Test
+  public void testGetLdapUserInfo() 
+  {
+    ServiceRequest<GetUserQuery> request = new ServiceRequest<>();
+    request.setRequester(USM_ADMIN);
+    request.setBody(new GetUserQuery());
+    request.getBody().setUserName("ldap_enabled");
+    
+    LdapUser result = testSubject.getLdapUserInfo(request);
+    assertNotNull("Unexpected null result", result);
+    assertEquals("Unexpected userName", request.getBody().getUserName(), 
+                 result.getUserName());
+    assertEquals("Unexpected e-mail", "LdapEnabled@mail.org", result.getEmail());
+    assertEquals("Unexpected last name", "Enabled", result.getLastName());
+    assertEquals("Unexpected first name", "ldap", result.getFirstName());
+  }
+  
+  /**
+   * Tests the getLdapUserInfo method.
+   */
+  @Test
+  public void testGetLdapUserInfoNotFound() 
+  {
+    ServiceRequest<GetUserQuery> request = new ServiceRequest<>();
+    request.setRequester(USM_ADMIN);
+    request.setBody(new GetUserQuery());
+    request.getBody().setUserName("a_user_that_does_not_exist");
+    
+    LdapUser result = testSubject.getLdapUserInfo(request);
+    assertNull("Unexpected non-null result", result);
+  }
+}

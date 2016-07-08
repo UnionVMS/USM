@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  
+  <changeSet author="krogean" id="data-policy" >
+  <validCheckSum>7:1c519e8bc2cd2ecfc3f630e12616a3b3</validCheckSum>
+    <sqlFile encoding="utf8" path="policy.sql"
+      relativeToChangelogFile="true" splitStatements="true"
+      stripComments="true" />
+      <rollback>
+      DELETE FROM POLICY_T
+      where SUBJECT= 'Administration';
+      </rollback>
+  </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+           http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd
+           http://www.liquibase.org/xml/ns/dbchangelog-ext 
+           http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="marche (generated)" id="1446040663888-1" context="test" runInTransaction="true"
+    failOnError="true">
+    <update tableName="application_t">
+      <column name="parent_id" valueNumeric="2"/>
+      <where>application_id=3</where>
+    </update>
+        <insert tableName="application_t">
+            <column name="application_id" valueNumeric="5"/>
+            <column name="name" value="MobileTerminal"/>
+            <column name="description" value="Union VMS Mobile Terminal Module"/>
+            <column name="created_by" value="USM"/>
+            <column name="created_on" valueDate="2015-09-07 11:10:48.577932"/>
+            <column name="modified_by" value="USM"/>
+            <column name="modified_on" valueDate="2015-09-07 11:10:55.944844"/>
+            <column name="parent_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="application_t">
+            <column name="application_id" valueNumeric="6"/>
+            <column name="name" value="Exchange"/>
+            <column name="description" value="Union VMS Exchange Module"/>
+            <column name="created_by" value="USM"/>
+            <column name="created_on" valueDate="2015-09-09 13:21:07.923386"/>
+            <column name="modified_by" value="USM"/>
+            <column name="modified_on" valueDate="2015-09-09 13:21:17.121761"/>
+            <column name="parent_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="application_t">
+            <column name="application_id" valueNumeric="7"/>
+            <column name="name" value="Movement"/>
+            <column name="description" value="Union VMS Movement Module"/>
+            <column name="created_by" value="USM"/>
+            <column name="created_on" valueDate="2015-09-09 14:47:41.372529"/>
+            <column name="modified_by"/>
+            <column name="modified_on"/>
+            <column name="parent_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="application_t">
+            <column name="application_id" valueNumeric="8"/>
+            <column name="name" value="Rules"/>
+            <column name="description" value="Union VMS Rules Module"/>
+            <column name="created_by" value="USM"/>
+            <column name="created_on" valueDate="2015-09-23 09:47:09.664793"/>
+            <column name="modified_by"/>
+            <column name="modified_on"/>
+            <column name="parent_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="application_t">
+            <column name="application_id" valueNumeric="9"/>
+            <column name="name" value="Audit"/>
+            <column name="description" value="Union VMS Audit Module"/>
+            <column name="created_by" value="USM"/>
+            <column name="created_on" valueDate="2015-09-10 15:31:26.889781"/>
+            <column name="modified_by"/>
+            <column name="modified_on"/>
+            <column name="parent_id" valueNumeric="2"/>
+        </insert>
+    <rollback>
+      <sql><![CDATA[Delete from APPLICATION_T where APPLICATION_ID = 5]]></sql>
+      <sql><![CDATA[Delete from APPLICATION_T where APPLICATION_ID = 6]]></sql>
+      <sql><![CDATA[Delete from APPLICATION_T where APPLICATION_ID = 7]]></sql>
+      <sql><![CDATA[Delete from APPLICATION_T where APPLICATION_ID = 8]]></sql>
+      <sql><![CDATA[Delete from APPLICATION_T where APPLICATION_ID = 9]]></sql>
+    </rollback>
+    </changeSet>
+</databaseChangeLog>

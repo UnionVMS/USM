@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+           http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd
+           http://www.liquibase.org/xml/ns/dbchangelog-ext 
+           http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+           
+    <changeSet author="georgige (generated)" id="1443537166505-1" context="test">
+        <insert tableName="application_t">
+            <column name="application_id" valueNumeric="12"/>
+            <column name="name" value="Spatial"/>
+            <column name="description" value="Deployment descriptor of module Spatial."/>
+            <column name="parent_id"/>
+        </insert>
+    <rollback>
+      <sql><![CDATA[Delete from APPLICATION_T where APPLICATION_ID = 12]]></sql>
+    </rollback>
+    </changeSet>
+
+    <changeSet author="georgige (generated)" id="1443537166505-2" context="test">
+        <insert tableName="feature_t">
+            <column name="feature_id" valueNumeric="298"/>
+            <column name="name" value="MANAGE_SYSTEM_SPATIAL_CONFIGURATIONS"/>
+            <column name="description" value="Allows you to view/update spatial configurations located under the Admin tab"/>
+            <column name="application_id" valueNumeric="12"/>
+            <column name="group_name" value="spatial"/>
+        </insert>
+		<insert tableName="feature_t">
+            <column name="feature_id" valueNumeric="299"/>
+            <column name="name" value="USE_SPATIAL_CONFIGURATIONS"/>
+            <column name="description" value="Allows you to read spatial configurations while creating/running reports"/>
+            <column name="application_id" valueNumeric="12"/>
+            <column name="group_name" value="spatial"/>
+        </insert>
+		<insert tableName="feature_t">
+            <column name="feature_id" valueNumeric="300"/>
+            <column name="name" value="MANAGE_USER_DEFINED_AREAS"/>
+            <column name="description" value="Allows you to create, view, update and delete user defined areas."/>
+            <column name="application_id" valueNumeric="12"/>
+            <column name="group_name" value="spatial"/>
+        </insert>
+        <insert tableName="feature_t">
+            <column name="feature_id" valueNumeric="301"/>
+            <column name="name" value="MANAGE_BOOKMARKS"/>
+            <column name="description" value="Allows you to create, view, update and delete bookmarks."/>
+            <column name="application_id" valueNumeric="12"/>
+            <column name="group_name" value="spatial"/>
+        </insert>
+    <rollback>
+      <sql><![CDATA[Delete from feature_t where feature_id = 298 or feature_id = 299]]></sql>
+    </rollback>
+       
+    </changeSet>
+    
+   
+  
+    <changeSet author="georgige (generated)" id="1443537166505-4" context="test">
+		<insert tableName="permission_t">
+            <column name="role_id" valueNumeric="23"/>
+            <column name="feature_id" valueNumeric="298"/><!-- "MANAGE_SYSTEM_SPATIAL_CONFIGURATIONS"-->
+        </insert>
+		<insert tableName="permission_t">
+            <column name="role_id" valueNumeric="23"/>
+            <column name="feature_id" valueNumeric="299"/><!-- "USE_SPATIAL_CONFIGURATIONS"-->
+        </insert>
+		<insert tableName="permission_t">
+            <column name="role_id" valueNumeric="24"/>
+            <column name="feature_id" valueNumeric="299"/><!-- "USE_SPATIAL_CONFIGURATIONS"-->
+        </insert>
+		<insert tableName="permission_t">
+            <column name="role_id" valueNumeric="25"/>
+            <column name="feature_id" valueNumeric="299"/><!-- "USE_SPATIAL_CONFIGURATIONS"-->
+        </insert>
+		<insert tableName="permission_t">
+            <column name="role_id" valueNumeric="23"/>
+            <column name="feature_id" valueNumeric="214"/><!-- "viewConfiguration"-->
+        </insert>
+		<insert tableName="permission_t">
+            <column name="role_id" valueNumeric="23"/>
+            <column name="feature_id" valueNumeric="300"/><!-- "MANAGE_USER_DEFINED_AREAS"-->
+        </insert>
+		<insert tableName="permission_t">
+            <column name="role_id" valueNumeric="24"/>
+            <column name="feature_id" valueNumeric="300"/><!-- "MANAGE_USER_DEFINED_AREAS"-->
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="24"/>
+            <column name="feature_id" valueNumeric="301"/><!-- "MANAGE_BOOKMARKS"-->
+        </insert>
+        <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="23"/>
+            <column name="feature_id" valueNumeric="301"/><!-- "MANAGE_BOOKMARKS"-->
+        </insert>
+         <insert tableName="permission_t">
+            <column name="role_id" valueNumeric="25"/>
+            <column name="feature_id" valueNumeric="301"/><!-- "MANAGE_BOOKMARKS"-->
+        </insert>
+    <rollback>
+      <sql><![CDATA[Delete from permission_t where (role_id = 23 and feature_id = 298) or (role_id = 23 and feature_id = 214) or (role_id = 23 and feature_id = 299) or (role_id = 24 and feature_id = 299) or (role_id = 25 and feature_id = 299) or (role_id = 24 and feature_id = 300) or (role_id = 23 and feature_id = 300)]]></sql>
+    </rollback>
+    </changeSet>
+    
+    
+    
+</databaseChangeLog>

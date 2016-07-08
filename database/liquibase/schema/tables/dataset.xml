@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+	
+	<changeSet author="emtudorsm" id="35">
+  <validCheckSum>7:2d8493c187167f14ffe6ebc98ad97b10</validCheckSum>
+<createTable tableName="dataset_t" remarks="Holds identification information for a specific data-set managed by a business application and to which access must be controlled.">
+  <column name="dataset_id" type="INTEGER" remarks="Unique record id (primary key)">
+    <constraints nullable="false"/>
+  </column>
+  <column name="name" type="VARCHAR(128)" remarks="The (application unique) name of the data-set">
+    <constraints nullable="false"/>
+  </column>
+  <column name="description" type="VARCHAR(512)" remarks="A free-text description of the data-set"/>
+  <column name="category" type="VARCHAR(128)" remarks="The category (or type) of data items included in the data-set">
+    <constraints nullable="false"/>
+  </column>
+  <column name="discriminator" type="VARCHAR(512)" remarks="A discriminator value that identifies the specific data items included in the data-set"/>
+  <column name="application_id" type="INTEGER" remarks="The identifier of the application defining the data-set">
+    <constraints nullable="false"/>
+  </column>
+  <column name="created_by" type="VARCHAR(32)" remarks="The name of the user who created the entry">
+    <constraints nullable="false"/>
+  </column>
+  <column name="created_on" type="TIMESTAMP" remarks="The date and time the entry was created">
+    <constraints nullable="false"/>
+  </column>
+  <column name="modified_by" type="VARCHAR(32)" remarks="The name of the user who performed the last update on the entry"/>
+  <column name="modified_on" type="TIMESTAMP" remarks="The date and time the entry was last updated"/>
+</createTable>
+<rollback> <dropTable tableName="dataset_t" cascadeConstraints="true"/></rollback>
+</changeSet>
+<changeSet author="emtudorsm" id="36">
+<addPrimaryKey tableName="dataset_t" constraintName="pk_dataset" columnNames="dataset_id"/>
+</changeSet>
+
+<changeSet author="emtudorsm" id="37">
+<createIndex tableName="dataset_t" indexName="uk_dataset_app" unique="true">
+  <column name="application_id"/>
+  <column name="name"/>
+</createIndex>
+</changeSet>
+
+<changeSet author="emtudorsm" id="38">
+<createIndex tableName="dataset_t" indexName="fk_dataset_app">
+  <column name="application_id"/>
+</createIndex>
+</changeSet>
+
+<changeSet author="emtudorsm" id="81">
+ <addForeignKeyConstraint baseTableName="dataset_t" constraintName="dataset_application_fk" baseColumnNames="application_id" referencedTableName="application_t" referencedColumnNames="application_id"/>
+</changeSet>
+
+<changeSet author="emtudorsm" id="351">
+	<createSequence sequenceName="sq_dataset" startValue="100000" incrementBy="1" minValue="1" />
+	<rollback>
+		<dropSequence sequenceName="sq_dataset"/>
+	</rollback>
+	
+	</changeSet>
+	
+</databaseChangeLog>

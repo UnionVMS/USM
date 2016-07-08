@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="USM-Administration" transaction-type="JTA">
+    <jta-data-source>jdbc/USM2</jta-data-source>
+        <class>eu.europa.ec.mare.usm.information.entity.PolicyEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.EndPointEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.OrganisationEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.PersonEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.RoleEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.UserEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.ApplicationEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.ChallengeEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.DatasetEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.FeatureEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.OptionEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.PasswordHistEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.PreferenceEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.ScopeEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.ChannelEntity</class>
+    <class>eu.europa.ec.mare.usm.information.entity.EndPointContactEntity</class>
+    <validation-mode>NONE</validation-mode>
+    <!--  <properties>
+     <property name="hibernate.show_sql" value="true"/>
+     <property name="openjpa.Log" value="SQL=TRACE"/>
+    </properties>--> 
+  </persistence-unit>
+</persistence>

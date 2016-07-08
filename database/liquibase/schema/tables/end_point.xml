@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+	
+	<changeSet author="emtudorsm" id="15">
+<createTable tableName="end_point_t" remarks="Holds interconnection information for an (external) information system operated by an organisation.">
+  <column name="end_point_id" type="INTEGER" remarks="Unique record id (primary key)">
+    <constraints nullable="false"/>
+  </column>
+  <column name="name" type="VARCHAR(128)" remarks="The name of the end-point">
+    <constraints nullable="false"/>
+  </column>
+  <column name="description" type="VARCHAR(512)" remarks="A free-text description of the end-point"/>
+  <column name="uri" type="VARCHAR(256)" remarks="The URI of the end-point">
+    <constraints nullable="false"/>
+  </column>
+  <column name="priority" type="VARCHAR(32)" remarks="The priority (main/fall-back) of the end-point">
+    <constraints nullable="false"/>
+  </column>
+  <column name="status" type="CHAR(1)" remarks="The status (enabled/disabled) of the end-point">
+    <constraints nullable="false"/>
+  </column>
+  <column name="organisation_id" type="INTEGER" remarks="The identifier of the organisation owning the end-point">
+    <constraints nullable="false"/>
+  </column>
+  <column name="person_id" type="INTEGER" remarks="The identifier of the contact person for the end-point">
+    <constraints nullable="false"/>
+  </column>
+  <column name="created_by" type="VARCHAR(32)" remarks="The name of the user who created the entry">
+    <constraints nullable="false"/>
+  </column>
+  <column name="created_on" type="TIMESTAMP" remarks="The date and time the entry was created">
+    <constraints nullable="false"/>
+  </column>
+  <column name="modified_by" type="VARCHAR(32)" remarks="The name of the user who performed the last update on the entry"/>
+  <column name="modified_on" type="TIMESTAMP" remarks="The date and time the entry was last updated"/>
+</createTable>
+<rollback> <dropTable tableName="end_point_t" cascadeConstraints="true"/></rollback>
+</changeSet>
+<changeSet author="emtudorsm" id="16">
+<addPrimaryKey tableName="end_point_t" constraintName="pk_end_point" columnNames="end_point_id"/>
+</changeSet>
+
+<changeSet author="emtudorsm" id="17">
+<createIndex tableName="end_point_t" indexName="fk_end_point_org">
+  <column name="organisation_id"/>
+</createIndex>
+</changeSet>
+
+<changeSet author="emtudorsm" id="18">
+<createIndex tableName="end_point_t" indexName="fk_end_point_pers">
+  <column name="person_id"/>
+</createIndex>
+</changeSet>
+
+<changeSet author="emtudorsm" id="19">
+<createIndex tableName="end_point_t" indexName="ix_end_point_name">
+  <column name="name"/>
+</createIndex>
+</changeSet>
+
+<changeSet author="emtudorsm" id="70">
+<addForeignKeyConstraint baseTableName="end_point_t" constraintName="end_point_person_fk" baseColumnNames="person_id" referencedTableName="person_t" referencedColumnNames="person_id"/>
+</changeSet>
+
+<changeSet author="emtudorsm" id="73">
+<addForeignKeyConstraint baseTableName="end_point_t" constraintName="end_point_organisation_fk" baseColumnNames="organisation_id" referencedTableName="organisation_t" referencedColumnNames="organisation_id"/>
+</changeSet>
+
+<changeSet author="emtudorsm" id="151">
+		<createSequence sequenceName="sq_end_point"  startValue="100000" incrementBy="1" minValue="1" />
+		<rollback>
+		<dropSequence sequenceName="sq_end_point"/>
+	</rollback> 	
+	</changeSet>
+</databaseChangeLog>

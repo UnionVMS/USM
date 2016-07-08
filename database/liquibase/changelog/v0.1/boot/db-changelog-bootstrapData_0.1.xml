@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet author="krogean" id="data-application">
+    <sqlFile encoding="utf8" path="application.sql"
+      relativeToChangelogFile="true" splitStatements="true"
+      stripComments="true" />
+      <rollback>
+        DELETE from APPLICATION_T
+        where NAME='USM';
+      </rollback>
+  </changeSet>
+  <changeSet author="krogean" id="data-feature">
+    <sqlFile encoding="utf8" path="feature.sql"
+      relativeToChangelogFile="true" splitStatements="true"
+      stripComments="true" />
+      <rollback>
+        DELETE FROM FEATURE_T
+        where APPLICATION_ID in (select 
+APPLICATION_ID from APPLICATION_T where NAME='USM');
+      </rollback>
+  </changeSet>
+  <changeSet author="krogean" id="data-role">
+    <sqlFile encoding="utf8" path="role.sql"
+      relativeToChangelogFile="true" splitStatements="true"
+      stripComments="true" />
+      <rollback>
+      DELETE FROM ROLE_T 
+      where ROLE_ID in (
+      select r.ROLE_ID
+      from APPLICATION_T a, ROLE_T r 
+      where a.NAME='USM'
+        and r.NAME in ('USM-UserManager','USM-UserBrowser')
+        and r.APPLICATION_ID=a.APPLICATION_ID
+      ) ;
+      </rollback>
+  </changeSet>
+  <changeSet author="krogean" id="data-permission">
+  	<validCheckSum>7:8536aa380e7510dbe69e5cfe9107bb81</validCheckSum>
+    <sqlFile encoding="utf8" path="permission.sql"
+      relativeToChangelogFile="true" splitStatements="true"
+      stripComments="true" />
+      <rollback>
+      DELETE FROM PERMISSION_T 
+      where ROLE_ID in (
+      select r.ROLE_ID
+      from APPLICATION_T a, ROLE_T r 
+      where a.NAME='USM'
+        and r.NAME in ('USM-UserManager','USM-UserBrowser')
+        and r.APPLICATION_ID=a.APPLICATION_ID
+      ) ;
+      </rollback>
+  </changeSet>
+  <changeSet author="krogean" id="data-user">
+    <sqlFile encoding="utf8" path="user.sql"
+      relativeToChangelogFile="true" splitStatements="true"
+      stripComments="true" />
+      <rollback>
+      DELETE FROM USER_T
+      where USER_NAME='usm_bootstrap';
+      </rollback>
+  </changeSet>
+  <changeSet author="krogean" id="data-user-role">
+    <sqlFile encoding="utf8" path="user_role.sql"
+      relativeToChangelogFile="true" splitStatements="true"
+      stripComments="true" />
+      <rollback>
+      DELETE FROM USER_ROLE_T
+      where  user_role_id in (
+      select ur.user_role_id 
+      from USER_ROLE_T ur, APPLICATION_T a, USER_T u, ROLE_T r 
+      where a.NAME='USM'
+        and u.USER_NAME='usm_bootstrap'
+        and r.NAME in ('USM-UserManager','USM-UserBrowser')
+        and r.APPLICATION_ID=a.APPLICATION_ID
+        and r.ROLE_ID = ur.ROLE_ID
+        and u.USER_ID = ur.USER_ID);
+      </rollback>
+  </changeSet>
+  <changeSet author="krogean" id="data-policy">
+    <sqlFile encoding="utf8" path="policy.sql"
+      relativeToChangelogFile="true" splitStatements="true"
+      stripComments="true" />
+      <rollback>
+      DELETE FROM POLICY_T
+      where SUBJECT= 'Authentication';
+      </rollback>
+  </changeSet>
+</databaseChangeLog>

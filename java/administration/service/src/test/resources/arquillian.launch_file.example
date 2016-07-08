@@ -1,0 +1,13 @@
+wildfly
+# The arquillian container config runtime selection is configured by the setting
+# of the arquillian.launch system property in the surefireconfig when running with
+# maven. This means that selecting the relevant maven profile will select the 
+# arquillian container by the qualifier that matches the value of this system property
+#
+# When trying to run arquillian test manually in eclipse the surefire config will
+# not be used. You can select the container by:
+#  - adding -Darquillian.launch=wildfly as a jvm arg to your eclipse junit run 
+#    configuration for the test you want to run.
+#  - creating a file called arquillian.launch_file in your test resources containing the
+#    name matching the qualifier of the desired container in the arquillian.xml file.
+#    The arquillian.launch file will be ignored by svn or git. 

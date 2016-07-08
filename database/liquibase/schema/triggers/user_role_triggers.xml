@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+
+        
+   
+   
+
+   <changeSet author="emtudorsm" id="postgresUserRoleTrigger1"  runOnChange="true" dbms="postgresql">
+   	<createProcedure>
+	  	CREATE OR REPLACE FUNCTION user_role_BI()
+			  RETURNS trigger AS
+			 $BODY$
+			begin
+			
+			  if NEW.user_role_id IS NULL 
+				then
+					begin
+						NEW.user_role_id :=nextval('SQ_USER_ROLE');
+					end;  
+				end if;
+			  RETURN NEW;	
+			  EXCEPTION
+			     WHEN OTHERS THEN 
+			     RAISE WARNING 'user_role_BI: SQLSTATE %: %', SQLSTATE, SQLERRM;
+			     RETURN NULL;  	
+			end;$BODY$
+			  LANGUAGE plpgsql VOLATILE
+			  COST 100;
+			
+			CREATE TRIGGER user_role_BI BEFORE INSERT ON user_role_T
+			    FOR EACH ROW EXECUTE PROCEDURE user_role_BI(); 
+	   </createProcedure>
+	  <rollback>
+	  	drop trigger user_role_bi on user_role_t;
+		drop function user_role_bi();
+	  </rollback>
+	   </changeSet>      	
+            	
+</databaseChangeLog>

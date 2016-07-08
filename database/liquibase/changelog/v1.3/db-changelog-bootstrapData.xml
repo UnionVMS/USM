@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+ 
+  <changeSet author="emtudorsm" id="featureBootUpdate1">
+  	<sql>
+  		 <![CDATA[INSERT INTO FEATURE_T (NAME, DESCRIPTION, APPLICATION_ID) 
+		select 'viewPersonDetails', 'View the person details ', 
+		APPLICATION_ID from APPLICATION_T where NAME='USM';
+  		INSERT INTO FEATURE_T (NAME, DESCRIPTION, APPLICATION_ID) 
+		select 'managePersons', 'Manage a person details', 
+		APPLICATION_ID from APPLICATION_T where NAME='USM';
+  		INSERT INTO FEATURE_T (NAME, DESCRIPTION, APPLICATION_ID) 
+		select 'viewUserContexts', 'View the contexts of a user', 
+		APPLICATION_ID from APPLICATION_T where NAME='USM';
+  		INSERT INTO FEATURE_T (NAME, DESCRIPTION, APPLICATION_ID) 
+		select 'manageUserContexts', 'Manage the contexts of a user', 
+		APPLICATION_ID from APPLICATION_T where NAME='USM';]]>
+  	</sql>
+  	<rollback>
+  		<sql>DELETE FROM FEATURE_T WHERE name in ('viewPersonDetails','managePersons','viewUserContexts','manageUserContexts')</sql>
+  	</rollback>
+  </changeSet>       	
+        
+ <changeSet author="emtudorsm" id="permissionBootUpdate1">
+ 	<sql>
+ 		<![CDATA[INSERT INTO PERMISSION_T (ROLE_ID, FEATURE_ID) 
+		select r.ROLE_ID, f.FEATURE_ID
+		from APPLICATION_T a, FEATURE_T f, ROLE_T r 
+		where a.NAME='USM'
+  		and f.NAME in ('managePersons','manageUserContexts')
+  		and r.NAME='USM-UserManager'
+ 		and f.APPLICATION_ID=a.APPLICATION_ID;
+  		INSERT INTO PERMISSION_T (ROLE_ID, FEATURE_ID) 
+		select r.ROLE_ID, f.FEATURE_ID
+		from APPLICATION_T a, FEATURE_T f, ROLE_T r 
+		where a.NAME='USM'
+  		and f.NAME in ('viewPersonDetails','viewUserContexts')
+  		and r.NAME='USM-UserBrowser'
+ 		and f.APPLICATION_ID=a.APPLICATION_ID;]]>
+ 	</sql>
+ 	<rollback>
+ 		<sql>
+ 			DELETE FROM PERMISSION_T 
+ 			WHERE FEATURE_ID IN (SELECT FEATURE_ID FROM FEATURE_T 
+ 			WHERE NAME IN ('viewPersonDetails','managePersons','viewUserContexts','manageUserContexts'))
+ 		</sql>	
+ 	</rollback>
+ </changeSet>  	
+         	
+  <changeSet author="emtudorsm" id="featureBootUpdate2">
+  	<sql>
+  		 <![CDATA[INSERT INTO FEATURE_T (NAME, DESCRIPTION, APPLICATION_ID) 
+		select 'manageEndpoints', 'Manage end points, channels, assign/remove contacts', 
+		APPLICATION_ID from APPLICATION_T where NAME='USM';
+  		INSERT INTO FEATURE_T (NAME, DESCRIPTION, APPLICATION_ID) 
+		select 'viewOrganisationDetails', 'View details of a selected organisation', 
+		APPLICATION_ID from APPLICATION_T where NAME='USM';
+  		INSERT INTO FEATURE_T (NAME, DESCRIPTION, APPLICATION_ID) 
+		select 'viewEndpointsDetails', 'View specific endpoint, channels and contacts details', 
+		APPLICATION_ID from APPLICATION_T where NAME='USM';]]>
+  	</sql>
+  	<rollback>
+  		<sql>DELETE FROM FEATURE_T WHERE name in ('manageEndpoints','viewOrganisationDetails','viewEndpointsDetails')</sql>
+  	</rollback>
+  </changeSet>       	
+        
+ <changeSet author="emtudorsm" id="permissionBootUpdate2">
+ 	<sql>
+ 		<![CDATA[INSERT INTO PERMISSION_T (ROLE_ID, FEATURE_ID) 
+		select r.ROLE_ID, f.FEATURE_ID
+		from APPLICATION_T a, FEATURE_T f, ROLE_T r 
+		where a.NAME='USM'
+  		and f.NAME in ('manageEndpoints')
+  		and r.NAME='USM-UserManager'
+ 		and f.APPLICATION_ID=a.APPLICATION_ID;
+  		INSERT INTO PERMISSION_T (ROLE_ID, FEATURE_ID) 
+		select r.ROLE_ID, f.FEATURE_ID
+		from APPLICATION_T a, FEATURE_T f, ROLE_T r 
+		where a.NAME='USM'
+  		and f.NAME in ('viewOrganisationDetails','viewEndpointsDetails')
+  		and r.NAME='USM-UserBrowser'
+ 		and f.APPLICATION_ID=a.APPLICATION_ID;]]>
+ 	</sql>
+ 	<rollback>
+ 		<sql>
+ 			DELETE FROM PERMISSION_T 
+ 			WHERE FEATURE_ID IN (SELECT FEATURE_ID FROM FEATURE_T 
+ 			WHERE NAME IN ('manageEndpoints','viewOrganisationDetails','viewEndpointsDetails'))
+ 		</sql>	
+ 	</rollback>
+ </changeSet>  	
+       
+  <changeSet author="emtudorsm" id="featureBootUpdate3">
+  	<sql>
+  		 <![CDATA[UPDATE FEATURE_T f SET GROUP_NAME = 'User' where f.NAME like'%User%' and 
+  		 f.APPLICATION_ID in (select a.APPLICATION_ID from APPLICATION_T a where a.NAME='USM');
+  		 UPDATE FEATURE_T f SET GROUP_NAME = 'Organisation' where f.NAME like'%Organisation%' and 
+  		 f.APPLICATION_ID  in (select a.APPLICATION_ID from APPLICATION_T a where a.NAME='USM');
+  		 UPDATE FEATURE_T f SET GROUP_NAME = 'Endpoint' where f.NAME like '%Endpoint%' and 
+  		 f.APPLICATION_ID in (select a.APPLICATION_ID from APPLICATION_T a where a.NAME='USM');
+  		 UPDATE FEATURE_T f SET GROUP_NAME = 'Role' where f.NAME like '%Role%' and 
+  		 f.APPLICATION_ID in (select a.APPLICATION_ID from APPLICATION_T a where a.NAME='USM');
+  		 UPDATE FEATURE_T f SET GROUP_NAME = 'Scope' where f.NAME like '%Scope%' and 
+  		 f.APPLICATION_ID in (select a.APPLICATION_ID from APPLICATION_T a where a.NAME='USM');
+  		 UPDATE FEATURE_T f SET GROUP_NAME = 'Application' where f.NAME like '%Application%' and 
+  		 f.APPLICATION_ID in (select a.APPLICATION_ID from APPLICATION_T a where a.NAME='USM');]]>
+  	</sql>
+  	<rollback>
+  		<sql>UPDATE FEATURE_T f 
+  		set GROUP_NAME=null 
+  		where f.APPLICATION_ID in (select a.APPLICATION_ID from APPLICATION_T a where a.NAME='USM')</sql>
+  	</rollback>
+  </changeSet>       
+         	        	
+         	
+ </databaseChangeLog>

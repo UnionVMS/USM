@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+<changeSet author="emtudorsm" id="31">
+<createTable tableName="scope_t" remarks="Holds a business application data scope">
+  <column name="scope_id" type="INTEGER" remarks="Unique record id (primary key)">
+    <constraints nullable="false"/>
+  </column>
+  <column name="name" type="VARCHAR(128)" remarks="The (application unique) name of the scope">
+    <constraints nullable="false"/>
+  </column>
+  <column name="description" type="VARCHAR(512)" remarks="A free-text description of the scope"/>
+  <column name="application_id" type="INTEGER" remarks="The identifier of the application defining the scope">
+    <constraints nullable="false"/>
+  </column>
+  <column name="status" type="CHAR(1)" remarks="The status (enabled/disabled) of the scope">
+    <constraints nullable="false"/>
+  </column>
+  <column name="active_from" type="TIMESTAMP" remarks="The date and time when the scope becomes applicable/usable"/>
+  <column name="active_to" type="TIMESTAMP" remarks="The date and time when the scope stops being applicable/usable"/>
+  <column name="data_from" type="TIMESTAMP" remarks="For temporal data, the start of the (data) time window"/>
+  <column name="data_to" type="TIMESTAMP" remarks="For temporal data, the end of the (data) time window"/>
+  <column name="created_by" type="VARCHAR(32)" remarks="The name of the user who created the entry">
+    <constraints nullable="false"/>
+  </column>
+  <column name="created_on" type="TIMESTAMP" remarks="The date and time the entry was created">
+    <constraints nullable="false"/>
+  </column>
+  <column name="modified_by" type="VARCHAR(32)" remarks="The name of the user who performed the last update on the entry"/>
+  <column name="modified_on" type="TIMESTAMP" remarks="The date and time the entry was last updated"/>
+ 
+</createTable>
+ <rollback> <dropTable tableName="scope_t" cascadeConstraints="true"/></rollback>
+</changeSet>
+<changeSet author="emtudorsm" id="32">
+<addPrimaryKey tableName="scope_t" constraintName="pk_scope" columnNames="scope_id"/>
+</changeSet>
+
+<changeSet author="emtudorsm" id="33">
+<createIndex tableName="scope_t" indexName="uk_scope_app" unique="true">
+  <column name="application_id"/>
+  <column name="name"/>
+</createIndex>
+</changeSet>
+
+<changeSet author="emtudorsm" id="34">
+<createIndex tableName="scope_t" indexName="fk_scope_app">
+  <column name="application_id"/>
+</createIndex>
+</changeSet>
+
+<changeSet author="emtudorsm" id="82">
+<addForeignKeyConstraint baseTableName="scope_t" constraintName="scope_application_fk" baseColumnNames="application_id" referencedTableName="application_t" referencedColumnNames="application_id"/>
+</changeSet>
+
+<changeSet author="emtudorsm" id="311">
+<createSequence sequenceName="sq_scope" startValue="100000" incrementBy="1" minValue="1"/>
+<rollback>
+		<dropSequence sequenceName="sq_scope"/>
+	</rollback>
+ </changeSet>        	         	 
+         	        
+ </databaseChangeLog>

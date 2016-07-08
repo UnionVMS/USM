@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+ 
+  <changeSet author="emtudorsm" id="policy_subject_boot_1" runInTransaction="true" failOnError="true">
+    <sql>
+  		<![CDATA[update policy_t set subject='Feature' where subject='feature';
+               update policy_t set subject='Account' where subject='account';
+               update policy_t set subject='Password' where subject='password';]]>
+    </sql>
+  </changeSet>
+
+  <changeSet author="emtudorsm" id="pending_details_boot_1" runInTransaction="true" failOnError="true">
+    <sql>
+  		<![CDATA[insert into policy_t(subject, name, value, description)
+              values('Feature', 'update.contact.details.enabled', 'true', 'Enable (true) or disable (false) the <<Update Contact Details>> feature');
+              insert into policy_t(subject, name, value, description)
+              values('Feature', 'review.contact.details.enabled', 'false', 'Enable (true) or disable (false) the <<Review Contact Details Updates before they become effective>> feature');]]>
+    </sql>
+  </changeSet>
+
+  <changeSet author="emtudorsm" id="session_policy_boot_1" runInTransaction="true" failOnError="true">
+    <sql>
+  		<![CDATA[insert into policy_t(subject, name, value, description)
+                             values('Account', 'account.maxSessionOneSite', '0', 
+                                    'Maximum number of concurrent sessions with the same user from a single site');
+               insert into policy_t(subject, name, value, description)
+                             values('Account', 'account.maxSessionAnySite', '0', 
+                                    'Maximum number of concurrent sessions with the same user from any site');
+               insert into policy_t(subject, name, value, description)
+                             values('Account', 'account.maxSessionDuration', '28800', 
+                                    'Maximum duration of a user session in number of seconds');]]>
+    </sql>
+  </changeSet>
+
+  <changeSet author="emtudorsm" id="feature_boot_1" runInTransaction="true" failOnError="true">
+    <sql>
+  		<![CDATA[delete from permission_t 
+               where feature_id in (select feature_id from feature_t 
+               where application_id=(select application_id from application_t where name='USM')
+               and name in ('activateUsers','viewUserPreferences','manageUserPreferences','assignRoles','activateRoles',
+                             'assignScopes','activateScopes','viewPersonDetails','managePersons','viewUserContexts',
+                             'manageUserContexts','manageEndpoints','viewOrganisationDetails','viewEndpointsDetails'));
+              delete from feature_t 
+              where application_id=(select application_id from application_t where name='USM')
+              and name in ('activateUsers','viewUserPreferences','manageUserPreferences','assignRoles','activateRoles',
+                           'assignScopes','activateScopes','viewPersonDetails','managePersons','viewUserContexts',
+                           'manageUserContexts','manageEndpoints','viewOrganisationDetails','viewEndpointsDetails');]]>
+    </sql>
+  </changeSet>
+
+  <changeSet author="emtudorsm" id="feature_boot_2" runInTransaction="true" failOnError="true">
+    <sql>
+  		<![CDATA[update feature_t
+                set description='Manage (create, update, enable, disable) the system users'	
+               where application_id=(select application_id from application_t where name='USM')
+               and name='manageUsers';
+              update feature_t
+                set description='Manage (create, update, delete, enable, disable) the application roles'	
+               where application_id=(select application_id from application_t where name='USM')
+               and name='manageRoles'; 
+              update feature_t
+                set description='Manage (create, update, delete, enable, disable) the application scopes'	
+               where application_id=(select application_id from application_t where name='USM')
+               and name='manageScopes';]]>
+    </sql>
+  </changeSet>
+
+  <changeSet author="emtudorsm" id="bootsrap_boot_1" runInTransaction="true" failOnError="true">
+    <sql>
+  		<![CDATA[insert into role_t (name, status) values ('USM Administrator', 'E');
+               insert into permission_t(role_id, feature_id)
+               (select r.role_id, f.feature_id from role_t r, feature_t f 
+                where r.name='USM Administrator' 
+                and f.application_id=(select application_id from application_t a where a.name='USM'));
+
+               delete from user_context_t where user_id in (select user_id from user_t where user_name='usm_bootstrap');
+               insert into user_context_t(user_id, role_id)
+               (select u.user_id, r.role_id from role_t r, user_t u 
+                where r.name='USM Administrator' 
+                and u.user_name='usm_bootstrap');]]>
+    </sql>
+  </changeSet>
+
+  <changeSet author="emdouniat" id="policies_administration_ldap_query_attributes_obsolete" runInTransaction="true" failOnError="true">
+    <delete tableName="policy_t">
+      <where>subject='Administration' and name='ldap.query.attributes'</where>
+    </delete>
+    <rollback/>
+  </changeSet>
+  
+  <changeSet author="emdouniat" id="policies_ldap_enabled_authentication_description" runInTransaction="true" failOnError="true">
+    <update tableName="policy_t">
+      <column name="description" value="Flag that controls whether LDAP based authentication is enabled (value &quot;true&quot;) or disabled (value &quot;false&quot;)"/>
+      <where>name='ldap.enabled' and subject='Authentication'</where>
+    </update>
+    <rollback/>
+  </changeSet>
+  
+  <changeSet author="emdouniat" id="policies_ldap_enabled_administration_description" runInTransaction="true" failOnError="true">
+    <update tableName="policy_t">
+      <column name="description" value="Flag that controls whether LDAP based authentication is enabled for user administration (value &quot;true&quot;) or disabled (value &quot;false&quot;)"/>
+      <where>name='ldap.enabled' and subject='Administration'</where>
+    </update>
+    <rollback/>  
+  </changeSet>
+
+  <changeSet author="emdouniat" id="policies_ldap_label_firstName_administration_value_given_name" runInTransaction="true" failOnError="true">
+    <update tableName="policy_t">
+      <column name="value" value="givenName"/>
+      <where>name='ldap.label.firstName' and subject='Administration'</where>
+    </update>
+    <rollback/>
+  </changeSet>
+  
+  <changeSet author="emdouniat" id="policies_ldap_label_lastName_administration_value_sn" runInTransaction="true" failOnError="true">
+    <update tableName="policy_t">
+      <column name="value" value="sn"/>
+      <where>name='ldap.label.lastName' and subject='Administration'</where>
+    </update>
+    <rollback/>
+  </changeSet>  
+  
+</databaseChangeLog>
