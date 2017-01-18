@@ -446,7 +446,7 @@
       <column name="description" value="All Consolidated Reports"/>
       <column name="status" value="E"/>
       <column name="active_from" valueDate="2015-10-05 02:00:00.0"/>
-      <column name="active_to" valueDate="2016-10-05 02:00:00.0"/>
+      <column name="active_to" valueDate="2020-10-05 02:00:00.0"/>
       <column name="data_from"/>
       <column name="data_to"/>
       <column name="created_by" value="USM2"/>
@@ -460,7 +460,7 @@
       <column name="description" value="DG MARE Reports"/>
       <column name="status" value="E"/>
       <column name="active_from" valueDate="2015-10-05 02:00:00.0"/>
-      <column name="active_to" valueDate="2017-01-31 01:00:00.0"/>
+      <column name="active_to" valueDate="2020-01-31 01:00:00.0"/>
       <column name="data_from"/>
       <column name="data_to"/>
       <column name="created_by" value="USM_ADMIN"/>
