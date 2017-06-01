@@ -1,2 +1,2 @@
-"channel_id";"dataflow";"service";"priority";"end_point_id";"created_by"
-1;"dataflow";"service";1;5;"USM"
+"channel_id","dataflow","service","priority","end_point_id","created_by"
+1,"dataflow","service",1,5,"USM"

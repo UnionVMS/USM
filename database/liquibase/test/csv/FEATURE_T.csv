@@ -1,113 +1,113 @@
-"feature_id";"name";"description";"application_id"
-100026;"MANAGE_ALL_REPORTS";"allows user to delete, edit, share/unshare (private, scope or globally) reports, no matter if he is the owner or not";4
-100027;"PRINT_REPORT";"Allows user to print reports";4
-100028;"EXPORT_VMS_REPORT_DATA";"Allows user to export VMS data of a report";4
-27;"createQuota";"Create Quota";1
-100000;"viewUsers";"View the system users";100000
-100004;"manageOrganisations";"Manage (create, update, delete) the system organisations and their end-points";100000
-100003;"viewOrganisations";"View the system organisations and their end-points";100000
-100005;"viewApplications";"View the system applications";100000
-100001;"manageUsers";"Manage (create, update, enable, disable) the system users";100000
-21;"LIST_REPORTS";"allows user to see Reporting tab and list reports";4
-100029;"MANAGE_ANY_USER_AREA";"Allows you to to list/update/delete any user area, no matter who has created it.";12
-100030;"ALLOW_USER_SPATIAL_CONFIGURATIONS";"Allows you to override default admin spatial configurations";12
-100031;"ALLOW_USER_SPATIAL_REPORT_CONFIGURATIONS";"Allows you to set custom spatial configurations at the report level";12
-100032;"VIEW_AREA_MANAGEMENT_UI";"Allows you to have access to the user interface of area management.";12
-100033;"SHARE_USER_DEFINED_AREAS";"Allows you to share your user defined areas within the available to your profile, scopes.";12
-100034;"CREATE_USER_AREA_DATASET";"Allows you to set create a USM dataset, for given user defined area, which later can be used as scope data restriction.";12
-100035;"MANAGE_REFERENCE_DATA";"Allows you to manage reference data/system areas.";12
-100018;"configurePolicies";"Configure password, account, etc. policies";100000
-15;"getVesselList";" ""A feature from the Vessel module""";3
-16;"getVesselById";" ""A feature from the Vessel module""";3
-17;"createVessel";" ""A feature from the Vessel module""";3
-18;"updateVessel";" ""A feature from the Vessel module""";3
-19;"accessApplication";"Access to the application";2
-22;"accessApplication";"Access to the application";1
-23;"createAllowedTransfer";"Create Allowed Transfer";1
-24;"createFishingSeason";"Create Fishing Season";1
-25;"createFishingStop";"Create Fishing Stop";1
-26;"createMultiSpecies";"Create Multi Species";1
-28;"createQuotaIndicator";"Create Quota Indicator";1
-29;"createQuotaShared";"Create Quota Shared";1
-30;"createRegulation";"Create Regulation";1
-31;"createStock";"Create Stock";1
-32;"createStockDefContact";"Create Stock Definition Contact";1
-33;"createStockDefIndicator";"Create Stock Definition Indicator";1
-34;"createStockDefinitions";"Create Stock Definitions";1
-35;"createStockSeasonAssociation";"Create Stock Season Association";1
-36;"createYearlyStockParent";"Create Yearly Stock Parent";1
-37;"deleteAllowedTransfer";"Delete Allowed Transfer";1
-38;"deleteFishingSeason";"Delete Fishing Season";1
-39;"deleteFishingStop";"Delete Fishing Stop";1
-40;"deleteMultiSpecies";"Delete Multi Species";1
-41;"deleteQuota";"Delete Quota";1
-42;"deleteQuotaIndicator";"Delete Quota Indicator";1
-43;"deleteQuotasShared";"Delete Quota Shared";1
-44;"deleteRegulation";"Delete Regulation";1
-45;"deleteStock";"Delete Stock";1
-46;"deleteStockDefContact";"Delete Stock Definition Contact";1
-47;"deleteStockDefIndicator";"Delete Stock Definition Indicator";1
-48;"deleteStockDefinitions";"Delete Stock Definitions";1
-49;"deleteStockSeasonAssociation";"Delete Stock Season Association";1
-50;"deleteYearlyStockParent";"Delete Yearly Stock Parent";1
-51;"processQuotaExchange";"Process Quota Exchange";1
-52;"processQuotaTransfer";"Process Quota Transfer";1
-53;"reviseQuota";"Revise Quota";1
-54;"updateAllowedTransfer";"Update Allowed Transfer";1
-55;"updateFishingSeason";"Update Fishing Season";1
-56;"updateFishingStop";"Update Fishing Stop";1
-57;"updateQuota";"Update Quota";1
-58;"updateQuotaExchangeEvent";"Update Quota Exchange Event";1
-59;"updateQuotaIndicator";"Update Quota Indicator";1
-60;"updateQuotaRevision";"Update Quota Revision";1
-61;"updateQuotaShared";"Update Quota Shared";1
-62;"updateQuotaTransferEvent";"Update Quota Transfer Event";1
-63;"updateRegulation";"Update Regulation";1
-64;"updateStock";"Update Stock";1
-65;"updateStockDefContact";"Update Stock Definition Contact";1
-66;"updateStockDefIndicator";"Update Stock Definition Indicator";1
-67;"updateStockDefinitions";"Update Stock Definitions";1
-68;"updateYearlyStockParent";"Update Yearly Stock Parent";1
-133;"SHARE_REPORT_SCOPE";"allows user to share reports within current user context/scope";4
-135;"SHARE_REPORT_PUBLIC";"allows user to share reports globally";4
-137;"CREATE_REPORT";"allows user to create report";4
-298;"MANAGE_SYSTEM_SPATIAL_CONFIGURATIONS";"Allows you to view/update spatial configurations located under the Admin tab";12
-300;"MANAGE_USER_DEFINED_AREAS";"Allows you to create, view, update and delete user defined areas.";12
-100009;"copyUserProfile";"Copy roles, scopes and preferences from one user to another";100000
-100010;"viewRoles";"View the application roles";100000
-100014;"viewScopes";"View the application scopes";100000
-100006;"manageApplications";"Manage (create, update, delete) the system applications";100000
-100011;"manageRoles";"Manage (create, update, delete, enable, disable) the application roles";100000
-100015;"manageScopes";"Manage (create, update, delete, enable, disable) the application scopes";100000
-101;"APP1_TEST_FEATURE";"some test feature";10
-226;"vesselConfig";"Vessel configuration";3
-228;"vesselHistory";"Vessel history";3
-231;"viewVesselGroups";"View vessel groups";3
-234;"manageVesselGroups";"Managing vessel groups";3
-235;"viewMobileTerminals";"Viewing mobile terminals";5
-242;"mobileTerminalPlugins";"Accessing mobile terminal plugins";5
-244;"mobileTerminalConfig";"Accessing mobile terminal configuration";5
-249;"viewExchange";"Viewing exchange logs";6
-255;"viewPollingLogs";"Viewing polling logs";5
-258;"manageProgramPolls";"Managing program polls";5
-264;"viewPollableChannels";"Viewing pollable channels";5
-267;"viewMovements";"Viewing movements";7
-279;"manageManualMovements";"Managing manual movements";7
-276;"viewManualMovements";"Viewing manual movements";7
-286;"viewAudit";"Viewing audit";9
-292;"viewVesselsAndMobileTerminals";"Viewing both vessels and mobile terminals";2
-294;"manageMobileTerminals";"Managing mobile terminals";2
-295;"manageVessels";"Managing vessels";2
-297;"viewMobileTerminalPolls";"Viewing mobile terminal poll";2
-201;"managePolls";"Managing polls";2
-203;"mobileTerminalPlugins";"Plugging in mobile terminal";2
-204;"manageExchangeSendingQueue";"Managing the sending queues";6
-205;"manageExchangeTransmissionStatuses";"Managing the transmission statuses";6
-206;"viewAlarmRules";"Viewing alarm rules";8
-207;"manageAlarmRules";"Manage alarm rules";8
-208;"viewAlarmsHoldingTable";"Viewing alarms holding table";8
-209;"manageAlarmsHoldingTable";"Manage alarms holding talbe";8
-210;"viewAlarmsOpenTickets";"Viewing alarm open tickets";8
-211;"manageAlarmsOpenTickets";"Manage alarm open tickets";8
-214;"viewConfiguration";"View Configuration tab in admin";9
-215;"manageGlobalAlarmsRules";"Manage GLOBAL alarm rules";8
+"feature_id","name","description","application_id"
+100026,"MANAGE_ALL_REPORTS","allows user to delete, edit, share/unshare (private, scope or globally) reports, no matter if he is the owner or not",4
+100027,"PRINT_REPORT","Allows user to print reports",4
+100028,"EXPORT_VMS_REPORT_DATA","Allows user to export VMS data of a report",4
+27,"createQuota","Create Quota",1
+100000,"viewUsers","View the system users",100000
+100004,"manageOrganisations","Manage (create, update, delete) the system organisations and their end-points",100000
+100003,"viewOrganisations","View the system organisations and their end-points",100000
+100005,"viewApplications","View the system applications",100000
+100001,"manageUsers","Manage (create, update, enable, disable) the system users",100000
+21,"LIST_REPORTS","allows user to see Reporting tab and list reports",4
+100029,"MANAGE_ANY_USER_AREA","Allows you to to list/update/delete any user area, no matter who has created it.",12
+100030,"ALLOW_USER_SPATIAL_CONFIGURATIONS","Allows you to override default admin spatial configurations",12
+100031,"ALLOW_USER_SPATIAL_REPORT_CONFIGURATIONS","Allows you to set custom spatial configurations at the report level",12
+100032,"VIEW_AREA_MANAGEMENT_UI","Allows you to have access to the user interface of area management.",12
+100033,"SHARE_USER_DEFINED_AREAS","Allows you to share your user defined areas within the available to your profile, scopes.",12
+100034,"CREATE_USER_AREA_DATASET","Allows you to set create a USM dataset, for given user defined area, which later can be used as scope data restriction.",12
+100035,"MANAGE_REFERENCE_DATA","Allows you to manage reference data/system areas.",12
+100018,"configurePolicies","Configure password, account, etc. policies",100000
+15,"getVesselList"," ""A feature from the Vessel module""",3
+16,"getVesselById"," ""A feature from the Vessel module""",3
+17,"createVessel"," ""A feature from the Vessel module""",3
+18,"updateVessel"," ""A feature from the Vessel module""",3
+19,"accessApplication","Access to the application",2
+22,"accessApplication","Access to the application",1
+23,"createAllowedTransfer","Create Allowed Transfer",1
+24,"createFishingSeason","Create Fishing Season",1
+25,"createFishingStop","Create Fishing Stop",1
+26,"createMultiSpecies","Create Multi Species",1
+28,"createQuotaIndicator","Create Quota Indicator",1
+29,"createQuotaShared","Create Quota Shared",1
+30,"createRegulation","Create Regulation",1
+31,"createStock","Create Stock",1
+32,"createStockDefContact","Create Stock Definition Contact",1
+33,"createStockDefIndicator","Create Stock Definition Indicator",1
+34,"createStockDefinitions","Create Stock Definitions",1
+35,"createStockSeasonAssociation","Create Stock Season Association",1
+36,"createYearlyStockParent","Create Yearly Stock Parent",1
+37,"deleteAllowedTransfer","Delete Allowed Transfer",1
+38,"deleteFishingSeason","Delete Fishing Season",1
+39,"deleteFishingStop","Delete Fishing Stop",1
+40,"deleteMultiSpecies","Delete Multi Species",1
+41,"deleteQuota","Delete Quota",1
+42,"deleteQuotaIndicator","Delete Quota Indicator",1
+43,"deleteQuotasShared","Delete Quota Shared",1
+44,"deleteRegulation","Delete Regulation",1
+45,"deleteStock","Delete Stock",1
+46,"deleteStockDefContact","Delete Stock Definition Contact",1
+47,"deleteStockDefIndicator","Delete Stock Definition Indicator",1
+48,"deleteStockDefinitions","Delete Stock Definitions",1
+49,"deleteStockSeasonAssociation","Delete Stock Season Association",1
+50,"deleteYearlyStockParent","Delete Yearly Stock Parent",1
+51,"processQuotaExchange","Process Quota Exchange",1
+52,"processQuotaTransfer","Process Quota Transfer",1
+53,"reviseQuota","Revise Quota",1
+54,"updateAllowedTransfer","Update Allowed Transfer",1
+55,"updateFishingSeason","Update Fishing Season",1
+56,"updateFishingStop","Update Fishing Stop",1
+57,"updateQuota","Update Quota",1
+58,"updateQuotaExchangeEvent","Update Quota Exchange Event",1
+59,"updateQuotaIndicator","Update Quota Indicator",1
+60,"updateQuotaRevision","Update Quota Revision",1
+61,"updateQuotaShared","Update Quota Shared",1
+62,"updateQuotaTransferEvent","Update Quota Transfer Event",1
+63,"updateRegulation","Update Regulation",1
+64,"updateStock","Update Stock",1
+65,"updateStockDefContact","Update Stock Definition Contact",1
+66,"updateStockDefIndicator","Update Stock Definition Indicator",1
+67,"updateStockDefinitions","Update Stock Definitions",1
+68,"updateYearlyStockParent","Update Yearly Stock Parent",1
+133,"SHARE_REPORT_SCOPE","allows user to share reports within current user context/scope",4
+135,"SHARE_REPORT_PUBLIC","allows user to share reports globally",4
+137,"CREATE_REPORT","allows user to create report",4
+298,"MANAGE_SYSTEM_SPATIAL_CONFIGURATIONS","Allows you to view/update spatial configurations located under the Admin tab",12
+300,"MANAGE_USER_DEFINED_AREAS","Allows you to create, view, update and delete user defined areas.",12
+100009,"copyUserProfile","Copy roles, scopes and preferences from one user to another",100000
+100010,"viewRoles","View the application roles",100000
+100014,"viewScopes","View the application scopes",100000
+100006,"manageApplications","Manage (create, update, delete) the system applications",100000
+100011,"manageRoles","Manage (create, update, delete, enable, disable) the application roles",100000
+100015,"manageScopes","Manage (create, update, delete, enable, disable) the application scopes",100000
+101,"APP1_TEST_FEATURE","some test feature",10
+226,"vesselConfig","Vessel configuration",3
+228,"vesselHistory","Vessel history",3
+231,"viewVesselGroups","View vessel groups",3
+234,"manageVesselGroups","Managing vessel groups",3
+235,"viewMobileTerminals","Viewing mobile terminals",5
+242,"mobileTerminalPlugins","Accessing mobile terminal plugins",5
+244,"mobileTerminalConfig","Accessing mobile terminal configuration",5
+249,"viewExchange","Viewing exchange logs",6
+255,"viewPollingLogs","Viewing polling logs",5
+258,"manageProgramPolls","Managing program polls",5
+264,"viewPollableChannels","Viewing pollable channels",5
+267,"viewMovements","Viewing movements",7
+279,"manageManualMovements","Managing manual movements",7
+276,"viewManualMovements","Viewing manual movements",7
+286,"viewAudit","Viewing audit",9
+292,"viewVesselsAndMobileTerminals","Viewing both vessels and mobile terminals",2
+294,"manageMobileTerminals","Managing mobile terminals",2
+295,"manageVessels","Managing vessels",2
+297,"viewMobileTerminalPolls","Viewing mobile terminal poll",2
+201,"managePolls","Managing polls",2
+203,"mobileTerminalPlugins","Plugging in mobile terminal",2
+204,"manageExchangeSendingQueue","Managing the sending queues",6
+205,"manageExchangeTransmissionStatuses","Managing the transmission statuses",6
+206,"viewAlarmRules","Viewing alarm rules",8
+207,"manageAlarmRules","Manage alarm rules",8
+208,"viewAlarmsHoldingTable","Viewing alarms holding table",8
+209,"manageAlarmsHoldingTable","Manage alarms holding talbe",8
+210,"viewAlarmsOpenTickets","Viewing alarm open tickets",8
+211,"manageAlarmsOpenTickets","Manage alarm open tickets",8
+214,"viewConfiguration","View Configuration tab in admin",9
+215,"manageGlobalAlarmsRules","Manage GLOBAL alarm rules",8
