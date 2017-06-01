@@ -1,4 +1,5 @@
 *.settings/
+*.iml
 .svn/
 *target/
 *.project

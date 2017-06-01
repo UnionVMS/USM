@@ -1,7 +1,7 @@
-﻿"END_POINT_ID","NAME","DESCRIPTION","URI","PRIORITY","STATUS","ORGANISATION_ID","PERSON_ID"
-"0","FLUX.EEC","European Commission main FLUX node","http://main.flux.eu/","main","E","0","0"
-"1","FLUX.EEC","European Commission backup FLUX node","http://backup.flux.eu/","backup","D","0","0"
-"2","FLUX.FRA","Main FLUX node for France","http://main.flux.fr/","main","E","3","1"
-"3","FLUX.FRA","Backup FLUX node for France","http://backup.flux.fr/","backup","D","3","1"
-"4","FLUX.GRC","Main FLUX node for Greece","http://main.flux.gr/","main","E","4","2"
-"5","FLUX.GRC","Backup FLUX node for Greece","http://backup.flux.gr/","backup","D","4","2"
+"end_point_id";"name";"description";"uri";"status";"organisation_id"
+0;"FLUX.EEC";"European Commission main FLUX node";"http://main.flux.eu/";"E";0
+2;"FLUX.FRA";"Main FLUX node for France";"http://main.flux.fr/";"E";3
+4;"FLUX.GRC";"Main FLUX node for Greece";"http://main.flux.gr/";"E";4
+1;"FLUX.EEC_backup";"European Commission backup FLUX node";"http://backup.flux.eu/";"D";0
+3;"FLUX.FRA_backup";"Backup FLUX node for France";"http://backup.flux.fr/";"D";3
+5;"FLUX.GRC_backup";"Backup FLUX node for Greece";"http://backup.flux.gr/";"D";4
