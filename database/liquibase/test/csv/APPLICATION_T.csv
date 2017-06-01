@@ -1,5 +1,4 @@
 "application_id","name","description"
-100000,"USM","User Security Management Component"
 1,"Quota","Quota Management application"
 2,"Union-VMS","Union VMS application"
 10,"TEST_APP","Deployment descriptor of module TEST_APP."
