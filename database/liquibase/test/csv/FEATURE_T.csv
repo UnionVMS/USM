@@ -3,7 +3,6 @@
 100027,"PRINT_REPORT","Allows user to print reports",4
 100028,"EXPORT_VMS_REPORT_DATA","Allows user to export VMS data of a report",4
 27,"createQuota","Create Quota",1
-100000,"viewUsers","View the system users",100000
 100004,"manageOrganisations","Manage (create, update, delete) the system organisations and their end-points",100000
 100003,"viewOrganisations","View the system organisations and their end-points",100000
 100005,"viewApplications","View the system applications",100000
