@@ -14,9 +14,14 @@
             <column name="role_id" valueNumeric="30"/>
             <column name="scope_id" valueNumeric="1"/>
         </insert>
-    <rollback>
-      <sql><![CDATA[delete from user_context_t c where c.user_context_id=27;]]></sql>
-    </rollback>
+        
+		<loadData tableName="PERMISSION_T" file="/test/csv/PERMISSION_T_AFTER.csv"></loadData>
+        
+	    <rollback>
+	      <sql><![CDATA[delete from user_context_t c where c.user_context_id=27;]]></sql>
+	      <sql><![CDATA[delete from permission_t c where c.role_id=30 and c.feature_id > 100;]]></sql>      
+	    </rollback>
+    
   </changeSet>
 		  
  </databaseChangeLog>
