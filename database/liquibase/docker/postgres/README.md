@@ -41,6 +41,20 @@ Your app will now be able to access `POSTGRES_PORT_5432_TCP_ADDR` and `POSTGRES_
 
 # Maven Integration for USM
 
+## Pre-requisites
+- docker-machine installed and running
+- setting maven properties for docker.machine.ip and docker.certPath
+	for example add the following profile to you maven settings and activate it (adapt as needed)
+	 <profile>
+      <id>dockermachine</id>
+      <properties>
+        <docker.machine.ip>192.168.99.100</docker.machine.ip>
+        <!-- could be C:\\Users\\youruserhome\\.docker\\machine\\certs for older docker versions
+             use docker-machine env to check -->
+        <docker.certPath>C:\\Users\\kroger\\.docker\\machine\\machines\\default</docker.certPath>
+        </properties>
+    </profile>
+
 In this project we are NOT using the built-in functionality of the postgres
 image to look for an init script (although a sample is provided in the files
 folder) but rely on the setting of environment variables `POSTGRES_USER`
@@ -68,6 +82,8 @@ The docker-run profile will build the image and start the container. It does
 not stop the container and exposes the db on port 5432. You should now be able
 to connect to the db using the pgadmin tool pointing at your docker machine ip.
 You can also configure a datasource on a local server to point to this.
+verify the container is running:
+`docker ps`
 
 Once started you can perform a liquibase update without stopping the container
 by using: 
@@ -96,10 +112,16 @@ separate application server container to link to this container and use this db
 in place of the cygnus-test configured datasource. See the USM administration
 service.
 
+## Building the image manually
+CD into the docker/postgres directory and run
+`docker build -t postgres-usm .`
+
+## Running the image manually
+`docker run --name usm-pg-db -e POSTGRES_USER=usm2 -e POSTGRES_PASSWORD=password postgres-usm` 
+make sure to remove the container to start over:
+`docker rm usm-pg-db`
 
 To be completed:
-Building the docker image manually
-Running the docker image manually
 Starting a shell (for debugging docker) instead of postgres
 Logging docker image building and running
 

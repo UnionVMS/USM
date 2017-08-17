@@ -11,7 +11,9 @@ Pre-requisites:
       <id>dockermachine</id>
       <properties>
         <docker.machine.ip>192.168.99.100</docker.machine.ip>
-        <docker.certPath>C:\\Users\\youruserhome\\.docker\\machine\\certs</docker.certPath>
+        <!-- could be C:\\Users\\youruserhome\\.docker\\machine\\certs for older docker versions
+             use docker-machine env to check -->
+        <docker.certPath>C:\\Users\\kroger\\.docker\\machine\\machines\\default</docker.certPath>
         </properties>
     </profile>
 - create a docker profile in your settings to override the value of the wf.host and endpoint-url property
