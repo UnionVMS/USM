@@ -64,11 +64,20 @@ mvn clean process-test-resources -Pdocker-run,docker-linkdb
 
 Stopping this container:
 
-mvn clean -Pdocker-run,docker-testdb
+mvn clean -Pdocker-run,docker-linkdb
 
-NOTE: if you have previsouly started one of these two possible containers and
+To also link to a running activemq image add docker-linkamq profile
+First run such an image:
+docker run -p 8161:8161 --name activemq -d uvms/activemq
+or if you already have a running activemq container (maybe you used the docker compose file of union VMS) make sure to conect it to the default network
+docker network connect bridge activemq
+
+NOTE: if you have previously started one of these two possible containers and
 then try to start the other, you may get an error if you do not stop the
 running one first.
+
+To get the wildfly logs
+docker logs -f --tail 100 linkedwf
 
 Run the arquillian tests
 ------------------------
