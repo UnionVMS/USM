@@ -24,7 +24,7 @@
     
   </changeSet>
 
-  <changeSet id="set_scopes_active_to_the_in_the_future" author="james" context="test" runInTransaction="true" failOnError="true">
+  <changeSet id="set_scopes_active_to_in_the_future" author="james" context="test" runInTransaction="true" failOnError="true">
     <update tableName="scope_t">
 	  <column name="active_to" valueDate="2027-01-31 01:00:00.0"/>
     </update>    
