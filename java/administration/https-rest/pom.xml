@@ -15,6 +15,9 @@
       <deploy.phase>no-phase</deploy.phase>
       <clean.phase>no-phase</clean.phase>
       <skipITs>true</skipITs>
+      
+      <docker.dev.stop.phase>verify</docker.dev.stop.phase>
+      <docker.dev.prestop.phase>install</docker.dev.prestop.phase>        	
     </properties>
 
   <profiles>

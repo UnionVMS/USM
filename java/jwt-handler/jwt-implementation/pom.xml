@@ -10,6 +10,11 @@
   <packaging>jar</packaging>
   <name>JWT Handler</name>
 
+   <properties>
+       <docker.dev.start.phase>test-compile</docker.dev.start.phase>
+       <docker.dev.prestop.phase>validate</docker.dev.prestop.phase>                        
+   </properties>
+
   <dependencies>
   <dependency>
     <groupId>eu.europa.ec.mare.oss.usm</groupId>
