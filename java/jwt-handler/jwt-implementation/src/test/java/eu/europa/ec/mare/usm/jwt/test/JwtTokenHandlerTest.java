@@ -56,6 +56,7 @@ public class JwtTokenHandlerTest {
             .addClass(DefaultJwtTokenHandler.class)
             .addPackages(true,"io.jsonwebtoken")
             .addPackages(true,"com.fasterxml.jackson")
+            .addPackages(true,"eu.europa.ec.mare.usm.jwt.test")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     return jar;
   }

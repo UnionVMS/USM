@@ -21,6 +21,18 @@
       <artifactId>jjwt</artifactId>
       <version>0.4</version>
     </dependency>
+    <dependency>
+		<groupId>fish.focus.uvms.maven</groupId>
+		<artifactId>uvms-pom-arquillian-deps</artifactId>
+		<type>pom</type>
+		<scope>test</scope>
+		<exclusions>
+			<exclusion>
+				<groupId>sun.jdk</groupId>
+				<artifactId>jconsole</artifactId>
+			</exclusion>
+		</exclusions>
+    </dependency>    
   </dependencies>
   <build>
     <testResources>
