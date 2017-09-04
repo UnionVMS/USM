@@ -132,4 +132,18 @@
 		<url>https://github.com/UnionVMS/USM</url>
 		<tag>HEAD</tag>
 	</scm>
+	
+	<profiles>
+		<profile>
+			<id>wildfly-docker</id>
+		<properties>
+			 <wf.host>localhost</wf.host>
+			 <wf.mgtport>9990</wf.mgtport>
+			 <wf.https.port>28080</wf.https.port>
+			 <wf.http.port>28080</wf.http.port>			 
+			 <wf.adminUserName>admin</wf.adminUserName>
+			 <wf.adminPassword>admin</wf.adminPassword>
+		</properties>
+		</profile>
+	</profiles>	
 </project>
