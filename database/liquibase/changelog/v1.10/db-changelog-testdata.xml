@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  
+
+  <changeSet id="admin_all_context_for_vms_admin_com_user" author="james" context="test" runInTransaction="true" failOnError="true">
+
+        <insert tableName="user_context_t">
+            <column name="user_context_id" valueNumeric="27"/>
+            <column name="user_id" valueNumeric="13"/>
+            <column name="role_id" valueNumeric="30"/>
+            <column name="scope_id" valueNumeric="1"/>
+        </insert>
+        
+		<loadData tableName="PERMISSION_T" file="/test/csv/PERMISSION_T_AFTER.csv"></loadData>
+        
+	    <rollback>
+	      <sql><![CDATA[delete from user_context_t c where c.user_context_id=27;]]></sql>
+	      <sql><![CDATA[delete from permission_t c where c.role_id=30 and c.feature_id > 100;]]></sql>      
+	    </rollback>
+    
+  </changeSet>
+
+  <changeSet id="set_scopes_active_to_in_the_future" author="james" context="test" runInTransaction="true" failOnError="true">
+    <update tableName="scope_t">
+	  <column name="active_to" valueDate="2027-01-31 01:00:00.0"/>
+    </update>    
+  </changeSet>
+			  
+</databaseChangeLog>

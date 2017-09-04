@@ -73,5 +73,11 @@
   <changeSet author="emdouniat" id="tag-1.9">
     <tagDatabase tag="version_1.9"/>
   </changeSet>
+
+    <include file="changelog/v1.10/db-changelog-testdata.xml"/>
+  
+  <changeSet author="james" id="tag-1.10">
+    <tagDatabase tag="version_1.10"/>
+  </changeSet>
     
 </databaseChangeLog>
