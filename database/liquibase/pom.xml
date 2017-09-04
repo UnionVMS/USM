@@ -190,6 +190,18 @@
           </configuration>
           <executions>
             <execution>
+              <id>package-schema</id>
+              <phase>process-test-resources</phase>
+              <goals>
+                <goal>updateSQL</goal>
+              </goals>
+              <configuration>
+                <migrationSqlOutputFile>${project.build.directory}/usm-db-${project.version}.sql</migrationSqlOutputFile>
+                <outputFileEncoding>UTF-8</outputFileEncoding>
+                <logging>off</logging>
+              </configuration>
+            </execution>
+            <execution>
               <id>update-schema</id>
               <phase>${liquibase.update.phase}</phase>
               <goals>
@@ -258,6 +270,28 @@
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${project.build.directory}/usm-db-${project.version}.sql</file>
+                  <type>sql</type>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>

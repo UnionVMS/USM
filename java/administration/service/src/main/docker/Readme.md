@@ -1,13 +1,14 @@
+# Wildfly docker image
 The wildfly dockerfile allows preparing a wildfly server ready for arquillian
 tests and pointing to the cygnus-test postgres db or a 
 It includes a fakesmtp server that gets started at the beginning of the 
 standalone.sh script.
 
-Pre-requisites:
+## Pre-requisites:
 - docker-machine installed and running
 - setting maven properties for docker.machine.ip and docker.certPath
 	for example add the following profile to you maven settings and activate it (adapt as needed)
-	 <profile>
+    <profile>
       <id>dockermachine</id>
       <properties>
         <docker.machine.ip>192.168.99.100</docker.machine.ip>
@@ -27,8 +28,7 @@ Pre-requisites:
       </properties>
     </profile> 
 
-Maven integration
------------------
+## Maven integration
 
 The docker-maven-plugin by fabric8.io is used to configure an image under the
 name usm-pg-db that can get built and run using maven commands.
@@ -50,50 +50,53 @@ from running the tests, but it is also possible to everything done in one call.
 Starting the wildfly docker container with the USM2 datasource pointing to 
 cygnus-test db
 
-mvn clean process-test-resources -Pdocker-run,docker-testdb
+    mvn clean process-test-resources -Pdocker-run,docker-testdb
 
 Stopping this container:
 
-mvn clean -Pdocker-run,docker-testdb
+    mvn clean -Pdocker-run,docker-testdb
 
 
 Starting the wildfly docker container with the USM2 datasource pointing to a 
 postgres container started from the usm liquibase pproject
 
-mvn clean process-test-resources -Pdocker-run,docker-linkdb
+    mvn clean process-test-resources -Pdocker-run,docker-linkdb
 
 Stopping this container:
 
-mvn clean -Pdocker-run,docker-linkdb
+    mvn clean -Pdocker-run,docker-linkdb
 
 To also link to a running activemq image add docker-linkamq profile
 First run such an image:
-docker run -p 8161:8161 --name activemq -d uvms/activemq
+
+    docker run -p 8161:8161 --name activemq -d uvms/activemq
+
 or if you already have a running activemq container (maybe you used the docker compose file of union VMS) make sure to conect it to the default network
-docker network connect bridge activemq
+
+    docker network connect bridge activemq
 
 NOTE: if you have previously started one of these two possible containers and
 then try to start the other, you may get an error if you do not stop the
 running one first.
 
 To get the wildfly logs
-docker logs -f --tail 100 linkedwf
 
-Run the arquillian tests
-------------------------
+    docker logs -f --tail 100 linkedwf
+
+## Run the arquillian tests
 
 Having set up a wf-docker profile in your maven settings as described above you
 should be able to run the tests using
 
-mvn clean test -Pwildfly,wf-docker
+    mvn clean test -Pwildfly,wf-docker
 
 Or for running a single test
 
-mvn clean test -Pwildfly,wf-docker -Dtest=ApplicationServiceTest.java
+    mvn clean test -Pwildfly,wf-docker -Dtest=ApplicationServiceTest.java
 
 Combining it all:
 
-mvn clean test -Pwildfly,wf-docker,docker-run,docker-linkdb
+    mvn clean test -Pwildfly,wf-docker,docker-run,docker-linkdb
 
 This will build the image and run the arquillian tests. Note that the container
 will NOT be stopped at the end.
@@ -101,11 +104,18 @@ will NOT be stopped at the end.
 
 to build, run and test manually use the following steps:
 - cd to the docker/wildfly folder
-- build the image: $ docker build --rm --tag wildfly-uvms .
-- start the image: $ docker run -it --name wf8 -p 9990:9990 -p 8080:8080 -p 8787:8787 --rm wildfly-uvms --debug
+- build the image:
+
+    docker build --rm --tag wildfly-uvms .
+
+- start the image:
+
+    docker run -it --name wf8 -p 9990:9990 -p 8080:8080 -p 8787:8787 --rm wildfly-uvms --debug
+
 - add separate docker profile to your settings to override the wf.host property without activating the docker profile
   example 
-     <profile>
+
+    <profile>
       <id>docker-wf</id>
       <properties>
         <wf.host>${docker.machine.ip}</wf.host>
@@ -114,9 +124,12 @@ to build, run and test manually use the following steps:
     </profile>
     
 - run the verify phase optionally selecting a single test and maybe method
-  $ mvn clean verify -Pwildfly,docker-wf -Dtest=ManageUserServiceTest.java#testResetPasswordAndNotify
+
+    mvn clean verify -Pwildfly,docker-wf -Dtest=ManageUserServiceTest.java#testResetPasswordAndNotify
+
   or for IT tests in rest service
-  $ mvn clean verify -Pwildfly,dockerwf -Dit.test=OrganisationRestServiceIT
+
+    mvn clean verify -Pwildfly,dockerwf -Dit.test=OrganisationRestServiceIT
   
 Debugging tests from eclipse
 ----------------------------
@@ -129,7 +142,7 @@ set project, set host to the docker machine ip and port to wildfly debug port
 
 Debug an actual arquillian test
 	1. Select maven profiles on the project in eclipse (Ctrl+alt+P)
-	2. Create or update arduillian.launch_file to contain:
+	2. Create or update arquillian.launch_file to contain:
 widlfly-remote
 	3. Add a break point in the sources
 	4. Start the Remote Java Application configuration created previously
