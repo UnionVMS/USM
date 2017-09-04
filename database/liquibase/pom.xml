@@ -88,7 +88,7 @@
       </activation>
       <properties>
         <db.driver>org.postgresql.Driver</db.driver>
-        <db.url>jdbc:postgresql://cygnus-test.private:5432/usm2</db.url>
+        <db.url>jdbc:postgresql://cygnus-test:5432/usm2</db.url>
         <db.user>usm2</db.user>
         <db.passwd>password</db.passwd>
       </properties>
@@ -270,7 +270,7 @@
       </plugins>
     </pluginManagement>
     <plugins>
-      <plugin>
+        <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>3.0.0</version>
