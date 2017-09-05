@@ -29,5 +29,11 @@
 	  <column name="active_to" valueDate="2027-01-31 01:00:00.0"/>
     </update>    
   </changeSet>
+
+  <changeSet id="update_vms_admin_com_all_features" author="james" context="test" runInTransaction="true" failOnError="true">
+    	<loadData tableName="APPLICATION_T" file="/test/csv/APPLICATION_T_AFTER.csv"></loadData>
+    	<loadData tableName="FEATURE_T" file="/test/csv/FEATURE_T_AFTER.csv"></loadData>
+		<loadData tableName="PERMISSION_T" file="/test/csv/PERMISSION_T_AFTER_2.csv"></loadData>    
+  </changeSet>
 			  
 </databaseChangeLog>
