@@ -23,5 +23,3 @@ FEATURE_ID,NAME,DESCRIPTION,APPLICATION_ID
 100028,FISHING_TRIP_SUMMARY,allows user to see Fishing Trip Summary,100001
 100027,LIST_ACTIVITY_REPORTS,allows user to see Activity Reports,100001
 100026,ACTIVITY_ALLOWED,Enables Activity module to become USM aware,100001
-300,MANAGE_USER_DEFINED_AREAS,Allows you to create/view/update and delete user defined areas,12
-298,MANAGE_SYSTEM_SPATIAL_CONFIGURATIONS,Allows you to view/update spatial configurations located under the Admin tab,12
