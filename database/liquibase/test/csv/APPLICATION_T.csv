@@ -9,6 +9,5 @@ APPLICATION_ID,NAME,DESCRIPTION
 8,Rules,Union VMS Rules Module
 9,Audit,Union VMS Audit Module
 12,Spatial,VMS Spatial Module
-100000,USM,User Security Management Component
 100001,Activity,VMS Activity Module
 100002,MDR Cache,VMS MdrCache Module
