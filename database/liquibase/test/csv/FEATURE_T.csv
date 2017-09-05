@@ -77,17 +77,5 @@ FEATURE_ID,NAME,DESCRIPTION,APPLICATION_ID
 100028,FISHING_TRIP_SUMMARY,allows user to see Fishing Trip Summary,100001
 100027,LIST_ACTIVITY_REPORTS,allows user to see Activity Reports,100001
 100026,ACTIVITY_ALLOWED,Enables Activity module to become USM aware,100001
-100018,configurePolicies,Configure password/account/etc/policies,100000
-100015,manageScopes,Manage (create/update/delete/enable/disable) the application scopes,100000
-100014,viewScopes,View the application scopes,100000
-100011,manageRoles,Manage (create/update/delete/enable/disable) the application roles,100000
-100010,viewRoles,View the application roles,100000
-100009,copyUserProfile,Copy roles/scopes/preferences from one user to another,100000
-100006,manageApplications,Manage (create/update/delete) the system applications,100000
-100005,viewApplications,View the system applications,100000
-100004,manageOrganisations,Manage (create/update/delete) the system organisations and their end-points,100000
-100003,viewOrganisations,View the system organisations and their end-points,100000
-100001,manageUsers,Manage (create/update/enable/disable) the system users,100000
-100000,viewUsers,View the system users,100000
 300,MANAGE_USER_DEFINED_AREAS,Allows you to create/view/update and delete user defined areas,12
 298,MANAGE_SYSTEM_SPATIAL_CONFIGURATIONS,Allows you to view/update spatial configurations located under the Admin tab,12
