@@ -3,6 +3,3 @@ APPLICATION_ID,NAME,DESCRIPTION
 2,Union-VMS,Union VMS application
 3,Vessel,Union VMS Vessel Module
 4,Reporting,Union VMS Reporting Module
-12,Spatial,VMS Spatial Module
-100001,Activity,VMS Activity Module
-100002,MDR Cache,VMS MdrCache Module
