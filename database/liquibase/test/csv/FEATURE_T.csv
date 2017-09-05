@@ -1,8 +1,8 @@
 FEATURE_ID,NAME,DESCRIPTION,APPLICATION_ID
-15,getVesselList," ""A feature from the Vessel module""",3
-16,getVesselById," ""A feature from the Vessel module""",3
-17,createVessel," ""A feature from the Vessel module""",3
-18,updateVessel," ""A feature from the Vessel module""",3
+15,getVesselList," ""A feature from the Vessel module"",3
+16,getVesselById," ""A feature from the Vessel module"",3
+17,createVessel," ""A feature from the Vessel module"",3
+18,updateVessel," ""A feature from the Vessel module"",3
 19,accessApplication,Access to the application,2
 20,monitorVessels,Monitor Vessels,4
 21,requestVesselPosition,Request the position of a vessel,4
@@ -53,3 +53,41 @@ FEATURE_ID,NAME,DESCRIPTION,APPLICATION_ID
 66,updateStockDefIndicator,Update Stock Definition Indicator,1
 67,updateStockDefinitions,Update Stock Definitions,1
 68,updateYearlyStockParent,Update Yearly Stock Parent,1
+100049,MDR_LUCENE_REINDEX,Allows the user to reindex Lucene Indexes,100002
+100048,MDR_SEARCH_CODE_LIST_ITEMS,Allows the user to use the Lucene based MDR search API,100002
+100047,MANAGE_ADMIN_CONFIGURATIONS,Allows you to view/update activity configurations located under the Admin tab,100002
+100046,CODE_LISTS_ENABLE_DISABLE_SCHEDULED_UPDATE,allows the user to enable/disable the code lists scheduled update,100002
+100045,UPDATE_MDR_CODE_LISTS,allows the user to update all or selected list of MDR code lists,100002
+100044,LIST_MDR_CODE_LISTS,allows the user to view all MDR code lists,100002
+100043,CONFIGURE_MDR_SCHEDULER,allows the user to view and modify the scheduler configuration,100002
+100042,EXPORT_VMS_REPORT_DATA,Allows user to export VMS data of a report,4
+100041,PRINT_REPORT,Allows user to print reports,4
+100040,MANAGE_ALL_REPORTS,allows user to delete/edit and share/unshare (private/scope/globally) reports,4
+100039,MANAGE_REFERENCE_DATA,Allows you to manage reference data/system areas,12
+100038,CREATE_USER_AREA_DATASET,Allows you to set create a USM dataset,12
+100037,SHARE_USER_DEFINED_AREAS,Allows you to share your user defined areas within the available to your profile, scopes,12
+100036,VIEW_AREA_MANAGEMENT_UI,Allows you to have access to the user interface of area management,12
+100035,ALLOW_USER_SPATIAL_REPORT_CONFIGURATIONS,Allows you to set custom spatial configurations at the report level,12
+100034,ALLOW_USER_SPATIAL_CONFIGURATIONS,Allows you to override default admin spatial configurations,12
+100033,MANAGE_ANY_USER_AREA,Allows you to to list/update/delete any user area no matter who has created it,12
+100032,EXPORT_ACTIVITY_DATA,Allows you to export activity data in several formats,100001
+100031,SHOW_DELETED_FA_REPORTS,Allows the user to make requests that show the deletes reports,100001
+100030,MANAGE_ADMIN_CONFIGURATIONS,Allows you to view/update activity configurations located under the Admin tab,100001
+100029,VIEW_FA_REPORT_DETAILS,allows user to see fishing activity reports details,100001
+100028,FISHING_TRIP_SUMMARY,allows user to see Fishing Trip Summary,100001
+100027,LIST_ACTIVITY_REPORTS,allows user to see Activity Reports,100001
+100026,ACTIVITY_ALLOWED,Enables Activity module to become USM aware,100001
+100018,configurePolicies,Configure password/account/etc/policies,100000
+100015,manageScopes,Manage (create, update, delete, enable, disable) the application scopes,100000
+100014,viewScopes,View the application scopes,100000
+100011,manageRoles,Manage (create/update/delete/enable/disable) the application roles,100000
+100010,viewRoles,View the application roles,100000
+100009,copyUserProfile,Copy roles, scopes and preferences from one user to another,100000
+100006,manageApplications,Manage (create/update/delete) the system applications,100000
+100005,viewApplications,View the system applications,100000
+100004,manageOrganisations,Manage (create/update/delete) the system organisations and their end-points,100000
+100003,viewOrganisations,View the system organisations and their end-points,100000
+100001,manageUsers,Manage (create/update/enable/disable) the system users,100000
+100000,viewUsers,View the system users,100000
+300,MANAGE_USER_DEFINED_AREAS,Allows you to create/view/update and delete user defined areas,12
+298,MANAGE_SYSTEM_SPATIAL_CONFIGURATIONS,Allows you to view/update spatial configurations located under the Admin tab,12
