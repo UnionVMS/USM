@@ -65,7 +65,7 @@ FEATURE_ID,NAME,DESCRIPTION,APPLICATION_ID
 100040,MANAGE_ALL_REPORTS,allows user to delete/edit and share/unshare (private/scope/globally) reports,4
 100039,MANAGE_REFERENCE_DATA,Allows you to manage reference data/system areas,12
 100038,CREATE_USER_AREA_DATASET,Allows you to set create a USM dataset,12
-100037,SHARE_USER_DEFINED_AREAS,Allows you to share your user defined areas within the available to your profile, scopes,12
+100037,SHARE_USER_DEFINED_AREAS,Allows you to share your user defined areas within the available to your profile scopes,12
 100036,VIEW_AREA_MANAGEMENT_UI,Allows you to have access to the user interface of area management,12
 100035,ALLOW_USER_SPATIAL_REPORT_CONFIGURATIONS,Allows you to set custom spatial configurations at the report level,12
 100034,ALLOW_USER_SPATIAL_CONFIGURATIONS,Allows you to override default admin spatial configurations,12
@@ -78,11 +78,11 @@ FEATURE_ID,NAME,DESCRIPTION,APPLICATION_ID
 100027,LIST_ACTIVITY_REPORTS,allows user to see Activity Reports,100001
 100026,ACTIVITY_ALLOWED,Enables Activity module to become USM aware,100001
 100018,configurePolicies,Configure password/account/etc/policies,100000
-100015,manageScopes,Manage (create, update, delete, enable, disable) the application scopes,100000
+100015,manageScopes,Manage (create/update/delete/enable/disable) the application scopes,100000
 100014,viewScopes,View the application scopes,100000
 100011,manageRoles,Manage (create/update/delete/enable/disable) the application roles,100000
 100010,viewRoles,View the application roles,100000
-100009,copyUserProfile,Copy roles, scopes and preferences from one user to another,100000
+100009,copyUserProfile,Copy roles/scopes/preferences from one user to another,100000
 100006,manageApplications,Manage (create/update/delete) the system applications,100000
 100005,viewApplications,View the system applications,100000
 100004,manageOrganisations,Manage (create/update/delete) the system organisations and their end-points,100000
