@@ -1,8 +1,8 @@
 FEATURE_ID,NAME,DESCRIPTION,APPLICATION_ID
-15,getVesselList," ""A feature from the Vessel module"",3
-16,getVesselById," ""A feature from the Vessel module"",3
-17,createVessel," ""A feature from the Vessel module"",3
-18,updateVessel," ""A feature from the Vessel module"",3
+15,getVesselList," ""A feature from the Vessel module""",3
+16,getVesselById," ""A feature from the Vessel module""",3
+17,createVessel," ""A feature from the Vessel module""",3
+18,updateVessel," ""A feature from the Vessel module""",3
 19,accessApplication,Access to the application,2
 20,monitorVessels,Monitor Vessels,4
 21,requestVesselPosition,Request the position of a vessel,4
