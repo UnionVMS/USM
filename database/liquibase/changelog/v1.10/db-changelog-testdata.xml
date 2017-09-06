@@ -4,7 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-  
+
 
   <changeSet id="admin_all_context_for_vms_admin_com_user" author="james" context="test" runInTransaction="true" failOnError="true">
 
@@ -14,30 +14,31 @@
             <column name="role_id" valueNumeric="30"/>
             <column name="scope_id" valueNumeric="1"/>
         </insert>
-        
+
 		<loadData tableName="PERMISSION_T" file="/test/csv/PERMISSION_T_AFTER.csv"></loadData>
-        
+
 	    <rollback>
 	      <sql><![CDATA[delete from user_context_t c where c.user_context_id=27;]]></sql>
-	      <sql><![CDATA[delete from permission_t c where c.role_id=30 and c.feature_id > 100;]]></sql>      
+	      <sql><![CDATA[delete from permission_t c where c.role_id=30 and c.feature_id > 100;]]></sql>
 	    </rollback>
-    
+
   </changeSet>
 
   <changeSet id="set_scopes_active_to_in_the_future" author="james" context="test" runInTransaction="true" failOnError="true">
     <update tableName="scope_t">
 	  <column name="active_to" valueDate="2027-01-31 01:00:00.0"/>
-    </update>    
+    </update>
   </changeSet>
 
   <changeSet id="update_vms_admin_com_all_features" author="james" context="test" runInTransaction="true" failOnError="true">
     	<loadData tableName="APPLICATION_T" file="/test/csv/APPLICATION_T_AFTER.csv"></loadData>
     	<loadData tableName="FEATURE_T" file="/test/csv/FEATURE_T_AFTER.csv"></loadData>
-		<loadData tableName="PERMISSION_T" file="/test/csv/PERMISSION_T_AFTER_2.csv"></loadData>    
+		<loadData tableName="PERMISSION_T" file="/test/csv/PERMISSION_T_AFTER_2.csv"></loadData>
   </changeSet>
 
   <changeSet id="add_dataset_to_all_reports_scope" author="james" context="test" runInTransaction="true" failOnError="true">
+    	<loadData tableName="DATASET_T" file="/test/csv/DATASET_T_AFTER.csv"></loadData>
     	<loadData tableName="SCOPE_DATASET_T" file="/test/csv/SCOPE_DATASET_T_AFTER.csv"></loadData>
-  </changeSet>			  
-			  
+  </changeSet>
+
 </databaseChangeLog>
