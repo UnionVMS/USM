@@ -15,7 +15,7 @@
 	<packaging>pom</packaging>
 	
 	<properties>
-		<docker.dev.version>3.8.0</docker.dev.version>
+		<docker.dev.version>3.9.0</docker.dev.version>
 	</properties>
 
 	<dependencies>
