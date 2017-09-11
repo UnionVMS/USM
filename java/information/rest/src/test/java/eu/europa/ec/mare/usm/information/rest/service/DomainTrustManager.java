@@ -1,7 +1,6 @@
 package eu.europa.ec.mare.usm.information.rest.service;
 
 import java.security.GeneralSecurityException;
-import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -15,10 +14,15 @@ public class DomainTrustManager {
 	public static SSLContext sc;
 	
 	static {
+		 HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier(){ 
+             public boolean verify(String hostname, SSLSession session) { 
+                     return true; 
+             }}); 
+		 
 		TrustManager[] trustAllCerts = new TrustManager[] { 
 			    new X509TrustManager() {     
 			        public java.security.cert.X509Certificate[] getAcceptedIssuers() { 
-			            return new X509Certificate[0];
+			            return null;
 			        } 
 			        public void checkClientTrusted( 
 			            java.security.cert.X509Certificate[] certs, String authType) {
@@ -31,12 +35,6 @@ public class DomainTrustManager {
 			try {
 			    sc = SSLContext.getInstance("TLS"); 
 			    sc.init(null, trustAllCerts, new java.security.SecureRandom());
-			    HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-						@Override
-						public boolean verify(String hostname, SSLSession session) {
-							return true;
-						}
-					});
 			    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 			} catch (GeneralSecurityException e) {
 		} 
