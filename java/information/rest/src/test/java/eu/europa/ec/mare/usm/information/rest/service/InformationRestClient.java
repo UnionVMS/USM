@@ -20,6 +20,8 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.client.urlconnection.HTTPSProperties;
+
 import eu.europa.ec.mare.usm.information.domain.ContactDetails;
 import eu.europa.ec.mare.usm.information.domain.Organisation;
 import eu.europa.ec.mare.usm.information.domain.UserContext;
@@ -28,6 +30,9 @@ import eu.europa.ec.mare.usm.information.service.InformationService;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 import javax.ws.rs.core.MediaType;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
@@ -47,6 +52,17 @@ public class InformationRestClient  {
   public InformationRestClient(String uri) 
   {
     ClientConfig config = new DefaultClientConfig();
+	try {
+		config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
+				new HTTPSProperties(new HostnameVerifier() {
+					@Override
+					public boolean verify(String hostname, SSLSession session) {
+						return true;
+					}
+				}, DomainTrustManager.getSslContext()));
+	} catch (Exception e) {
+	}
+
     config.getClasses().add(JacksonJsonProvider.class);
     client = Client.create(config);
     webResource = client.resource(uri);
