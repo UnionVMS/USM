@@ -41,4 +41,10 @@
     	<loadData tableName="SCOPE_DATASET_T" file="/test/csv/SCOPE_DATASET_T_AFTER.csv"></loadData>
   </changeSet>
 
+  <changeSet id="update_sq_for_imported_dataset" author="james" context="test" runInTransaction="true" failOnError="true"> 	
+    	<alterSequence sequenceName="sq_application" incrementBy="1" minValue="300000"/>
+    	<alterSequence sequenceName="sq_feature" incrementBy="1" minValue="300000"/>	
+    	<alterSequence sequenceName="sq_dataset" incrementBy="1" minValue="300000"/>    	
+  </changeSet>
+
 </databaseChangeLog>
