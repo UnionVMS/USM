@@ -41,10 +41,14 @@
     	<loadData tableName="SCOPE_DATASET_T" file="/test/csv/SCOPE_DATASET_T_AFTER.csv"></loadData>
   </changeSet>
 
-  <changeSet id="update_sq_for_imported_dataset" author="james" context="test" runInTransaction="true" failOnError="true"> 	
-    	<alterSequence sequenceName="sq_application" incrementBy="1" minValue="300000"/>
-    	<alterSequence sequenceName="sq_feature" incrementBy="1" minValue="300000"/>	
-    	<alterSequence sequenceName="sq_dataset" incrementBy="1" minValue="300000"/>    	
+  <changeSet id="update_sq_for_imported_dataset" author="james" context="test" runInTransaction="true" failOnError="true"> 	   	
+    	<dropSequence sequenceName="sq_application"/>
+    	<dropSequence sequenceName="sq_feature"/>
+    	<dropSequence sequenceName="sq_dataset"/>
+    	
+    	<createSequence sequenceName="sq_application" startValue="300000" incrementBy="1" minValue="1" /> 
+    	<createSequence sequenceName="sq_feature" startValue="300000" incrementBy="1" minValue="1" /> 
+    	<createSequence sequenceName="sq_dataset" startValue="300000" incrementBy="1" minValue="1" />     	
   </changeSet>
 
 </databaseChangeLog>
