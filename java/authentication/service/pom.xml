@@ -57,9 +57,9 @@
       </activation>
       <properties>
         <ldap.domain>example.com</ldap.domain>
-        <ldap.host>ldaps\://svm-midway.private\:10636/</ldap.host>
+        <ldap.host>ldaps\://openldap\:389/</ldap.host>
         <ldap.root>ou\=users;ou\=system</ldap.root>
-        <ldap.techdn>uid\=admin;ou\=system</ldap.techdn>
+        <ldap.techdn>uid\=Manager,dc\=focus,dc\=fish,dc\=org</ldap.techdn>
         <ldap.techpass>secret</ldap.techpass>
         <ldap.filter>(&amp;(objectClass\=person)(uid\={0}))</ldap.filter>
         <ldap.attrs>sn,givenName,mail</ldap.attrs>
