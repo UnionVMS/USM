@@ -15,8 +15,8 @@
   <modules>
     <module>model</module>
     <module>service</module>
-    <module>rest</module>
     <module>http-rest</module>
+    <module>https-rest</module>
   </modules>
   <dependencyManagement>
     <dependencies>

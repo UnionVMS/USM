@@ -34,11 +34,11 @@
     <profile>
       <id>wildfly</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
         <log.dir>${jboss.server.log.dir}/usm</log.dir>
-        <endpoint-url>https://${wf.host}:${wf.https.port}/${webroot}/${restprefix}/</endpoint-url>
+        <endpoint-url>http://${wf.host}:${wf.port}/${webroot}/${restprefix}/</endpoint-url>
       </properties>
       <build>
         <plugins>
@@ -53,16 +53,6 @@
             </configuration>
             <executions>
               <execution>
-                <id>deploy-app</id>
-                <phase>${deploy.phase}</phase>
-                <goals>
-                  <goal>deploy</goal>
-                </goals>
-                <configuration>
-                  <filename>${project.artifactId}.war</filename>
-                </configuration>
-              </execution>
-              <execution>
                 <phase>${clean.phase}</phase>
                 <goals>
                   <goal>undeploy</goal>
@@ -71,6 +61,16 @@
                   <matchPattern>${project.artifactId}.*</matchPattern>
                   <matchPatternStrategy>all</matchPatternStrategy>
                   <ignoreMissingDeployment>true</ignoreMissingDeployment>
+                </configuration>
+              </execution>
+              <execution>
+                <id>deploy-app</id>
+                <phase>${deploy.phase}</phase>
+                <goals>
+                  <goal>deploy</goal>
+                </goals>
+                <configuration>
+                  <filename>${project.artifactId}.war</filename>
                 </configuration>
               </execution>
             </executions>

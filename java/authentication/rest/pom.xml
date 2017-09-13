@@ -6,12 +6,14 @@
     <artifactId>Authentication-Module</artifactId>
     <version>2.2.0-SNAPSHOT</version>
   </parent>
-  <artifactId>Authentication-Rest-Service</artifactId>
+  <artifactId>Authentication-http-Rest-Service</artifactId>
   <packaging>war</packaging>
 
   <properties>
     <webroot>usm-authentication</webroot>
     <restprefix>rest</restprefix>
+    <!-- to prevent M2e overriding the web-context in weblogic.xml -->
+    <m2eclipse.wtp.contextRoot>${webroot}</m2eclipse.wtp.contextRoot>
     <deploy.phase>pre-integration-test</deploy.phase>
     <clean.phase>pre-integration-test</clean.phase>
     <skipITs>false</skipITs>
@@ -19,7 +21,7 @@
 
   <profiles>
     <profile>
-      <id>http</id>
+      <id>https</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
@@ -32,11 +34,11 @@
     <profile>
       <id>wildfly</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
         <log.dir>${jboss.server.log.dir}/usm</log.dir>
-        <endpoint-url>https://${wf.host}:${wf.https.port}/${webroot}/${restprefix}/</endpoint-url>
+        <endpoint-url>http://${wf.host}:${wf.port}/${webroot}/${restprefix}/</endpoint-url>
       </properties>
       <build>
         <plugins>
