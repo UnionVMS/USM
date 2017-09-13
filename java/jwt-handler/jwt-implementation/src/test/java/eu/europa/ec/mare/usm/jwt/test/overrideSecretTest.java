@@ -46,13 +46,15 @@ public class overrideSecretTest {
   private static final Logger LOGGER = LoggerFactory.getLogger(overrideSecretTest.class);
   private static final String USER_NAME = "usm_user";
   private static final String RANDOM_SIG_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2MTA3NzUxMSwiZXhwIjoxNDYxMDc5MzExLCJ1c2VyTmFtZSI6InVzbV91c2VyIn0.QIn18uc09ajddT6ydLqMPO-P3IdmEa9L8e4s8Zck_YQ";
-  private static final String USM_SECRET_SIG_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2MTA3ODI5MCwiZXhwIjoyNDYxMDgwMDkwLCJ1c2VyTmFtZSI6InNvbWVmYWtldXNlciJ9.MhicJp3Oao35SSlxC69YsVBq-Svuo2nD8ol89iOxAqY";
+  private static final String USM_SECRET_SIG_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2MTA3ODI5MCwiZXhwIjoyNDYxMDgwMDkwLCJ1c2VyTmFtZSI6InNvbWVmYWtldXNlciJ9.K0ZZKjWp7EkJq6VlOrlzV6PO4wQe1orZmuY3pwYn7ho";
+  private static final String SIMPLE_SECRET_SIG_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2MTA3ODI5MCwiZXhwIjoyNDYxMDgwMDkwLCJ1c2VyTmFtZSI6InNvbWV1c2VyIn0.UcUfHLrCIDb0tVzZm7yNRukgRIl11nseX_Hqtp87oEI";
   
 
   @Deployment
   public static JavaArchive createDeployment() 
   {
     JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "ArquillianTest.jar")
+	    // We are taking the jwtsecret.properties file and add it under the expected name: jwt.properties
             .addAsResource("jwtsecret.properties","jwt.properties")
             .addClass(JwtTokenHandler.class)
             .addClass(DefaultJwtTokenHandler.class)
@@ -100,6 +102,19 @@ public class overrideSecretTest {
 	  // Verify
 	  assertEquals("somefakeuser", parsed);
 	}
+	
+  @Test
+  public void testkeyMismatchParseToken() {
+    
+
+    String parsed = testSubject.parseToken(SIMPLE_SECRET_SIG_TOKEN);
+    
+    // Verify
+    assertThat(parsed, is(not("someuser")));
+    assertEquals(null, parsed);
+    
+  }
+  
 	@Test
 	public void testtamperedParseToken() {
 	  

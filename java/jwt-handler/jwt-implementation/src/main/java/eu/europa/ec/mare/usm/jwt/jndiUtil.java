@@ -41,9 +41,22 @@ public class jndiUtil {
         // ignore close error
       }
      
-
     } catch (Exception e) {
-      e.printStackTrace();
+       //try to get details and cause details
+       LOGGER.warn("Error Binding "+ Value +" to "+JNDIName);
+       LOGGER.warn(e.getMessage());
+       if(e.getCause() != null){
+	   LOGGER.debug(e.getCause().getMessage());
+	   if(e.getCause().getCause().getClass().getName().equals("org.jboss.msc.service.DuplicateServiceException")){
+	       LOGGER.error("Your jboss JNDI context already has a key bound. Your may have a secret key mismatch. Enable Trace for additional details (like the actual registered key)");
+	       try {
+		   LOGGER.trace("You tried binding " + Value + "but the currently registered key is "+lookup(JNDIName));}
+	       catch (Exception ex) {
+		// TODO: handle exception
+	    }
+	   } 
+	   
+       }
     }
 
   }
@@ -110,8 +123,7 @@ public class jndiUtil {
   }
 
   private static void bindParam(InitialContext ic, String name, Object value) {
-    System.out
-        .println("Creating JNDI entry: " + name + " " + String.valueOf(value));
+    LOGGER.debug("Binding JNDI entry: " + name + " with value " + String.valueOf(value));
     try {
       Queue<String> n = split(name);
       Context nc = ic;
@@ -120,6 +132,7 @@ public class jndiUtil {
       }
       bind(value, n.remove(), nc);
     } catch (NamingException e) {
+	LOGGER.trace("NamingException while binding "+ value +" to "+name, e);
       throw new RuntimeException(e);
     }
   }
