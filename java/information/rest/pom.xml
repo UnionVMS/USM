@@ -4,22 +4,24 @@
   <parent>
     <groupId>eu.europa.ec.mare.oss.usm</groupId>
     <artifactId>Information-Module</artifactId>
-    <version>2.0.0</version>
+    <version>2.2.0-SNAPSHOT</version>
   </parent>
-  <artifactId>Information-Rest-Service</artifactId>
+  <artifactId>Information-http-Rest-Service</artifactId>
   <packaging>war</packaging>
 
   <properties>
     <webroot>usm-information</webroot>
     <restprefix>rest</restprefix>
+    <!-- to prevent M2e overriding the web-context in weblogic.xml -->
+    <m2eclipse.wtp.contextRoot>${webroot}</m2eclipse.wtp.contextRoot>
     <deploy.phase>pre-integration-test</deploy.phase>
-    <clean.phase>clean</clean.phase>
+    <clean.phase>pre-integration-test</clean.phase>
     <skipITs>false</skipITs>
   </properties>
 
   <profiles>
     <profile>
-      <id>http</id>
+      <id>https</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
