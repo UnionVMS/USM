@@ -1,16 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
-  <parent>
-  	<groupId>eu.europa.ec.mare.oss.usm</groupId>
-	<artifactId>USM</artifactId>
-	<version>2.0.1-SNAPSHOT</version>
-	<relativePath>../../pom.xml</relativePath>  	
-  </parent>	
-
   <groupId>eu.europa.ec.mare.oss.usm</groupId>
   <artifactId>liquibase</artifactId>
-  <version>2.0.1-SNAPSHOT</version>
+  <version>2.2.0-SNAPSHOT</version>
   <name>liquibase</name>
   <packaging>jar</packaging>
   <properties>
@@ -96,7 +88,7 @@
       </activation>
       <properties>
         <db.driver>org.postgresql.Driver</db.driver>
-        <db.url>jdbc:postgresql://cygnus-test.private:5432/usm2</db.url>
+        <db.url>jdbc:postgresql://cygnus-test:5432/usm2</db.url>
         <db.user>usm2</db.user>
         <db.passwd>password</db.passwd>
       </properties>
@@ -108,9 +100,9 @@
       </activation>
       <properties>
         <db.driver>org.postgresql.Driver</db.driver>
-        <db.url>jdbc:postgresql://${docker.machine.ip}:5432/usm2</db.url>
-        <db.user>usm2</db.user>
-        <db.passwd>password</db.passwd>
+        <db.url>jdbc:postgresql://${docker.machine.ip}:5432/db71u</db.url>
+        <db.user>usm</db.user>
+        <db.passwd>usm</db.passwd>
       </properties>
     </profile>
     <profile>
@@ -186,7 +178,7 @@
         <plugin>
           <groupId>org.liquibase</groupId>
           <artifactId>liquibase-maven-plugin</artifactId>
-          <version>3.3.2</version>
+          <version>3.5.3</version>
           <configuration>
             <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
             <changeLogFile>changelog/db-changelog-master.xml</changeLogFile>
@@ -197,6 +189,18 @@
             <contexts>${liquibase.contexts}</contexts>
           </configuration>
           <executions>
+            <execution>
+              <id>package-schema</id>
+              <phase>process-test-resources</phase>
+              <goals>
+                <goal>updateSQL</goal>
+              </goals>
+              <configuration>
+                <migrationSqlOutputFile>${project.build.directory}/usm-db-${project.version}.sql</migrationSqlOutputFile>
+                <outputFileEncoding>UTF-8</outputFileEncoding>
+                <logging>off</logging>
+              </configuration>
+            </execution>
             <execution>
               <id>update-schema</id>
               <phase>${liquibase.update.phase}</phase>
@@ -233,7 +237,7 @@
                       <ports>
                         <port>5432:5432</port>
                       </ports>
-                      <hostname>cygnus-test.private</hostname>
+                      <hostname>cygnus-test</hostname>
                       <namingStrategy>alias</namingStrategy>
                       <wait>
                       <tcp>
@@ -266,9 +270,32 @@
       </plugins>
     </pluginManagement>
     <plugins>
+        <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${project.build.directory}/usm-db-${project.version}.sql</file>
+                  <type>sql</type>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.8</version>
         <configuration>
           <deployAtEnd>true</deployAtEnd>
         </configuration>

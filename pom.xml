@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 	
 	<properties>
-		<docker.dev.version>3.10.0-SNAPSHOT</docker.dev.version>
+		<docker.dev.version>3.10.0.alpine-SNAPSHOT</docker.dev.version>
 	</properties>
 
 	<dependencyManagement>

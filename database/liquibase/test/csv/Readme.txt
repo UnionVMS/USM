@@ -10,4 +10,5 @@ the followin regx helps find the 4 audit fields
 ,"[^"]*?","[^"]*?","[^"]*?","[^"]*?"$
 
 notes:
+http://forum.liquibase.org/topic/loading-data-with-dates-in-oracle-throws-databaseexception
 http://stackoverflow.com/questions/16890723/list-all-liquibase-sql-types/16894478#16894478
