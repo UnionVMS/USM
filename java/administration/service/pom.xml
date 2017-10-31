@@ -2,9 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>eu.europa.ec.mare.oss.usm</groupId>
+  	<groupId>eu.europa.ec.mare.oss.usm</groupId>
     <artifactId>Administration-Module</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.2.0-SNAPSHOT</version>
   </parent>
   <artifactId>Administration-Service</artifactId>
   <packaging>jar</packaging>
@@ -39,6 +39,15 @@
     </dependency>
   </dependencies>
   <profiles>
+    <profile>
+        <id>disable-java8-doclint</id>
+        <activation>
+            <jdk>[1.8,)</jdk>
+        </activation>
+        <properties>
+            <additionalparam>-Xdoclint:none</additionalparam>
+        </properties>
+    </profile>
 
   </profiles>
   <build>
@@ -55,8 +64,11 @@
     <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.10</version>
+        <version>3.0.2</version>
         <executions>
+        <!-- if eclipse raises Artifact has not been packaged yet... copy should be executed after packaging: see MDEP-187
+         compile in command line first then update maven project in eclipse
+         -->
           <execution>
             <id>prepare-arquillian-dependencies</id>
             <phase>generate-test-resources</phase>
@@ -192,5 +204,38 @@
             </plugin>
       </plugins>
     </pluginManagement> -->
+    <pluginManagement>
+    	<plugins>
+    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+    		<plugin>
+    			<groupId>org.eclipse.m2e</groupId>
+    			<artifactId>lifecycle-mapping</artifactId>
+    			<version>1.0.0</version>
+    			<configuration>
+    				<lifecycleMappingMetadata>
+    					<pluginExecutions>
+    						<pluginExecution>
+    							<pluginExecutionFilter>
+    								<groupId>org.apache.cxf</groupId>
+    								<artifactId>
+    									cxf-xjc-plugin
+    								</artifactId>
+    								<versionRange>
+    									[2.3.0,)
+    								</versionRange>
+    								<goals>
+    									<goal>xsdtojava</goal>
+    								</goals>
+    							</pluginExecutionFilter>
+    							<action>
+    								<ignore></ignore>
+    							</action>
+    						</pluginExecution>
+    					</pluginExecutions>
+    				</lifecycleMappingMetadata>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </pluginManagement>
   </build>
 </project>

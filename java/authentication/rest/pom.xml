@@ -4,9 +4,9 @@
   <parent>
     <groupId>eu.europa.ec.mare.oss.usm</groupId>
     <artifactId>Authentication-Module</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.2.0-SNAPSHOT</version>
   </parent>
-  <artifactId>Authentication-Rest-Service</artifactId>
+  <artifactId>Authentication-http-Rest-Service</artifactId>
   <packaging>war</packaging>
 
   <properties>
@@ -36,7 +36,7 @@
       </activation>
       <properties>
         <log.dir>${jboss.server.log.dir}/usm</log.dir>
-        <endpoint-url>https://${wf.host}:${wf.https.port}/${webroot}/${restprefix}/</endpoint-url>
+        <endpoint-url>http://${wf.host}:${wf.port}/${webroot}/${restprefix}/</endpoint-url>
       </properties>
       <build>
         <plugins>

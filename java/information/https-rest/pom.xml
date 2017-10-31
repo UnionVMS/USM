@@ -3,14 +3,14 @@
 
   <parent>
     <groupId>eu.europa.ec.mare.oss.usm</groupId>
-    <artifactId>Authentication-Module</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <artifactId>Information-Module</artifactId>
+    <version>2.2.0-SNAPSHOT</version>
   </parent>
-  <artifactId>Authentication-http-Rest-Service</artifactId>
+  <artifactId>Information-https-Rest-Service</artifactId>
   <packaging>war</packaging>
 
   <properties>
-    <webroot>usm-authentication</webroot>
+    <webroot>usm-information</webroot>
     <restprefix>rest</restprefix>
     <deploy.phase>no-phase</deploy.phase>
     <clean.phase>no-phase</clean.phase>
@@ -19,7 +19,7 @@
 
   <profiles>
     <profile>
-      <id>http</id>
+      <id>https</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
@@ -36,7 +36,7 @@
       </activation>
       <properties>
         <log.dir>${jboss.server.log.dir}/usm</log.dir>
-        <endpoint-url>http://${wf.host}:${wf.http.port}/${webroot}/${restprefix}/</endpoint-url>
+        <endpoint-url>https://${wf.host}:${wf.https.port}/${webroot}/${restprefix}/</endpoint-url>
       </properties>
       <build>
         <plugins>
@@ -51,16 +51,6 @@
             </configuration>
             <executions>
               <execution>
-                <id>deploy-app</id>
-                <phase>${deploy.phase}</phase>
-                <goals>
-                  <goal>deploy</goal>
-                </goals>
-                <configuration>
-                  <filename>${project.artifactId}.war</filename>
-                </configuration>
-              </execution>
-              <execution>
                 <phase>${clean.phase}</phase>
                 <goals>
                   <goal>undeploy</goal>
@@ -69,6 +59,16 @@
                   <matchPattern>${project.artifactId}.*</matchPattern>
                   <matchPatternStrategy>all</matchPatternStrategy>
                   <ignoreMissingDeployment>true</ignoreMissingDeployment>
+                </configuration>
+              </execution>
+              <execution>
+                <id>deploy-app</id>
+                <phase>${deploy.phase}</phase>
+                <goals>
+                  <goal>deploy</goal>
+                </goals>
+                <configuration>
+                  <filename>${project.artifactId}.war</filename>
                 </configuration>
               </execution>
             </executions>
@@ -145,7 +145,7 @@
           <overlays>
             <overlay>
               <groupId>eu.europa.ec.mare.oss.usm</groupId>
-              <artifactId>Authentication-Rest-Service</artifactId>
+              <artifactId>Information-http-Rest-Service</artifactId>
             </overlay>
           </overlays>
         </configuration>
@@ -170,8 +170,8 @@
   <dependencies>
     <dependency>
       <groupId>eu.europa.ec.mare.oss.usm</groupId>
-      <artifactId>Authentication-Rest-Service</artifactId>
-      <version>2.0.1-SNAPSHOT</version>
+      <artifactId>Information-http-Rest-Service</artifactId>
+      <version>2.2.0-SNAPSHOT</version>
       <type>war</type>
     </dependency>
   </dependencies>

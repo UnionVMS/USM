@@ -4,7 +4,7 @@
   <parent>
     <groupId>eu.europa.ec.mare.oss.usm</groupId>
     <artifactId>Authentication-Module</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.2.0-SNAPSHOT</version>
   </parent>
   <artifactId>Authentication-Service</artifactId>
   <packaging>jar</packaging>
@@ -57,7 +57,7 @@
       </activation>
       <properties>
         <ldap.domain>example.com</ldap.domain>
-        <ldap.host>ldaps\://svm-midway.private\:10636/</ldap.host>
+        <ldap.host>ldaps\://openldap\:389/</ldap.host>
         <ldap.root>ou\=users;ou\=system</ldap.root>
         <ldap.techdn>uid\=admin;ou\=system</ldap.techdn>
         <ldap.techpass>secret</ldap.techpass>

@@ -4,7 +4,7 @@
   <parent>
     <groupId>eu.europa.ec.mare.oss.usm</groupId>
     <artifactId>Administration-Module</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.2.0-SNAPSHOT</version>
   </parent>
   <artifactId>Administration-https-Rest-Service</artifactId>
   <packaging>war</packaging>
@@ -16,8 +16,8 @@
       <clean.phase>no-phase</clean.phase>
       <skipITs>true</skipITs>
       
-      <docker.dev.stop.phase>verify</docker.dev.stop.phase>
-      <docker.dev.prestop.phase>install</docker.dev.prestop.phase>        	
+      <docker.dev.stop.phase>none</docker.dev.stop.phase>
+      <docker.dev.prestop.phase>none</docker.dev.prestop.phase>        	
     </properties>
 
   <profiles>
@@ -175,7 +175,7 @@
     <dependency>
       <groupId>eu.europa.ec.mare.oss.usm</groupId>
       <artifactId>Administration-http-Rest-Service</artifactId>
-      <version>2.0.1-SNAPSHOT</version>
+      <version>2.2.0-SNAPSHOT</version>
       <type>war</type>
     </dependency>
   </dependencies>

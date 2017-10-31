@@ -114,19 +114,7 @@
 	</scm>
 	
 	<profiles>
-		<profile>
-			<id>wildfly-docker</id>
-		<properties>
-			 <wf.host>localhost</wf.host>
-			 <wf.mgtport>9990</wf.mgtport>
-			 <wf.https.port>28443</wf.https.port>
-			 <wf.http.port>28080</wf.http.port>
-			 <wf.port>28080</wf.port>			 			 
-			 <wf.adminUserName>admin</wf.adminUserName>
-			 <wf.adminPassword>admin</wf.adminPassword>
-		</properties>
-    </profile>
-    
+		   
         <profile>
             <id>docker-start</id>
             <properties>
