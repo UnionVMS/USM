@@ -6,6 +6,8 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <!-- note that these are simply defining string properties that we will use with the valueComputed attribute -->
+    <property name="sys_minus" value="SYSDATE -" dbms="oracle"/>
+    <property name="days" value="" dbms="oracle"/>
     <property name="sys_minus" value="NOW() - interval '" dbms="postgresql"/>
     <property name="days" value=" days'" dbms="postgresql"/>
     <property name="usm_browser_role_id" value="(select r.ROLE_ID from APPLICATION_T a, ROLE_T r where a.NAME='USM' and r.NAME='USM-UserBrowser' and r.APPLICATION_ID=a.APPLICATION_ID)" />
@@ -91,7 +93,7 @@
      runInTransaction="true"
     failOnError="true">
     <sql>
-    <![CDATA[update POLICY_T set VALUE='ldaps://svm-midway.private:10636/'
+    <![CDATA[update POLICY_T set VALUE='ldaps://svm-midway.athens.intrasoft-intl.private:10636/'
 where SUBJECT='Authentication' and NAME='ldap.server.url';
 update POLICY_T set VALUE='ou=users;ou=system'
 where SUBJECT='Authentication' and NAME='ldap.context.root';
@@ -155,6 +157,10 @@ where SUBJECT='Authentication' and NAME='ldap.query.attributes';]]></sql>
       <column name="data_from" type="DATETIME" />
       <column name="data_to" type="DATETIME" />
     </loadData>
+    <!-- <sql dbms="oracle" >
+      UPDATE SCOPE_T set (ACTIVE_FROM, ACTIVE_TO, DATA_FROM, DATA_TO) =  (SYSDATE, SYSDATE + 365, SYSDATE, SYSDATE + 365) where SCOPE_ID = 2;
+      UPDATE SCOPE_T set (ACTIVE_FROM, ACTIVE_TO, DATA_FROM, DATA_TO) =  (SYSDATE, SYSDATE + 365, SYSDATE, SYSDATE + 365) where SCOPE_ID = 3;
+    </sql>-->
     <sql dbms="postgresql" >
       UPDATE SCOPE_T set (ACTIVE_FROM, ACTIVE_TO, DATA_FROM, DATA_TO) =  (NOW(), (NOW() + interval '1 year'), NOW(), (NOW() + interval '1 year')) where SCOPE_ID = 2;
       UPDATE SCOPE_T set (ACTIVE_FROM, ACTIVE_TO, DATA_FROM, DATA_TO) =  (NOW(), (NOW() + interval '1 year'), NOW(), (NOW() + interval '1 year')) where SCOPE_ID = 3;
@@ -192,6 +198,12 @@ where SUBJECT='Authentication' and NAME='ldap.query.attributes';]]></sql>
       <column name="LOGON_FAILURE" type="NUMERIC" />
       <column name="NOTES" type="STRING" />
     </loadData>
+    <sql dbms="oracle" >
+      UPDATE USER_T set LOCKOUT_TO = (SYSDATE + 365) where USER_NAME in ('ldap_locked','lockout');
+      UPDATE USER_T set PASSWORD_EXPIRY = (SYSDATE - 1) where USER_NAME = 'expired';
+      UPDATE USER_T set ACTIVE_FROM = (SYSDATE - 365), ACTIVE_TO =  (SYSDATE - 1) where USER_NAME = 'obsolete';
+      UPDATE USER_T set ACTIVE_FROM = (SYSDATE - 1), ACTIVE_TO =  (SYSDATE + 365) where USER_NAME = 'current';
+    </sql>
     <sql dbms="postgresql" >
       UPDATE USER_T set LOCKOUT_TO = (NOW() + interval '1 year') where USER_NAME in ('ldap_locked','lockout');
       UPDATE USER_T set PASSWORD_EXPIRY = (NOW() - interval '1 day') where USER_NAME = 'expired';

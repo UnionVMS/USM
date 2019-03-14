@@ -1,0 +1,253 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="038B6317-6ED3-608A-1D0C-A00746963A37" schemaObject="247D05E2-79CD-C825-54B3-5D5DE6D6B6B4" name="ORGANISATION_T">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>ORGANISATION_T</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:31 UTC</createdTime>
+<commentInRDBMS>Holds identification information about an organisation.</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ORGANISATION_ID" id="908FCE66-C7AA-E01F-E2B3-BC1948B026C3">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ORGANISATION_T</sourceObjSchema>
+<sourceObjName>ORGANISATION_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:39 UTC</createdTime>
+<commentInRDBMS>Unique record id (primary key)</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="NAME" id="137ED64D-87B6-E13F-E8AB-623B04639658">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ORGANISATION_T</sourceObjSchema>
+<sourceObjName>NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:39 UTC</createdTime>
+<commentInRDBMS>The name of the organisation</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>128 BYTE</dataTypeSize>
+<ownDataTypeParameters>128 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ISOA3CODE" id="BDE3B544-997B-5ADE-CC57-0C1892960055">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ORGANISATION_T</sourceObjSchema>
+<sourceObjName>ISOA3CODE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:39 UTC</createdTime>
+<commentInRDBMS>The ISOA3CODE of the country/nation to which the organisation belong</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>9 BYTE</dataTypeSize>
+<ownDataTypeParameters>9 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="DESCRIPTION" id="F12410CF-1C18-6C6E-407C-578A5BD20558">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ORGANISATION_T</sourceObjSchema>
+<sourceObjName>DESCRIPTION</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:39 UTC</createdTime>
+<commentInRDBMS>A free-text description of the organisation</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>512 BYTE</dataTypeSize>
+<ownDataTypeParameters>512 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="STATUS" id="A354E6A7-5191-14BE-2ACA-FF250B47B984">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ORGANISATION_T</sourceObjSchema>
+<sourceObjName>STATUS</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:39 UTC</createdTime>
+<commentInRDBMS>The status (enabled/disabled) of the organisation</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>1 BYTE</dataTypeSize>
+<ownDataTypeParameters>1 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PARENT_ID" id="8E7947E0-FC86-E83B-6F28-7F1433C57F5F">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ORGANISATION_T</sourceObjSchema>
+<sourceObjName>PARENT_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:39 UTC</createdTime>
+<commentInRDBMS>The identifier of the parent organisation</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="8DB0D61F-617C-78A2-2411-4538D25AE4E2" referredColumn="908FCE66-C7AA-E01F-E2B3-BC1948B026C3"/>
+</associations>
+</Column>
+<Column name="CREATED_BY" id="49AB4A5D-550A-F6B5-C4E2-586DCAA31766">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ORGANISATION_T</sourceObjSchema>
+<sourceObjName>CREATED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:39 UTC</createdTime>
+<commentInRDBMS>The name of the user who created the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_ON" id="954926C0-0711-6580-9500-7193F62D317A">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ORGANISATION_T</sourceObjSchema>
+<sourceObjName>CREATED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:39 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was created</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_BY" id="E0D4BA7F-75BB-C588-35AF-DC73A048EA1A">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ORGANISATION_T</sourceObjSchema>
+<sourceObjName>MODIFIED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:39 UTC</createdTime>
+<commentInRDBMS>The name of the user who performed the last update on the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_ON" id="EDE17516-589B-F6E9-0FE2-E33587C670FF">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ORGANISATION_T</sourceObjSchema>
+<sourceObjName>MODIFIED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:39 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was last updated</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="E_MAIL" id="E532322F-00EE-394B-8B16-A29B7F41E8E3">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ORGANISATION_T</sourceObjSchema>
+<sourceObjName>E_MAIL</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 06:06:35 UTC</createdTime>
+<commentInRDBMS>The e-mail of the organisation</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<importedID>74F6E501-FB73-C993-BFE6-306B33BAF36D</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>64 BYTE</dataTypeSize>
+<ownDataTypeParameters>64 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="DB50D807-9E87-D3E6-F17A-716FA8711CF0" name="PK_ORGANISATION">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_ORGANISATION</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:57 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="908FCE66-C7AA-E01F-E2B3-BC1948B026C3"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="519236DF-16B5-07C2-A875-AF288CDF3BDE" schemaObject="247D05E2-79CD-C825-54B3-5D5DE6D6B6B4" name="PK_ORGANISATION">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_ORGANISATION</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:48 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="908FCE66-C7AA-E01F-E2B3-BC1948B026C3"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="DF99ED69-BBC8-1FB8-C50F-6AD1FB44FC0A" schemaObject="247D05E2-79CD-C825-54B3-5D5DE6D6B6B4" name="UK_ORG_NAME">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>UK_ORG_NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:48 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="137ED64D-87B6-E13F-E8AB-623B04639658"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="A5805203-E3A5-7C52-F3F5-D34BD7A5D1C1" schemaObject="247D05E2-79CD-C825-54B3-5D5DE6D6B6B4" name="FK_ORG_ORG">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_ORG_ORG</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:48 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8E7947E0-FC86-E83B-6F28-7F1433C57F5F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="F735919E-DCDC-A4F5-4E73-C7D2B8BF6C7D" name="PARENT_ORGANISATION_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:55:17 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8E7947E0-FC86-E83B-6F28-7F1433C57F5F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

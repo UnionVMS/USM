@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<UserOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.UserOraclev10g" name="USM2" directorySegmentName="seg_0" id="B29E3ADA-8CE1-536F-FF14-0245B39BB464">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:03 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<schemaObject>335F9972-90EC-227F-06DD-05E9B1A8D3B3</schemaObject>
+</UserOraclev10g>

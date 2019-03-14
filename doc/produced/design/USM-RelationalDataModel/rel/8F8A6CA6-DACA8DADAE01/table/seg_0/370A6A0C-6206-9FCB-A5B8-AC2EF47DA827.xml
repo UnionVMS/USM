@@ -1,0 +1,97 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="370A6A0C-6206-9FCB-A5B8-AC2EF47DA827" schemaObject="247D05E2-79CD-C825-54B3-5D5DE6D6B6B4" name="PERMISSION_T">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PERMISSION_T</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:31 UTC</createdTime>
+<commentInRDBMS>Holds a permission granted to a role to use an application feature.</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ROLE_ID" id="548AFAFA-7CFE-C3AF-F65C-A90514B1C263">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PERMISSION_T</sourceObjSchema>
+<sourceObjName>ROLE_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:40 UTC</createdTime>
+<commentInRDBMS>The identifier of the role</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="68955D51-15AE-0B73-2F94-8A93261E9BF7" referredColumn="99F59E83-66CC-379F-84A4-8D8863646667"/>
+</associations>
+</Column>
+<Column name="FEATURE_ID" id="C022B367-2EFD-9A18-6D79-7D3F1F665D63">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PERMISSION_T</sourceObjSchema>
+<sourceObjName>FEATURE_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:40 UTC</createdTime>
+<commentInRDBMS>The identifier of the feature</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="4A40154C-DF61-5AE4-9F42-2B027B0F7CAE" referredColumn="2EC4F42D-0668-0919-06BE-7E3FFE3AFA79"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="3005BE37-7AD2-59FB-38D8-214BBC8607EA" schemaObject="247D05E2-79CD-C825-54B3-5D5DE6D6B6B4" name="FK_PERMISSION_FEATURE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_PERMISSION_FEATURE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:49 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C022B367-2EFD-9A18-6D79-7D3F1F665D63"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="5DE766BE-AB86-9A67-5DBA-2120FD25A649" schemaObject="247D05E2-79CD-C825-54B3-5D5DE6D6B6B4" name="FK_PERMISSION_ROLE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_PERMISSION_ROLE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:49 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="548AFAFA-7CFE-C3AF-F65C-A90514B1C263"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="D731024E-BFE2-4632-972F-C7258BA7FE06" name="PERMISSION_FEATURE_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:55:17 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C022B367-2EFD-9A18-6D79-7D3F1F665D63"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="536465A9-7862-C7D3-D33C-48CE13AD135F" name="PERMISSION_ROLE_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:55:17 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="548AFAFA-7CFE-C3AF-F65C-A90514B1C263"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

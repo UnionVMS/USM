@@ -1,0 +1,639 @@
+swagger: '2.0'
+info:
+  version: 1.0-SNAPSHOT
+  title: USM-administration
+basePath: /rest
+paths:
+  /organisations:
+    get:
+      description: Retrieves a list of organisations that meet the provided criteria
+      operationId: findOrganisations
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: offset 
+          description: Offset the list of returned results by this amount. Default is zero.
+          in: query
+          type: integer
+          format: int32
+        - name: limit 
+          description: Number of items to retrieve. Default is 10, maximum is 100
+          in: query
+          type: integer
+          format: int32
+        - name: sortColumn 
+          description: Sort column for the retrieved list of data. Default is 'name'
+          in: query
+          type: string
+        - name: sortDirection 
+          description: Sort column for the retrieved list of data (ASC, DESC). Default is'DESC'
+          in: query
+          type: string
+        - name: name
+          description: the organisation name
+          in: query
+          type: string
+        - name: nation
+          description: the organisation nation
+          in: query
+          type: string
+        - name: status
+          description: the organisation status
+          in: query
+          type: string
+      responses:
+        '200':
+          description: organisations response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/organisation'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+     description: Create a new organisation
+     operationId: createOrganisation
+     produces:
+        - application/json
+     parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: organisation
+          in: body
+          description: The new organisation to be created
+          required: true
+          schema:
+            $ref: '#/definitions/organisation'
+     responses:
+         '200':
+           description: organisation response
+           schema:
+             $ref: '#/definitions/organisation'
+         default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    put:
+     description: Updates an existing organisation
+     operationId: updateOrganisation
+     produces:
+        - application/json
+     parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: organisation
+          in: body
+          description: The organisation to be updated
+          required: true
+          schema:
+            $ref: '#/definitions/organisation'
+     responses:
+         '200':
+           description: organisation response
+           schema:
+             $ref: '#/definitions/organisation'
+         default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /organisations/{organisationId}:
+    get:
+      description: Retrieves a organisation according to the provided organisationId
+      operationId: getOrganisation
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: organisationId
+          in: path
+          description: The requested organisation id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: organisations response
+          schema:
+              $ref: '#/definitions/organisation'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: Deletes an existing organisation
+      operationId: deleteOrganisation
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: organisationId
+          in: path
+          description: The requested organisation id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: response of the operation
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /organisations/names:
+    get:
+      description: Retrieves the list of organisation's names
+      operationId: getOrganisationNames
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: organisations response
+          schema:
+            type: array
+            items:
+              type: string
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'  
+  /organisations/{organisationId}/parent/names:
+    get:
+      description: Retrieves the parent organisation names of a apecific organisation
+      operationId: getOrganisationParentNames
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: organisationId
+          in: path
+          description: The requested organisation id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: organisations response
+          schema:
+            type: array
+            items:
+              type: string
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /organisations/nations/names:
+    get:
+      description: Retrieves the (distinct) names of nations for which organisations exist
+      operationId: getNationNames
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: organisations response
+          schema:
+            type: array
+            items:
+              type: string
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /organisations/channel/{channelId}:
+    get:
+      description: Retrieves a communication channel according to the provided channelId
+      operationId: getChannel
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: channelId
+          in: path
+          description: the requested channel id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: channel response
+          schema:
+              $ref: '#/definitions/channel'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /channel:
+    post:
+     description: Creates a new channel
+     operationId: createChannel
+     produces:
+        - application/json
+     parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: channel
+          in: body
+          description: the new channel to be created
+          required: true
+          schema:
+            $ref: '#/definitions/channel'
+     responses:
+         '200':
+           description: channel response
+           schema:
+             $ref: '#/definitions/channel'
+         default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    put:
+     description: Updates an existing channel
+     operationId: updateChannel
+     produces:
+        - application/json
+     parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: channel
+          in: body
+          description: The channel to be updated
+          required: true
+          schema:
+            $ref: '#/definitions/channel'
+     responses:
+         '200':
+           description: channel response
+           schema:
+             $ref: '#/definitions/channel'
+         default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /channel/{channelId}:
+    delete:
+      description: Deletes an existing channel
+      operationId: deleteChannel
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: channelId
+          in: path
+          description: The requested channelId id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: response of the operation
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'           
+  /organisations/endpoint/{endPointId}:
+    get:
+      description: Retrieves an end point according to the provided endPointId
+      operationId: getEndPoint
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: endPointId
+          in: path
+          description: the requested endpoint id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: endpoint response
+          schema:
+              $ref: '#/definitions/endpoint'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /endpoint:
+    post:
+     description: Creates a new endpoint
+     operationId: createEndpoint
+     produces:
+        - application/json
+     parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: endpoint
+          in: body
+          description: the new endpoint to be created
+          required: true
+          schema:
+            $ref: '#/definitions/endpoint'
+     responses:
+         '200':
+           description: endpoint response
+           schema:
+             $ref: '#/definitions/endpoint'
+         default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    put:
+     description: Updates an existing endpoint
+     operationId: updateEndpoint
+     produces:
+        - application/json
+     parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: endpoint
+          in: body
+          description: The endpoint to be updated
+          required: true
+          schema:
+            $ref: '#/definitions/endpoint'
+     responses:
+         '200':
+           description: endpoint response
+           schema:
+             $ref: '#/definitions/endpoint'
+         default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /endpoint/{endpointId}:
+    delete:
+      description: Deletes an existing endpoint
+      operationId: deleteEndpoint
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: endpointId
+          in: path
+          description: The requested endpointId id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: response of the operation
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'              
+  /organisations/contact/{endPointContactId}:
+    get:
+      description: Retrieves an end point contact according to the provided endPointContactId
+      operationId: getEndPointContact
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: endPointContactId
+          in: path
+          description: the requested endpoint contact id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: endpointcontact response
+          schema:
+              $ref: '#/definitions/endpointcontact'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /endpointcontact:
+    post:
+     description: Creates a new endPointContact
+     operationId: assignContact
+     produces:
+        - application/json
+     parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: endPointContact
+          in: body
+          description: the new endPointContact to be created
+          required: true
+          schema:
+            $ref: '#/definitions/endpointcontact'
+     responses:
+         '200':
+           description: endpointcontact response
+           schema:
+             $ref: '#/definitions/endpointcontact'
+         default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /endpointcontact/{endpointcontactId}:
+    delete:
+      description: Deletes an existing contact
+      operationId: removeContact
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: endpointcontactId
+          in: path
+          description: The requested endpointcontact id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: response of the operation
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'             
+definitions:
+  organisation:
+    required:
+      - organisationId
+      - name
+      - status
+      - nation
+    properties:
+      organisationId:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      nation:
+        type: string
+      status:
+        type: string
+      parent:
+        type: string
+      email:
+        type: string
+      assignedUsers:
+        type: integer
+        format: int32
+      endpoints:
+        type: array
+        items:
+          $ref: '#/definitions/endpoint'
+        description: The list of endpoints associated with this specific organisation
+  endpoint:
+    required:
+      - endpointId
+      - name
+      - status
+      - URI
+    properties:
+      endpointId:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      URI:
+        type: string
+      status:
+        type: string
+      organisationName:
+        type: string
+      channels:
+        type: array
+        items:
+          $ref: '#/definitions/channel'
+        description: The list of channels associated with this specific endpoint
+      endpointcontacts:
+        type: array
+        items:
+          $ref: '#/definitions/endpointcontact'
+        description: The list of endpointcontacts associated with this specific endpoint   
+  channel:
+    required:
+      - channelId
+      - dataflow
+      - service
+      - priority
+    properties:
+      channelId:
+        type: integer
+        format: int64
+      dataflow:
+        type: string
+      service:
+        type: string
+      priority:
+        type: string
+      endpointId:
+        type: integer
+        format: int64
+  endpointcontact:
+    required:
+      - endPointContactId
+      - personId
+    properties:
+      endPointContactId:
+        type: integer
+        format: int64
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        type: string
+      mobileNumber:
+        type: string
+      faxNumber:
+        type: string
+      email:
+        type: string        
+      endpointId:
+        type: integer
+        format: int64
+      personId:
+        type: integer
+        format: int64
+  errorModel:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string

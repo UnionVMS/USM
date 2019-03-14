@@ -1,0 +1,14 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="PREFERENCE_BU" directorySegmentName="seg_0" id="7E6206AB-6403-468C-5EF6-47E32CCB698A">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PREFERENCE_BU</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:55:07 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<actions>UPDATE</actions>
+<body>begin&lt;br/&gt;		    /* Fill date and user modified */&lt;br/&gt;		    IF :NEW.modified_on IS NULL OR (:NEW.modified_on = :OLD.modified_on)&lt;br/&gt;		    THEN&lt;br/&gt;		        :NEW.modified_on := SYSDATE;&lt;br/&gt;		    END IF;&lt;br/&gt;		&lt;br/&gt;		    IF :NEW.modified_by IS NULL OR (:NEW.modified_by = :OLD.modified_by)&lt;br/&gt;		    THEN&lt;br/&gt;		        :NEW.modified_by := UPPER(sys_context(&apos;USERENV&apos;, &apos;OS_USER&apos;));&lt;br/&gt;		    ELSE&lt;br/&gt;		        :NEW.modified_by := UPPER(:NEW.modified_by);&lt;br/&gt;		    END IF;&lt;br/&gt;		&lt;br/&gt;		end;</body>
+<triggerTime>BEFORE</triggerTime>
+<owner>80606711-AE72-8BDC-4971-155FA6DE55B4</owner>
+<table>ABD1DB2A-E208-D6A2-A3F0-CD3A0E4BEEE9</table>
+</TriggerOraclev10g>

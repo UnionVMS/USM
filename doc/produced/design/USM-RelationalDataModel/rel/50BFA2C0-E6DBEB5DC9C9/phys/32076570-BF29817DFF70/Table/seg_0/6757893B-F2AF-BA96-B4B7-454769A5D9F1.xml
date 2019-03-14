@@ -1,0 +1,56 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev11g class="oracle.dbtools.crest.model.design.storage.oracle.v11g.TableProxyOraclev11g" name="PERMISSION_T" directorySegmentName="seg_0" id="6757893B-F2AF-BA96-B4B7-454769A5D9F1">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:16 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<schemaObject>A56DEBB1-9B79-3B43-AF94-3B01A4745368</schemaObject>
+<logging>YES</logging>
+<partitionedRowMovement>DISABLE</partitionedRowMovement>
+<segment>93BD8F6E-8021-D21A-0907-452BA5F323DA</segment>
+<tableSpace>D6DEC855-E88D-B30F-3A97-377D18BE5B40</tableSpace>
+<temporaryChanged>false</temporaryChanged>
+<accessDriverType>oracle_loader</accessDriverType>
+<rejectLimit></rejectLimit>
+<columnProxies itemClass="oracle.dbtools.crest.model.design.storage.oracle.v12c.ColumnProxyOraclev12c">
+<ColumnProxy name="ROLE_ID" id="0D8A428E-A0F3-5690-2E7A-C8ED675A9BB6">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:30 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="FEATURE_ID" id="8910DA11-B750-15FC-38D8-96D63C803654">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:30 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<indexProxies>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="FK_PERMISSION_ROLE" id="172212EC-640A-D0CE-8B65-572641C92084">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:44 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<schemaObject>A56DEBB1-9B79-3B43-AF94-3B01A4745368</schemaObject>
+<segment>16EBF726-7AD6-01B5-3227-B330856D3085</segment>
+<tableSpace>D6DEC855-E88D-B30F-3A97-377D18BE5B40</tableSpace>
+</IndexProxy>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="FK_PERMISSION_FEATURE" id="22EFDF0C-C4A7-63D1-5963-B198DAF53FF9">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:44 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<schemaObject>A56DEBB1-9B79-3B43-AF94-3B01A4745368</schemaObject>
+<segment>16EBF726-7AD6-01B5-3227-B330856D3085</segment>
+<tableSpace>D6DEC855-E88D-B30F-3A97-377D18BE5B40</tableSpace>
+</IndexProxy>
+</indexProxies>
+<foreignKeys>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="PERMISSION_ROLE_FK" id="9CF6E0A1-ADDC-5F82-678B-3FD3B84C807D">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:27 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ForeignKey>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="PERMISSION_FEATURE_FK" id="D0D171AA-B85C-C45E-4E6E-B41553998895">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:27 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ForeignKey>
+</foreignKeys>
+</TableProxyOraclev11g>

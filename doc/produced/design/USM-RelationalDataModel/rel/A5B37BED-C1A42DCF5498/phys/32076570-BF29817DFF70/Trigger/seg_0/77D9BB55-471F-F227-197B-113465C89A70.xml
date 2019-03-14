@@ -1,0 +1,14 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="USER_CONTEXT_BI" directorySegmentName="seg_0" id="77D9BB55-471F-F227-197B-113465C89A70">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>USER_CONTEXT_BI</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:43 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<actions>INSERT</actions>
+<body>begin&lt;br/&gt;		  if :new.USER_CONTEXT_ID is null&lt;br/&gt;		  then&lt;br/&gt;		    select SQ_USER_ROLE.nextval into :new.USER_CONTEXT_ID from dual;&lt;br/&gt;		  end if;&lt;br/&gt;		end;</body>
+<triggerTime>BEFORE</triggerTime>
+<owner>6ED00E60-7E29-B60B-3735-BCAB175F5692</owner>
+<table>1D91D519-BE05-8D60-069F-DD8BF5BD0AF0</table>
+</TriggerOraclev10g>

@@ -30,7 +30,7 @@
   <bean id="dataSource"
         class="com.mchange.v2.c3p0.ComboPooledDataSource"
         p:driverClass="org.postgresql.Driver"
-        p:jdbcUrl="jdbc:postgresql://cygnus-dev.private:5432/usm2"
+        p:jdbcUrl="jdbc:postgresql://cygnus-dev.athens.intrasoft-intl.private:5432/usm2"
         p:user="usm2"
         p:password="password"
         p:initialPoolSize="6"

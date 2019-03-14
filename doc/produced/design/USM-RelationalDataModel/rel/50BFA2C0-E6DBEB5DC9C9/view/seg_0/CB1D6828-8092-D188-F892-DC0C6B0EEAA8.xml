@@ -1,0 +1,97 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableView class="oracle.dbtools.crest.model.design.relational.TableView" directorySegmentName="seg_0" id="CB1D6828-8092-D188-F892-DC0C6B0EEAA8" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="ACTIVE_USER_ROLE_V">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>ACTIVE_USER_ROLE_V</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:20 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<userDefined>true</userDefined>
+<userDefinedSQL>CREATE OR REPLACE VIEW ACTIVE_USER_ROLE_V&lt;br/&gt;AS &lt;br/&gt;select distinct USER_NAME, APPLICATION_NAME, ROLE_NAME, ROLE_ID, SCOPE_ID, USER_CONTEXT_ID from (&lt;br/&gt;			  select u.USER_NAME, a.NAME as APPLICATION_NAME,r.NAME as ROLE_NAME, r.ROLE_ID, ur.SCOPE_ID, ur.USER_CONTEXT_ID&lt;br/&gt;			  from USER_T u,&lt;br/&gt;			       USER_CONTEXT_T ur,&lt;br/&gt;			       ROLE_T r&lt;br/&gt;			 INNER JOIN permission_t p on p.role_id=r.role_id&lt;br/&gt;             INNER JOIN FEATURE_T f on f.FEATURE_ID=p.FEATURE_ID&lt;br/&gt;             INNER JOIN application_t a on a.APPLICATION_ID=f.APPLICATION_ID 	&lt;br/&gt;			  where ur.ROLE_ID=r.ROLE_ID&lt;br/&gt;			    and ur.USER_ID=u.USER_ID&lt;br/&gt;			    and ur.SCOPE_ID is null&lt;br/&gt;			    and r.STATUS=&apos;E&apos;&lt;br/&gt;			    and (u.STATUS=&apos;E&apos; or (u.STATUS=&apos;L&apos; and u.LOCKOUT_TO&lt;=SYSDATE))&lt;br/&gt;			    and nvl(u.ACTIVE_FROM, SYSDATE)&lt;= SYSDATE&lt;br/&gt;			    and nvl(u.ACTIVE_TO, SYSDATE)&gt;= SYSDATE&lt;br/&gt;			  union&lt;br/&gt;			  select u.USER_NAME,a.NAME as APPLICATION_NAME, r.NAME as ROLE_NAME, r.ROLE_ID, ur.SCOPE_ID, ur.USER_CONTEXT_ID&lt;br/&gt;			  from USER_T u,&lt;br/&gt;			       USER_CONTEXT_T ur,&lt;br/&gt;			       SCOPE_T s,&lt;br/&gt;			       ROLE_T r&lt;br/&gt;			  INNER JOIN permission_t p on p.role_id=r.role_id&lt;br/&gt;              INNER JOIN FEATURE_T f on f.FEATURE_ID=p.FEATURE_ID&lt;br/&gt;              INNER JOIN application_t a on a.APPLICATION_ID=f.APPLICATION_ID   	&lt;br/&gt;			  where ur.ROLE_ID=r.ROLE_ID&lt;br/&gt;			    and ur.USER_ID=u.USER_ID&lt;br/&gt;			    and ur.SCOPE_ID=s.SCOPE_ID&lt;br/&gt;			    and r.STATUS=&apos;E&apos;&lt;br/&gt;			    and (u.STATUS=&apos;E&apos; or (u.STATUS=&apos;L&apos; and u.LOCKOUT_TO&lt;=SYSDATE))&lt;br/&gt;			    and s.STATUS=&apos;E&apos;&lt;br/&gt;			    and nvl(u.ACTIVE_FROM, SYSDATE)&lt;= SYSDATE&lt;br/&gt;			    and nvl(u.ACTIVE_TO, SYSDATE)&gt;= SYSDATE&lt;br/&gt;			    and nvl(s.ACTIVE_FROM, SYSDATE)&lt;= SYSDATE&lt;br/&gt;			    and nvl(s.ACTIVE_TO, SYSDATE)&gt;= SYSDATE)</userDefinedSQL>
+<viewElements>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="USER_NAME" id="25223B0B-3593-43F0-98B7-00F921C409CD">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_ROLE_V</sourceObjSchema>
+<sourceObjName>USER_NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:20 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>USER_NAME</alias>
+<dataType>VARCHAR2 (32)</dataType>
+<headerAlias>USER_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="APPLICATION_NAME" id="9ED1B5E6-0FBB-50EA-1F3B-B3B29D6F518A">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_ROLE_V</sourceObjSchema>
+<sourceObjName>APPLICATION_NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:20 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>APPLICATION_NAME</alias>
+<dataType>VARCHAR2 (128)</dataType>
+<headerAlias>APPLICATION_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="ROLE_NAME" id="18A6C143-5E9B-D418-ABF1-8574B8177057">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_ROLE_V</sourceObjSchema>
+<sourceObjName>ROLE_NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:20 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>ROLE_NAME</alias>
+<dataType>VARCHAR2 (128)</dataType>
+<headerAlias>ROLE_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="ROLE_ID" id="F5784E51-663C-989B-2ADB-4437F4D5F5AA">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_ROLE_V</sourceObjSchema>
+<sourceObjName>ROLE_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:20 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>ROLE_ID</alias>
+<dataType>NUMBER (10)</dataType>
+<headerAlias>ROLE_ID</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="SCOPE_ID" id="C454B7E8-92EF-C684-564D-784E524C6F28">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_ROLE_V</sourceObjSchema>
+<sourceObjName>SCOPE_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:20 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>SCOPE_ID</alias>
+<dataType>NUMBER (10)</dataType>
+<headerAlias>SCOPE_ID</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="USER_CONTEXT_ID" id="66D95466-8D9C-F3DF-C538-E30C2C9DB83F">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_ROLE_V</sourceObjSchema>
+<sourceObjName>USER_CONTEXT_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:20 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>USER_CONTEXT_ID</alias>
+<dataType>NUMBER (10)</dataType>
+<headerAlias>USER_CONTEXT_ID</headerAlias>
+<reference>false</reference>
+</viewElement>
+</viewElements>
+</TableView>

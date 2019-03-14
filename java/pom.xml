@@ -1,15 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <groupId>eu.europa.ec.mare.usm</groupId>
 
-  <parent>
-  	<groupId>eu.europa.ec.mare.oss.usm</groupId>
-	<artifactId>USM</artifactId>
-	<version>2.0.1-SNAPSHOT</version>
-	<relativePath>../pom.xml</relativePath>  	
-  </parent>	
-
-  <groupId>eu.europa.ec.mare.oss.usm</groupId>
-  <version>2.0.1-SNAPSHOT</version>
+  <version>2.1.4-SNAPSHOT</version>
   <artifactId>Backend-Modules</artifactId>
   <packaging>pom</packaging>
 
@@ -23,20 +17,42 @@
     <module>administration</module>
   </modules>
   
+  <properties>
+    <citnetpath>webgate.ec.europa.eu/CITnet/</citnetpath>
+    <svn.projectname>UNIONVMS</svn.projectname>
+  </properties>
+  <scm>
+    <developerConnection>scm:svn:https://webgate.ec.europa.eu/CITnet/svn/UNIONVMS/trunk/USM/java</developerConnection>
+    <url>https://webgate.ec.europa.eu/CITnet/fisheye/browse/UNIONVMS/trunk/USM/java</url>
+  </scm>
   <distributionManagement>
     <repository>
-        <id>focus-releases</id>
-        <name>UnionVms Repository</name>
-        <url>http://nexus.focus.fish/nexus/content/repositories/releases/</url>
+      <id>digit-releases</id>
+      <name>DG DIGIT Repository</name>
+      <url>https://webgate.ec.europa.eu/CITnet/nexus/content/repositories/mare/</url>
     </repository>
     <snapshotRepository>
-        <id>focus-snapshots</id>
-        <name>UnionVms Snapshot Repository</name>
-        <url>http://nexus.focus.fish/nexus/content/repositories/snapshots/</url>
+      <id>digit-snapshots</id>
+      <name>DG DIGIT Snapshot Repository</name>
+      <url>https://webgate.ec.europa.eu/CITnet/nexus/content/repositories/mare-snapshots/</url>
     </snapshotRepository>
-</distributionManagement>
+  </distributionManagement>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+		<version>2.5.3</version>
+        <configuration>
+          <tagBase>https://${citnetpath}svn/${svn.projectname}/tags/USM/java</tagBase>
+          <tagNameFormat>@{project.artifactId}-@{project.version}</tagNameFormat>
+          <goals>deploy,site</goals>
+          <preparationGoals>clean package</preparationGoals>
+          <arguments>-DskipTests -DskipITs</arguments>
+          <autoVersionSubmodules>false</autoVersionSubmodules>
+          <releaseProfiles>!wildfly</releaseProfiles>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>

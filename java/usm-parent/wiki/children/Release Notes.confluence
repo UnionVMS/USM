@@ -1,0 +1,15 @@
+h2. USM Backend Parent Pom Release Notes
+
+These release notes refer to version *${version}* of the USM Backend Parent Pom Module
+
+h2. Introduction
+
+The USM Backend Parent Pom Module includes dependencies and profiles shared between the backend modules.
+
+h2. Summary
+
+This release includes modifications implemented during *Sprint 7* of the USM project.
+
+h2. Changes implemented in the current release
+ - A (java) test code coverage report by activating the 'jacoco' profile
+

@@ -1,0 +1,390 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="0538EC1F-81F7-197D-E6B3-C4A126145E82" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="USER_T">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>USER_T</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:03 UTC</createdTime>
+<commentInRDBMS>Holds identification and authentication information about a user.</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="USER_ID" id="CC4345EF-C000-B6F1-1809-AC2B493DB80A">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>USER_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:17 UTC</createdTime>
+<commentInRDBMS>Unique record id (primary key)</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="USER_NAME" id="F788207B-DB81-B5EE-C507-66E5B7FAE5B5">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>USER_NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:17 UTC</createdTime>
+<commentInRDBMS>The login name of the user</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="STATUS" id="37C939D4-DCD3-8F7A-D35D-87A3BA3A3CF4">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>STATUS</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:17 UTC</createdTime>
+<commentInRDBMS>The status (enabled/disabled/locked) of the user (account)</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>1 BYTE</dataTypeSize>
+<ownDataTypeParameters>1 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ORGANISATION_ID" id="F2523C8C-C62F-B00D-938B-88779315C075">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>ORGANISATION_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:17 UTC</createdTime>
+<commentInRDBMS>The identifier of the organisation to which the user belong</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="7CFB58EA-257A-67A4-9E9E-4052F5E7BF11" referredColumn="78D2C8B9-983B-72B0-EE5C-06DE350D18BA"/>
+</associations>
+</Column>
+<Column name="PERSON_ID" id="0A7DED2A-BB83-95EF-FC7E-5C57B3112EDF">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>PERSON_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:17 UTC</createdTime>
+<commentInRDBMS>The identifier of the (physical) person associated with this user (account)</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="4F0AADA7-912E-D863-238C-1CD17CF5C707" referredColumn="AF12E851-7227-702F-78D1-98170810E8F3"/>
+</associations>
+</Column>
+<Column name="ACTIVE_FROM" id="27875228-D4F3-6CBF-948A-C651035CE3ED">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>ACTIVE_FROM</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:17 UTC</createdTime>
+<commentInRDBMS>The date and time when the user (account) becomes usable</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ACTIVE_TO" id="0B522A01-9DC2-8958-6CB7-A0CA7920FD57">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>ACTIVE_TO</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:18 UTC</createdTime>
+<commentInRDBMS>The date and time when the user (account) stops being usable</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LAST_LOGON" id="5B6CDE73-8E4A-D6B6-74D3-D8ABB22546F5">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>LAST_LOGON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:18 UTC</createdTime>
+<commentInRDBMS>The date and time of the last successful logon</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LOCKOUT_TO" id="3ED71F5F-EC12-7674-8677-9057FE407991">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>LOCKOUT_TO</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:18 UTC</createdTime>
+<commentInRDBMS>The date and time when the lockout ends</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PASSWORD_EXPIRY" id="3ED39EC5-5B83-3678-DFB2-B073FA1CFAAA">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>PASSWORD_EXPIRY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:18 UTC</createdTime>
+<commentInRDBMS>The date and time of the (current) password expiry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PASSWORD" id="31782533-6A87-4BAC-825D-52B987B1EEEF">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>PASSWORD</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:18 UTC</createdTime>
+<commentInRDBMS>The user hashed password</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LOCKOUT_REASON" id="64E479F5-EF65-99EF-E624-C1EB11E8D1DE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>LOCKOUT_REASON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:18 UTC</createdTime>
+<commentInRDBMS>The reason for the lockout of the user (account)</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>128 BYTE</dataTypeSize>
+<ownDataTypeParameters>128 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LOGON_FAILURE" id="3775C929-2B0B-929D-52C3-061F7AC252A1">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>LOGON_FAILURE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:18 UTC</createdTime>
+<commentInRDBMS>The number of consecutive logon failures</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="NOTES" id="F6054376-25EF-A20F-1BE0-6C1D325451FF">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>NOTES</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:18 UTC</createdTime>
+<commentInRDBMS>A free-text note</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>512 BYTE</dataTypeSize>
+<ownDataTypeParameters>512 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_BY" id="0753D607-477B-A061-CD28-BC899FE49127">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>CREATED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:18 UTC</createdTime>
+<commentInRDBMS>The name of the user who created the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_ON" id="B1A26A98-AF6C-60FF-8454-576171BEF59A">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>CREATED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:18 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was created</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_BY" id="8666B6DE-B14C-A8FD-BE89-202A26120E4A">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>MODIFIED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:18 UTC</createdTime>
+<commentInRDBMS>The name of the user who performed the last update on the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_ON" id="453063C5-8289-03B1-D313-7D6E49F7A949">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_T</sourceObjSchema>
+<sourceObjName>MODIFIED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:18 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was last updated</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="EFEFD89E-C2A6-F53E-2CD3-03CE169EF912" name="PK_USER">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_USER</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:38 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CC4345EF-C000-B6F1-1809-AC2B493DB80A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="474A8232-FA4D-88DD-DA85-4B09CFCDD6DB" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="PK_USER">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_USER</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:24 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CC4345EF-C000-B6F1-1809-AC2B493DB80A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="977AF95F-8271-7586-62B4-34F3FACEDADE" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="UK_USER_NAME">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>UK_USER_NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:24 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F788207B-DB81-B5EE-C507-66E5B7FAE5B5"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="08E09897-84B3-5BFC-19E9-31A6E4B627CE" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="FK_USER_ORG">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_USER_ORG</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:24 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F2523C8C-C62F-B00D-938B-88779315C075"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="C6FCEC20-DC56-E5A5-0018-B6DAD50DAD45" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="FK_USER_PERS">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_USER_PERS</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:24 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0A7DED2A-BB83-95EF-FC7E-5C57B3112EDF"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="10A25E78-ABFC-0040-02AA-7D778735DA1D" name="USER_ORGANISATION_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:55 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F2523C8C-C62F-B00D-938B-88779315C075"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="4A82AD77-6F08-B866-B1A6-E7F0B74B2D4E" name="USER_PERSON_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:55 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0A7DED2A-BB83-95EF-FC7E-5C57B3112EDF"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

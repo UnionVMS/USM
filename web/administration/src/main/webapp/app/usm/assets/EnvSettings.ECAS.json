@@ -1,0 +1,7 @@
+{
+  "idm": "ECAS",
+  "LoginMode": "Redirect",
+  "rebaseApiList": [
+    {"urlPatterns":["/usm-administration"],"apiBase":"/mare-common","domain":"europa.eu"}
+  ]
+}

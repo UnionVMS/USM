@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>eu.europa.ec.mare.oss.usm</groupId>
+    <groupId>eu.europa.ec.mare.usm</groupId>
     <artifactId>Information-Module</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.1.4-SNAPSHOT</version>
   </parent>
   <artifactId>Information-Rest-Service</artifactId>
   <packaging>war</packaging>
@@ -12,6 +13,8 @@
   <properties>
     <webroot>usm-information</webroot>
     <restprefix>rest</restprefix>
+    <!-- to prevent M2e overriding the web-context in weblogic.xml -->
+    <m2eclipse.wtp.contextRoot>${webroot}</m2eclipse.wtp.contextRoot>
     <deploy.phase>pre-integration-test</deploy.phase>
     <clean.phase>clean</clean.phase>
     <skipITs>false</skipITs>
@@ -32,7 +35,7 @@
     <profile>
       <id>wildfly</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
         <log.dir>${jboss.server.log.dir}/usm</log.dir>
@@ -72,6 +75,59 @@
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>weblogic</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <log.dir>logs/usm</log.dir>
+        <hostname>${wls.host}</hostname>
+        <port>${wls.port}</port>
+        <endpoint-url>https://${wls.host}:${wls.https.port}/${webroot}/${restprefix}/</endpoint-url>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.oracle.weblogic</groupId>
+            <artifactId>weblogic-maven-plugin</artifactId>
+            <version>12.1.1.0</version>
+            <executions>
+              <execution>
+                <id>deploy-app</id>
+                <phase>${deploy.phase}</phase>
+                <goals>
+                  <goal>deploy</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>undeploy-rest-service</id>
+                <phase>${clean.phase}</phase>
+                <goals>
+                  <goal>undeploy</goal>
+                </goals>
+                <configuration>
+                  <failonerror>false</failonerror>
+                  <name>${project.artifactId}</name>
+                </configuration>
+              </execution>
+            </executions>
+            <configuration>
+              <targets>${wls.target}</targets>
+              <adminurl>t3://${wls.host}:${wls.port}</adminurl>
+              <user>${wls.adminUserName}</user>
+              <password>${wls.adminPassword}</password>
+              <upload>true</upload>
+              <action>deploy</action>
+              <remote>true</remote>
+              <verbose>true</verbose>
+              <source>${project.build.directory}/${project.artifactId}.war</source>
+              <name>${project.artifactId}</name>
+            </configuration>
           </plugin>
         </plugins>
       </build>
@@ -130,6 +186,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
+        <version>2.6</version>
         <configuration>
           <warName>${project.artifactId}</warName>
           <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -137,6 +194,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.6</version>
         <executions>
           <execution>
             <goals>
@@ -154,7 +212,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>eu.europa.ec.mare.oss.usm</groupId>
+      <groupId>eu.europa.ec.mare.usm</groupId>
       <artifactId>Information-Service</artifactId>
     </dependency>
     <dependency>

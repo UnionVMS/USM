@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<BusinessInfoDesign class="oracle.dbtools.crest.model.businessinfo.BusinessInfoDesign" name="Business Information" id="98187E7D-97D5-1748-DEC3-94C48BA7B5BA">
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:44:21 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</BusinessInfoDesign>

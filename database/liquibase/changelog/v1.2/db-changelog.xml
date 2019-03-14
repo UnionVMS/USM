@@ -39,6 +39,51 @@
  </changeSet>
 
 
+<changeSet author="emtudorsm" id="oracleAurView_change1" runOnChange="true" dbms="oracle">
+	<dropView viewName="active_user_feature_resource_v"/>
+	<dropView viewName="active_user_feature_v"/>
+	<dropView viewName="ACTIVE_USER_ROLE_V"/>
+	<createView viewName="ACTIVE_USER_ROLE_V">
+			<![CDATA[select distinct USER_NAME, APPLICATION_NAME, ROLE_NAME, ROLE_ID, SCOPE_ID, USER_CONTEXT_ID from (
+			  select u.USER_NAME, a.NAME as APPLICATION_NAME,r.NAME as ROLE_NAME, r.ROLE_ID, ur.SCOPE_ID, ur.USER_CONTEXT_ID
+			  from USER_T u,
+			       USER_CONTEXT_T ur,
+			       ROLE_T r
+			 INNER JOIN permission_t p on p.role_id=r.role_id
+             INNER JOIN FEATURE_T f on f.FEATURE_ID=p.FEATURE_ID
+             INNER JOIN application_t a on a.APPLICATION_ID=f.APPLICATION_ID 	
+			  where ur.ROLE_ID=r.ROLE_ID
+			    and ur.USER_ID=u.USER_ID
+			    and ur.SCOPE_ID is null
+			    and r.STATUS='E'
+			    and (u.STATUS='E' or (u.STATUS='L' and u.LOCKOUT_TO<=SYSDATE))
+			    and nvl(u.ACTIVE_FROM, SYSDATE)<= SYSDATE
+			    and nvl(u.ACTIVE_TO, SYSDATE)>= SYSDATE
+			  union
+			  select u.USER_NAME,a.NAME as APPLICATION_NAME, r.NAME as ROLE_NAME, r.ROLE_ID, ur.SCOPE_ID, ur.USER_CONTEXT_ID
+			  from USER_T u,
+			       USER_CONTEXT_T ur,
+			       SCOPE_T s,
+			       ROLE_T r
+			  INNER JOIN permission_t p on p.role_id=r.role_id
+              INNER JOIN FEATURE_T f on f.FEATURE_ID=p.FEATURE_ID
+              INNER JOIN application_t a on a.APPLICATION_ID=f.APPLICATION_ID   	
+			  where ur.ROLE_ID=r.ROLE_ID
+			    and ur.USER_ID=u.USER_ID
+			    and ur.SCOPE_ID=s.SCOPE_ID
+			    and r.STATUS='E'
+			    and (u.STATUS='E' or (u.STATUS='L' and u.LOCKOUT_TO<=SYSDATE))
+			    and s.STATUS='E'
+			    and nvl(u.ACTIVE_FROM, SYSDATE)<= SYSDATE
+			    and nvl(u.ACTIVE_TO, SYSDATE)>= SYSDATE
+			    and nvl(s.ACTIVE_FROM, SYSDATE)<= SYSDATE
+			    and nvl(s.ACTIVE_TO, SYSDATE)>= SYSDATE)]]>
+		</createView>
+		<rollback>
+			<dropView viewName="ACTIVE_USER_ROLE_V"/>
+		</rollback>
+</changeSet>
+
 <changeSet author="emtudorsm" id="postgresqlAurView_change1" runOnChange="true" dbms="postgresql">
 	<dropView viewName="active_user_feature_resource_v"/>
 	<dropView viewName="active_user_feature_v"/>
@@ -93,7 +138,33 @@
 	</createIndex>
 </changeSet>
 
- <changeSet author="emtudorsm" id="postgresqlAusView_update1" runOnChange="true" dbms="postgresql">
+<changeSet author="emtudorsm" id="oracleAusView_update1" runOnChange="true" dbms="oracle">
+    <dropView viewName="ACTIVE_USER_SCOPE_V"/>
+	<createView viewName="ACTIVE_USER_SCOPE_V">
+      <![CDATA[select distinct USER_NAME,APPLICATION_NAME,SCOPE_NAME,SCOPE_ID,DATA_FROM,DATA_TO from (
+          select u.USER_NAME,a.NAME as APPLICATION_NAME,s.NAME as SCOPE_NAME,s.SCOPE_ID,s.DATA_FROM,s.DATA_TO
+          from USER_T u,
+               USER_CONTEXT_T ur,
+               SCOPE_T s
+		  INNER JOIN SCOPE_DATASET_T sd on sd.scope_id=s.scope_id
+      	  INNER JOIN DATASET_T ds on ds.DATASET_ID=sd.DATASET_ID
+          INNER JOIN APPLICATION_T a on a.APPLICATION_ID=ds.APPLICATION_ID      	
+          where ur.USER_ID=u.USER_ID
+            and ur.SCOPE_ID=s.SCOPE_ID
+            and (u.STATUS='E' or (u.STATUS='L' and u.LOCKOUT_TO<=SYSDATE))
+            and s.STATUS='E'
+            and nvl(u.ACTIVE_FROM, SYSDATE)<= SYSDATE
+            and nvl(u.ACTIVE_TO, SYSDATE)>= SYSDATE
+            and nvl(s.ACTIVE_FROM, SYSDATE)<= SYSDATE
+            and nvl(s.ACTIVE_TO, SYSDATE)>= SYSDATE
+        )]]>
+    </createView>
+    <rollback>
+      <dropView viewName="ACTIVE_USER_SCOPE_V"/>
+    </rollback>
+  </changeSet>
+  
+  <changeSet author="emtudorsm" id="postgresqlAusView_update1" runOnChange="true" dbms="postgresql">
   	<dropView viewName="ACTIVE_USER_SCOPE_V"/>
   <createView viewName="ACTIVE_USER_SCOPE_V">
     <![CDATA[select distinct USER_NAME,APPLICATION_NAME,SCOPE_NAME,SCOPE_ID,DATA_FROM,DATA_TO from (

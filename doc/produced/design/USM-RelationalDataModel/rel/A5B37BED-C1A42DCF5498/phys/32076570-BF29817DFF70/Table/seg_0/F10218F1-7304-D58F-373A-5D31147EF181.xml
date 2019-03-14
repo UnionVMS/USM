@@ -1,0 +1,71 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev11g class="oracle.dbtools.crest.model.design.storage.oracle.v11g.TableProxyOraclev11g" name="DATABASECHANGELOG" directorySegmentName="seg_0" id="F10218F1-7304-D58F-373A-5D31147EF181">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:00 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<schemaObject>335F9972-90EC-227F-06DD-05E9B1A8D3B3</schemaObject>
+<logging>YES</logging>
+<partitionedRowMovement>DISABLE</partitionedRowMovement>
+<segment>85370118-A1B7-F25E-0E55-98E4FF418543</segment>
+<tableSpace>B9A9A525-B3DC-B7B5-1847-2C1A9BB8DFA5</tableSpace>
+<temporaryChanged>false</temporaryChanged>
+<accessDriverType>oracle_loader</accessDriverType>
+<rejectLimit></rejectLimit>
+<columnProxies itemClass="oracle.dbtools.crest.model.design.storage.oracle.v12c.ColumnProxyOraclev12c">
+<ColumnProxy name="TAG" id="066BE4B9-C1D1-DDB7-52D4-9560CD94FB42">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:06 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="EXECTYPE" id="088EACB6-D42E-673F-8335-100DA31BD193">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:06 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="LIQUIBASE" id="1643B1F9-6545-1FD7-505B-A90073011324">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:06 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ID" id="34C1DC45-FB02-E46B-6CBF-0CBCAB78F9FE">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:06 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="AUTHOR" id="69511AB1-6656-F18C-24E3-7A997713DC05">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:06 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="COMMENTS" id="93BF0088-4BB5-4B1B-3589-C0E5DC5D4363">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:06 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="DATEEXECUTED" id="957E284F-88B9-71D7-0CEA-9741FC800436">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:06 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="MD5SUM" id="98711D48-28B8-1CA0-3C72-3656913FE43A">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:06 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="FILENAME" id="B16EE267-10EC-932D-E297-B2D21FE9BEDE">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:06 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="DESCRIPTION" id="B2887891-5328-2D3F-8441-DCC3C182CE89">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:06 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ORDEREXECUTED" id="B77DE4DA-6FC4-A483-3E84-0DDFF99D52BD">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:06 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+</TableProxyOraclev11g>

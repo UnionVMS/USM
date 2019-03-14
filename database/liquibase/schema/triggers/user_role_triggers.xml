@@ -4,7 +4,22 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
 
-        
+   <changeSet author="emtudorsm" id="oracleUserRoleTrigger1" runOnChange="true" dbms="oracle">
+   	  <createProcedure>
+		 create trigger USER_ROLE_BI
+		    before insert on USER_ROLE_T
+		    for each row
+		begin
+		  if :new.USER_ROLE_ID is null
+		  then
+		    select SQ_USER_ROLE.nextval into :new.USER_ROLE_ID from dual;
+		  end if;
+		end;
+	  </createProcedure>
+	  <rollback>
+	  	drop trigger user_role_bi;
+	  </rollback>
+	   </changeSet>     
    
    
 

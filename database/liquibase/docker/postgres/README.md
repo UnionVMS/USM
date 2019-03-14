@@ -91,7 +91,7 @@ To stop and remove the docker container run
 ## Linking to this container
 
 The maven configuration of the usm-pg-db image includes setting the hostname to
-cygnus-test.private. This means that is possible for a
+cygnus-test.athens.intrasoft-intl.private. This means that is possible for a
 separate application server container to link to this container and use this db
 in place of the cygnus-test configured datasource. See the USM administration
 service.

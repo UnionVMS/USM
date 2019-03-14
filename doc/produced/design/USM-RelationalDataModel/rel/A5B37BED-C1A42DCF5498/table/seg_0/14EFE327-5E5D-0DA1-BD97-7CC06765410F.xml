@@ -1,0 +1,222 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="14EFE327-5E5D-0DA1-BD97-7CC06765410F" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="FEATURE_T">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FEATURE_T</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:01 UTC</createdTime>
+<commentInRDBMS>Holds identification for a business application feature.</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="FEATURE_ID" id="6077B53F-3E37-86BB-64A8-AA1C6977C8C5">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>FEATURE_T</sourceObjSchema>
+<sourceObjName>FEATURE_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:09 UTC</createdTime>
+<commentInRDBMS>Unique record id (primary key)</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="NAME" id="C291E9A3-823B-5277-B6DA-9FD22666CC26">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>FEATURE_T</sourceObjSchema>
+<sourceObjName>NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:09 UTC</createdTime>
+<commentInRDBMS>The (application unique) name of the feature</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>128 BYTE</dataTypeSize>
+<ownDataTypeParameters>128 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="DESCRIPTION" id="B0BEF767-08D7-A3E5-1F2D-710EDF2DF5CB">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>FEATURE_T</sourceObjSchema>
+<sourceObjName>DESCRIPTION</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:09 UTC</createdTime>
+<commentInRDBMS>A free-text description of the feature</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>512 BYTE</dataTypeSize>
+<ownDataTypeParameters>512 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="APPLICATION_ID" id="367ED480-870B-AA48-C60E-CBD88745DA70">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>FEATURE_T</sourceObjSchema>
+<sourceObjName>APPLICATION_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:09 UTC</createdTime>
+<commentInRDBMS>The identifier of the application implementing the feature</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="07F7CD58-B8C0-63F5-BC86-6F4DE4656C19" referredColumn="C997514A-639D-95D5-28C7-A48600AF328D"/>
+</associations>
+</Column>
+<Column name="CREATED_BY" id="E26D433B-059A-716B-9E93-A6FA697E54CA">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>FEATURE_T</sourceObjSchema>
+<sourceObjName>CREATED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:09 UTC</createdTime>
+<commentInRDBMS>The name of the user who created the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_ON" id="A6B798FC-12F7-338E-865B-F185A49FF978">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>FEATURE_T</sourceObjSchema>
+<sourceObjName>CREATED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:09 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was created</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_BY" id="A1235B76-F5C0-FA00-32E6-BA8D3F447058">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>FEATURE_T</sourceObjSchema>
+<sourceObjName>MODIFIED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:09 UTC</createdTime>
+<commentInRDBMS>The name of the user who performed the last update on the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_ON" id="41BA1EE6-B113-49E3-8B13-4F9C307A8E20">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>FEATURE_T</sourceObjSchema>
+<sourceObjName>MODIFIED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:10 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was last updated</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="GROUP_NAME" id="69814813-1123-E53D-9CD9-6A3337A32067">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>FEATURE_T</sourceObjSchema>
+<sourceObjName>GROUP_NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:10 UTC</createdTime>
+<commentInRDBMS>It helps grouping the features for a faster search</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>128 BYTE</dataTypeSize>
+<ownDataTypeParameters>128 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="4AD7543B-7E35-5CD5-9F81-E77045666804" name="PK_FEATURE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_FEATURE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:30 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6077B53F-3E37-86BB-64A8-AA1C6977C8C5"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="4151606B-F665-514B-F42B-D38C6D3EE1FC" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="PK_FEATURE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_FEATURE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:21 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6077B53F-3E37-86BB-64A8-AA1C6977C8C5"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="FECCE0F6-344B-7C11-C187-1DF4BA61DC6E" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="UK_FEATURE_APP">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>UK_FEATURE_APP</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:21 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="367ED480-870B-AA48-C60E-CBD88745DA70"/>
+<colUsage columnID="C291E9A3-823B-5277-B6DA-9FD22666CC26"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="663255EC-6F4C-DD33-E7F4-0310B80BFAAC" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="FK_FEATURE_APP">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_FEATURE_APP</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:21 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="367ED480-870B-AA48-C60E-CBD88745DA70"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="8A424564-7083-2A1D-9EB3-E447941C8843" name="FEATURE_APPLICATION_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:55 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="367ED480-870B-AA48-C60E-CBD88745DA70"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

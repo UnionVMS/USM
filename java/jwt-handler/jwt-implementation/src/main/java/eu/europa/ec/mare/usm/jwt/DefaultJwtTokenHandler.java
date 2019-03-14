@@ -1,17 +1,3 @@
-/*
- * Developed by the European Commission - Directorate General for Maritime 
- * Affairs and Fisheries © European Union, 2015-2016.
- * 
- * This file is part of the Integrated Fisheries Data Management (IFDM) Suite.
- * The IFDM Suite is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or any later version.
- * The IFDM Suite is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details. You should have received a copy of the GNU General Public 
- * License along with the IFDM Suite. If not, see http://www.gnu.org/licenses/.
- */
 package eu.europa.ec.mare.usm.jwt;
 
 import io.jsonwebtoken.Claims;
@@ -49,20 +35,18 @@ import org.slf4j.LoggerFactory;
  * of JWT tokens.
  */
 
-@Singleton(name = "secureJwtHandler")
-//todo: verify how we can avoid a global entry or alternatively set it up in a different place
-// to allow for testing
-//@EJB(name = "java:global/UsmJwtHandler", beanInterface = JwtTokenHandler.class)
+@Singleton
 @Startup
-public class DefaultJwtTokenHandler implements eu.europa.ec.mare.usm.jwt.JwtTokenHandler {
+public class DefaultJwtTokenHandler implements JwtTokenHandler {
   private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenHandler.class);
   private static final String PROPERTIES_FILE = "/jwt.properties";
+  private static final String SYSTEM_KEY = "USM.secretKey";
   private static final String PROP_KEY = "secretKey";
   private static final String PROP_SUBJECT = "subject";
   private static final String PROP_ISSUER = "issuer";
   private static final String PROP_ID = "id";
   private static final long DEFAULT_TTL = (30 * 60 * 1000);
-  private static final String DEFAULT_KEY = "aSharedSecretKey";
+  private static final String DEFAULT_KEY = "usmSecretKey";
   private static final String DEFAULT_ID = "usm/authentication";
   private static final String DEFAULT_ISSUER = "usm";
   private static final String DEFAULT_SUBJECT = "authentication";
@@ -92,7 +76,7 @@ public class DefaultJwtTokenHandler implements eu.europa.ec.mare.usm.jwt.JwtToke
             + "'. Using default values", e);
       }
     } else {
-      LOGGER.info("Class-path resource: '" + PROPERTIES_FILE
+      LOGGER.debug("Class-path resource: '" + PROPERTIES_FILE
           + "' does not exist. Using default values");
     }
     initKey();
@@ -100,7 +84,7 @@ public class DefaultJwtTokenHandler implements eu.europa.ec.mare.usm.jwt.JwtToke
   
   @PreDestroy
   public void destroy(){
-    removeKey();
+    //removeKey();
   }
 
   /**
@@ -112,7 +96,7 @@ public class DefaultJwtTokenHandler implements eu.europa.ec.mare.usm.jwt.JwtToke
    * null or empty
    */
   public String createToken(String userName) {
-    LOGGER.info("createToken(" +  userName + ") - (ENTER)");
+    LOGGER.debug("createToken(" +  userName + ") - (ENTER)");
     
     String ret = null;
     
@@ -131,7 +115,7 @@ public class DefaultJwtTokenHandler implements eu.europa.ec.mare.usm.jwt.JwtToke
       ret = signClaims(claims);
     }
     
-    LOGGER.info("createToken() - (LEAVE)");
+    LOGGER.debug("createToken() - (LEAVE)");
     return ret;
   }
 
@@ -144,7 +128,7 @@ public class DefaultJwtTokenHandler implements eu.europa.ec.mare.usm.jwt.JwtToke
    * provided input was invalid or already expired.
    */
   public String extendToken(String token) {
-    LOGGER.info("extendToken(" + token + ") - (ENTER)");
+    LOGGER.debug("extendToken(" + token + ") - (ENTER)");
     
     String ret = null;
     Claims claims = parseClaims(token);
@@ -157,7 +141,7 @@ public class DefaultJwtTokenHandler implements eu.europa.ec.mare.usm.jwt.JwtToke
       ret = signClaims(claims);
     }
     
-    LOGGER.info("extendToken() - (LEAVE)");
+    LOGGER.debug("extendToken() - (LEAVE)");
     return ret;
   }
 
@@ -171,7 +155,7 @@ public class DefaultJwtTokenHandler implements eu.europa.ec.mare.usm.jwt.JwtToke
    */
   public String parseToken(String token) 
   {
-    LOGGER.info("parseToken(" + token + ") - (ENTER)");
+    LOGGER.debug("parseToken(" + token + ") - (ENTER)");
     
     String ret = null;
 
@@ -180,7 +164,7 @@ public class DefaultJwtTokenHandler implements eu.europa.ec.mare.usm.jwt.JwtToke
       ret = (String) claims.get(USER_NAME);
     }
 
-    LOGGER.info("parseToken() - (LEAVE)");
+    LOGGER.debug("parseToken() - (LEAVE)");
     return ret;
   }
 
@@ -239,39 +223,52 @@ public class DefaultJwtTokenHandler implements eu.europa.ec.mare.usm.jwt.JwtToke
 
   static private void initKey() {
     // get the key from properties if set
-    String key = properties.getProperty(PROP_KEY);
+    
+    String key = System.getProperty(SYSTEM_KEY);
     String JNDIkey = "USM/"+PROP_KEY;
-    if (key == null) {
-
-      LOGGER.info("no key defined in property. Checking in JNDI context");
-      // let's look if a key exist in JNDI
-      try {      
-        key = (String) jndiUtil.lookup(JNDIkey);
-        LOGGER.info("Key bound to JNDI name " + PROP_KEY);
-      } catch (Exception e) {
-        LOGGER.error("Error looking up key",e);
-      }
+    String source = "System property "+SYSTEM_KEY;
+    if (key == null || key.isEmpty()) {
+      LOGGER.debug("no key defined in system property " + SYSTEM_KEY
+          + ". Checking in properties file");
+      key = properties.getProperty(PROP_KEY);
+      source = "Read property "+PROP_KEY;
       if (key == null || key.isEmpty()) {
-
-        LOGGER.info("no key in JNDI context. Generating a random one");
-        // get a random key
+        LOGGER.debug("no key defined in property. Checking in JNDI context");
+        // let's look if a key exist in JNDI
         try {
-          key = genkey();
+          key = jndiUtil.lookup(JNDIkey).toString();
+          source = "JNDI key binding "+JNDIkey;
+          LOGGER.debug("Found Key bound to JNDI name " + JNDIkey + " with value "+ key);
         } catch (Exception e) {
-          // TODO: handle exception
-          LOGGER.error("Error Generating secret key. Using default value", e);
-          key = DEFAULT_KEY;
+          LOGGER.debug("No secret key bound to JNDI name " + JNDIkey);
+        }
+        if (key == null || key.isEmpty()) {
+          source = "Generated";
+          LOGGER.debug("no key in JNDI context. Generating a random one");
+          // get a random key
+          try {
+            key = genkey();
+          } catch (Exception e) {
+            // TODO: handle exception
+            LOGGER.error("Error Generating secret key. Using default value", e);
+            key = DEFAULT_KEY;
+            source = "DEFAULT_KEY";
+          }
         }
       }
     }
-    LOGGER.info("Setting secret key to: " + key);
-    try {      
-      jndiUtil.createJNDI(JNDIkey, key);
-      LOGGER.info("Key bound to JNDI name " + PROP_KEY);
-    } catch (Exception e) {
-      LOGGER.error("Error binding key",e);
+    LOGGER.debug("Secret Key set to: " + key);
+    LOGGER.info("Secret key source: " + source);
+    if(source!= ("JNDI key binding "+JNDIkey) ){
+      try {
+        jndiUtil.createJNDI(JNDIkey, key);
+        LOGGER.debug("Key now bound to JNDI name " + JNDIkey);
+      } catch (Exception e) {
+        LOGGER.error("Error binding key",e);
+      }
     }
     secretKey = DatatypeConverter.parseBase64Binary(key);
+    LOGGER.debug("parsed Base64 key: " + secretKey);
   }
   
   
@@ -282,10 +279,10 @@ public class DefaultJwtTokenHandler implements eu.europa.ec.mare.usm.jwt.JwtToke
       // let's look if a key exist in JNDI
       try {      
         key = (String) jndiUtil.lookup(JNDIkey);
-        LOGGER.info("Key bound to JNDI name " + PROP_KEY);
+        LOGGER.debug("Key bound to JNDI name " + PROP_KEY);
         try {      
           jndiUtil.unbind(JNDIkey);
-          LOGGER.info("Unbound JNDI name " + PROP_KEY);
+          LOGGER.debug("Unbound JNDI name " + PROP_KEY);
         } catch (Exception e) {
           LOGGER.error("Error unbinding key",e);
         }

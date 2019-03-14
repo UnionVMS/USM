@@ -1,0 +1,56 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev11g class="oracle.dbtools.crest.model.design.storage.oracle.v11g.TableProxyOraclev11g" name="SCOPE_DATASET_T" directorySegmentName="seg_0" id="514AAA7D-0325-819E-4B4B-59C9CA46631E">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:17 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<schemaObject>A56DEBB1-9B79-3B43-AF94-3B01A4745368</schemaObject>
+<logging>YES</logging>
+<partitionedRowMovement>DISABLE</partitionedRowMovement>
+<segment>93BD8F6E-8021-D21A-0907-452BA5F323DA</segment>
+<tableSpace>D6DEC855-E88D-B30F-3A97-377D18BE5B40</tableSpace>
+<temporaryChanged>false</temporaryChanged>
+<accessDriverType>oracle_loader</accessDriverType>
+<rejectLimit></rejectLimit>
+<columnProxies itemClass="oracle.dbtools.crest.model.design.storage.oracle.v12c.ColumnProxyOraclev12c">
+<ColumnProxy name="DATASET_ID" id="C4B3EE68-E0EE-A96E-B84A-5F54C88F295A">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:35 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="SCOPE_ID" id="C5681613-153A-B8E6-16A2-7AF1560D42A4">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:35 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<indexProxies>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="FK_SCOPE_DATASET_SCOPE" id="08AB01F8-B35F-281E-EB64-689D66DCA5BB">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:46 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<schemaObject>A56DEBB1-9B79-3B43-AF94-3B01A4745368</schemaObject>
+<segment>16EBF726-7AD6-01B5-3227-B330856D3085</segment>
+<tableSpace>D6DEC855-E88D-B30F-3A97-377D18BE5B40</tableSpace>
+</IndexProxy>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="FK_SCOPE_DATASET_DATASET" id="F34ABD31-7D5D-0C45-6594-3BFB39AC1C3D">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:45 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<schemaObject>A56DEBB1-9B79-3B43-AF94-3B01A4745368</schemaObject>
+<segment>16EBF726-7AD6-01B5-3227-B330856D3085</segment>
+<tableSpace>D6DEC855-E88D-B30F-3A97-377D18BE5B40</tableSpace>
+</IndexProxy>
+</indexProxies>
+<foreignKeys>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="SCOPE_DS_SCOPE_FK" id="9A3F2CFC-78A3-6B96-1CA9-77CB46FFE4C5">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:27 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ForeignKey>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="SCOPE_DS_DATASET_FK" id="DA27AFE2-1E36-CB15-CAE1-A0AAA2A97220">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:27 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+</ForeignKey>
+</foreignKeys>
+</TableProxyOraclev11g>

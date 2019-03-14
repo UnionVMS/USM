@@ -1,0 +1,101 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="55C61B7B-6127-7503-EFDD-B7878300AA2C" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="DATABASECHANGELOGLOCK">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>DATABASECHANGELOGLOCK</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:00 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ID" id="FF4B305F-B3BA-103F-C57A-DA6F39345ECB">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>DATABASECHANGELOGLOCK</sourceObjSchema>
+<sourceObjName>ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:07 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LOCKED" id="DC7F38B5-0064-076B-CE6B-6AD4833F2469">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>DATABASECHANGELOGLOCK</sourceObjSchema>
+<sourceObjName>LOCKED</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:07 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>1</dataTypePrecision>
+<ownDataTypeParameters>,1,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LOCKGRANTED" id="8A11F25F-C89A-6DE5-87D0-7DC7ABE3CFCA">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>DATABASECHANGELOGLOCK</sourceObjSchema>
+<sourceObjName>LOCKGRANTED</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:07 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LOCKEDBY" id="91CB2692-F34D-538C-5BD1-AA074D552438">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>DATABASECHANGELOGLOCK</sourceObjSchema>
+<sourceObjName>LOCKEDBY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:07 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255 BYTE</dataTypeSize>
+<ownDataTypeParameters>255 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="FD58B1CB-FD91-953B-8C82-716C8B1AD987" name="PK_DATABASECHANGELOGLOCK">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_DATABASECHANGELOGLOCK</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:28 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FF4B305F-B3BA-103F-C57A-DA6F39345ECB"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="E9061E0A-79BE-38DA-4198-CBFF32D47BC3" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="PK_DATABASECHANGELOGLOCK">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_DATABASECHANGELOGLOCK</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:19 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FF4B305F-B3BA-103F-C57A-DA6F39345ECB"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

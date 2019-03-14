@@ -1,0 +1,252 @@
+swagger: '2.0'
+info:
+  version: 1.0-SNAPSHOT
+  title: USM-administration
+basePath: /rest
+paths:
+  /persons:
+    get:
+      description: Retrieves a list of persons that meet the provided criteria
+      operationId: findPersons
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: offset 
+          description: Offset the list of returned results by this amount. Default is zero.
+          in: query
+          type: integer
+          format: int32
+        - name: limit 
+          description: Number of items to retrieve. Default is 10, maximum is 100
+          in: query
+          type: integer
+          format: int32
+        - name: sortColumn 
+          description: Sort column for the retrieved list of data. Default is 'name'
+          in: query
+          type: string
+        - name: sortDirection 
+          description: Sort column for the retrieved list of data (ASC, DESC). Default is'DESC'
+          in: query
+          type: string
+        - name: firstName
+          description: the person first name
+          in: query
+          type: string
+        - name: lastName
+          description: the person last name
+          in: query
+          type: string
+      responses:
+        '200':
+          description: persons response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/person'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+     description: Create a new person
+     operationId: createPerson
+     produces:
+        - application/json
+     parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: person
+          in: body
+          description: The new person to be created
+          required: true
+          schema:
+            $ref: '#/definitions/person'
+     responses:
+         '200':
+           description: person response
+           schema:
+             $ref: '#/definitions/person'
+         default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    put:
+     description: Updates person details
+     operationId: updatePersonDetails
+     produces:
+        - application/json
+     parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: personDetails
+          in: body
+          description: The person details to be updated
+          required: true
+          schema:
+            $ref: '#/definitions/personDetails'
+     responses:
+         '200':
+           description: person details response
+           schema:
+             $ref: '#/definitions/personDetails'
+         default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /persons/{personId}:
+    get:
+      description: Retrieves a person according to the provided personId
+      operationId: getPersons
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: personId
+          in: path
+          description: The requested person id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: persons response
+          schema:
+              $ref: '#/definitions/person'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: Deletes an existing person
+      operationId: deletePerson
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+        - name: personId
+          in: path
+          description: The requested person id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: response of the operation
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /persons/names:
+    get:
+      description: Retrieves the list of person's names
+      operationId: getPersonNames
+      produces:
+        - application/json
+      parameters:
+        - name: authorisation
+          description: the JWT token authenticating the service requester
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: persons response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/personList'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'  
+definitions:
+  person:
+    required:
+      - personId
+      - firstName
+      - lastName
+      - phoneNumber
+      - mobileNumber
+      - faxNumber
+      - email
+    properties:
+      personId:
+        type: integer
+        format: int64
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        type: string
+      mobileNumber:
+        type: string
+      faxNumber:
+        type: string
+      email:
+        type: string
+  personList:
+    required:
+      - personId
+      - firstName
+      - lastName
+      - email
+    properties:
+      personId:
+        type: integer
+        format: int64
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string  
+  personDetails:
+    required:
+      - password
+    properties:
+      userName:
+        type: string
+      password:
+        type: string
+      phoneNumber:
+        type: integer
+        format: int32
+      mobileNumber:
+        type: integer
+        format: int32
+      faxNumber:
+        type: integer
+        format: int32
+      eMail:
+        type: string
+  errorModel:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string

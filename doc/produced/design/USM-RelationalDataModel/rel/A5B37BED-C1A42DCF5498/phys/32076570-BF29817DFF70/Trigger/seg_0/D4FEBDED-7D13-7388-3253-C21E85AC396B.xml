@@ -1,0 +1,11 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="ROLE_BI" directorySegmentName="seg_0" id="D4FEBDED-7D13-7388-3253-C21E85AC396B">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:06 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<actions>INSERT</actions>
+<body>begin&lt;br/&gt;			  if :new.role_ID is null&lt;br/&gt;			  then&lt;br/&gt;			    select SQ_role.nextval into :new.role_ID from dual;&lt;br/&gt;			  end if;&lt;br/&gt;			&lt;br/&gt;			  /* Fill date and user created */&lt;br/&gt;			  IF :NEW.created_on IS NULL&lt;br/&gt;			  THEN&lt;br/&gt;			      :NEW.created_on := SYSDATE;&lt;br/&gt;			  END IF;&lt;br/&gt;			&lt;br/&gt;			  IF :NEW.created_by IS NULL&lt;br/&gt;			  THEN&lt;br/&gt;			      :NEW.created_by := UPPER(sys_context(&apos;USERENV&apos;, &apos;OS_USER&apos;));&lt;br/&gt;			  ELSE&lt;br/&gt;			      :NEW.created_by := UPPER(:NEW.created_by);&lt;br/&gt;			  END IF;&lt;br/&gt;			end;</body>
+<triggerTime>BEFORE</triggerTime>
+<owner>B29E3ADA-8CE1-536F-FF14-0245B39BB464</owner>
+<table>B1772503-63A2-F85F-8EE1-DD31D169FE7F</table>
+</TriggerOraclev10g>

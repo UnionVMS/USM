@@ -1,0 +1,97 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="514AAA7D-0325-819E-4B4B-59C9CA46631E" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="SCOPE_DATASET_T">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>SCOPE_DATASET_T</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:17 UTC</createdTime>
+<commentInRDBMS>Holds an association between a scope and a data set.</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="SCOPE_ID" id="C5681613-153A-B8E6-16A2-7AF1560D42A4">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>SCOPE_DATASET_T</sourceObjSchema>
+<sourceObjName>SCOPE_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:35 UTC</createdTime>
+<commentInRDBMS>The identifier of the scope</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="FEEA0105-892D-B2C5-E1CC-6253F078EC01" referredColumn="3A040172-EB6D-3633-518E-6B7232A9DD53"/>
+</associations>
+</Column>
+<Column name="DATASET_ID" id="C4B3EE68-E0EE-A96E-B84A-5F54C88F295A">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>SCOPE_DATASET_T</sourceObjSchema>
+<sourceObjName>DATASET_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:35 UTC</createdTime>
+<commentInRDBMS>The identifier of the data set</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="A1D40518-77E5-0564-CBD6-B33BD28FC099" referredColumn="A29BC672-70DA-EF96-99ED-4E34DFC8F6D8"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="F34ABD31-7D5D-0C45-6594-3BFB39AC1C3D" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="FK_SCOPE_DATASET_DATASET">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_SCOPE_DATASET_DATASET</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:45 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C4B3EE68-E0EE-A96E-B84A-5F54C88F295A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="08AB01F8-B35F-281E-EB64-689D66DCA5BB" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="FK_SCOPE_DATASET_SCOPE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_SCOPE_DATASET_SCOPE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:46 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C5681613-153A-B8E6-16A2-7AF1560D42A4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="DA27AFE2-1E36-CB15-CAE1-A0AAA2A97220" name="SCOPE_DS_DATASET_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:27 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C4B3EE68-E0EE-A96E-B84A-5F54C88F295A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="9A3F2CFC-78A3-6B96-1CA9-77CB46FFE4C5" name="SCOPE_DS_SCOPE_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:27 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C5681613-153A-B8E6-16A2-7AF1560D42A4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -1,17 +1,3 @@
-/*
- * Developed by the European Commission - Directorate General for Maritime 
- * Affairs and Fisheries © European Union, 2015-2016.
- * 
- * This file is part of the Integrated Fisheries Data Management (IFDM) Suite.
- * The IFDM Suite is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or any later version.
- * The IFDM Suite is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details. You should have received a copy of the GNU General Public 
- * License along with the IFDM Suite. If not, see http://www.gnu.org/licenses/.
- */
 package eu.europa.ec.mare.usm.information.rest.service;
 
 import com.sun.jersey.api.client.WebResource;
@@ -20,8 +6,6 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
-
 import eu.europa.ec.mare.usm.information.domain.ContactDetails;
 import eu.europa.ec.mare.usm.information.domain.Organisation;
 import eu.europa.ec.mare.usm.information.domain.UserContext;
@@ -30,9 +14,6 @@ import eu.europa.ec.mare.usm.information.service.InformationService;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
 import javax.ws.rs.core.MediaType;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
@@ -52,17 +33,6 @@ public class InformationRestClient  {
   public InformationRestClient(String uri) 
   {
     ClientConfig config = new DefaultClientConfig();
-	try {
-		config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
-				new HTTPSProperties(new HostnameVerifier() {
-					@Override
-					public boolean verify(String hostname, SSLSession session) {
-						return true;
-					}
-				}, DomainTrustManager.getSslContext()));
-	} catch (Exception e) {
-	}
-
     config.getClasses().add(JacksonJsonProvider.class);
     client = Client.create(config);
     webResource = client.resource(uri);

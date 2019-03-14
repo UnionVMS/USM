@@ -83,6 +83,86 @@
 		</rollback>
 	</changeSet>
 
+	<changeSet author="emtudorsm" id="changeOptionTableOracle" dbms="oracle">
+		<dropView viewName="user_profile_v" />
+		<addColumn tableName="option_t">
+			<column name="NEW_COLUMN" type="BLOB" remarks="The default value of this option" />
+		</addColumn>
+		<sql>
+			update OPTION_T set NEW_COLUMN=utl_raw.cast_to_raw(DEFAULT_VALUE);
+		</sql>
+
+		<dropColumn tableName="OPTION_T" columnName="DEFAULT_VALUE" />
+		<renameColumn tableName="OPTION_T" oldColumnName="NEW_COLUMN" newColumnName="DEFAULT_VALUE" />
+
+	 <addColumn tableName="PREFERENCE_T">
+			<column name="NEW_COLUMN" type="BLOB" remarks="The option value" />
+		</addColumn>
+		<sql>
+			update PREFERENCE_T set NEW_COLUMN=utl_raw.cast_to_raw(OPTION_VALUE);
+		</sql>
+		<dropColumn tableName="PREFERENCE_T" columnName="OPTION_VALUE" />
+		<renameColumn tableName="PREFERENCE_T" oldColumnName="NEW_COLUMN" newColumnName="OPTION_VALUE" />
+		<addNotNullConstraint columnName="OPTION_VALUE" tableName="PREFERENCE_T" />
+ 
+		 <createView viewName="user_profile_v">
+		 select a.NAME as APPLICATION_NAME, u.USER_NAME, o.NAME as OPTION_NAME, p.OPTION_VALUE, 'N' as IS_DEFAULT, uc.USER_CONTEXT_ID 
+			from OPTION_T o,APPLICATION_T a,PREFERENCE_T p
+			 INNER JOIN USER_CONTEXT_T UC on uc.USER_CONTEXT_ID=p.user_context_id
+		     INNER JOIN USER_T u on u.user_id=uc.USER_ID
+		  	WHERE o.application_id = a.application_id AND p.option_id = o.option_id
+			UNION ALL
+			select a.NAME as APPLICATION_NAME, u.USER_NAME, o.NAME as OPTION_NAME, o.DEFAULT_VALUE as OPTION_VALUE, 'Y' as IS_DEFAULT, null as 
+			from USER_T u,OPTION_T o,APPLICATION_T a
+			where o.APPLICATION_ID=a.APPLICATION_ID
+			  and o.DEFAULT_VALUE is not null
+			  and not exists(select 1 from PREFERENCE_T p 
+							INNER JOIN USER_CONTEXT_T UC on uc.USER_CONTEXT_ID=p.user_context_id
+							WHERE p.OPTION_ID=o.OPTION_ID and uc.user_id=u.user_id)
+	  </createView> 
+		<rollback>
+			<dropView viewName="user_profile_v" />
+			<modifyDataType newDataType="VARCHAR(32)" columnName="DEFAULT_VALUE" tableName="OPTION_T" />
+			<modifyDataType newDataType="VARCHAR(32)" columnName="OPTION_VALUE"  tableName="PREFERENCE_T" />
+
+			<addColumn tableName="option_t">
+				<column name="NEW_COLUMN" type="VARCHAR2" remarks="The default value of this option" />
+			</addColumn>
+			<sql>
+				update OPTION_T set NEW_COLUMN=utl_raw.cast_to_varchar2(DEFAULT_VALUE);
+			</sql>
+
+			<dropColumn tableName="OPTION_T" columnName="DEFAULT_VALUE" />
+			<renameColumn tableName="OPTION_T" oldColumnName="NEW_COLUMN"
+				newColumnName="DEFAULT_VALUE" />
+
+			<addColumn tableName="PREFERENCE_T">
+				<column name="NEW_COLUMN" type="VARCHAR2" remarks="The option value" />
+			</addColumn>
+			<sql>
+				update PREFERENCE_T set NEW_COLUMN=utl_raw.cast_to_varchar2(OPTION_VALUE);
+			</sql>
+			<dropColumn tableName="PREFERENCE_T" columnName="OPTION_VALUE" />
+			<renameColumn tableName="PREFERENCE_T" oldColumnName="NEW_COLUMN" newColumnName="OPTION_VALUE" />
+			<addNotNullConstraint columnName="OPTION_VALUE" tableName="PREFERENCE_T" />
+
+			<createView viewName="user_profile_v">
+		 select a.NAME as APPLICATION_NAME, u.USER_NAME, o.NAME as OPTION_NAME, p.OPTION_VALUE, 'N' as IS_DEFAULT, uc.USER_CONTEXT_ID 
+			from OPTION_T o,APPLICATION_T a,PREFERENCE_T p
+			 INNER JOIN USER_CONTEXT_T UC on uc.USER_CONTEXT_ID=p.user_context_id
+		     INNER JOIN USER_T u on u.user_id=uc.USER_ID
+		  	WHERE o.application_id = a.application_id AND p.option_id = o.option_id
+			UNION ALL
+			select a.NAME as APPLICATION_NAME, u.USER_NAME, o.NAME as OPTION_NAME, o.DEFAULT_VALUE as OPTION_VALUE, 'Y' as IS_DEFAULT, null as 
+			from USER_T u,OPTION_T o,APPLICATION_T a
+			where o.APPLICATION_ID=a.APPLICATION_ID
+			  and o.DEFAULT_VALUE is not null
+			  and not exists(select 1 from PREFERENCE_T p 
+							INNER JOIN USER_CONTEXT_T UC on uc.USER_CONTEXT_ID=p.user_context_id
+							WHERE p.OPTION_ID=o.OPTION_ID and uc.user_id=u.user_id)
+		</createView>
+		</rollback>
+	</changeSet> 
 
 
 </databaseChangeLog>

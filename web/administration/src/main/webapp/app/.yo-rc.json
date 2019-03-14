@@ -1,0 +1,81 @@
+{
+  "generator-cg-angular": {
+    "uirouter": false,
+    "partialDirectory": "partial/",
+    "modalDirectory": "partial/",
+    "directiveDirectory": "directive/",
+    "filterDirectory": "filter/",
+    "serviceDirectory": "service/",
+    "inject": {
+      "js": {
+        "file": "index.html",
+        "marker": "<!-- Add New Component JS Above -->",
+        "template": "<script src=\"<%= filename %>\"></script>"
+      },
+      "less": {
+        "relativeToModule": true,
+        "file": "<%= module %>.less",
+        "marker": "/* Add Component LESS Above */",
+        "template": "@import \"<%= filename %>\";"
+      }
+    },
+    "modules": [
+      {
+        "name": "organisations",
+        "file": "usm\\organisations\\organisations.js"
+      },
+      {
+        "name": "roles",
+        "file": "usm\\roles\\roles.js"
+      },
+      {
+        "name": "scenarios",
+        "file": "usm\\scenarios\\scenarios.js"
+      },
+      {
+        "name": "applications",
+        "file": "usm\\applications\\applications.js"
+      },
+      {
+        "name": "shared",
+        "file": "usm\\shared\\shared.js"
+      },
+      {
+        "name": "users",
+        "file": "usm\\users\\users.js"
+      },
+      {
+        "name": "account",
+        "file": "usm\\users\\account\\account.js"
+      },
+      {
+        "name": "contactDetails",
+        "file": "usm\\users\\contactDetails\\contactDetails.js"
+      },
+      {
+        "name": "userContexts",
+        "file": "usm\\users\\userContexts\\userContexts.js"
+      },
+      {
+        "name": "preferences",
+        "file": "usm\\users\\preferences\\preferences.js"
+      },
+      {
+        "name": "services",
+        "file": "usm\\shared\\services\\services.js"
+      },
+      {
+        "name": "sharedServices",
+        "file": "usm\\shared\\services\\sharedServices.js"
+      },
+      {
+        "name": "usm",
+        "file": "usm\\usm.js"
+      },
+      {
+        "name": "changes",
+        "file": "usm\\users\\changes\\changes.js"
+      }
+    ]
+  }
+}

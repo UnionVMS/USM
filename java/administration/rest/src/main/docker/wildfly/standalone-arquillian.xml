@@ -50,6 +50,13 @@
           <properties path="application-roles.properties" relative-to="jboss.server.config.dir"/>
         </authorization>
       </security-realm>
+      <security-realm name="SSLRealm">
+        <server-identities>
+            <ssl>
+                <keystore path="localhost.jks" relative-to="jboss.server.config.dir" keystore-password="changeit" alias="localhost" key-password="changeit"/>
+            </ssl>
+        </server-identities>
+      </security-realm>
     </security-realms>
     <audit-log>
       <formatters>
@@ -146,14 +153,18 @@
             <password>sa</password>
           </security>
         </datasource>
-        <datasource jta="true" jndi-name="java:/jdbc/USM2" pool-name="jdbc/USM2" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://cygnus-test.private:5432/usm2</connection-url>
+        <datasource jta="true" jndi-name="java:/jdbc/USM2" pool-name="jdbc/USM2" enabled="true" use-ccm="true" tracking="true">
+                    <connection-url>jdbc:postgresql://cygnus-dev.athens.intrasoft-intl.private:5432/usm2</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgres</driver>
                    <security>
                         <user-name>usm2</user-name>
                         <password>password</password>
                    </security>
+                    <validation>
+                        <validate-on-match>false</validate-on-match>
+                        <background-validation>false</background-validation>
+                    </validation>
                </datasource>
         <drivers>
           <driver name="h2" module="com.h2database.h2">
@@ -337,6 +348,46 @@
         <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
         <jms-queue name="UVMSAuditEventTestQueue" entries="java:/jms/queue/UVMSAuditEventTest"/>
         <jms-queue name="UVMSAuditTestQueue" entries="java:/jms/queue/UVMSAuditTest"/>
+        <jms-queue name="TestResponseQueue" entries="java:/jms/queue/TestResponseQueue" />
+        <jms-queue name="UVMSActivity" entries="java:/jms/queue/UVMSActivity" />
+        <jms-queue name="UVMSActivityEvent" entries="java:/jms/queue/UVMSActivityEvent" />
+        <jms-queue name="UVMSAsset" entries="java:/jms/queue/UVMSAsset" />
+        <jms-queue name="UVMSAssetEvent" entries="java:/jms/queue/UVMSAssetEvent" />
+        <jms-queue name="UVMSAssetModel" entries="java:/jms/queue/UVMSAssetModel" />
+        <jms-queue name="UVMSAssetNational" entries="java:/jms/queue/UVMSAssetNational" />
+        <jms-queue name="UVMSAssetXEU" entries="java:/jms/queue/UVMSAssetXEU" />
+        <jms-queue name="UVMSAudit" entries="java:/jms/queue/UVMSAudit" />
+        <jms-queue name="UVMSAuditEvent" entries="java:/jms/queue/UVMSAuditEvent" />
+        <jms-queue name="UVMSAuditModel" entries="java:/jms/queue/UVMSAuditModel" />
+        <jms-queue name="UVMSConfig" entries="java:/jms/queue/UVMSConfig" />
+        <jms-queue name="UVMSConfigEvent" entries="java:/jms/queue/UVMSConfigEvent" />
+        <jms-queue name="UVMSConfigModel" entries="java:/jms/queue/UVMSConfigModel" /> 
+        <jms-queue name="UVMSExchange" entries="java:/jms/queue/UVMSExchange" />
+        <jms-queue name="UVMSExchangeEvent" entries="java:/jms/queue/UVMSExchangeEvent" />
+        <jms-queue name="UVMSExchangeModel" entries="java:/jms/queue/UVMSExchangeModel" />
+        <jms-queue name="UVMSMobileTerminal" entries="java:/jms/queue/UVMSMobileTerminal" />
+        <jms-queue name="UVMSMobileTerminalEvent" entries="java:/jms/queue/UVMSMobileTerminalEvent" />
+        <jms-queue name="UVMSMobileTerminalModel" entries="java:/jms/queue/UVMSMobileTerminalModel" />
+        <jms-queue name="UVMSMobileTerminalNational" entries="java:/jms/queue/UVMSMobileTerminalNational" />
+        <jms-queue name="UVMSMovement" entries="java:/jms/queue/UVMSMovement" />
+        <jms-queue name="UVMSMovementEvent" entries="java:/jms/queue/UVMSMovementEvent" />
+        <jms-queue name="UVMSMovementModel" entries="java:/jms/queue/UVMSMovementModel" />
+        <jms-queue name="UVMSReporting" entries="java:/jms/queue/UVMSReporting" />
+        <jms-queue name="UVMSReportingEvent" entries="java:/jms/queue/UVMSReportingEvent" />
+        <jms-queue name="UVMSRules" entries="java:/jms/queue/UVMSRules" />
+        <jms-queue name="UVMSRulesEvent" entries="java:/jms/queue/UVMSRulesEvent" />
+        <jms-queue name="UVMSRulesModel" entries="java:/jms/queue/UVMSRulesModel" />
+        <jms-queue name="UVMSSpatial" entries="java:/jms/queue/UVMSSpatial" />
+        <jms-queue name="UVMSSpatialEvent" entries="java:/jms/queue/UVMSSpatialEvent" />
+        <jms-queue name="UVMSUpload" entries="java:/jms/queue/UVMSUpload" />
+        <jms-queue name="UVMSUploadEvent" entries="java:/jms/queue/UVMSUploadEvent" />
+        <jms-queue name="UVMSUser" entries="java:/jms/queue/UVMSUser"/>
+        <jms-queue name="UVMSUserEvent" entries="java:/jms/queue/UVMSUserEvent"/>
+        <jms-queue name="UVMSVessel" entries="java:/jms/queue/UVMSVessel" />
+        <jms-queue name="UVMSVesselEvent" entries="java:/jms/queue/UVMSVesselEvent" />
+        <jms-queue name="UVMSVesselModel" entries="java:/jms/queue/UVMSVesselModel" />
+        <jms-queue name="UVMSVesselNational" entries="java:/jms/queue/UVMSVesselNational" />
+        <jms-queue name="UVMSVesselXEU" entries="java:/jms/queue/UVMSVesselXEU" />
         <connection-factory name="InVmConnectionFactory" connectors="in-vm" entries="java:/ConnectionFactory"/>
         <connection-factory name="RemoteConnectionFactory" connectors="http-connector" entries="java:jboss/exported/jms/RemoteConnectionFactory"/>
         <pooled-connection-factory name="activemq-ra" transaction="xa" connectors="in-vm" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory"/>
@@ -397,6 +448,7 @@
       <buffer-cache name="default"/>
       <server name="default-server">
         <http-listener name="default" socket-binding="http" redirect-socket="https"/>
+        <https-listener name="https" socket-binding="https" security-realm="SSLRealm" />
         <host name="default-host" alias="localhost">
           <location name="/" handler="welcome-content"/>
           <filter-ref name="server-header"/>

@@ -1,0 +1,97 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableView class="oracle.dbtools.crest.model.design.relational.TableView" directorySegmentName="seg_0" id="36BAC11C-9DE0-D02F-70D4-7E5FF2FC36E9" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="ACTIVE_USER_FEATURE_V">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>ACTIVE_USER_FEATURE_V</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:19 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<userDefined>true</userDefined>
+<userDefinedSQL>CREATE OR REPLACE VIEW ACTIVE_USER_FEATURE_V&lt;br/&gt;AS &lt;br/&gt;select ur.USER_NAME, ur.APPLICATION_NAME, ur.ROLE_NAME, &lt;br/&gt;			       ur.ROLE_ID, ur.SCOPE_ID, f.NAME as FEATURE_NAME &lt;br/&gt;			from ACTIVE_USER_ROLE_V ur,&lt;br/&gt;			      PERMISSION_T p,&lt;br/&gt;			      FEATURE_T f&lt;br/&gt;			where p.ROLE_ID=ur.ROLE_ID&lt;br/&gt;			  and f.FEATURE_ID=p.FEATURE_ID</userDefinedSQL>
+<viewElements>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="USER_NAME" id="09318FFC-A484-5916-01C6-CE89D062D7D0">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_FEATURE_V</sourceObjSchema>
+<sourceObjName>USER_NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:19 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>USER_NAME</alias>
+<dataType>VARCHAR2 (32)</dataType>
+<headerAlias>USER_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="APPLICATION_NAME" id="0867D35B-D8EE-C34F-DC96-7457A4741E17">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_FEATURE_V</sourceObjSchema>
+<sourceObjName>APPLICATION_NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:19 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>APPLICATION_NAME</alias>
+<dataType>VARCHAR2 (128)</dataType>
+<headerAlias>APPLICATION_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="ROLE_NAME" id="C7E189EC-9F63-6D8B-4E7C-0A7758FCEF75">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_FEATURE_V</sourceObjSchema>
+<sourceObjName>ROLE_NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:19 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>ROLE_NAME</alias>
+<dataType>VARCHAR2 (128)</dataType>
+<headerAlias>ROLE_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="ROLE_ID" id="54CC36DB-9DB5-7C79-3AF3-1DB891A99DAB">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_FEATURE_V</sourceObjSchema>
+<sourceObjName>ROLE_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:19 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>ROLE_ID</alias>
+<dataType>NUMBER (10)</dataType>
+<headerAlias>ROLE_ID</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="SCOPE_ID" id="602D8328-10F0-9EFF-3DD5-7DFDEF3E0998">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_FEATURE_V</sourceObjSchema>
+<sourceObjName>SCOPE_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:19 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>SCOPE_ID</alias>
+<dataType>NUMBER (10)</dataType>
+<headerAlias>SCOPE_ID</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="FEATURE_NAME" id="580B127B-ED46-93C1-7959-2599B94625A1">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_FEATURE_V</sourceObjSchema>
+<sourceObjName>FEATURE_NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:19 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>FEATURE_NAME</alias>
+<dataType>VARCHAR2 (128)</dataType>
+<headerAlias>FEATURE_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+</viewElements>
+</TableView>

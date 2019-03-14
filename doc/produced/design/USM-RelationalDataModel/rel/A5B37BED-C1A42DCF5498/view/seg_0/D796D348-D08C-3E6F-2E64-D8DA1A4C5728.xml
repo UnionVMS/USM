@@ -1,0 +1,76 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableView class="oracle.dbtools.crest.model.design.relational.TableView" directorySegmentName="seg_0" id="D796D348-D08C-3E6F-2E64-D8DA1A4C5728" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="ACTIVE_USER_SCOPE_Vv1">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<userDefined>true</userDefined>
+<userDefinedSQL>CREATE OR REPLACE VIEW ACTIVE_USER_SCOPE_V&lt;br/&gt;AS &lt;br/&gt;select distinct USER_NAME,APPLICATION_NAME,SCOPE_NAME,SCOPE_ID,DATA_FROM,DATA_TO from (&lt;br/&gt;          select u.USER_NAME,a.NAME as APPLICATION_NAME,s.NAME as SCOPE_NAME,s.SCOPE_ID,s.DATA_FROM,s.DATA_TO&lt;br/&gt;          from USER_T u,&lt;br/&gt;               USER_CONTEXT_T ur,&lt;br/&gt;               SCOPE_T s&lt;br/&gt;		  INNER JOIN SCOPE_DATASET_T sd on sd.scope_id=s.scope_id&lt;br/&gt;      	  INNER JOIN DATASET_T ds on ds.DATASET_ID=sd.DATASET_ID&lt;br/&gt;          INNER JOIN APPLICATION_T a on a.APPLICATION_ID=ds.APPLICATION_ID      	&lt;br/&gt;          where ur.USER_ID=u.USER_ID&lt;br/&gt;            and ur.SCOPE_ID=s.SCOPE_ID&lt;br/&gt;            and (u.STATUS=&apos;E&apos; or (u.STATUS=&apos;L&apos; and u.LOCKOUT_TO&lt;=SYSDATE))&lt;br/&gt;            and s.STATUS=&apos;E&apos;&lt;br/&gt;            and nvl(u.ACTIVE_FROM, SYSDATE)&lt;= SYSDATE&lt;br/&gt;            and nvl(u.ACTIVE_TO, SYSDATE)&gt;= SYSDATE&lt;br/&gt;            and nvl(s.ACTIVE_FROM, SYSDATE)&lt;= SYSDATE&lt;br/&gt;            and nvl(s.ACTIVE_TO, SYSDATE)&gt;= SYSDATE&lt;br/&gt;        )</userDefinedSQL>
+<viewElements>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="USER_NAME" id="A0A25073-8049-71C3-2A98-BC393364BF13">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>USER_NAME</alias>
+<dataType>VARCHAR2 (32)</dataType>
+<headerAlias>USER_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="APPLICATION_NAME" id="7ABABB10-3EFE-3264-E882-0D48430F8A12">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>APPLICATION_NAME</alias>
+<dataType>VARCHAR2 (128)</dataType>
+<headerAlias>APPLICATION_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="SCOPE_NAME" id="CCF115FB-3F0F-428B-2FEB-E8F79A5A4512">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>SCOPE_NAME</alias>
+<dataType>VARCHAR2 (128)</dataType>
+<headerAlias>SCOPE_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="SCOPE_ID" id="68355B0D-3416-D984-1D81-DDF002FE1B26">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>SCOPE_ID</alias>
+<dataType>NUMBER (10)</dataType>
+<headerAlias>SCOPE_ID</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="DATA_FROM" id="421AE45D-B4C5-3820-0B21-07E286A747DD">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>DATA_FROM</alias>
+<dataType>TIMESTAMP(6)</dataType>
+<headerAlias>DATA_FROM</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="DATA_TO" id="DAD45B5E-65D5-EAED-22FF-172C189734BF">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>DATA_TO</alias>
+<dataType>TIMESTAMP(6)</dataType>
+<headerAlias>DATA_TO</headerAlias>
+<reference>false</reference>
+</viewElement>
+</viewElements>
+</TableView>

@@ -1,0 +1,866 @@
+swagger: '2.0'
+info:
+  version: 1.0-SNAPSHOT
+  title: USM-administration
+basePath: /rest
+paths:
+  /users:
+    get:
+      description: Retrieves the list of users based on specific criteria, user (userName Or firstName Or lastName), activeFrom, activeTo, status. 
+      operationId: findUsers
+      produces:
+        - application/json
+      parameters:
+        -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+        -  
+          description: Offset the list of returned results by this amount. Default is zero.
+          name: offset
+          in: query
+          type: integer
+          format: int32
+        -  
+          description: Number of items to retrieve. Default is 10, maximum is 100
+          name: limit
+          in: query
+          type: integer
+          format: int32
+        -  
+          description: Sort column for the retrieved list of data. Default is 'userName'.
+          name: sortColumn
+          in: query
+          type: string
+        -  
+          description: Sort column for the retrieved list of data (ASC, DESC). Default is 'DESC'.
+          name: sortDirection
+          in: query
+          type: string
+        - 
+          description: the user (userName, firstName, lastName)
+          name: user
+          in: query
+          type: string
+        - 
+          description: the nation name to which the user belongs
+          name: nation
+          in: query
+          type: string
+        - 
+          description: the organisation name to which the user belongs
+          name: organisation
+          in: query
+          type: string  
+        -
+          description: the user status
+          name: status
+          in: query
+          type: string
+        -
+          description: the user activeFrom date
+          name: activeFrom
+          in: query
+          type: string
+        -
+          description: the user activeTo date
+          name: activeTo
+          in: query
+          type: string  
+      responses:
+        '200':
+          description: users responses
+          schema:
+            type: object
+            properties:
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/ComprehensiveUser'                
+              total:
+                type: integer
+                format: int64
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Create a new user
+      operationId: createUser
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+         -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+         -
+          description: The new user to be created
+          name: newUser
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/ManageUserRequest'
+      responses:
+        '200':
+          description: users responses
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    put:
+      description: Update an existing user
+      operationId: updateUser
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+         -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+         -
+          description: The user to be updated
+          name: updatedUser
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/ManageUserRequest'
+      responses:
+        '200':
+          description: users responses
+        '400':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /users/{userName}:
+    get:
+      description: retrieves a specific user by it's userName
+      operationId: getUser
+      produces: 
+        - application/json
+      parameters:
+        -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+        -  
+          description: userName of the user
+          name: userName
+          in: path
+          required: true
+          type: string      
+      responses:
+        '200':
+          description: users responses
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /users/{userName}/userContexts:
+    get:
+      description: retrieves the list of roles assigned to the user 
+      operationId: getUserContexts
+      produces: 
+        - application/json
+      parameters:
+        -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+        -  
+          description: userName of the user
+          name: userName
+          in: path
+          required: true
+          type: string      
+      responses:
+        '200':
+          description: user's roles responses
+          schema:
+            type: object
+            properties:
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/ComprehensiveUserContext'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    put:
+      description: Update an existing user context
+      operationId: updateUserContext
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+         -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+         -  
+          description: userName of the user
+          name: userName
+          in: path
+          required: true
+          type: string  
+         -
+          description: The role to be updated
+          name: updatedUserContext
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/UserContext'
+      responses:
+        '200':
+          description: user contexts responses
+          schema:
+            $ref: '#/definitions/UserContext'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Create a new user context
+      operationId: createUserContext
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+         -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+         -  
+          description: userName of the user
+          name: userName
+          in: path
+          required: true
+          type: string  
+         -
+          description: The new user context to be created
+          name: newUserContext
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/UserContext'
+      responses:
+         '200':
+            description: user contexts responses
+            schema:
+              $ref: '#/definitions/UserContext'
+         default:
+            description: unexpected error
+            schema:
+              $ref: '#/definitions/errorModel'
+  /users/{toUserName}/userProfiles:
+    put:
+      description: Copy a list of a given contexts/preferences to a specified user
+      operationId: copyUserProfiles
+      produces:
+        - application/json
+      consumes:
+        - application/jsonco
+      parameters:
+        -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+        -  
+          description: the user name of the user where the contexts will be copied
+          name: toUserName
+          in: path
+          required: true
+          type: string
+        -
+          description: The List of contexts will be copied
+          name: newUser
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/UserContextResponse'          
+      responses:
+        '200':
+          description: user contexts responses
+          schema:
+            $ref: '#/definitions/UserContext'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'         
+  /users/{userName}/userContexts/{userContextId}:
+    get:
+      description: retrieves a specific user context by it's userContextId
+      operationId: getUserContext
+      produces: 
+        - application/json
+      parameters:
+        -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+        -  
+          description: userName of the user
+          name: userName
+          in: path
+          required: true
+          type: string
+        -  
+          description: userContextId of the user context
+          name: userContextId
+          in: path
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: user contexts responses
+          schema:
+            $ref: '#/definitions/UserContext'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /users/{userName}/userContexts/{userContextId}:
+    delete:
+      description: delete a specific user context by it's userContextId
+      operationId: deleteUserContext
+      produces: 
+        - application/json
+      parameters:
+        -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+        -  
+          description: userName of the user
+          name: userName
+          in: path
+          required: true
+          type: string
+        -  
+          description: userContextId of the user context
+          name: userContextId
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: user contexts responses
+          schema:
+            $ref: '#/definitions/UserContext'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel' 
+  /users/userPassword:
+    put: 
+      description: updates an existing password
+      operationId: updatePassword
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+        - 
+          description: The password to be updated
+          name: userPassword
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserPassword'
+      responses:
+        '200':
+          description: user password responses
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /ldap/{userName}:
+    get:
+      description: retrieves a specific user info from ldap by it's userName
+      operationId: getLdapUser
+      produces: 
+        - application/json
+      parameters:
+        -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+        -  
+          description: userName of the user
+          name: userName
+          in: path
+          required: true
+          type: string      
+      responses:
+        '200':
+          description: users responses
+          schema:
+            $ref: '#/definitions/LdapUser'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /users/{userName}/challenges:
+    get:
+      description: Get challenge information for a specified user 
+      operationId: getChallenges
+      produces: 
+        - application/json
+      parameters:
+        -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+        -  
+          description: userName of the user
+          name: userName
+          in: path
+          required: true
+          type: string      
+      responses:
+        '200':
+          description: Challenge responses
+          schema:
+            type: object
+            properties:
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/ChallengeInformationResponse'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    put:
+      description: Set challenges for a specified user
+      operationId: setChallenges
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+         -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+         -  
+          description: userName of the user
+          name: userName
+          in: path
+          required: true
+          type: string  
+         -
+          description: The role to be updated
+          name: challengeInformationResponse
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/ChallengeInformationResponse'
+      responses:
+        '200':
+          description: user contexts responses
+          schema:
+            $ref: '#/definitions/ChallengeInformationResponse'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+definitions:
+  ComprehensiveUser:
+    required:
+      - userName
+      - firstName
+      - lastName
+      - status
+      - organisation
+      - nation
+      - parent
+      - activeFrom
+      - activeTo
+    properties:
+      userName:
+        type: string
+        description: The username of the retrieved user
+      firstName:
+        type: string
+        description: The firstName of the retrieved user
+      lastName:
+        type: string
+        description: The lastName of the retrieved user
+      status:
+        type: string
+        description: The status (enabled/disabled/blocked) of the user
+      organisation:
+        type: string
+        description: The organisation name to which the retrieved user belongs
+      nation:
+        type: string
+        description: The nation name to which the retrieved user belongs  
+      parent:
+        type: string
+        description: The organisation parent of the organisation's user  
+      activeFrom:
+        type: string
+        format: date
+        description: The activeFrom date for the user
+      activeTo:
+        type: string
+        format: date
+        description: The activeTo date for the user
+  ManageUserRequest:
+    required:
+      - userName
+      - firstName
+      - lastName
+      - phoneNumber
+      - email
+      - organisationName
+      - status
+    properties:
+      userName:
+        type: string
+        description: The username of the user
+      firstName:
+        type: string
+        description: The firstName of the user
+      lastName:
+        type: string
+        description: The lastName of the user
+      phoneNumber:
+        type: string
+        description: The phoneNumber of the user  
+      mobileNumber:
+        type: string
+        description: The mobileNumber of the user
+      faxNumber:
+        type: string
+        description: The faxNumber of the user
+      email:
+        type: string
+        description: The email of the user  
+      organisationName:
+        type: string
+        description: The organisation name to which the user belongs
+      status:
+        type: string
+        description: The status (enabled/disabled/blocked) of the user
+      lockoutReason:
+        type: string
+        description: The lockoutReason.
+      notes:
+        type: string
+        description: The commments regarding the user.
+      personId:
+        type: integer
+        format: int64
+        description: The personId   
+      activeFrom:
+        type: string
+        format: date
+        description: The activeFrom date of the user
+      activeTo:
+        type: string
+        format: date
+        description: The activeTo date of the user
+      lockoutTo:
+        type: string
+        format: date
+        description: The lockoutTo date of the user
+      lastLogon:
+        type: string
+        format: date
+        description: The lastLogon of the user
+  ContactDetails:
+     required:
+      - firstName
+      - lastName
+      - personId
+      - phoneNumber
+      - faxNumber
+      - mobileNumber
+      - eMail
+     properties:
+      firstName:
+        type: string
+        description: The firstName of the retrieved contactDetails
+      lastName:
+        type: string
+        description: The lastName of the retrieved contactDetails
+      personId:
+        type: string
+        description: The personId of the retrieved contactDetails
+      phoneNumber:
+        type: string
+        description: The phoneNumber of the retrieved contactDetails  
+      faxNumber:
+        type: string
+        description: The faxNumber of the retrieved contactDetails
+      mobileNumber:
+        type: string
+        description: The mobileNumber of the retrieved contactDetails
+      eMail:
+        type: string
+        description: The eMail of the retrieved contactDetails
+  Organisation:
+    required:
+      - organisationId
+      - organisationName
+    properties:
+      organisationId:
+        type: string
+        description: The id of the retrieved organisation
+      organisationName:
+        type: string
+        description: The name of the retrieved organisation
+  User:
+    required:
+      - userName
+      - status
+      - lastLogon
+      - lockoutTo
+      - lockoutReason
+      - logonFailure
+      - notes
+      - activeFrom
+      - activeTo
+      - contactDetails
+      - organisation
+    properties:
+      userName:
+        type: string
+        description: The userName of the retrieved user
+      status:
+        type: string
+        description: The status (enabled/disabled/blocked) of the retrieved user
+      lastLogon:
+        type: string
+        format: date
+        description: The lastLogon date of the retrieved user
+      lockoutTo:
+        type: string
+        format: date
+        description: The lockoutTo date of the retrieved user
+      lockoutReason:
+        type: string
+        description: The lockoutReason of the retrieved user
+      logonFailure:
+        type: integer
+        format: int32
+        description: The lockoutReason of the retrieved user
+      password:
+        type: string
+        description: The password of the retrieved user
+      passwordExpiry:
+        type: string
+        format: date
+        description: The passwordExpiry of the retrieved user  
+      notes:
+        type: string
+        description: The notes (comments) of the retrieved user
+      activeFrom:
+        type: string
+        format: date
+        description: The activeFrom date of the retrieved user
+      activeTo:
+        type: string
+        format: date
+        description: The activeTo date of the retrieved user
+      contactDetails:
+        $ref: '#/definitions/ContactDetails'
+        description: the application to which the retrieved user belongs
+      organisation:
+        $ref: '#/definitions/Organisation'
+        description: the application to which the retrieved user belongs
+  ComprehensiveUserContext:
+    required:
+      - userContextId
+      - role
+      - roleStatus
+      - roleDescription
+      - scope
+      - scopeStatus
+      - scopeDescription
+    properties:
+      userContextId:
+        type: integer
+        format: int64
+        description: The user context id
+      roleId:
+        type: integer
+        format: int64
+        description: The inner identifier of the role
+      role:
+        type: string
+        description: The role name
+      roleStatus:
+        type: string
+        description: The role status
+      roleDescription:
+        type: string
+        description: The role description  
+      scope:
+        type: string
+        description: The scope name
+      scopeId:
+        type: integer
+        format: int64
+        description: The inner identifier of the scope        
+      scopeStatus:
+        type: string
+        description: The scope status
+      scopeDescription:
+        type: string
+        description: The scope description
+      userPreferenceCount:
+        type: integer
+        format: int32
+        description: Contains the number of prferences associated to the current selected user context
+  UserContext:
+    required:
+      - userContextId
+      - userId
+      - roleId
+    properties:
+      userContextId:
+        type: integer
+        format: int64
+        description: The userContextId
+      userId:
+        type: integer
+        format: int64
+        description: The userId
+      roleId:
+        type: integer
+        format: int64
+        description: The roleId  
+      scopeId:
+        type: integer
+        format: int64
+        description: The scopeId
+  LdapUser:
+    required:
+      - userName
+      - firstName
+      - lastName
+      - phoneNumber
+      - mobileNumber
+      - faxNumber
+      - email
+    properties:
+      userName:
+        type: string
+        description: The userName of the retrieved ldap user
+      firstName:
+        type: string
+        description: The firstName of the retrieved ldap user
+      lastName:
+        type: string
+        description: The lastName of the retrieved ldap user
+      phoneNumber:
+        type: string
+        description: The phoneNumber of the retrieved ldap user  
+      mobileNumber:
+        type: string
+        description: The mobileNumber of the retrieved ldap user
+      faxNumber:
+        type: string
+        description: The faxNumber of the retrieved ldap user
+      email:
+        type: string
+        description: The email of the retrieved ldap user
+  UserPassword:
+    required:
+      - userName
+      - newPassword
+      - currentPassword
+    properties:
+      userName:
+        type: string
+        description: the userName of the current user
+      newPassword:
+        type: string
+        description: the new password of the current user
+      currentPassword:
+        type: string
+        description: the new current password of the current user
+  UserContextResponse:
+    properties:
+      results:
+        type: array
+        items:
+          $ref: '#definitions/ComprehensiveUserContext'
+  ChallengeInformationResponse:
+    properties:
+      userPassword:
+        type: string
+        description: the current password of the current user	
+      results:
+        type: array
+        items:
+          $ref: '#definitions/ChallengeInformation'
+  ChallengeInformation:
+    required:
+      - challenge
+      - response
+    properties:
+      challengeId:
+        type: integer
+        format: int64
+        description: The challenge id
+      challenge:
+        type: string
+        description: The challenge
+      response:
+        type: string
+        description: The response		  		  
+  errorModel:
+    required:
+        - statusCode
+        - message
+    properties:
+      statusCode:
+        type: integer
+        format: int32
+      message:
+        type: string

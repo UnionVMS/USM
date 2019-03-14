@@ -1,4 +1,4 @@
-FROM jboss/wildfly
+FROM dgmare-repo.athens.intrasoft-intl.private:5000/jboss/wildfly:10.1.0.Final
 
 EXPOSE 9990 8080 8443
 
@@ -17,6 +17,7 @@ RUN chown -R jboss:jboss /opt/jboss/fakesmtp && \
 
 USER jboss
 COPY standalone-arquillian.xml /opt/jboss/wildfly/standalone/configuration/
+COPY dockerhost.jks /opt/jboss/wildfly/standalone/configuration/localhost.jks
 
 ENTRYPOINT ["/opt/jboss/wildfly/bin/standalone.sh","-c", "standalone-arquillian.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
 CMD []

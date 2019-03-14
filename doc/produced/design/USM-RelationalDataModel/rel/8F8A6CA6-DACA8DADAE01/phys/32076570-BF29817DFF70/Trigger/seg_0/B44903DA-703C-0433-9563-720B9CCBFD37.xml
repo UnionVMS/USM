@@ -1,0 +1,14 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="POLICY_BI" directorySegmentName="seg_0" id="B44903DA-703C-0433-9563-720B9CCBFD37">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>POLICY_BI</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:55:07 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<actions>INSERT</actions>
+<body>begin&lt;br/&gt;			  if :new.policy_ID is null&lt;br/&gt;			  then&lt;br/&gt;			    select SQ_policy.nextval into :new.policy_ID from dual;&lt;br/&gt;			  end if;&lt;br/&gt;			&lt;br/&gt;			  /* Fill date and user created */&lt;br/&gt;			  IF :NEW.created_on IS NULL&lt;br/&gt;			  THEN&lt;br/&gt;			      :NEW.created_on := SYSDATE;&lt;br/&gt;			  END IF;&lt;br/&gt;			&lt;br/&gt;			  IF :NEW.created_by IS NULL&lt;br/&gt;			  THEN&lt;br/&gt;			      :NEW.created_by := UPPER(sys_context(&apos;USERENV&apos;, &apos;OS_USER&apos;));&lt;br/&gt;			  ELSE&lt;br/&gt;			      :NEW.created_by := UPPER(:NEW.created_by);&lt;br/&gt;			  END IF;&lt;br/&gt;			end;</body>
+<triggerTime>BEFORE</triggerTime>
+<owner>80606711-AE72-8BDC-4971-155FA6DE55B4</owner>
+<table>4569A301-408F-4FBF-4CA0-FD0B66826C0C</table>
+</TriggerOraclev10g>

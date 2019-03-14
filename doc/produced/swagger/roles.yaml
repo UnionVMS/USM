@@ -1,0 +1,351 @@
+swagger: '2.0'
+info:
+  version: 1.0-SNAPSHOT
+  title: USM-administration
+basePath: /rest
+paths:
+  /roles/names:
+    get:
+      description: Retrieves the list of role names
+      operationId: getRoleNames
+      produces:
+        - application/json
+      parameters:
+        -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: role names response
+          schema:
+            type: array
+            items:
+              type: string
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /roles:
+    get:
+      description: Retrieves the list of roles based on specific criteria roleName, application name or status
+      operationId: findRoles
+      produces:
+        - application/json
+      parameters:
+        -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+		-  
+          description: Offset the list of returned results by this amount. Default is zero.
+          name: offset
+          in: query
+          type: integer
+          format: int32
+        -  
+          description: Number of items to retrieve. Default is 8, maximum is 100
+          name: limit
+          in: query
+          type: integer
+          format: int32
+        -  
+          description: Sort column for the retrieved list of data. Default is 'name'.
+          name: sortColumn
+          in: query
+          type: string
+        -  
+          description: Sort column for the retrieved list of data (ASC, DESC). Default is 'DESC'.
+          name: sortDirection
+          in: query
+          type: string  
+        -  
+          description: the role name
+          name: role
+          in: query
+          type: string
+        - 
+          description: the application name to which the role belongs
+          name: application
+          in: query
+          type: string
+        -
+          description: the status role
+          name: status
+          in: query
+          type: string
+      responses:
+        '200':
+          description: roles responses
+          schema:
+            type: object
+            properties:
+              results:
+                type: array
+                items:
+                  $ref: #/definitions/ComprehensiveRole'           
+              total:
+                type: integer
+                format: int64
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Create a new role
+      operationId: createRole
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+         -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+         -
+          description: The new role to be created
+          name: newRole
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/ComprehensiveRole'
+      responses:
+         '200':
+          description: roles responses
+          schema:
+            $ref: '#/definitions/ComprehensiveRole'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    put:
+      description: Update an existing role
+      operationId: updateRole
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+         -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+         -
+          description: The role to be updated
+          name: updatedRole
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/ComprehensiveRole'
+      responses:
+        '200':
+          description: roles responses
+        '400':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+            
+  /roles/{roleId}:
+    get:
+      description: retrieves a specific role by it's identifier
+      operationId: getRole
+      produces: 
+        - application/json
+      parameters:
+        -
+          description: the JWT token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+        -  
+          description: the role identifier
+          name: roleId
+          in: path
+          required: true
+          type: string      
+      responses:
+        '200':
+          description: roles responses
+          schema:
+            $ref: '#/definitions/Role'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: Delete an existing role
+      operationId: deleteRole
+      produces:
+       - application/json
+      parameters:
+        -
+          description: the token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+        -
+          description: The identifier of the role which must be deleted
+          name: roleId
+          required: true
+          in: path
+          type: string
+      responses:
+        '200':
+          description: response of the operation
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'            
+  /roles/{roleId}/feature:
+    post:
+      description: create an association with existing feature
+      operationId: addPermission
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        -
+          description: the token authenticating the service requester
+          name: authorisation
+          in: header
+          required: true
+          type: string
+        -
+          description: The identifier of the role for which a feature is selected
+          name: roleId
+          in: path
+          required: true
+          type: string      
+        -
+          name: featureId
+          in: body
+          description: The identifier of the feature to be associated with the role
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: response of the operation
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /roles/{roleId}/feature/{featureId}:          
+    delete:
+      description: delete a permission from a specified role
+      operationId: deletePermission
+      produces:
+        - application/json
+      parameters:  
+        - 
+          name: roleId
+          in: path
+          description: The role identifier for which we are removing the permission
+          required: true
+          type: string
+        - 
+          name: featureId
+          in: path
+          description: The identifier of the removed feature
+          required: true
+          type: string  
+      responses:
+        '200':
+          description: response of the operation
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'          
+definitions:
+  ComprehensiveRole:
+    required:
+      - name
+      - status
+      - application
+    properties:
+      roleId:
+        type: integer
+        format: int64
+        description: the The role identifier used only when update needs to be performed
+      name:
+        type: string
+        description: The name of the retrieved role
+      description:
+        type: string
+        description: The description of the retrieved role
+      status:
+        type: string
+        description: The status (enabled/disabled) of the role
+      application:
+        type: string
+        description: The application name to which the retrieved role belongs
+      applicationId:
+        type: integer
+        format: int64
+        description: The application identifier 
+  Application:
+    required:
+      - name 
+    properties:
+      name:
+        type: string
+        description: The name of the retrieved application
+      description:
+        type: string
+        description: The description of the retrieved application
+  Feature:
+     required:
+      - name 
+     properties:
+      name:
+        type: string
+        description: The name of the retrieved feature
+      description:
+        type: string
+        description: The description of the retrieved feature  
+  Role:
+    required:
+      - name
+      - status
+      - application
+    properties:
+      name:
+        type: string
+        description: The name of the retrieved role
+      description:
+        type: string
+        description: The description of the retrieved role
+      status:
+        type: string
+        description: The status (enabled/disabled) of the role
+      application:
+        $ref: '#/definitions/Application'
+        description: the application to which the retrieved role belongs
+      features:
+        type: array
+        items:
+          $ref: '#/definitions/Feature'
+        description: The list of feature associated with this specific role
+  errorModel:
+    required:
+      - statusCode
+      - message
+    properties:
+      statusCode:
+        type: integer
+        format: int32
+      message:
+        type: string

@@ -1,0 +1,77 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "key": "measurementSystem",
+            "value": "metric",
+            "description": "Choise of metric system, typically metric or imperial.",
+            "global": true,
+            "lastModified": 1453130011391
+        },
+        {
+            "id": 2,
+            "key": "coordinateFormat",
+            "value": "degreesMinutesSeconds",
+            "description": "Coordinate system.",
+            "global": true,
+            "lastModified": 1453130011391
+        },
+        {
+            "id": 3,
+            "key": "dateTimeFormat",
+            "value": "YYYY-MM-DD HH:mm",
+            "description": "Choise time and date format.",
+            "global": true,
+            "lastModified": 1453130011391
+        },
+        {
+            "id": 4,
+            "key": "defaultHomePage",
+            "value": "reporting",
+            "description": "Default home page.",
+            "global": true,
+            "lastModified": 1453130011391
+        },
+        {
+            "id": 5,
+            "key": "availableLanguages",
+            "value": "en-gb",
+            "description": "List of available language codes, comma-separated.",
+            "global": true,
+            "lastModified": 1453130011391
+        },
+        {
+            "id": 6,
+            "key": "distanceUnit",
+            "value": "nm",
+            "description": "Unit used for distances.",
+            "global": true,
+            "lastModified": 1453130011391
+        },
+        {
+            "id": 7,
+            "key": "speedUnit",
+            "value": "kts",
+            "description": "Unit used for speed.",
+            "global": true,
+            "lastModified": 1453130011391
+        },
+        {
+            "id": 8,
+            "key": "maxSpeed",
+            "value": "15",
+            "description": "Maximum allowed speed, measured in nautical miles.",
+            "global": true,
+            "lastModified": 1453130011391
+        },
+        {
+            "id": 9,
+            "key": "timezone",
+            "value": "60",
+            "description": "Global timezone (offset from UTC in minutes).",
+            "global": true,
+            "lastModified": 1453130011391
+        }
+    ],
+    "code": "200"
+}

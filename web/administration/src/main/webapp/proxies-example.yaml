@@ -1,0 +1,22 @@
+context: ['/usm-authentication/rest', '/usm-authorisation/rest', '/usm-administration/rest']
+# host: 'localhost'
+#host: 'cygnus-dev.athens.intrasoft-intl.private'
+#host: 'mare-usm-dev.intrasoft-intl.com'
+host: 'wlts0059.cc.cec.eu.int'
+#host: 'intrarolli.ngrok.io'
+#port: 8080
+port: 1043
+#port: 28080
+#port: 80
+
+# Change origin and headers.host required when trying to reach the server from outside
+# changeOrigin: true
+cookieDomainRewrite: "localhost"
+# headers: {
+#    #host: 'localhost:9002'
+#    #host: 'mare-usm-dev.intrasoft-intl.com'
+#    #origin: 'wlts0059.cc.cec.eu.int:1043'
+#    #host: 'intrarolli.ngrok.io'
+# }
+
+

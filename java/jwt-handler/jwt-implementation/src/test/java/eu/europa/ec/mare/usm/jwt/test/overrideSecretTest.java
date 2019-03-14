@@ -1,17 +1,3 @@
-/*
- * Developed by the European Commission - Directorate General for Maritime 
- * Affairs and Fisheries © European Union, 2015-2016.
- * 
- * This file is part of the Integrated Fisheries Data Management (IFDM) Suite.
- * The IFDM Suite is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or any later version.
- * The IFDM Suite is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details. You should have received a copy of the GNU General Public 
- * License along with the IFDM Suite. If not, see http://www.gnu.org/licenses/.
- */
 package eu.europa.ec.mare.usm.jwt.test;
 
 
@@ -28,7 +14,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -44,6 +29,7 @@ import eu.europa.ec.mare.usm.jwt.jndiUtil;
  */
 @RunWith(Arquillian.class)
 public class overrideSecretTest {
+  private static final Logger LOGGER = LoggerFactory.getLogger(overrideSecretTest.class);
   private static final String USER_NAME = "usm_user";
   private static final String RANDOM_SIG_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2MTA3NzUxMSwiZXhwIjoxNDYxMDc5MzExLCJ1c2VyTmFtZSI6InVzbV91c2VyIn0.QIn18uc09ajddT6ydLqMPO-P3IdmEa9L8e4s8Zck_YQ";
   private static final String USM_SECRET_SIG_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2MTA3ODI5MCwiZXhwIjoyNDYxMDgwMDkwLCJ1c2VyTmFtZSI6InNvbWVmYWtldXNlciJ9.MhicJp3Oao35SSlxC69YsVBq-Svuo2nD8ol89iOxAqY";
@@ -59,7 +45,6 @@ public class overrideSecretTest {
             .addClass(jndiUtil.class)
             .addPackages(true,"io.jsonwebtoken")
             .addPackages(true,"com.fasterxml.jackson")
-            .addPackages(true,"eu.europa.ec.mare.usm.jwt.test")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     return jar;
   }
@@ -93,9 +78,7 @@ public class overrideSecretTest {
 	  // Verify
 	  assertEquals(USER_NAME, parsed);
 	}
-	
 	@Test
-	@Ignore
 	public void testParseUSMToken() {
 	  
 	  String parsed = testSubject.parseToken(USM_SECRET_SIG_TOKEN);

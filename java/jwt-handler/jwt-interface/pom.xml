@@ -1,14 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>eu.europa.ec.mare.oss.usm</groupId>
+    <groupId>eu.europa.ec.mare.usm</groupId>
     <artifactId>jwt-handler</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.1.4-SNAPSHOT</version>
   </parent>
   <artifactId>jwt-handler-api</artifactId>
   <packaging>jar</packaging>
   <name>JWT Handler API</name>
 
+  <properties>
+    <svn.trunkrelativeroot>/USM/java/jwt-handler/jwt-interface</svn.trunkrelativeroot>
+    <svn.trunkpath>${citnetpath}svn/${svn.projectname}/trunk${svn.trunkrelativeroot}</svn.trunkpath>
+    <svn.fisheye>${citnetpath}fisheye/browse/${svn.projectname}/trunk${svn.trunkrelativeroot}</svn.fisheye>
+  </properties>
   <build>
     <testResources>
       <testResource>
@@ -53,5 +59,8 @@
 </dependency>
     
   </dependencies>
-  
+  <scm>
+    <developerConnection>scm:svn:https://${svn.trunkpath}</developerConnection>
+    <url>https://webgate.ec.europa.eu/CITnet/fisheye/browse/${svn.projectname}/trunk${svn.trunkrelativeroot}</url>
+  </scm>
 </project>

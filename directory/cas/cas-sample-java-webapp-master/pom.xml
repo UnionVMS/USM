@@ -41,7 +41,7 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>eu.europa.ec.mare.oss.usm</groupId>
+      <groupId>eu.europa.ec.mare.usm</groupId>
       <artifactId>Information-Service</artifactId>
       <version>1.2.0-SNAPSHOT</version>
     </dependency>

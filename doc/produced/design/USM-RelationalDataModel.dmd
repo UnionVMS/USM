@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="USM-RelationalDataModel" id="CEE69FC7-A515-842A-A95E-2A7A53687C29" version="3.5">
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:44:20 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>CEE69FC7-A515-842A-A95E-2A7A53687C29</designId>
+<usedDesignStorageDescriptors>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="CEE69FC7-A515-842A-A95E-2A7A53687C29">
+<designStoragePath>C:\Dev\sources\USM\doc\produced\design\USM-RelationalDataModel</designStoragePath>
+</designDescr>
+</usedDesignStorageDescriptors>
+</OSDM_Design>

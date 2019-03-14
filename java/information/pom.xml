@@ -1,18 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
   <parent>
-  	<groupId>eu.europa.ec.mare.oss.usm</groupId>
-  	<version>2.0.1-SNAPSHOT</version>
-  	<artifactId>Backend-Modules</artifactId> 
-    <relativePath>../pom.xml</relativePath>
+    <groupId>eu.europa.ec.mare.usm</groupId>
+    <artifactId>USM-Backend-Parent</artifactId>
+    <version>1.5.2</version>
+    <relativePath>../usm-parent/pom.xml</relativePath>
   </parent>
-  
   <artifactId>Information-Module</artifactId>
-  <version>2.0.1-SNAPSHOT</version>
+  <version>2.1.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>USM Information Module</name>
 
+  <properties>
+    <svn.trunkrelativeroot>/USM/java/information</svn.trunkrelativeroot>
+    <svn.trunkpath>${citnetpath}svn/${svn.projectname}/trunk${svn.trunkrelativeroot}</svn.trunkpath>
+    <svn.fisheye>${citnetpath}fisheye/browse/${svn.projectname}/trunk${svn.trunkrelativeroot}</svn.fisheye>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.bsc.maven</groupId>
+        <artifactId>confluence-reporting-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>confluence-deploy</id>
+            <inherited>false</inherited>
+            <phase>site</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+            <configuration>
+              <properties>
+                <!-- if a property represents a URI the confluence-reporting-maven-plugin 
+                will try to read a property value from this URI. This means we can't include 
+                the protocol for our URLs -->
+                <finalname>${project.build.finalName}</finalname>
+                <svnurl>${svn.trunkpath}</svnurl>
+                <fisheye>${svn.fisheye}</fisheye>
+              </properties>
+              <parentPageTitle>USM Information Backend</parentPageTitle>
+              <title>USM Information Module ${project.version}</title>
+              <serverId>citnet-confluence</serverId>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
   <modules>
     <module>model</module>
@@ -23,16 +59,19 @@
   <dependencyManagement>
     <dependencies>
       <dependency>  
-        <groupId>eu.europa.ec.mare.oss.usm</groupId>
+        <groupId>eu.europa.ec.mare.usm</groupId>
         <artifactId>Information-Model</artifactId>
-        <version>2.0.1-SNAPSHOT</version>
+        <version>2.1.4-SNAPSHOT</version>
       </dependency>
       <dependency>
-        <groupId>eu.europa.ec.mare.oss.usm</groupId>
+        <groupId>eu.europa.ec.mare.usm</groupId>
         <artifactId>Information-Service</artifactId>
-        <version>2.0.1-SNAPSHOT</version>
+        <version>2.1.4-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
-  
+  <scm>
+    <developerConnection>scm:svn:https://${svn.trunkpath}</developerConnection>
+    <url>https://webgate.ec.europa.eu/CITnet/fisheye/browse/${svn.projectname}/trunk${svn.trunkrelativeroot}</url>
+  </scm>
 </project>

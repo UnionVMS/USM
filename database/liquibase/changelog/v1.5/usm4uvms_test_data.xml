@@ -50,7 +50,17 @@
     </changeSet>
    
      
- 
+   <changeSet author="emtudorsm" id="1443537166505-4" context="test" dbms="oracle">
+   	 <sql>
+   	    <![CDATA[INSERT into Option_T(option_Id,name,description,data_type,default_value,application_id,group_Name)
+       	  VALUES (5,'TEST_USER_PREFERENCE','TEST_USER_PREFERENCE','String',utl_raw.cast_to_raw('SYSTEM_DEFAULT_VALUE'),10,'TEST_APP');]]>
+    </sql>
+    <rollback>
+      <sql><![CDATA[Delete from option_t where option_id = 5]]></sql>
+    </rollback>
+   </changeSet>
+   
+   
     <changeSet author="georgige (generated)" id="1443537166505-6" context="test">
         <insert tableName="role_t">
             <column name="role_id" valueNumeric="11"/>
@@ -446,7 +456,7 @@
       <column name="description" value="All Consolidated Reports"/>
       <column name="status" value="E"/>
       <column name="active_from" valueDate="2015-10-05 02:00:00.0"/>
-      <column name="active_to" valueDate="2016-10-05 02:00:00.0"/>
+      <column name="active_to" valueDate="2999-10-05 02:00:00.0"/>
       <column name="data_from"/>
       <column name="data_to"/>
       <column name="created_by" value="USM2"/>
@@ -513,4 +523,64 @@
       <sql><![CDATA[Delete from user_context_t where user_context_id in (21,22,23,24,25,26)]]></sql>
     </rollback>
   </changeSet>
+  
+  
+  <changeSet author="georgige (generated)" id="1444062061136-9" context="test">
+	 
+	 <insert tableName="application_t">
+		<column name="application_id" valueNumeric="11"/>
+		<column name="name" value="Activity"/>
+		<column name="description" value="Deployment descriptor of module Activity."/>
+		<column name="parent_id"/>
+     </insert>
+	 
+	 <insert tableName="feature_t">
+      <column name="feature_id" valueNumeric="142"/>
+      <column name="name" value="ACTIVITY_ALLOWED"/>
+      <column name="description" value="NA"/>
+      <column name="application_id" valueNumeric="11"/>
+      <column name="created_by" value="USM2"/>
+      <column name="created_on" valueDate="2015-10-05 12:19:10.294566"/>
+      <column name="modified_by"/>
+      <column name="modified_on"/>
+      <column name="group_name" value="Activity"/>
+    </insert>
+	<insert tableName="feature_t">
+      <column name="feature_id" valueNumeric="144"/>
+      <column name="name" value="LIST_ACTIVITY_REPORTS"/>
+      <column name="description" value="NA"/>
+      <column name="application_id" valueNumeric="11"/>
+      <column name="created_by" value="USM2"/>
+      <column name="created_on" valueDate="2015-10-05 12:19:10.294566"/>
+      <column name="modified_by"/>
+      <column name="modified_on"/>
+      <column name="group_name" value="Activity"/>
+    </insert>
+	<insert tableName="feature_t">
+      <column name="feature_id" valueNumeric="148"/>
+      <column name="name" value="FISHING_TRIP_SUMMARY"/>
+      <column name="description" value="allows user to access fishing trip summary related services "/>
+      <column name="application_id" valueNumeric="11"/>
+      <column name="created_by" value="USM2"/>
+      <column name="created_on" valueDate="2016-10-05 12:19:10.294566"/>
+      <column name="modified_by"/>
+      <column name="modified_on"/>
+      <column name="group_name" value="Activity"/>
+    </insert>
+	
+	
+	<insert tableName="permission_t">
+      <column name="role_id" valueNumeric="23"/>
+      <column name="feature_id" valueNumeric="142"/>
+    </insert>
+	<insert tableName="permission_t">
+      <column name="role_id" valueNumeric="23"/>
+      <column name="feature_id" valueNumeric="144"/>
+    </insert>
+	<insert tableName="permission_t">
+      <column name="role_id" valueNumeric="23"/>
+      <column name="feature_id" valueNumeric="148"/>
+    </insert>
+	
+  </changeSet> 
 </databaseChangeLog>

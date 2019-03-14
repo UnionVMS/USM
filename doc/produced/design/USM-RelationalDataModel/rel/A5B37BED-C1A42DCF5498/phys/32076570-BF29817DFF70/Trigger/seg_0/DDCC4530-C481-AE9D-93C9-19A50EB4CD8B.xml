@@ -1,0 +1,14 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="CHALLENGE_BI" directorySegmentName="seg_0" id="DDCC4530-C481-AE9D-93C9-19A50EB4CD8B">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>CHALLENGE_BI</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:39 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<actions>INSERT</actions>
+<body>begin&lt;br/&gt;			  if :new.challenge_ID is null&lt;br/&gt;			  then&lt;br/&gt;			    select SQ_challenge.nextval into :new.challenge_ID from dual;&lt;br/&gt;			  end if;&lt;br/&gt;			&lt;br/&gt;			  /* Fill date and user created */&lt;br/&gt;			  IF :NEW.created_on IS NULL&lt;br/&gt;			  THEN&lt;br/&gt;			      :NEW.created_on := SYSDATE;&lt;br/&gt;			  END IF;&lt;br/&gt;			&lt;br/&gt;			  IF :NEW.created_by IS NULL&lt;br/&gt;			  THEN&lt;br/&gt;			      :NEW.created_by := UPPER(sys_context(&apos;USERENV&apos;, &apos;OS_USER&apos;));&lt;br/&gt;			  ELSE&lt;br/&gt;			      :NEW.created_by := UPPER(:NEW.created_by);&lt;br/&gt;			  END IF;&lt;br/&gt;			end;</body>
+<triggerTime>BEFORE</triggerTime>
+<owner>6ED00E60-7E29-B60B-3735-BCAB175F5692</owner>
+<table>099B88C7-ABCC-7C89-5374-4E383412AF2F</table>
+</TriggerOraclev10g>

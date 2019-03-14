@@ -1,0 +1,11 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SegmentOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.SegmentOraclev10g" name="Storage22" directorySegmentName="seg_0" id="5427D254-8A7D-81F4-9A25-F6ACF7CF8F0C">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:19 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<initrans>2</initrans>
+<maxTrans>255</maxTrans>
+<scInitialExtent>65536</scInitialExtent>
+<scMaxExtents>2147483645</scMaxExtents>
+<scNextExtent>1048576</scNextExtent>
+</SegmentOraclev10g>

@@ -1,0 +1,18 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="CEE1AFD2-CB3A-B8DB-7CAB-EF85E152100E" containerWithKeyObject="8186EBE9-B43E-419D-04E2-3F9A0EE7F7E8" localFKIndex="CD8EA91E-1A96-B9E3-4292-6F6DC0F4F6D9" name="SCOPE_DS_DATASET_FK">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>SCOPE_DS_DATASET_FK</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:55:17 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<lineWidth>2</lineWidth>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>762FBE57-1E97-6DCA-B2BF-AE696AB1371D</referredTableID>
+<keyObject>CC688F9D-937E-BC7D-7BBF-3F243FF3C192</keyObject>
+<referredKeyID>CC688F9D-937E-BC7D-7BBF-3F243FF3C192</referredKeyID>
+<mandatory>true</mandatory>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

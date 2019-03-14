@@ -1,17 +1,3 @@
-/*
- * Developed by the European Commission - Directorate General for Maritime 
- * Affairs and Fisheries © European Union, 2015-2016.
- * 
- * This file is part of the Integrated Fisheries Data Management (IFDM) Suite.
- * The IFDM Suite is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or any later version.
- * The IFDM Suite is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details. You should have received a copy of the GNU General Public 
- * License along with the IFDM Suite. If not, see http://www.gnu.org/licenses/.
- */
 package eu.europa.ec.mare.usm.information.service.impl;
 
 import java.util.ArrayList;
@@ -46,6 +32,7 @@ import eu.europa.ec.mare.usm.policy.service.impl.PolicyProvider;
  * Stateless session bean implementation of the DeploymentService
  */
 @Stateless
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class DeploymentServiceBean implements DeploymentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeploymentServiceBean.class);
     private static final String OPTION_VALUE_POLICY="option.valueSize";
@@ -53,10 +40,10 @@ public class DeploymentServiceBean implements DeploymentService {
     
     private int optionValuePolicy=50;
     
-    @Inject
+    @EJB
     private ApplicationJpaDao jpaDao;
 
-    @Inject
+    @EJB
     private DeploymentValidator validator;
     
     @EJB

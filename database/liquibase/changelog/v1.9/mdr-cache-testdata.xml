@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+           http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd
+           http://www.liquibase.org/xml/ns/dbchangelog-ext 
+           http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+   
+   
+   <changeSet author="georgige (generated)" id="1444062061136-9" context="test">
+	 
+	
+	 <insert tableName="application_t">
+		<column name="application_id" valueNumeric="21"/>
+		<column name="name" value="MDR Cache"/>
+		<column name="description" value="Deployment descriptor of module MDR Cache."/>
+		<column name="parent_id"/>
+     </insert>
+	 
+	 
+	 
+	<insert tableName="feature_t">
+      <column name="feature_id" valueNumeric="143"/>
+      <column name="name" value="CONFIGURE_MDR_SCHEDULER"/>
+      <column name="description" value="NA"/>
+      <column name="application_id" valueNumeric="21"/>
+      <column name="created_by" value="USM2"/>
+      <column name="created_on" valueDate="2015-10-05 12:19:10.294566"/>
+      <column name="modified_by"/>
+      <column name="modified_on"/>
+      <column name="group_name" value="MDR Cache"/>
+    </insert>
+	<insert tableName="feature_t">
+      <column name="feature_id" valueNumeric="145"/>
+      <column name="name" value="LIST_MDR_CODE_LISTS"/>
+      <column name="description" value="NA"/>
+      <column name="application_id" valueNumeric="21"/>
+      <column name="created_by" value="USM2"/>
+      <column name="created_on" valueDate="2015-10-05 12:19:10.294566"/>
+      <column name="modified_by"/>
+      <column name="modified_on"/>
+      <column name="group_name" value="MDR Cache"/>
+    </insert>
+	<insert tableName="feature_t">
+      <column name="feature_id" valueNumeric="146"/>
+      <column name="name" value="UPDATE_MDR_CODE_LISTS"/>
+      <column name="description" value="NA"/>
+      <column name="application_id" valueNumeric="21"/>
+      <column name="created_by" value="USM2"/>
+      <column name="created_on" valueDate="2015-10-05 12:19:10.294566"/>
+      <column name="modified_by"/>
+      <column name="modified_on"/>
+      <column name="group_name" value="MDR Cache"/>
+    </insert>
+	<insert tableName="feature_t">
+	  <column name="feature_id" valueNumeric="147"/>
+	  <column name="name" value="CODE_LISTS_ENABLE_DISABLE_SCHEDULED_UPDATE"/>
+	  <column name="description" value="allows user to update the status table (MDR Cache). Ex. enable/disable synchronization of a certain acronym."/>
+	  <column name="application_id" valueNumeric="21"/>
+	  <column name="created_by" value="USM2"/>
+	  <column name="created_on" valueDate="2015-10-05 12:19:10.294566"/>
+	  <column name="modified_by"/>
+	  <column name="modified_on"/>
+	  <column name="group_name" value="MDR Cache"/>
+	</insert>
+	
+	<insert tableName="permission_t">
+      <column name="role_id" valueNumeric="23"/>
+      <column name="feature_id" valueNumeric="143"/>
+    </insert>
+
+	<insert tableName="permission_t">
+      <column name="role_id" valueNumeric="23"/>
+      <column name="feature_id" valueNumeric="145"/>
+    </insert>
+	<insert tableName="permission_t">
+      <column name="role_id" valueNumeric="23"/>
+      <column name="feature_id" valueNumeric="146"/>
+    </insert>
+	<insert tableName="permission_t">
+      <column name="role_id" valueNumeric="23"/>
+      <column name="feature_id" valueNumeric="147"/>
+    </insert>
+	
+	  </changeSet> 
+</databaseChangeLog>

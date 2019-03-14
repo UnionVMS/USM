@@ -6,6 +6,12 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
 <changeSet author="emtudorsm" id="scopeTable_update2">
+	<sql dbms="oracle">
+		update SCOPE_T set ACTIVE_FROM=(select sysdate from dual) where ACTIVE_FROM is null;
+	</sql>
+	<sql dbms="oracle">
+		update SCOPE_T set ACTIVE_TO=(select add_months(sysdate, 12) from dual) where ACTIVE_TO is null;
+	</sql>
 	<sql dbms="postgresql">
 		update SCOPE_T set ACTIVE_FROM=now() where ACTIVE_FROM is null;
 	</sql>
@@ -103,6 +109,25 @@
 	</rollback>
 </changeSet>
 
+<changeSet author="emtudorsm" id="oracleEndPointContactTrigger1" runOnChange="true" dbms="oracle">
+   	  <createProcedure>
+		 create trigger end_point_contact_bi
+		    before insert on END_POINT_CONTACT_T
+		    for each row
+		begin
+		  if :new.END_POINT_CONTACT_ID is null
+		  then
+		    select sq_end_point_contact.nextval into :new.END_POINT_CONTACT_ID from dual;
+		  end if;
+		end;
+	  </createProcedure>
+	  <rollback>
+	  	drop trigger end_point_contact_bi;
+	  </rollback>
+	   </changeSet>     
+   
+   
+
    <changeSet author="emtudorsm" id="postgresEndPointContactTrigger1"  runOnChange="true" dbms="postgresql">
    	<createProcedure>
 	  	CREATE OR REPLACE FUNCTION end_point_contact_bi()
@@ -133,7 +158,61 @@
 		drop function end_point_contact_bi();
 	  </rollback>
   </changeSet> 
+<changeSet author="emtudorsm" id="oracleChannelTrigger1" runOnChange="true" dbms="oracle">
+     <createProcedure>
+	  	create  trigger channel_BI
+	    before insert on channel_T
+	    for each row
+			begin
+			  if :new.channel_ID is null
+			  then
+			    select SQ_channel.nextval into :new.channel_ID from dual;
+			  end if;
+			
+			  /* Fill date and user created */
+			  IF :NEW.created_on IS NULL
+			  THEN
+			      :NEW.created_on := SYSDATE;
+			  END IF;
+			
+			  IF :NEW.created_by IS NULL
+			  THEN
+			      :NEW.created_by := UPPER(sys_context('USERENV', 'OS_USER'));
+			  ELSE
+			      :NEW.created_by := UPPER(:NEW.created_by);
+			  END IF;
+			end;
+	  </createProcedure>
+	  <rollback>
+	  	drop trigger channel_bi;
+	  </rollback>
+	   </changeSet>     
    
+   <changeSet author="emtudorsm" id="oracleChannelTrigger2"  runOnChange="true" dbms="oracle">
+     <createProcedure>
+	  	create or replace trigger channel_BU
+    	before update on channel_T
+    	for each row
+		begin
+		    /* Fill date and user modified */
+		    IF :NEW.modified_on IS NULL OR (:NEW.modified_on = :OLD.modified_on)
+		    THEN
+		        :NEW.modified_on := SYSDATE;
+		    END IF;
+		
+		    IF :NEW.modified_by IS NULL OR (:NEW.modified_by = :OLD.modified_by)
+		    THEN
+		        :NEW.modified_by := UPPER(sys_context('USERENV', 'OS_USER'));
+		    ELSE
+		        :NEW.modified_by := UPPER(:NEW.modified_by);
+		    END IF;
+		
+		end;
+	  </createProcedure>
+	  <rollback>
+	  	drop trigger channel_bu
+	  </rollback>
+   </changeSet>      	
 
    <changeSet author="emtudorsm" id="postgresChannelTrigger1"  runOnChange="true" dbms="postgresql">
    	<createProcedure>
@@ -233,6 +312,25 @@
 	</addColumn>
  </changeSet>
  
+<changeSet author="emtudorsm" id="oracleUserContextTrigger1" runOnChange="true" dbms="oracle">
+ 	<sql>
+ 	   drop trigger user_role_bi;
+ 	</sql>
+   	  <createProcedure>
+		 create trigger USER_CONTEXT_BI
+		    before insert on USER_CONTEXT_T
+		    for each row
+		begin
+		  if :new.USER_CONTEXT_ID is null
+		  then
+		    select SQ_USER_ROLE.nextval into :new.USER_CONTEXT_ID from dual;
+		  end if;
+		end;
+	  </createProcedure>
+	  <rollback>
+	  	drop trigger user_context_bi;
+	  </rollback>
+</changeSet>    
  
    <changeSet author="emtudorsm" id="postgresUserContextTrigger1"  runOnChange="true" dbms="postgresql">
    	<sql>
@@ -269,6 +367,27 @@
 	  </rollback>
 	   </changeSet>     
  
+ <changeSet author="emtudorsm" id="oracleUpView_update1" runOnChange="true" dbms="oracle">
+ 	<dropView viewName="USER_PROFILE_V"/>
+	<createView viewName="USER_PROFILE_V">
+			select a.NAME as APPLICATION_NAME, u.USER_NAME, o.NAME as OPTION_NAME, p.OPTION_VALUE, 'N' as IS_DEFAULT, uc.USER_CONTEXT_ID 
+			from OPTION_T o,APPLICATION_T a,PREFERENCE_T p
+			 INNER JOIN USER_CONTEXT_T UC on uc.USER_CONTEXT_ID=p.user_context_id
+		     INNER JOIN USER_T u on u.user_id=uc.USER_ID
+		  	WHERE o.application_id = a.application_id AND p.option_id = o.option_id
+			UNION
+			select a.NAME as APPLICATION_NAME, u.USER_NAME, o.NAME as OPTION_NAME, o.DEFAULT_VALUE as OPTION_VALUE, 'Y' as IS_DEFAULT, null as 
+			from USER_T u,OPTION_T o,APPLICATION_T a
+			where o.APPLICATION_ID=a.APPLICATION_ID
+			  and o.DEFAULT_VALUE is not null
+			  and not exists(select 1 from PREFERENCE_T p 
+							INNER JOIN USER_CONTEXT_T UC on uc.USER_CONTEXT_ID=p.user_context_id
+							WHERE p.OPTION_ID=o.OPTION_ID and uc.user_id=u.user_id)
+		</createView>
+		<rollback>
+			<dropView viewName="USER_PROFILE_V"/>
+		</rollback>
+	</changeSet>
 	
 	<changeSet author="emtudorsm" id="postgresqlUpView_update2" runOnChange="true" dbms="postgresql">
 		 <dropView viewName="USER_PROFILE_V"/>

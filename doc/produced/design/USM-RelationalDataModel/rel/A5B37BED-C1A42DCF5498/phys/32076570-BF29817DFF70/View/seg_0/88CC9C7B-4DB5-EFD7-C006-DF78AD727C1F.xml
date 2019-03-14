@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableViewProxyOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TableViewProxyOraclev10g" name="USER_PROFILE_V" directorySegmentName="seg_0" id="88CC9C7B-4DB5-EFD7-C006-DF78AD727C1F">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:49 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<schemaObject>335F9972-90EC-227F-06DD-05E9B1A8D3B3</schemaObject>
+</TableViewProxyOraclev10g>

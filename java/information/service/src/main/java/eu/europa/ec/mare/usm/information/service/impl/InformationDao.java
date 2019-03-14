@@ -1,17 +1,3 @@
-/*
- * Developed by the European Commission - Directorate General for Maritime 
- * Affairs and Fisheries © European Union, 2015-2016.
- * 
- * This file is part of the Integrated Fisheries Data Management (IFDM) Suite.
- * The IFDM Suite is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or any later version.
- * The IFDM Suite is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
- * more details. You should have received a copy of the GNU General Public 
- * License along with the IFDM Suite. If not, see http://www.gnu.org/licenses/.
- */
 package eu.europa.ec.mare.usm.information.service.impl;
 
 import java.sql.Connection;
@@ -24,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -52,6 +39,7 @@ import eu.europa.ec.mare.usm.information.domain.UserContextQuery;
  * It uses a (container provided) JDBC data-source retrieved from the JNDI 
  * context using JNDI name 'jdbc/USM2'.
  */
+@Stateless
 public class InformationDao {
   private static final Logger LOGGER = LoggerFactory.getLogger(InformationDao.class.getName());
   private static final String FAILED_TO_EXECUTE_QUERY = "Failed to execute query: ";
@@ -258,7 +246,7 @@ public class InformationDao {
     return org;
   }
   
-  boolean optionExists(String applicationName, String optionName) 
+  public boolean optionExists(String applicationName, String optionName) 
   {
     LOGGER.info("optionExists("+ applicationName + ", " + optionName + ") - (ENTER)");
     
@@ -289,7 +277,7 @@ public class InformationDao {
     return ret;
   }
 
-  boolean userExists(String userName) 
+  public boolean userExists(String userName) 
   {
     LOGGER.info("userExists(" + userName + ") - (ENTER)");
     
@@ -317,7 +305,7 @@ public class InformationDao {
     return ret;
   }
 
-  boolean userContextExists(String userName, Context ctx) 
+  public boolean userContextExists(String userName, Context ctx) 
   {
     LOGGER.info("userContextExists(" + userName + ") - (ENTER)");
     
@@ -376,7 +364,7 @@ public class InformationDao {
    * @throws RuntimeException in case an internal error prevented fulfilling 
    * the request
    */
-  void updateUserContext(String userName, Context ctx) 
+  public void updateUserContext(String userName, Context ctx) 
   {
     LOGGER.info("updateUserContext(" + ctx + ") - (ENTER)");
     

@@ -1,0 +1,217 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="ABD1DB2A-E208-D6A2-A3F0-CD3A0E4BEEE9" schemaObject="247D05E2-79CD-C825-54B3-5D5DE6D6B6B4" name="PREFERENCE_T">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PREFERENCE_T</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:31 UTC</createdTime>
+<commentInRDBMS>Holds a user preference for an application specific customisable option.</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="PREFERENCE_ID" id="238FE9FB-3443-3DE1-0869-C54BD41DA2DA">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PREFERENCE_T</sourceObjSchema>
+<sourceObjName>PREFERENCE_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:42 UTC</createdTime>
+<commentInRDBMS>Unique record id (primary key)</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="OPTION_ID" id="12D637AB-3BFC-434A-9B30-780D5B678E34">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PREFERENCE_T</sourceObjSchema>
+<sourceObjName>OPTION_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:42 UTC</createdTime>
+<commentInRDBMS>The identifier of the option</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="2E8A448B-5B40-EC57-BABF-A548C47DA7BF" referredColumn="13738C58-423F-0D2A-5448-E4D0B9B7AC2E"/>
+</associations>
+</Column>
+<Column name="CREATED_BY" id="3FD036E6-A6FA-2777-D2A0-F53BC93860CC">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PREFERENCE_T</sourceObjSchema>
+<sourceObjName>CREATED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:42 UTC</createdTime>
+<commentInRDBMS>The name of the user who created the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_ON" id="F44600FE-688F-CC1F-14D4-D65419F5B810">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PREFERENCE_T</sourceObjSchema>
+<sourceObjName>CREATED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:42 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was created</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_BY" id="FBECBF0A-B4D4-9759-DDE1-60D987EDE330">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PREFERENCE_T</sourceObjSchema>
+<sourceObjName>MODIFIED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:42 UTC</createdTime>
+<commentInRDBMS>The name of the user who performed the last update on the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_ON" id="4CEE516B-C335-ECC5-05D0-E3D8B99AD51C">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PREFERENCE_T</sourceObjSchema>
+<sourceObjName>MODIFIED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:42 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was last updated</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="USER_CONTEXT_ID" id="11F35276-E166-DFAD-263C-B9C82A337C64">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PREFERENCE_T</sourceObjSchema>
+<sourceObjName>USER_CONTEXT_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:43 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="4C1BD294-E5B2-1D51-533C-975BAB7C2582" referredColumn="C5A8928E-9718-C372-B451-C6EF27E10DEE"/>
+</associations>
+</Column>
+<Column name="OPTION_VALUE" id="C0246622-1D5B-90EF-309F-34FF9D050D5C">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PREFERENCE_T</sourceObjSchema>
+<sourceObjName>OPTION_VALUE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:42 UTC</createdTime>
+<commentInRDBMS>The option value</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT029</logicalDatatype>
+<dataTypeSize>4000</dataTypeSize>
+<ownDataTypeParameters>4000,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="E7B1CAEF-444E-DE01-1086-3E6E53A7383E" name="PK_PREFERENCE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_PREFERENCE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:55:00 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="238FE9FB-3443-3DE1-0869-C54BD41DA2DA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B11116E1-349A-1A90-57E7-A6D3F816B2BC" schemaObject="247D05E2-79CD-C825-54B3-5D5DE6D6B6B4" name="PK_PREFERENCE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_PREFERENCE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:49 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="238FE9FB-3443-3DE1-0869-C54BD41DA2DA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="99A8A85E-5A40-3579-48F5-A46F7EFE00C6" schemaObject="247D05E2-79CD-C825-54B3-5D5DE6D6B6B4" name="UK_PREF_USER_OPTION">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>UK_PREF_USER_OPTION</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:49 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="11F35276-E166-DFAD-263C-B9C82A337C64"/>
+<colUsage columnID="12D637AB-3BFC-434A-9B30-780D5B678E34"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="01E1560E-5756-53EF-AA82-E1BA07450F03" schemaObject="247D05E2-79CD-C825-54B3-5D5DE6D6B6B4" name="FK_PREFERENCE_USER_CONT">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_PREFERENCE_USER_CONT</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:54:50 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="11F35276-E166-DFAD-263C-B9C82A337C64"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="5568D277-CED7-0449-67FA-90AC379317C0" name="PREFERENCE_OPTION_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:55:17 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="12D637AB-3BFC-434A-9B30-780D5B678E34"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="5AFF47EF-3EFB-1224-4721-A2D5BA3C5D95" name="PREFERENCE_USER_CONT_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-06-10 13:55:17 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="11F35276-E166-DFAD-263C-B9C82A337C64"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

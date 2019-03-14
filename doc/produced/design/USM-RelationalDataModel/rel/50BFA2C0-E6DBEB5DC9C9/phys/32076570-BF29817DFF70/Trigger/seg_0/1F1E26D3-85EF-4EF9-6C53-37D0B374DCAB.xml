@@ -1,0 +1,14 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="END_POINT_CONTACT_BI" directorySegmentName="seg_0" id="1F1E26D3-85EF-4EF9-6C53-37D0B374DCAB">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>END_POINT_CONTACT_BI</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:08 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<actions>INSERT</actions>
+<body>begin&lt;br/&gt;		  if :new.END_POINT_CONTACT_ID is null&lt;br/&gt;		  then&lt;br/&gt;		    select sq_end_point_contact.nextval into :new.END_POINT_CONTACT_ID from dual;&lt;br/&gt;		  end if;&lt;br/&gt;		end;</body>
+<triggerTime>BEFORE</triggerTime>
+<owner>3F4D8457-3B72-ADB6-82B9-3F6B2CF911A9</owner>
+<table>2C16133B-8CB6-6E28-BBEB-E42BED90FDA9</table>
+</TriggerOraclev10g>

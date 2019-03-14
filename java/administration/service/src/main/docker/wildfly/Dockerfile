@@ -1,4 +1,4 @@
-FROM jboss/wildfly
+FROM dgmare-repo.athens.intrasoft-intl.private:5000/jboss/wildfly
 
 EXPOSE 9990 8080 8443
 

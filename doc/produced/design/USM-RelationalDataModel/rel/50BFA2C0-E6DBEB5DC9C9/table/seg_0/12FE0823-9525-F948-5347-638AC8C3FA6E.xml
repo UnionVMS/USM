@@ -1,0 +1,191 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="12FE0823-9525-F948-5347-638AC8C3FA6E" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="CHALLENGE_T">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>CHALLENGE_T</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:14 UTC</createdTime>
+<commentInRDBMS>Holds challenge/response pairs used to confirm the identity of an authenticated user.</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="CHALLENGE_ID" id="2A3F7B88-F4B9-F274-65B8-F5DCCE120D85">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHALLENGE_T</sourceObjSchema>
+<sourceObjName>CHALLENGE_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:19 UTC</createdTime>
+<commentInRDBMS>Unique record id (primary key)</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="USER_ID" id="976F998C-C429-596C-DD75-1804E3480F2C">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHALLENGE_T</sourceObjSchema>
+<sourceObjName>USER_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:19 UTC</createdTime>
+<commentInRDBMS>The identifier of the user</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="5A98C626-3A64-F1A3-56FD-7CF882D9280C" referredColumn="4EF9A5B0-036F-7847-C51D-05123B35649C"/>
+</associations>
+</Column>
+<Column name="CHALLENGE" id="02268951-6F8F-928E-50D6-CF622C6D00FD">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHALLENGE_T</sourceObjSchema>
+<sourceObjName>CHALLENGE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:19 UTC</createdTime>
+<commentInRDBMS>The challenge</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>128 BYTE</dataTypeSize>
+<ownDataTypeParameters>128 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="RESPONSE" id="EE1B79D1-2E0B-81D3-226B-D6C6B87D6A3A">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHALLENGE_T</sourceObjSchema>
+<sourceObjName>RESPONSE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:20 UTC</createdTime>
+<commentInRDBMS>The (expected) response to the challenge</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>128 BYTE</dataTypeSize>
+<ownDataTypeParameters>128 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_BY" id="2DEC3C07-4BAF-FB8D-4E92-9FEEAAD58BC1">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHALLENGE_T</sourceObjSchema>
+<sourceObjName>CREATED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:20 UTC</createdTime>
+<commentInRDBMS>The name of the user who created the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_ON" id="3C256EAE-024E-2A2B-F9A9-687E42AF9920">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHALLENGE_T</sourceObjSchema>
+<sourceObjName>CREATED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:20 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was created</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_BY" id="2D3B3FE7-0533-C7B7-1059-29F48E7998B9">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHALLENGE_T</sourceObjSchema>
+<sourceObjName>MODIFIED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:20 UTC</createdTime>
+<commentInRDBMS>The name of the user who performed the last update on the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_ON" id="ADFD802A-AA50-2E93-71BE-E353715AA0D1">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHALLENGE_T</sourceObjSchema>
+<sourceObjName>MODIFIED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:20 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was last updated</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="2AD74345-04A2-FC40-DB02-29245026203B" name="PK_CHALLENGE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_CHALLENGE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:48 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="2A3F7B88-F4B9-F274-65B8-F5DCCE120D85"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="2DC79265-98FC-B121-2E01-2063D2D8D329" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="PK_CHALLENGE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_CHALLENGE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:40 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="2A3F7B88-F4B9-F274-65B8-F5DCCE120D85"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="5476C756-A6B5-5193-33B7-F672AA4ED8AF" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="FK_CHALLENGE_USER">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_CHALLENGE_USER</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:40 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="976F998C-C429-596C-DD75-1804E3480F2C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="5A00E231-9C63-68A1-9306-7B74EC048761" name="CHALLENGE_USER_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:27 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="976F998C-C429-596C-DD75-1804E3480F2C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

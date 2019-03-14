@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>eu.europa.ec.mare.oss.usm</groupId>
+    <groupId>eu.europa.ec.mare.usm</groupId>
     <artifactId>Administration-Module</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.1.4-SNAPSHOT</version>
   </parent>
   <artifactId>Administration-Service</artifactId>
   <packaging>jar</packaging>
@@ -14,31 +15,40 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>eu.europa.ec.mare.oss.auditing</groupId>
+      <groupId>eu.europa.ec.mare.auditing</groupId>
       <artifactId>Logger-API</artifactId>
-      <version>1.2.0</version>
+      <version>1.2</version>
     </dependency>
     <dependency>
-      <groupId>eu.europa.ec.mare.oss.auditing</groupId>
+      <groupId>eu.europa.ec.mare.auditing</groupId>
       <artifactId>CSV-Logger</artifactId>
-      <version>1.2.0</version>
+      <version>1.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>eu.europa.ec.mare.oss.usm</groupId>
+      <groupId>eu.europa.ec.mare.usm</groupId>
       <artifactId>Information-Service</artifactId>
     </dependency>
     <dependency>
-      <groupId>eu.europa.ec.mare.oss.usm</groupId>
+      <groupId>eu.europa.ec.mare.usm</groupId>
       <artifactId>Authentication-Service</artifactId>
     </dependency>
     <dependency>
       <groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
       <artifactId>audit-model</artifactId>
-      <version>2.0.7</version>
+      <version>2.0.1</version>
     </dependency>
   </dependencies>
   <profiles>
+    <profile>
+        <id>disable-java8-doclint</id>
+        <activation>
+            <jdk>[1.8,)</jdk>
+        </activation>
+        <properties>
+            <additionalparam>-Xdoclint:none</additionalparam>
+        </properties>
+    </profile>
 
   </profiles>
   <build>
@@ -66,37 +76,37 @@
             <configuration>
               <artifactItems>
                 <artifactItem>
-                  <groupId>eu.europa.ec.mare.oss.auditing</groupId>
+                  <groupId>eu.europa.ec.mare.auditing</groupId>
                   <artifactId>Logger-API</artifactId>
                   <type>jar</type>
                   <destFileName>Logger-API.jar</destFileName>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>eu.europa.ec.mare.oss.auditing</groupId>
+                  <groupId>eu.europa.ec.mare.auditing</groupId>
                   <artifactId>CSV-Logger</artifactId>
                   <type>jar</type>
                   <destFileName>CSV-Logger.jar</destFileName>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>eu.europa.ec.mare.oss.usm</groupId>
+                  <groupId>eu.europa.ec.mare.usm</groupId>
                   <artifactId>Information-Service</artifactId>
                   <type>jar</type>
                   <destFileName>Information-Service.jar</destFileName>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>eu.europa.ec.mare.oss.usm</groupId>
+                  <groupId>eu.europa.ec.mare.usm</groupId>
                   <artifactId>Authentication-Service</artifactId>
                   <type>jar</type>
                   <destFileName>Authentication-Service.jar</destFileName>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>eu.europa.ec.mare.oss.usm</groupId>
+                  <groupId>eu.europa.ec.mare.usm</groupId>
                   <artifactId>Information-Model</artifactId>
                   <type>jar</type>
                   <destFileName>Information-Model.jar</destFileName>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>eu.europa.ec.mare.oss.usm</groupId>
+                  <groupId>eu.europa.ec.mare.usm</groupId>
                   <artifactId>Authentication-Model</artifactId>
                   <type>jar</type>
                   <destFileName>Authentication-Model.jar</destFileName>
@@ -149,7 +159,7 @@
                 <plugin>
               <groupId>io.fabric8</groupId>
               <artifactId>docker-maven-plugin</artifactId>
-              <version>0.22.1</version>
+              <version>0.15.1</version>
 
               <configuration>
                 <dockerHost>https://${docker.machine.ip}:2376</dockerHost>

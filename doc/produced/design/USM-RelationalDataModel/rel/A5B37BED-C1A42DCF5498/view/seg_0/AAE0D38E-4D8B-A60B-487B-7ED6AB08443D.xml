@@ -1,0 +1,76 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableView class="oracle.dbtools.crest.model.design.relational.TableView" directorySegmentName="seg_0" id="AAE0D38E-4D8B-A60B-487B-7ED6AB08443D" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="USER_PROFILE_Vv1">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<userDefined>true</userDefined>
+<userDefinedSQL>CREATE OR REPLACE VIEW USER_PROFILE_V&lt;br/&gt;AS &lt;br/&gt;select a.NAME as APPLICATION_NAME, u.USER_NAME, o.NAME as OPTION_NAME, p.OPTION_VALUE, &apos;N&apos; as IS_DEFAULT, uc.USER_CONTEXT_ID &lt;br/&gt;			from OPTION_T o,APPLICATION_T a,PREFERENCE_T p&lt;br/&gt;			 INNER JOIN USER_CONTEXT_T UC on uc.USER_CONTEXT_ID=p.user_context_id&lt;br/&gt;		     INNER JOIN USER_T u on u.user_id=uc.USER_ID&lt;br/&gt;		  	WHERE o.application_id = a.application_id AND p.option_id = o.option_id&lt;br/&gt;			UNION&lt;br/&gt;			select a.NAME as APPLICATION_NAME, u.USER_NAME, o.NAME as OPTION_NAME, o.DEFAULT_VALUE as OPTION_VALUE, &apos;Y&apos; as IS_DEFAULT, null as &lt;br/&gt;			from USER_T u,OPTION_T o,APPLICATION_T a&lt;br/&gt;			where o.APPLICATION_ID=a.APPLICATION_ID&lt;br/&gt;			  and o.DEFAULT_VALUE is not null&lt;br/&gt;			  and not exists(select 1 from PREFERENCE_T p &lt;br/&gt;							INNER JOIN USER_CONTEXT_T UC on uc.USER_CONTEXT_ID=p.user_context_id&lt;br/&gt;							WHERE p.OPTION_ID=o.OPTION_ID and uc.user_id=u.user_id)</userDefinedSQL>
+<viewElements>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="APPLICATION_NAME" id="CB5358BD-4ED0-C59B-BA59-F90F81C232DA">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>APPLICATION_NAME</alias>
+<dataType>VARCHAR2 (128)</dataType>
+<headerAlias>APPLICATION_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="USER_NAME" id="1E812D18-39DB-B187-254E-B01C844E7E35">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>USER_NAME</alias>
+<dataType>VARCHAR2 (32)</dataType>
+<headerAlias>USER_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="OPTION_NAME" id="8F4086F7-183A-9FBA-4CB5-423170D2BF57">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>OPTION_NAME</alias>
+<dataType>VARCHAR2 (128)</dataType>
+<headerAlias>OPTION_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="OPTION_VALUE" id="22C511CA-14E5-B57E-2A54-F71AAABD4B33">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>OPTION_VALUE</alias>
+<dataType>VARCHAR2 (512)</dataType>
+<headerAlias>OPTION_VALUE</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="IS_DEFAULT" id="A9272009-0AE0-6887-B9FB-1182E6512FE1">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>IS_DEFAULT</alias>
+<dataType>CHAR (1)</dataType>
+<headerAlias>IS_DEFAULT</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="USER_CONTEXT_ID" id="1CB45199-1A1C-39BA-1703-64F29A28B526">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>USER_CONTEXT_ID</alias>
+<dataType>NUMBER</dataType>
+<headerAlias>USER_CONTEXT_ID</headerAlias>
+<reference>false</reference>
+</viewElement>
+</viewElements>
+</TableView>

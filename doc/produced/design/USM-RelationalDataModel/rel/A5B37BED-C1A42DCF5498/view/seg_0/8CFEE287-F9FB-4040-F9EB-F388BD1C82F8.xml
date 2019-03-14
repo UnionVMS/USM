@@ -1,0 +1,55 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableView class="oracle.dbtools.crest.model.design.relational.TableView" directorySegmentName="seg_0" id="8CFEE287-F9FB-4040-F9EB-F388BD1C82F8" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="ACTIVE_USER_V">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>ACTIVE_USER_V</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:49 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<userDefined>true</userDefined>
+<userDefinedSQL>CREATE OR REPLACE VIEW ACTIVE_USER_V&lt;br/&gt;AS &lt;br/&gt;select u.USER_ID, u.USER_NAME, u.PASSWORD&lt;br/&gt;			from USER_T u &lt;br/&gt;			where (u.STATUS=&apos;E&apos; or (u.STATUS=&apos;L&apos; &lt;br/&gt;			and u.LOCKOUT_TO&lt;=SYSDATE))  &lt;br/&gt;			and nvl(u.ACTIVE_FROM, SYSDATE)&lt;= SYSDATE &lt;br/&gt;			and nvl(u.ACTIVE_TO, SYSDATE)&gt;= SYSDATE</userDefinedSQL>
+<viewElements>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="USER_ID" id="1F5FC6BF-A65C-013C-FBA9-9B7D5537DD60">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_V</sourceObjSchema>
+<sourceObjName>USER_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:49 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>USER_ID</alias>
+<dataType>NUMBER (10)</dataType>
+<headerAlias>USER_ID</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="USER_NAME" id="507A19BF-EBB1-C71A-6506-E8F798FCF6C2">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_V</sourceObjSchema>
+<sourceObjName>USER_NAME</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:49 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>USER_NAME</alias>
+<dataType>VARCHAR2 (32)</dataType>
+<headerAlias>USER_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="PASSWORD" id="413D92D5-897F-A4AA-1F27-7588DB773529">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>ACTIVE_USER_V</sourceObjSchema>
+<sourceObjName>PASSWORD</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:49 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>PASSWORD</alias>
+<dataType>VARCHAR2 (32)</dataType>
+<headerAlias>PASSWORD</headerAlias>
+<reference>false</reference>
+</viewElement>
+</viewElements>
+</TableView>

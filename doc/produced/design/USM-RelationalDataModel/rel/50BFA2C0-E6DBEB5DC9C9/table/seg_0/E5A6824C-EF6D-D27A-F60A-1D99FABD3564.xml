@@ -1,0 +1,179 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E5A6824C-EF6D-D27A-F60A-1D99FABD3564" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="PASSWORD_HIST_T">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PASSWORD_HIST_T</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:16 UTC</createdTime>
+<commentInRDBMS>Holds the history of user passwords (stored as MD5 hashes).</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="PASSWORD_HIST_ID" id="FDCF91CB-C8D1-C9E4-6F3F-947CFFF4FD55">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PASSWORD_HIST_T</sourceObjSchema>
+<sourceObjName>PASSWORD_HIST_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:28 UTC</createdTime>
+<commentInRDBMS>Unique record id (primary key)</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="USER_ID" id="3F758B3B-BBB5-A428-4E02-BF9A95BA45FF">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PASSWORD_HIST_T</sourceObjSchema>
+<sourceObjName>USER_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:28 UTC</createdTime>
+<commentInRDBMS>The identifier of the user</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="4BA19290-0BE0-D097-07D8-469FAAF5E12C" referredColumn="4EF9A5B0-036F-7847-C51D-05123B35649C"/>
+</associations>
+</Column>
+<Column name="PASSWORD" id="6F74252C-5BD3-E201-A0CF-3E20CA303CF9">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PASSWORD_HIST_T</sourceObjSchema>
+<sourceObjName>PASSWORD</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:28 UTC</createdTime>
+<commentInRDBMS>The changed (old) password</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CHANGED_ON" id="1227AE15-CB29-259B-D84F-1F45BB26D590">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PASSWORD_HIST_T</sourceObjSchema>
+<sourceObjName>CHANGED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:28 UTC</createdTime>
+<commentInRDBMS>The date and time the password was changed</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_BY" id="3ACB491F-8A9B-3F7E-9B27-492B71C04B82">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PASSWORD_HIST_T</sourceObjSchema>
+<sourceObjName>CREATED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:28 UTC</createdTime>
+<commentInRDBMS>The name of the user who created the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_ON" id="0F2F1670-8E33-0198-1ACE-DAC6D23310FF">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PASSWORD_HIST_T</sourceObjSchema>
+<sourceObjName>CREATED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:28 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was created</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_BY" id="E71C36CF-C54F-7546-FF04-284018136609">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PASSWORD_HIST_T</sourceObjSchema>
+<sourceObjName>MODIFIED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:28 UTC</createdTime>
+<commentInRDBMS>The name of the user who performed the last update on the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_ON" id="CB5BFDF1-CCD2-F6EA-89BE-92B04EF2838D">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>PASSWORD_HIST_T</sourceObjSchema>
+<sourceObjName>MODIFIED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:29 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was last updated</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="A49614F0-4C76-D198-7FE0-5ADC58BF5140" name="PK_PASSWORD_HIST">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_PASSWORD_HIST</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:57 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FDCF91CB-C8D1-C9E4-6F3F-947CFFF4FD55"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="C58DD4F8-659D-A2C6-B365-3DB8508153D7" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="PK_PASSWORD_HIST">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_PASSWORD_HIST</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:43 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FDCF91CB-C8D1-C9E4-6F3F-947CFFF4FD55"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="F0AEE235-0660-759B-F0EA-0CB338084951" name="PASSWORD_HIST_USER_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:27 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="3F758B3B-BBB5-A428-4E02-BF9A95BA45FF"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

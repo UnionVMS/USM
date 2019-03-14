@@ -61,6 +61,32 @@
     <comment>Data</comment>
   </changeSet>  
   
+  <changeSet id="scope_data_oracle_update12" author="emdouniat" context="test"
+     runInTransaction="true" failOnError="true" dbms="oracle">
+    <sql>
+        update SCOPE_T s
+        set ACTIVE_FROM=(select sysdate from dual) where s.NAME='GRC Quotas'
+    </sql>
+    <sql>
+        update SCOPE_T s
+        set ACTIVE_TO=(select add_months(sysdate, 12) from dual) where s.NAME='GRC Quotas'
+    </sql>    
+    <sql>
+        update SCOPE_T s
+        set DATA_FROM=(select sysdate from dual) where s.NAME='GRC Quotas'
+    </sql>
+    <sql>
+        update SCOPE_T s
+        set DATA_TO=(select add_months(sysdate, 12) from dual) where s.NAME='GRC Quotas'
+    </sql>    
+      <rollback>
+        <update tableName="SCOPE_T">
+          <column name="ACTIVE_FROM"/>  
+        </update>
+      </rollback>
+    <comment>Data</comment>
+  </changeSet>  
+
   <changeSet id="scopedataset_update12" author="emkrogean" context="test"
      runInTransaction="true"
     failOnError="true">
@@ -81,7 +107,7 @@
      runInTransaction="true"
     failOnError="true">
     <sql>
-    <![CDATA[update POLICY_T set VALUE='ldaps://svm-midway.private:10636/'
+    <![CDATA[update POLICY_T set VALUE='ldaps://svm-midway.athens.intrasoft-intl.private:10636/'
 where SUBJECT='Administration' and NAME='ldap.server.url';
 update POLICY_T set VALUE='ou=users;ou=system'
 where SUBJECT='Administration' and NAME='ldap.context.root';

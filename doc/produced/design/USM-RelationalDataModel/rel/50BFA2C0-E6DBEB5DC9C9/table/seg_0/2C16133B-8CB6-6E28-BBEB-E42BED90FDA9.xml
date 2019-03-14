@@ -1,0 +1,155 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="2C16133B-8CB6-6E28-BBEB-E42BED90FDA9" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="END_POINT_CONTACT_T">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>END_POINT_CONTACT_T</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:14 UTC</createdTime>
+<commentInRDBMS>Holds information about the relation between endpoint and person.</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="END_POINT_CONTACT_ID" id="C546A566-EE73-334A-C8BE-65F39B559FE1">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>END_POINT_CONTACT_T</sourceObjSchema>
+<sourceObjName>END_POINT_CONTACT_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:22 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<autoIncrementSequenceName>sq_end_point_contact</autoIncrementSequenceName>
+<autoIncrementTriggerName>END_POINT_CONTACT_BI</autoIncrementTriggerName>
+</Column>
+<Column name="END_POINT_ID" id="515177F4-76DA-4F46-9EBC-F1DCCF1C7AA6">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>END_POINT_CONTACT_T</sourceObjSchema>
+<sourceObjName>END_POINT_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:22 UTC</createdTime>
+<commentInRDBMS>The link towards the end point</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="58E0833F-52A7-E908-2FF4-13D0BE3C941F" referredColumn="E0DCC8D2-57D9-6B9E-7781-C93CB7E93336"/>
+</associations>
+</Column>
+<Column name="PERSON_ID" id="38ACB52C-40A7-FE00-C6AC-C46ED10157E0">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>END_POINT_CONTACT_T</sourceObjSchema>
+<sourceObjName>PERSON_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:22 UTC</createdTime>
+<commentInRDBMS>The link towards the end person</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="0EF777D1-0FA4-100C-2253-0F94D90F29F1" referredColumn="E3AF7EBA-EC1E-9485-D72A-ED3F150C9BCC"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="1B24BE2B-98D2-ACCE-340E-8B15FFF0310E" name="PK_END_POINT_CONTACT">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_END_POINT_CONTACT</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:51 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C546A566-EE73-334A-C8BE-65F39B559FE1"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="A02CE86F-6AFD-6E01-29DE-4FF5C4D32156" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="PK_END_POINT_CONTACT">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_END_POINT_CONTACT</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:41 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C546A566-EE73-334A-C8BE-65F39B559FE1"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="659D23A7-914A-8518-D83F-048D16CACCF1" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="FK_END_POINT_CONTACT">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_END_POINT_CONTACT</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:41 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="515177F4-76DA-4F46-9EBC-F1DCCF1C7AA6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B862C4D4-028F-E543-961C-463E584486F2" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="FK_END_POINT_PERSON">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_END_POINT_PERSON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:41 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="38ACB52C-40A7-FE00-C6AC-C46ED10157E0"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="82898E3D-4118-D82A-F834-D3AD402BB455" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="UK_END_POINT_CONTACT">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>UK_END_POINT_CONTACT</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:41 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="515177F4-76DA-4F46-9EBC-F1DCCF1C7AA6"/>
+<colUsage columnID="38ACB52C-40A7-FE00-C6AC-C46ED10157E0"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="6C72A3DB-73E9-D865-39C2-F84FC780A357" name="END_POINT_CONTACT_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:27 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="515177F4-76DA-4F46-9EBC-F1DCCF1C7AA6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="1A1F7DB6-F1AE-4F69-78B2-95D0A298FC2E" name="END_POINT_CONTACT_PERSON_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:27 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="38ACB52C-40A7-FE00-C6AC-C46ED10157E0"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

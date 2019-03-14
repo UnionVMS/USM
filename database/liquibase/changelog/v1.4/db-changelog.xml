@@ -47,6 +47,62 @@
     </rollback>
   </changeSet>
 	    	
+  <changeSet author="emtudorsm" id="pending_details_2" runOnChange="true" dbms="oracle">
+    <createProcedure>
+      create  trigger pending_details_BI
+      before insert on pending_details_T
+      for each row
+      begin
+      if :new.pending_details_ID is null
+      then
+      select SQ_pending_details.nextval into :new.pending_details_ID from dual;
+      end if;
+			
+      /* Fill date and user created */
+      IF :NEW.created_on IS NULL
+      THEN
+      :NEW.created_on := SYSDATE;
+      END IF;
+			
+      IF :NEW.created_by IS NULL
+      THEN
+      :NEW.created_by := UPPER(sys_context('USERENV', 'OS_USER'));
+      ELSE
+      :NEW.created_by := UPPER(:NEW.created_by);
+      END IF;
+      end;
+    </createProcedure>
+    <rollback>
+      drop trigger pending_details_bi;
+    </rollback>
+  </changeSet>     
+   
+  <changeSet author="emtudorsm" id="pending_details_3"  runOnChange="true"  dbms="oracle">
+    <createProcedure>
+      create or replace trigger pending_details_BU
+      before update on pending_details_T
+      for each row
+      begin
+      /* Fill date and user modified */
+      IF :NEW.modified_on IS NULL OR (:NEW.modified_on = :OLD.modified_on)
+      THEN
+      :NEW.modified_on := SYSDATE;
+      END IF;
+		
+      IF :NEW.modified_by IS NULL OR (:NEW.modified_by = :OLD.modified_by)
+      THEN
+      :NEW.modified_by := UPPER(sys_context('USERENV', 'OS_USER'));
+      ELSE
+      :NEW.modified_by := UPPER(:NEW.modified_by);
+      END IF;
+		
+      end;
+    </createProcedure>
+    <rollback>
+      drop trigger pending_details_bu
+    </rollback>
+  </changeSet>      	
+
   <changeSet author="emtudorsm" id="pending_details_4"  runOnChange="true" dbms="postgresql">
     <createProcedure>
       CREATE OR REPLACE FUNCTION pending_details_BI()

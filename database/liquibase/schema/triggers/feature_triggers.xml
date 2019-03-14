@@ -4,9 +4,61 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
 
-        
+   <changeSet author="emtudorsm" id="oracleFeatureTrigger1" runOnChange="true" dbms="oracle">
+   	  <createProcedure>
+	  	create  trigger feature_BI
+	    before insert on feature_T
+	    for each row
+			begin
+			  if :new.feature_ID is null
+			  then
+			    select SQ_feature.nextval into :new.feature_ID from dual;
+			  end if;
+			
+			  /* Fill date and user created */
+			  IF :NEW.created_on IS NULL
+			  THEN
+			      :NEW.created_on := SYSDATE;
+			  END IF;
+			
+			  IF :NEW.created_by IS NULL
+			  THEN
+			      :NEW.created_by := UPPER(sys_context('USERENV', 'OS_USER'));
+			  ELSE
+			      :NEW.created_by := UPPER(:NEW.created_by);
+			  END IF;
+			end;
+	  </createProcedure>
+	  <rollback>
+	  	drop trigger feature_bi;
+	  </rollback>
+	   </changeSet>     
    
-         	
+   <changeSet author="emtudorsm" id="oracleFeatureTrigger2"  runOnChange="true" dbms="oracle">
+   	  <createProcedure>
+	  	create or replace trigger feature_BU
+    	before update on feature_T
+    	for each row
+		begin
+		    /* Fill date and user modified */
+		    IF :NEW.modified_on IS NULL OR (:NEW.modified_on = :OLD.modified_on)
+		    THEN
+		        :NEW.modified_on := SYSDATE;
+		    END IF;
+		
+		    IF :NEW.modified_by IS NULL OR (:NEW.modified_by = :OLD.modified_by)
+		    THEN
+		        :NEW.modified_by := UPPER(sys_context('USERENV', 'OS_USER'));
+		    ELSE
+		        :NEW.modified_by := UPPER(:NEW.modified_by);
+		    END IF;
+		
+		end;
+	  </createProcedure>
+	  <rollback>
+	  	drop trigger feature_bu
+	  </rollback>
+   </changeSet>      	
 
    <changeSet author="emtudorsm" id="postgresFeatureTrigger1"  runOnChange="true" dbms="postgresql">
    	<createProcedure>

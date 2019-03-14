@@ -1,0 +1,43 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableView class="oracle.dbtools.crest.model.design.relational.TableView" directorySegmentName="seg_0" id="B259B91C-DE11-582F-811F-A6F5FFBFDF5D" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="ACTIVE_USER_Vv1">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<userDefined>true</userDefined>
+<userDefinedSQL>CREATE OR REPLACE VIEW ACTIVE_USER_V&lt;br/&gt;AS &lt;br/&gt;select u.USER_ID, u.USER_NAME, u.PASSWORD&lt;br/&gt;			from USER_T u &lt;br/&gt;			where (u.STATUS=&apos;E&apos; or (u.STATUS=&apos;L&apos; &lt;br/&gt;			and u.LOCKOUT_TO&lt;=SYSDATE))  &lt;br/&gt;			and nvl(u.ACTIVE_FROM, SYSDATE)&lt;= SYSDATE &lt;br/&gt;			and nvl(u.ACTIVE_TO, SYSDATE)&gt;= SYSDATE</userDefinedSQL>
+<viewElements>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="USER_ID" id="B353FF69-06E8-651D-81A0-CBB6000D3034">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>USER_ID</alias>
+<dataType>NUMBER (10)</dataType>
+<headerAlias>USER_ID</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="USER_NAME" id="C459A857-EBC5-6F88-9830-58B9724CC37B">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>USER_NAME</alias>
+<dataType>VARCHAR2 (32)</dataType>
+<headerAlias>USER_NAME</headerAlias>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="PASSWORD" id="EF38CA40-04E4-A94F-EA95-445B36FBFDBE">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-11 09:52:11 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<alias>PASSWORD</alias>
+<dataType>VARCHAR2 (32)</dataType>
+<headerAlias>PASSWORD</headerAlias>
+<reference>false</reference>
+</viewElement>
+</viewElements>
+</TableView>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html ng-strict-di>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link href="app.less" type="text/css" rel="stylesheet/less" />
+
+
+</head>
+<body>
+    <!-- Livereload script for development only (stripped during dist build) -->
+    <script src="http://localhost:35730/livereload.js" data-concat="false"></script>
+
+    <!-- JS from Bower Components -->
+    <script src="../bower_components/less.js/dist/less.js" data-concat="false"></script>
+    <script src="../bower_components/jquery/jquery.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../bower_components/underscore/underscore.js"></script>
+    <script src="../bower_components/moment/min/moment-with-locales.min.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="../bower_components/angular-route/angular-route.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.js"></script>
+    <script src="../bower_components/angular-resource/angular-resource.js"></script>
+    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="../bower_components/angular-ui-utils/ui-utils.js"></script>
+    <script src="../bower_components/datetimepicker/jquery.datetimepicker.js"></script>
+
+    <!-- USM -->
+    <script src="../bower_components/angular-translate/angular-translate.js"></script>
+    <script src="../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="../bower_components/angular-ui-router-tabs/src/ui-router-tabs.js"></script>
+    <script src="../bower_components/angular-smart-table/dist/smart-table.min.js"></script>
+    <script src="../bower_components/angular-ui-select/dist/select.js"></script>
+    <script src="../bower_components/ngstorage/ngStorage.min.js"></script>
+    <script src="../bower_components/angular-locker/dist/angular-locker.min.js"></script>
+    <script src="../bower_components/angular-jwt/dist/angular-jwt.js"></script>
+    <script src="../bower_components/angular-breadcrumb/dist/angular-breadcrumb.min.js"></script>
+<!--
+     <script src="../bower_components/angular-strap/dist/angular-strap.min.js"></script>
+     <script src="../bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
+-->
+
+    <!-- Add New Bower Component JS Above -->
+
+
+    <!-- Main App JS -->
+    <script src="app.js"></script>
+    <script src="usm/shared/shared.js"></script>
+
+    <!-- uvms common services -->
+    <script src="service/common/dateTimeService.js"></script>
+    <script src="service/common/globalSettingsService.js"></script>
+    <!-- uvms common directives JS -->
+    <script src="directive/common/datepickerInput/datepickerInput.js"></script>
+    <script src="directive/common/dropdown/dropdown.js"></script>
+
+    <!-- USM COMPONENTS -->
+    <script src="config.js"></script>
+    <script src="usm/users/users.js"></script>
+    <script src="usm/organisations/organisations.js"></script>
+    <script src="usm/roles/roles.js"></script>
+    <script src="usm/scenarios/scenarios.js"></script>
+    <script src="usm/scopes/scopes.js"></script>
+    <script src="usm/applications/applications.js"></script>
+    <script src="usm/applications/partial/applicationsController.js"></script>
+    <script src="usm/applications/service/applicationsService.js"></script>
+    <script src="usm/policies/policies.js"></script>
+    <script src="usm/policies/partial/policiesController.js"></script>
+    <script src="usm/policies/service/policiesService.js"></script>
+    <script src="usm/organisations/partial/organisationsController.js"></script>
+    <script src="usm/organisations/service/organisationsService.js"></script>
+    <script src="usm/roles/partial/rolesCotroller.js"></script>
+    <script src="usm/roles/service/rolesService.js"></script>
+    <script src="usm/scenarios/partial/scenariosController.js"></script>
+    <script src="usm/scenarios/service/scenariosService.js"></script>
+    <script src="usm/scopes/partial/scopesController.js"></script>
+    <script src="usm/scopes/service/scopesService.js"></script>
+    <script src="usm/users/account/account.js"></script>
+    <script src="usm/users/account/partial/accountController.js"></script>
+    <script src="usm/users/account/service/accountService.js"></script>
+    <script src="usm/users/userContexts/userContexts.js"></script>
+    <script src="usm/users/userContexts/partial/userContextsController.js"></script>
+    <script src="usm/users/userContexts/service/userContextsService.js"></script>
+    <script src="usm/users/preferences/preferences.js"></script>
+    <script src="usm/users/preferences/partial/preferencesController.js"></script>
+    <script src="usm/users/preferences/service/preferencesService.js"></script>
+    <script src="usm/users/partial/usersController.js"></script>
+    <script src="usm/users/service/usersService.js"></script>
+    <script src="usm/users/service/personsService.js"></script>
+    <script src="service/common/auth/controllers.js"></script>
+    <script src="service/common/auth/interceptor.js"></script>
+    <script src="service/common/auth/jwt.js"></script>
+    <script src="service/common/auth/usm-ui-router.js"></script>
+    <script src="service/common/auth/user-service.js"></script>
+    <script src="service/common/auth/auth-modules.js"></script>
+    <script src="usm/shared/partial/menu/menu.js"></script>
+    <script src="usm/shared/directive/usmDirectives.js"></script>
+    <script src="usm/usm.js"></script>
+    <script src="usm/users/changes/changes.js"></script>
+    <script src="usm/users/changes/service/changesService.js"></script>
+    <script src="usm/users/changes/partial/changesController.js"></script>
+    <script src="usm/shared/providers/policyValuesProvider.js"></script>
+    <!-- END OF USM COMPONENTS -->
+    <!-- Add New Component JS Above -->
+
+    <!-- EC HEADER -->
+    <div ui-view="header"></div>
+
+    <div ui-view="app"></div>
+
+    <!-- EC FOOTER -->
+    <div ui-view="footer"></div>
+
+</body>
+</html>

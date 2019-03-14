@@ -1,0 +1,209 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="9DF474C5-A15F-B62E-2378-A0BC0AE0BFC4" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="CHANNEL_T">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>CHANNEL_T</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:00 UTC</createdTime>
+<commentInRDBMS>Holds the information about channels</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="CHANNEL_ID" id="8B105781-F7D9-D1DB-6C20-C2738DACE3C9">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHANNEL_T</sourceObjSchema>
+<sourceObjName>CHANNEL_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:05 UTC</createdTime>
+<commentInRDBMS>The primary key of this table</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="DATAFLOW" id="F883B6FB-3546-D65E-5BA1-588FE872657E">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHANNEL_T</sourceObjSchema>
+<sourceObjName>DATAFLOW</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:05 UTC</createdTime>
+<commentInRDBMS>The dataflow value</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255 BYTE</dataTypeSize>
+<ownDataTypeParameters>255 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="SERVICE" id="BA2F0E2D-0CE9-4A44-EC98-FD26A0B92C95">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHANNEL_T</sourceObjSchema>
+<sourceObjName>SERVICE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:05 UTC</createdTime>
+<commentInRDBMS>The name of the provided service</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>64 BYTE</dataTypeSize>
+<ownDataTypeParameters>64 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PRIORITY" id="682099C0-A7BB-AD3D-25C8-E610F78D59D5">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHANNEL_T</sourceObjSchema>
+<sourceObjName>PRIORITY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:05 UTC</createdTime>
+<commentInRDBMS>The priority for selecting this channel when many are available</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="END_POINT_ID" id="C08C30FB-4A3A-B513-D871-0E901616E7B5">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHANNEL_T</sourceObjSchema>
+<sourceObjName>END_POINT_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:05 UTC</createdTime>
+<commentInRDBMS>The link towards the end point</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="37E46B73-00AD-488E-AD7D-9C4914719F9D" referredColumn="A7B87467-FC4A-4928-929B-365D686B9E69"/>
+</associations>
+</Column>
+<Column name="CREATED_BY" id="BDA3EB63-23AF-69E7-B4F2-529853742073">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHANNEL_T</sourceObjSchema>
+<sourceObjName>CREATED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:05 UTC</createdTime>
+<commentInRDBMS>The name of the user who created the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_ON" id="7A559C11-344C-E9FB-661F-E8B3B4870B1D">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHANNEL_T</sourceObjSchema>
+<sourceObjName>CREATED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:05 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was created</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_BY" id="128117FD-E727-3996-F0D4-AE14AFF59C7C">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHANNEL_T</sourceObjSchema>
+<sourceObjName>MODIFIED_BY</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:05 UTC</createdTime>
+<commentInRDBMS>The name of the user who performed the last update on the entry</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32 BYTE</dataTypeSize>
+<ownDataTypeParameters>32 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MODIFIED_ON" id="51C44FB6-8AD5-B44A-3188-6FA07190AB1D">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>CHANNEL_T</sourceObjSchema>
+<sourceObjName>MODIFIED_ON</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:06 UTC</createdTime>
+<commentInRDBMS>The date and time the entry was last updated</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="EBBE7455-C644-8F4B-8D0D-972BB27A0B1C" name="PK_CHANNEL">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_CHANNEL</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:26 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8B105781-F7D9-D1DB-6C20-C2738DACE3C9"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="898E7D82-7894-DC02-C3DE-025FF8D8773B" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="PK_CHANNEL">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_CHANNEL</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:19 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8B105781-F7D9-D1DB-6C20-C2738DACE3C9"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B5AB9CB0-4345-7C38-D58F-DFA57345EA6B" schemaObject="335F9972-90EC-227F-06DD-05E9B1A8D3B3" name="UK_CHANNEL">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>UK_CHANNEL</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:19 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F883B6FB-3546-D65E-5BA1-588FE872657E"/>
+<colUsage columnID="BA2F0E2D-0CE9-4A44-EC98-FD26A0B92C95"/>
+<colUsage columnID="C08C30FB-4A3A-B513-D871-0E901616E7B5"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="3C676F76-5931-9486-7C0C-CA1D988C3EA1" name="END_POINT_CHANNEL_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-07-10 05:53:55 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C08C30FB-4A3A-B513-D871-0E901616E7B5"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

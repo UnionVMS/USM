@@ -1,0 +1,198 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="73391D4E-1819-6CB7-2210-E4416553D9FE" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="USER_CONTEXT_T">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>USER_CONTEXT_T</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:17 UTC</createdTime>
+<commentInRDBMS>Holds the assignement of a role (and optional scope) to a user.</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="USER_CONTEXT_ID" id="33304720-CFED-3310-BA49-DBF472BCA077">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_CONTEXT_T</sourceObjSchema>
+<sourceObjName>USER_CONTEXT_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:37 UTC</createdTime>
+<commentInRDBMS>Unique record id (primary key)</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<autoIncrementSequenceName>SQ_USER_ROLE</autoIncrementSequenceName>
+<autoIncrementTriggerName>USER_CONTEXT_BI</autoIncrementTriggerName>
+</Column>
+<Column name="USER_ID" id="CCEE2702-DB2D-09FC-B227-AD8A3C0C14C8">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_CONTEXT_T</sourceObjSchema>
+<sourceObjName>USER_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:37 UTC</createdTime>
+<commentInRDBMS>The identifier of the user</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="3ED3590B-84AF-38CA-F93A-AD192D33D065" referredColumn="4EF9A5B0-036F-7847-C51D-05123B35649C"/>
+</associations>
+</Column>
+<Column name="ROLE_ID" id="A804C8AB-3025-9337-1970-1CD23A96D9B4">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_CONTEXT_T</sourceObjSchema>
+<sourceObjName>ROLE_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:38 UTC</createdTime>
+<commentInRDBMS>The identifier of the role</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="220CA7C4-605E-6EAD-7475-009DCFBA0D8F" referredColumn="9EF3D46A-807D-FDB5-F454-E98B7A794BC7"/>
+</associations>
+</Column>
+<Column name="SCOPE_ID" id="B96C6F66-23DF-423C-AF82-16DC8C90066D">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USER_CONTEXT_T</sourceObjSchema>
+<sourceObjName>SCOPE_ID</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:38 UTC</createdTime>
+<commentInRDBMS>The identifier of the scope</commentInRDBMS>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="ABCF288D-2AED-0C2A-0D3C-9EA19C4EC176" referredColumn="3A040172-EB6D-3633-518E-6B7232A9DD53"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="9963845F-702C-2AD8-5EF3-A0E9DD47BCC0" name="PK_USER_ROLE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_USER_ROLE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:04 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="33304720-CFED-3310-BA49-DBF472BCA077"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="0074BB17-5D3C-7D0D-3B4D-5E32A816D881" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="PK_USER_ROLE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>PK_USER_ROLE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:46 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="33304720-CFED-3310-BA49-DBF472BCA077"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="355BDCE3-BED1-70B6-4E5F-1E9E6F9C29D6" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="UK_ROLE_USER">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>UK_ROLE_USER</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:46 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CCEE2702-DB2D-09FC-B227-AD8A3C0C14C8"/>
+<colUsage columnID="A804C8AB-3025-9337-1970-1CD23A96D9B4"/>
+<colUsage columnID="B96C6F66-23DF-423C-AF82-16DC8C90066D"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="1EC69BA8-03F9-48E5-E604-2742E0A6C422" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="FK_USER_ROLE_ROLE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_USER_ROLE_ROLE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:46 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A804C8AB-3025-9337-1970-1CD23A96D9B4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="F96E433C-7DBC-493C-6AA4-700FF096F795" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="FK_USER_ROLE_SCOPE">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_USER_ROLE_SCOPE</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:46 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B96C6F66-23DF-423C-AF82-16DC8C90066D"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="0DDE8ED7-847F-CA7E-4309-CC2ECE1409D6" schemaObject="A56DEBB1-9B79-3B43-AF94-3B01A4745368" name="FK_USER_ROLE_USER">
+<sourceConnName>appfsht-usm2</sourceConnName>
+<sourceObjSchema>USM2</sourceObjSchema>
+<sourceObjName>FK_USER_ROLE_USER</sourceObjName>
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:21:46 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CCEE2702-DB2D-09FC-B227-AD8A3C0C14C8"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="DC2A45A1-EDA2-8827-2C39-4561EC838F66" name="USER_CONTEXT_ROLE_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:27 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A804C8AB-3025-9337-1970-1CD23A96D9B4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="FA5A3AF8-DC8D-9B6A-60DE-232DE08E44E2" name="USER_CONTEXT_SCOPE_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:27 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B96C6F66-23DF-423C-AF82-16DC8C90066D"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="538CBC60-0C7D-A0AD-D89F-A0409A904944" name="USER_CONTEXT_USER_FK">
+<createdBy>kroger</createdBy>
+<createdTime>2015-10-29 14:22:27 UTC</createdTime>
+<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CCEE2702-DB2D-09FC-B227-AD8A3C0C14C8"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
