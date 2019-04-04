@@ -1,8 +1,0 @@
-{
-  "idm": "ECAS",
-  "loginmode": "Panel",
-  "rebaseApiList": [
-    {"urlPatterns":["/usm-administration"],"apiBase":"http://wlts0059.cc.cec.eu.int:1043"}
-  ]
-
-}

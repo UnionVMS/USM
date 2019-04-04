@@ -1,6 +1,0 @@
-<?xml version = '1.0' encoding = 'UTF-8'?>
-<SchemaObject class="oracle.dbtools.crest.model.design.relational.SchemaObject" name="USM2" directorySegmentName="seg_0" id="A56DEBB1-9B79-3B43-AF94-3B01A4745368">
-<createdBy>kroger</createdBy>
-<createdTime>2015-10-29 14:21:14 UTC</createdTime>
-<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
-</SchemaObject>

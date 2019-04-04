@@ -1,7 +1,0 @@
-"SCOPE_ID","NAME","DESCRIPTION","APPLICATION_ID","STATUS","ACTIVE_FROM","ACTIVE_TO","DATA_FROM","DATA_TO"
-"0","All Vessels","All Fishing Vessels related information","2","E","NULL","NULL","NULL","NULL"
-"1","All Reports","All Consolidated Reports","2","E","NULL","NULL","NULL","NULL"
-"2","Some Vessels","Some Fishing Vessels related information","2","E","2015-05-15 11:36:00","2014-05-16 11:36:00","2015-05-15 11:36:00","2014-05-16 11:36:00"
-"3","Some Reports","Some Consolidated Reports","2","E","2015-05-15 11:36:00","2014-05-16 11:36:00","2015-05-15 11:36:00","2014-05-16 11:36:00"
-"4","FRA Quotas","The quotas of FRA","1","E","NULL","NULL","NULL","NULL"
-"5","GRC Quotas","The quotas of GRC","1","E","NULL","NULL","NULL","NULL"

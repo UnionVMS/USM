@@ -1,5 +1,0 @@
-# This is the default constants file for USM
-# Copy the file and rename it to USMconstants.yaml to set your own values
-# the USMconstants.yaml file is ignored by svn and will not get committed.
-constantType: default
-languages: null

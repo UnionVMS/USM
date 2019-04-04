@@ -1,9 +1,0 @@
-<?xml version = '1.0' encoding = 'UTF-8'?>
-<UserOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.UserOraclev10g" name="USM2" directorySegmentName="seg_0" id="6ED00E60-7E29-B60B-3735-BCAB175F5692">
-<sourceConnName>appfsht-usm2</sourceConnName>
-<sourceObjName>USM2</sourceObjName>
-<createdBy>kroger</createdBy>
-<createdTime>2015-07-10 05:52:57 UTC</createdTime>
-<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
-<schemaObject>335F9972-90EC-227F-06DD-05E9B1A8D3B3</schemaObject>
-</UserOraclev10g>

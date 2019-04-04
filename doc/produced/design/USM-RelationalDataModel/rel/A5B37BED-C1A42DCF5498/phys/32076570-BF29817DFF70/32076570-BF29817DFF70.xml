@@ -1,6 +1,0 @@
-<?xml version = '1.0' encoding = 'UTF-8'?>
-<StorageDesignOraclev11g class="oracle.dbtools.crest.model.design.storage.oracle.v11g.StorageDesignOraclev11g" name="Oracle Database 11g" id="C9D0909B-59FA-24E0-6E8E-6E52287D5E67" siteID="32076570-2523-435C-2E92-BF29817DFF70" siteName="Oracle Database 11g" siteType="9">
-<createdBy>kroger</createdBy>
-<createdTime>2015-07-11 09:37:15 UTC</createdTime>
-<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
-</StorageDesignOraclev11g>

@@ -1,1 +1,0 @@
-Password is P. Renson's oracle schema acceptance password

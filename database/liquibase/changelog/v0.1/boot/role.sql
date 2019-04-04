@@ -1,8 +1,0 @@
-INSERT INTO ROLE_T (NAME, DESCRIPTION, STATUS, APPLICATION_ID) 
-select 'USM-UserManager', 'Manage user information', 'E',
-APPLICATION_ID from APPLICATION_T where NAME='USM';
-
-INSERT INTO ROLE_T (NAME, DESCRIPTION, STATUS, APPLICATION_ID) 
-select 'USM-UserBrowser', 'View user information', 'E',
-APPLICATION_ID from APPLICATION_T where NAME='USM';
-

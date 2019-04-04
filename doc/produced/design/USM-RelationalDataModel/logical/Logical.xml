@@ -1,7 +1,0 @@
-<?xml version = '1.0' encoding = 'UTF-8'?>
-<LogicalDesign class="oracle.dbtools.crest.model.design.logical.LogicalDesign" name="Logical" id="04A17BA2-387F-0F04-F724-F90A03F333BE" mainViewID="FDFDF4CE-6510-3914-2581-E1CBC74CC292">
-<createdBy>kroger</createdBy>
-<createdTime>2015-06-10 13:44:20 UTC</createdTime>
-<ownerDesignName>USM-RelationalDataModel</ownerDesignName>
-<shouldBeOpen>false</shouldBeOpen>
-</LogicalDesign>

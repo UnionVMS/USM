@@ -1,8 +1,0 @@
-{
-	"directory" : "bower_components",
-    "noregistry" : {
-        "search" : [ "http://dgmare-repo.athens.intrasoft-intl.private:8081/repository/bower-all"]
-    },
-    "noresolvers" : [ "bower-nexus3-resolver" ]
-}
-
