@@ -17,7 +17,7 @@ import static org.junit.Assert.assertThat;
 
 import eu.europa.ec.mare.usm.jwt.DefaultJwtTokenHandler;
 import eu.europa.ec.mare.usm.jwt.JwtTokenHandler;
-import eu.europa.ec.mare.usm.jwt.jndiUtil;
+import eu.europa.ec.mare.usm.jwt.JndiUtil;
 
 
 /**
@@ -35,7 +35,7 @@ public class JwtTokenHandlerTest {
     JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "ArquillianTest.jar")
             .addAsResource("jwt.properties")
             .addClass(JwtTokenHandler.class)
-            .addClass(jndiUtil.class)
+            .addClass(JndiUtil.class)
             .addClass(DefaultJwtTokenHandler.class)
             .addPackages(true,"io.jsonwebtoken")
             .addPackages(true,"com.fasterxml.jackson")

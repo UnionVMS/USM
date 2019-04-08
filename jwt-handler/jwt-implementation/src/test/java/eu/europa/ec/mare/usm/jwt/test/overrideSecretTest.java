@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import eu.europa.ec.mare.usm.jwt.DefaultJwtTokenHandler;
 import eu.europa.ec.mare.usm.jwt.JwtTokenHandler;
-import eu.europa.ec.mare.usm.jwt.jndiUtil;
+import eu.europa.ec.mare.usm.jwt.JndiUtil;
 
 
 /**
@@ -42,7 +42,7 @@ public class overrideSecretTest {
             .addAsResource("jwtsecret.properties","jwt.properties")
             .addClass(JwtTokenHandler.class)
             .addClass(DefaultJwtTokenHandler.class)
-            .addClass(jndiUtil.class)
+            .addClass(JndiUtil.class)
             .addPackages(true,"io.jsonwebtoken")
             .addPackages(true,"com.fasterxml.jackson")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
