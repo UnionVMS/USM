@@ -10,9 +10,9 @@
     <init-param>
       <param-name>casServerLoginUrl</param-name>
       <!-- CAS instance integrated with the USM (user) database -->
-      <param-value>https://mare-unionvms.private:8443/cas-database/login</param-value>
+      <param-value>https://mare-unionvms.athens.intrasoft-intl.private:8443/cas-database/login</param-value>
       <!-- CAS instance integrated with an AD(AM) instance over LDAP -->
-      <!-- param-value>https://mare-unionvms.private:8443/cas/login</param-value -->
+      <!-- param-value>https://mare-unionvms.athens.intrasoft-intl.private:8443/cas/login</param-value -->
     </init-param>
     <init-param>
       <param-name>serverName</param-name>
@@ -30,9 +30,9 @@
     <init-param>
       <param-name>casServerUrlPrefix</param-name>
       <!-- CAS instance integrated with the USM (user) database -->
-      <param-value>https://mare-unionvms.private:8443/cas-database</param-value>
+      <param-value>https://mare-unionvms.athens.intrasoft-intl.private:8443/cas-database</param-value>
       <!-- CAS instance integrated with an AD(AM) instance over LDAP -->
-      <!-- param-value>https://mare-unionvms.private:8443/cas</param-value -->
+      <!-- param-value>https://mare-unionvms.athens.intrasoft-intl.private:8443/cas</param-value -->
     </init-param>
     <init-param>
       <param-name>serverName</param-name>

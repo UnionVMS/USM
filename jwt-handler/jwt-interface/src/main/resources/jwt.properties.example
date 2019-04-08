@@ -1,0 +1,4 @@
+secretKey=testusmSecretKey
+id=usm/authentication
+issuer=usm
+subject=authentication

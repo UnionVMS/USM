@@ -1,6 +1,0 @@
-OPTION_ID,NAME,DESCRIPTION,DATA_TYPE,DEFAULT_VALUE,APPLICATION_ID
-0,userLocale,User locale,Text,fr_BE,2
-1,rowsPerPage,Number of query results per page,Integer,16,2
-2,userLocale,User locale,Text,en_GB,1
-3,rowsPerPage,Number of query results per page,Integer,10,1
-4,levelCode,Quota Level Code,String,NULL,1
