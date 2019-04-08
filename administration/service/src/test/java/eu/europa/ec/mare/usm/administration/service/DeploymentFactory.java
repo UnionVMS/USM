@@ -1,5 +1,6 @@
 package eu.europa.ec.mare.usm.administration.service;
 
+import java.io.File;
 import org.eu.ingwar.tools.arquillian.extension.suite.annotations.ArquillianSuiteDeployment;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -98,10 +99,10 @@ public class DeploymentFactory {
         // .addPackage(AuditLogType.class.getPackage())
         // .addPackage(AuditLogListQuery.class.getPackage())
         // .addPackage(ExceptionType.class.getPackage())
-        .addAsLibraries("Logger-API.jar", "CSV-Logger.jar",
-            "Information-Service.jar", "Authentication-Service.jar",
-            "Information-Model.jar", "Authentication-Model.jar",
-            "audit-model.jar")
+        //.addAsLibraries("Logger-API.jar", "CSV-Logger.jar",
+        //    "Information-Service.jar", "Authentication-Service.jar",
+        //    "Information-Model.jar", "Authentication-Model.jar",
+        //    "audit-model.jar")
 
         /*
          * .addAsLibraries(Maven.configureResolver()
@@ -124,6 +125,17 @@ public class DeploymentFactory {
     // .addAsManifestResource("META-INF/beans.xml", "beans.xml")
     // .addAsManifestResource("META-INF/ejb-jar.xml", "ejb-jar.xml")
     ;
+    File[] files = Maven.configureResolver().loadPomFromFile("pom.xml")
+        .importRuntimeAndTestDependencies().resolve(
+                "eu.europa.ec.mare.oss.auditing:Logger-API", 
+                "eu.europa.ec.mare.oss.auditing:CSV-Logger",
+                "eu.europa.ec.mare.usm:Information-Service", 
+                "eu.europa.ec.mare.usm:Authentication-Service",
+                "eu.europa.ec.mare.usm:Information-Model", 
+                "eu.europa.ec.mare.usm:Authentication-Model",
+                "eu.europa.ec.fisheries.uvms.audit:audit-model")
+        .withoutTransitivity().asFile();
+    war.addAsLibraries(files);
     return war;
   }
 

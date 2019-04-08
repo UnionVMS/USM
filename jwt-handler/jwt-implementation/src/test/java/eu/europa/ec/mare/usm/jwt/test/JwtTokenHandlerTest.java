@@ -14,8 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import eu.europa.ec.mare.usm.jwt.DefaultJwtTokenHandler;
 import eu.europa.ec.mare.usm.jwt.JwtTokenHandler;
@@ -27,7 +25,6 @@ import eu.europa.ec.mare.usm.jwt.jndiUtil;
  */
 @RunWith(Arquillian.class)
 public class JwtTokenHandlerTest {
-  private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenHandlerTest.class);
   private static final String USER_NAME = "usm_user";
   private static final String RANDOM_SIG_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2MTA3NzUxMSwiZXhwIjoxNDYxMDc5MzExLCJ1c2VyTmFtZSI6InVzbV91c2VyIn0.QIn18uc09ajddT6ydLqMPO-P3IdmEa9L8e4s8Zck_YQ";
   

@@ -17,6 +17,7 @@ import javax.mail.MessagingException;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -724,6 +725,7 @@ public class ManageUserServiceTest extends DeploymentFactory {
 	 * Tests the reset password and notification operation.
 	 */
 	@Test
+	@Ignore
 	public void testResetPasswordAndNotify() 
   {
     // Setup

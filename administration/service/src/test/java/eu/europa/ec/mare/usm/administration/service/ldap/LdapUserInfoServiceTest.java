@@ -13,6 +13,7 @@ import javax.ejb.EJB;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
@@ -80,6 +81,7 @@ public class LdapUserInfoServiceTest extends DeploymentFactory {
    * Tests the getLdapUserInfo method.
    */
   @Test
+  @Ignore
   public void testGetLdapUserInfo() 
   {
     ServiceRequest<GetUserQuery> request = new ServiceRequest<>();

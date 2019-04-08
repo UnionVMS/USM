@@ -12,10 +12,26 @@
 	<artifactId>Authentication-Service</artifactId>
 	<packaging>jar</packaging>
 
+	<properties>
+		<ldap.use>false</ldap.use>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>eu.europa.ec.mare.usm</groupId>
 			<artifactId>Authentication-Model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fish.focus.uvms.maven</groupId>
+			<artifactId>uvms-pom-arquillian-deps</artifactId>
+			<type>pom</type>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eu.ingwar.tools</groupId>
+					<artifactId>arquillian-suite-extension</artifactId>
+				</exclusion>
+			</exclusions>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -37,11 +53,6 @@
 	<profiles>
 		<profile>
 			<id>ldap-default</id>
-			<activation>
-				<property>
-					<name>!ldap.host</name>
-				</property>
-			</activation>
 			<properties>
 				<ldap.domain>example.com</ldap.domain>
 				<ldap.host>ldaps\://svm-midway.athens.intrasoft-intl.private\:10636/</ldap.host>
@@ -50,17 +61,6 @@
 				<ldap.techpass>secret</ldap.techpass>
 				<ldap.filter>(&amp;(objectClass\=person)(uid\={0}))</ldap.filter>
 				<ldap.attrs>sn,givenName,mail</ldap.attrs>
-			</properties>
-		</profile>
-		<profile>
-			<id>noldap</id>
-			<activation>
-				<property>
-					<name>!ldap.use</name>
-				</property>
-			</activation>
-			<properties>
-				<ldap.use>false</ldap.use>
 			</properties>
 		</profile>
 		<profile>
@@ -94,7 +94,7 @@
 		<profile>
 			<id>skip-ldap</id>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<activeByDefault>true</activeByDefault>
 				<property>
 					<name>ldap.use</name>
 					<value>false</value>

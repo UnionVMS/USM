@@ -61,18 +61,6 @@
 		</dependency>
 		<dependency>
 			<groupId>fish.focus.uvms.maven</groupId>
-			<artifactId>uvms-pom-arquillian-deps</artifactId>
-			<type>pom</type>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>sun.jdk</groupId>
-					<artifactId>jconsole</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>fish.focus.uvms.maven</groupId>
 			<artifactId>uvms-pom-logging-deps</artifactId>
 			<type>pom</type>
 		</dependency>

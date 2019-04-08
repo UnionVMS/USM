@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
   <appender name="auditLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${project.build.directory}/USM-AuditLog.csv</file>
+    <file>.target/USM-AuditLog.csv</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <fileNamePattern>target/USM-AuditLog.%d{yyyy-MM-dd}.csv.gz</fileNamePattern>
     </rollingPolicy>
@@ -15,7 +15,7 @@
   </logger>
 
   <appender name="logFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${project.build.directory}/LogFile.log</file>
+    <file>.target/LogFile.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <fileNamePattern>target/LogFile.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
     </rollingPolicy>

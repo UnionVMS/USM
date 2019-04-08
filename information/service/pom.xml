@@ -22,6 +22,19 @@
 			<groupId>eu.europa.ec.mare.usm</groupId>
 			<artifactId>Information-Model</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>fish.focus.uvms.maven</groupId>
+			<artifactId>uvms-pom-arquillian-deps</artifactId>
+			<type>pom</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency> <!--org.eu.ingwar.tools:arquillian-suite-extension compability -->
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>20.0</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 </project>

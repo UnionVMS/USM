@@ -1,6 +1,0 @@
-14:31:21.386 [main] INFO  org.reflections.Reflections - Reflections took 109 ms to scan 1 urls, producing 1 keys and 2 values 
-14:36:03.455 [main] INFO  org.reflections.Reflections - Reflections took 83 ms to scan 1 urls, producing 1 keys and 2 values 
-14:37:10.055 [main] INFO  org.reflections.Reflections - Reflections took 82 ms to scan 1 urls, producing 1 keys and 2 values 
-14:42:22.780 [main] INFO  org.reflections.Reflections - Reflections took 97 ms to scan 1 urls, producing 1 keys and 2 values 
-14:43:18.879 [main] INFO  org.reflections.Reflections - Reflections took 86 ms to scan 1 urls, producing 1 keys and 2 values 
-14:47:34.536 [main] INFO  org.reflections.Reflections - Reflections took 90 ms to scan 1 urls, producing 1 keys and 2 values 
