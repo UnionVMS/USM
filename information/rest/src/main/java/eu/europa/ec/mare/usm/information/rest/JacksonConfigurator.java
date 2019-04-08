@@ -1,10 +1,10 @@
 package eu.europa.ec.mare.usm.information.rest;
 
-import javax.ws.rs.ext.ContextResolver;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
-import javax.ws.rs.ext.Provider;
 import javax.ws.rs.Produces;
+import javax.ws.rs.ext.ContextResolver;
+import javax.ws.rs.ext.Provider;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
  * Configures Jackson JSON provider to format/parse dates in ISO 8601 format.
@@ -20,7 +20,7 @@ public class JacksonConfigurator implements ContextResolver<ObjectMapper> {
   public JacksonConfigurator() 
   {
     mapper = new ObjectMapper();
-    mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, 
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, 
                      false);
   }
 

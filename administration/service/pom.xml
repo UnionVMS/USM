@@ -24,12 +24,6 @@
 			<version>1.2.0</version>
 		</dependency>
 		<dependency>
-			<groupId>eu.europa.ec.mare.oss.auditing</groupId>
-			<artifactId>CSV-Logger</artifactId>
-			<version>1.2.0</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>eu.europa.ec.mare.usm</groupId>
 			<artifactId>Information-Service</artifactId>
 		</dependency>
@@ -52,6 +46,22 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>20.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.mare.oss.auditing</groupId>
+			<artifactId>CSV-Logger</artifactId>
+			<version>1.2.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

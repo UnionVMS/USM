@@ -1,11 +1,9 @@
 package eu.europa.ec.mare.usm.information.rest;
 
-import eu.europa.ec.mare.usm.information.rest.service.InformationResource;
 import java.util.HashSet;
 import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 /**
  *
@@ -18,7 +16,7 @@ public class ApplicationConfig extends Application {
   {
     Set<Class<?>> resources = new HashSet<>();
     // following code to customize Jersey 1.x JSON provider:
-    resources.add(JacksonJsonProvider.class);
+    resources.add(JacksonConfigurator.class);
 
     addRestResourceClasses(resources);
     return resources;
