@@ -1,35 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-  <appender name="auditLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>.target/USM-AuditLog.csv</file>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>target/USM-AuditLog.%d{yyyy-MM-dd}.csv.gz</fileNamePattern>
-    </rollingPolicy>
-    <encoder>
-      <pattern>%msg%n</pattern>
-    </encoder>
-  </appender>
+<configuration debug="false" scan="false" scanPeriod="60 seconds">
 
-  <logger name="Mare-AuditLogger" level="DEBUG">
-    <appender-ref ref="auditLog" />
-  </logger>
+    <appender class="ch.qos.logback.core.ConsoleAppender" name="CONSOLE">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %X{requestId} %-5level %logger{40} %X{userId}- %msg%n</pattern>
+        </encoder>
+    </appender>
 
-  <appender name="logFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>.target/LogFile.log</file>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>target/LogFile.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
-    </rollingPolicy>
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-    </encoder>
-  </appender>
-  
-  <logger name="eu.europa.ec.mare" level="DEBUG">
-    <appender-ref ref="logFile" />
-  </logger>
-
-  <root level="INFO">
-    <appender-ref ref="logFile" />
-  </root>
-
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
 </configuration>

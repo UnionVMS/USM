@@ -1,5 +1,20 @@
 package eu.europa.ec.mare.usm.jwt;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Base64;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import javax.annotation.PostConstruct;
+import javax.crypto.SecretKey;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Header;
@@ -7,24 +22,9 @@ import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.Key;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import javax.annotation.PostConstruct;
-import javax.crypto.spec.SecretKeySpec;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.xml.bind.DatatypeConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SecurityException;
 
 /**
  * Handles the creation, extension (of validity) and verification (parsing) of JWT tokens.
@@ -45,12 +45,12 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
     private static final String DEFAULT_ID = "usm/authentication";
     private static final String DEFAULT_ISSUER = "usm";
     private static final String DEFAULT_SUBJECT = "authentication";
-    private static byte[] secretKey;
-
     private static final String USER_NAME = "userName";
-
     private static final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-    private static Properties properties = new Properties();
+
+    private byte[] secretKey;
+
+    private Properties properties = new Properties();
 
     @PostConstruct
     public void init() {
@@ -145,27 +145,28 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
         return ret;
     }
 
-    private static String signClaims(Claims claims) {
+    private String signClaims(Claims claims) {
         // Header
         Map<String, Object> header = new HashMap<>();
         header.put(Header.TYPE, Header.JWT_TYPE);
         header.put(JwsHeader.ALGORITHM, signatureAlgorithm);
 
         // Signature key
-        Key key = new SecretKeySpec(getSecretKey(), signatureAlgorithm.getJcaName());
+        SecretKey key = Keys.hmacShaKeyFor(getSecretKey());
 
-        return Jwts.builder().setHeader(header).setClaims(claims).signWith(signatureAlgorithm, key).compact();
+        return Jwts.builder().setHeader(header).setClaims(claims).signWith(key, signatureAlgorithm).compact();
     }
 
-    private static Claims parseClaims(String token) {
+    private Claims parseClaims(String token) {
         Claims ret = null;
 
         if (token != null && !token.trim().isEmpty()) {
             try {
-                ret = Jwts.parser().setSigningKey(getSecretKey()).parseClaimsJws(token).getBody();
+                SecretKey key = Keys.hmacShaKeyFor(getSecretKey());
+                ret = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
             } catch (ExpiredJwtException e) {
                 LOGGER.error("Token expired", e);
-            } catch (UnsupportedJwtException | MalformedJwtException | SignatureException
+            } catch (UnsupportedJwtException | MalformedJwtException | SecurityException
                     | IllegalArgumentException e) {
                 LOGGER.error("Failed to parse token", e);
             }
@@ -174,19 +175,12 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
         return ret;
     }
 
-    private static String genkey() throws NoSuchAlgorithmException {
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(512);
-        byte[] publicKey = keyGen.genKeyPair().getPublic().getEncoded();
-        StringBuilder retString = new StringBuilder();
-        for (int i = 0; i < publicKey.length; ++i) {
-            retString.append(Integer.toHexString(0x0100 + (publicKey[i] & 0x00FF)).substring(1));
-        }
-        return retString.toString();
-
+    private String genkey() {
+        SecretKey generatedKey = Keys.secretKeyFor(signatureAlgorithm);
+        return Base64.getEncoder().encodeToString(generatedKey.getEncoded());
     }
 
-    private static void initKey() {
+    private void initKey() {
         // get the key from properties if set
         String key = System.getProperty(SYSTEM_KEY);
         String jndikey = "USM/" + PROP_KEY;
@@ -210,11 +204,11 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
         }
         LOGGER.debug("Secret Key set to: {}", key);
 
-        secretKey = DatatypeConverter.parseBase64Binary(key);
+        secretKey = Base64.getDecoder().decode(key);
         LOGGER.debug("parsed Base64 key: {}", secretKey);
     }
 
-    private static String generateAndBindKey(String jndikey) {
+    private String generateAndBindKey(String jndikey) {
         String key;
         // get a random key
         try {
@@ -231,7 +225,7 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
         return key;
     }
 
-    private static void removeKey() {
+    private void removeKey() {
         // get the key from properties if set
         String key = properties.getProperty(PROP_KEY);
         String jndikey = "USM/" + PROP_KEY;
@@ -253,7 +247,7 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
         secretKey = null;
     }
 
-    private static byte[] getSecretKey() {
+    private byte[] getSecretKey() {
         return secretKey;
     }
 }
