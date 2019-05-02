@@ -1,10 +1,11 @@
 package eu.europa.ec.mare.usm.information.service;
 
 import java.util.List;
-
+import java.util.Set;
 import eu.europa.ec.mare.usm.information.domain.ContactDetails;
 import eu.europa.ec.mare.usm.information.domain.DataSet;
 import eu.europa.ec.mare.usm.information.domain.DataSetFilter;
+import eu.europa.ec.mare.usm.information.domain.Feature;
 import eu.europa.ec.mare.usm.information.domain.Organisation;
 import eu.europa.ec.mare.usm.information.domain.UserContext;
 import eu.europa.ec.mare.usm.information.domain.UserContextQuery;
@@ -95,6 +96,7 @@ public interface InformationService {
 	 */
 	public UserContext getUserContext(UserContextQuery query) throws IllegalArgumentException, RuntimeException;
 
+	public List<String> getUserFeatures(String username);
 	/**
 	 * Stores the (modified) user preferences contained in the provided user
 	 * context

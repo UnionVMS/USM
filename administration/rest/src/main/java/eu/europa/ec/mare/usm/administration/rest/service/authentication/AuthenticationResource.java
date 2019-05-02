@@ -1,6 +1,9 @@
 package eu.europa.ec.mare.usm.administration.rest.service.authentication;
 
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -24,15 +27,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.europa.ec.mare.usm.administration.domain.AuthenticationJwtResponse;
+import eu.europa.ec.mare.usm.administration.domain.FindPermissionsQuery;
 import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
 import eu.europa.ec.mare.usm.administration.rest.common.ExceptionHandler;
 import eu.europa.ec.mare.usm.administration.rest.common.StatusResponse;
+import eu.europa.ec.mare.usm.administration.service.role.RoleService;
 import eu.europa.ec.mare.usm.jwt.JwtTokenHandler;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationQuery;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationRequest;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
 import eu.europa.ec.mare.usm.authentication.domain.ChallengeResponse;
 import eu.europa.ec.mare.usm.authentication.service.AuthenticationService;
+import eu.europa.ec.mare.usm.information.domain.Feature;
 import eu.europa.ec.mare.usm.information.domain.UserContext;
 import eu.europa.ec.mare.usm.information.domain.UserContextQuery;
 import eu.europa.ec.mare.usm.information.service.InformationService;
@@ -63,7 +69,7 @@ public class AuthenticationResource {
   @EJB
   private SessionTracker sessionTracker;
 
-  
+
   private SessionInfo sessionInfo;
   
   /**
@@ -104,7 +110,8 @@ public class AuthenticationResource {
         ret.setIp(servletRequest.getRemoteAddr());
 		ret.setErrorDescription(response.getErrorDescription());
         if (response.isAuthenticated()) {
-          ret.setJWToken(tokenHandler.createToken(request.getUserName()));
+          List<String> features = informationService.getUserFeatures(request.getUserName());
+          ret.setJWToken(tokenHandler.createToken(request.getUserName(), features));
            
           sessionInfo = new SessionInfo();
           sessionInfo.setUserName(request.getUserName());

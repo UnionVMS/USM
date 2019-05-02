@@ -5,6 +5,8 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import java.util.Arrays;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -123,5 +125,18 @@ public class JwtTokenHandlerTest {
 
         String parsedUsername = jwtHandler.parseToken(token);
         assertThat(parsedUsername, CoreMatchers.is(CoreMatchers.nullValue()));
+    }
+
+    @Test
+    @OperateOnDeployment("withProperties")
+    public void testParseFeatures() {
+        List<String> features = Arrays.asList("feature1", "feature2");
+        String username = "Test user";
+        String token = testSubject.createToken(username, features);
+
+        assertThat(testSubject.parseToken(token), CoreMatchers.is(username));
+
+        List<String> parsedFeatures = testSubject.parseTokenFeatures(token);
+        assertThat(parsedFeatures.size(), CoreMatchers.is(features.size()));
     }
 }

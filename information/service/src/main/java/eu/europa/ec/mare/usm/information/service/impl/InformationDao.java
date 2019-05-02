@@ -663,6 +663,36 @@ public class InformationDao {
     return ret;
   }
 
+    public Set<Feature> getUserFeatures(String username) {
+        Set<Feature> ret = new HashSet<>();
+
+        Connection co = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "select distinct ROLE_ID" + 
+                    " from active_user_role_v ar" + 
+                    " where ar.user_name=?";
+        try {
+            co = dataSource.getConnection();
+
+            ps = co.prepareStatement(sql);
+            ps.setString(1, username);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ret.addAll(getFeatures(co, rs.getLong("ROLE_ID")));
+            }
+        } catch (Exception ex) {
+            handleException(ex);
+        } finally {
+            closeResultSet(rs);
+            closeStatement(ps);
+            closeConnection(co);
+        }
+        return ret;
+    }
+  
   private Set<Feature> getFeatures(Connection co, long roleId) 
   {
     LOGGER.debug("getFeatures(" + roleId + ") - (ENTER)");

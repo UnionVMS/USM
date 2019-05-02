@@ -2,11 +2,10 @@ package eu.europa.ec.mare.usm.jwt;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.annotation.PostConstruct;
@@ -46,6 +45,7 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
     private static final String DEFAULT_ISSUER = "usm";
     private static final String DEFAULT_SUBJECT = "authentication";
     private static final String USER_NAME = "userName";
+    private static final String FEATURES = "features";
     private static final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
     private byte[] secretKey;
@@ -75,6 +75,10 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
      * @return a JWT token identifying the user, or null if the provided was null or empty
      */
     public String createToken(String userName) {
+        return createToken(userName, null);
+    }
+
+    public String createToken(String userName, List<String> features) {
         LOGGER.debug("createToken( {} ) - (ENTER)", userName);
 
         String ret = null;
@@ -90,12 +94,16 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
             claims.setIssuedAt(new Date(now));
             claims.setExpiration(new Date(now + DEFAULT_TTL));
             claims.put(USER_NAME, userName);
+            if (features != null) {
+                claims.put(FEATURES, features);
+            }
 
             ret = signClaims(claims);
         }
 
         LOGGER.debug("createToken() - (LEAVE)");
         return ret;
+
     }
 
     /**
@@ -139,6 +147,21 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
         Claims claims = parseClaims(token);
         if (claims != null) {
             ret = (String) claims.get(USER_NAME);
+        }
+
+        LOGGER.debug("parseToken() - (LEAVE)");
+        return ret;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<String> parseTokenFeatures(String token) {
+        LOGGER.debug("parseToken({}) - (ENTER)", token);
+
+        List<String> ret = null;
+
+        Claims claims = parseClaims(token);
+        if (claims != null) {
+            ret = claims.get(FEATURES, List.class);
         }
 
         LOGGER.debug("parseToken() - (LEAVE)");
