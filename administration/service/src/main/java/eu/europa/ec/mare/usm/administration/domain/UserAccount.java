@@ -50,26 +50,10 @@ public class UserAccount implements Serializable {
 	}
 
 	/**
-	 * @param activeFrom
-	 *            the activeFrom to set
-	 */
-	public void setActiveFrom(Timestamp activeFrom) {
-		this.activeFrom = activeFrom;
-	}
-
-	/**
 	 * @return the activeTo
 	 */
 	public Date getActiveTo() {
 		return activeTo;
-	}
-
-	/**
-	 * @param activeTo
-	 *            the activeTo to set
-	 */
-	public void setActiveTo(Timestamp activeTo) {
-		this.activeTo = activeTo;
 	}
 
 	/**
