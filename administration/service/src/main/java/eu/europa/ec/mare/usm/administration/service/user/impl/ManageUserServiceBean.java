@@ -472,22 +472,6 @@ public class ManageUserServiceBean implements ManageUserService {
             }            
         }        
     }
-
-    private void trunkChallenges(List<ChallengeEntity> challengeEntities) {        
-        if (challengeEntities.size() < NUMBER_OF_CHALLENGES) {
-            while (challengeEntities.size() < NUMBER_OF_CHALLENGES) {
-                challengeEntities.add(new ChallengeEntity());
-                
-            }
-        }
-        
-        if (challengeEntities.size() > NUMBER_OF_CHALLENGES) {
-            while (challengeEntities.size() > NUMBER_OF_CHALLENGES) {
-                challengeEntities.remove(challengeEntities.size() - 1);
-                
-            }            
-        }        
-    }
     
     private void trunkChallengeInformation(List<ChallengeInformation> challengeInformations, boolean isGetOperation) {
         
