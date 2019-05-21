@@ -5,15 +5,20 @@ import javax.ejb.Lock;
 import javax.ejb.LockType;
 
 public interface JwtTokenHandler {
+
   @Lock(LockType.READ)
-  public String createToken(String userName);
+  String createToken(String userName);
+
   @Lock(LockType.READ)
-  public String createToken(String userName, List<String> features);
+  String createToken(String userName, List<String> features);
+
   @Lock(LockType.READ)
-  public String extendToken(String token);
+  String extendToken(String token);
+
   @Lock(LockType.READ)
-  public String parseToken(String token);
+  String parseToken(String token);
+
   @Lock(LockType.READ)
-  public List<String> parseTokenFeatures(String token);
+  List<String> parseTokenFeatures(String token);
   
 }

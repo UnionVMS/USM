@@ -472,7 +472,7 @@ public class ManageUserServiceBean implements ManageUserService {
             }            
         }        
     }
-    
+
     private void trunkChallengeInformation(List<ChallengeInformation> challengeInformations, boolean isGetOperation) {
         
         int numberOfChallenges = getNumberOfChallenges();
