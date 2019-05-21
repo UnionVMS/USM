@@ -78,7 +78,7 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
         return createToken(userName, null);
     }
 
-    public String createToken(String userName, List<String> features) {
+    public String createToken(String userName, List<Integer> features) {
         LOGGER.debug("createToken( {} ) - (ENTER)", userName);
 
         String ret = null;
@@ -154,10 +154,10 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
     }
 
     @SuppressWarnings("unchecked")
-    public List<String> parseTokenFeatures(String token) {
+    public List<Integer> parseTokenFeatures(String token) {
         LOGGER.debug("parseToken({}) - (ENTER)", token);
 
-        List<String> ret = null;
+        List<Integer> ret = null;
 
         Claims claims = parseClaims(token);
         if (claims != null) {

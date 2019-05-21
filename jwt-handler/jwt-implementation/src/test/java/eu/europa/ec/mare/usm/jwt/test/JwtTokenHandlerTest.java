@@ -17,6 +17,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import eu.europa.ec.mare.usm.jwt.DefaultJwtTokenHandler;
@@ -31,7 +32,7 @@ public class JwtTokenHandlerTest {
     private static final String USER_NAME = "usm_user";
     private static final String RANDOM_SIG_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2MTA3NzUxMSwiZXhwIjoxNDYxMDc5MzExLCJ1c2VyTmFtZSI6InVzbV91c2VyIn0.QIn18uc09ajddT6ydLqMPO-P3IdmEa9L8e4s8Zck_YQ";
 
-    @Deployment(name = "withProperties", order = 1)
+    @Deployment(name = "withProperties", order = 2)
     public static WebArchive createDeployment() {
         WebArchive war = ShrinkWrap.create(WebArchive.class, "ArquillianTest.war")
                 .addAsResource("jwt.properties")
@@ -130,13 +131,13 @@ public class JwtTokenHandlerTest {
     @Test
     @OperateOnDeployment("withProperties")
     public void testParseFeatures() {
-        List<String> features = Arrays.asList("feature1", "feature2");
+        List<Integer> features = Arrays.asList(1,2);
         String username = "Test user";
         String token = testSubject.createToken(username, features);
 
         assertThat(testSubject.parseToken(token), CoreMatchers.is(username));
 
-        List<String> parsedFeatures = testSubject.parseTokenFeatures(token);
+        List<Integer> parsedFeatures = testSubject.parseTokenFeatures(token);
         assertThat(parsedFeatures.size(), CoreMatchers.is(features.size()));
     }
 }

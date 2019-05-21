@@ -8,7 +8,6 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,9 +99,9 @@ public class InformationServiceBean implements InformationService {
   }
 
     @Override
-    public List<String> getUserFeatures(String username) {
+    public List<Integer> getUserFeatures(String username) {
         Set<Feature> features = dao.getUserFeatures(username);
-        return features.stream().map(Feature::getFeatureName).collect(Collectors.toList());
+        return features.stream().map(Feature::getFeatureId).collect(Collectors.toList());
     }
 
   @Override

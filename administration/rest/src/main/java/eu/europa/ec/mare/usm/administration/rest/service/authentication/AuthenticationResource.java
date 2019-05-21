@@ -110,7 +110,7 @@ public class AuthenticationResource {
         ret.setIp(servletRequest.getRemoteAddr());
 		ret.setErrorDescription(response.getErrorDescription());
         if (response.isAuthenticated()) {
-          List<String> features = informationService.getUserFeatures(request.getUserName());
+          List<Integer> features = informationService.getUserFeatures(request.getUserName());
           ret.setJWToken(tokenHandler.createToken(request.getUserName(), features));
            
           sessionInfo = new SessionInfo();

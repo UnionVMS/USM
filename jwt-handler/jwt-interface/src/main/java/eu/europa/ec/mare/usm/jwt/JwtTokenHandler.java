@@ -10,7 +10,7 @@ public interface JwtTokenHandler {
   String createToken(String userName);
 
   @Lock(LockType.READ)
-  String createToken(String userName, List<String> features);
+  String createToken(String userName, List<Integer> features);
 
   @Lock(LockType.READ)
   String extendToken(String token);
@@ -19,6 +19,6 @@ public interface JwtTokenHandler {
   String parseToken(String token);
 
   @Lock(LockType.READ)
-  List<String> parseTokenFeatures(String token);
+  List<Integer> parseTokenFeatures(String token);
   
 }
