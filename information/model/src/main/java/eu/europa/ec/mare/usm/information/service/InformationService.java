@@ -1,14 +1,8 @@
 package eu.europa.ec.mare.usm.information.service;
 
-import java.util.List;
+import eu.europa.ec.mare.usm.information.domain.*;
 
-import eu.europa.ec.mare.usm.information.domain.ContactDetails;
-import eu.europa.ec.mare.usm.information.domain.DataSet;
-import eu.europa.ec.mare.usm.information.domain.DataSetFilter;
-import eu.europa.ec.mare.usm.information.domain.Organisation;
-import eu.europa.ec.mare.usm.information.domain.UserContext;
-import eu.europa.ec.mare.usm.information.domain.UserContextQuery;
-import eu.europa.ec.mare.usm.information.domain.UserPreference;
+import java.util.List;
 
 /**
  * Provides access to <i>personal</i> user information that may be used for
@@ -31,7 +25,7 @@ public interface InformationService {
 	 * @throws RuntimeException
 	 *             in case an internal error prevented fulfilling the request
 	 */
-	public ContactDetails getContactDetails(String userName) throws IllegalArgumentException, RuntimeException;
+	ContactDetails getContactDetails(String userName) throws IllegalArgumentException, RuntimeException;
 
 	/**
 	 * Retrieves information about all organisations associated with the
@@ -49,7 +43,7 @@ public interface InformationService {
 	 * @throws RuntimeException
 	 *             in case an internal error prevented fulfilling the request
 	 */
-	public List<Organisation> findOrganisations(String nation) throws IllegalArgumentException, RuntimeException;
+	List<Organisation> findOrganisations(String nation) throws IllegalArgumentException, RuntimeException;
 
 	/**
 	 * Retrieves information about an organisation and its associated
@@ -67,7 +61,7 @@ public interface InformationService {
 	 * @throws RuntimeException
 	 *             in case an internal error prevented fulfilling the request
 	 */
-	public Organisation getOrganisation(String organisationName) throws IllegalArgumentException, RuntimeException;
+	Organisation getOrganisation(String organisationName) throws IllegalArgumentException, RuntimeException;
 
 	/**
 	 * Retrieves a User Context for a specific application.<br/>
@@ -93,8 +87,9 @@ public interface InformationService {
 	 * @throws RuntimeException
 	 *             in case an internal error prevented fulfilling the request
 	 */
-	public UserContext getUserContext(UserContextQuery query) throws IllegalArgumentException, RuntimeException;
+	UserContext getUserContext(UserContextQuery query) throws IllegalArgumentException, RuntimeException;
 
+	List<Integer> getUserFeatures(String username);
 	/**
 	 * Stores the (modified) user preferences contained in the provided user
 	 * context
@@ -109,7 +104,7 @@ public interface InformationService {
 	 * @throws RuntimeException
 	 *             in case an internal error prevented fulfilling the request
 	 */
-	public void updateUserPreferences(UserContext userContext) throws IllegalArgumentException, RuntimeException;
+	void updateUserPreferences(UserContext userContext) throws IllegalArgumentException, RuntimeException;
 
 	void updateUserPreference(UserPreference userPreference);
 	void createUserPreference(UserPreference userPreference);

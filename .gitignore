@@ -15,3 +15,4 @@ web/administration/src/main/webapp/testresults/
 *.factorypath
 *.pydevproject
 *arquillian.launch_file
+directory/

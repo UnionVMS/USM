@@ -2,12 +2,12 @@ package eu.europa.ec.mare.usm.information.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +16,7 @@ import eu.europa.ec.mare.usm.information.domain.ContactDetails;
 import eu.europa.ec.mare.usm.information.domain.Context;
 import eu.europa.ec.mare.usm.information.domain.DataSet;
 import eu.europa.ec.mare.usm.information.domain.DataSetFilter;
+import eu.europa.ec.mare.usm.information.domain.Feature;
 import eu.europa.ec.mare.usm.information.domain.Organisation;
 import eu.europa.ec.mare.usm.information.domain.Preference;
 import eu.europa.ec.mare.usm.information.domain.Preferences;
@@ -96,6 +97,12 @@ public class InformationServiceBean implements InformationService {
     LOGGER.info("getUserContext() - (LEAVE)");
     return ret;
   }
+
+    @Override
+    public List<Integer> getUserFeatures(String username) {
+        Set<Feature> features = dao.getUserFeatures(username);
+        return features.stream().map(Feature::getFeatureId).collect(Collectors.toList());
+    }
 
   @Override
   public void updateUserPreferences(UserContext userContext) 

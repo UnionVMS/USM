@@ -19,6 +19,15 @@ public class Feature implements Serializable {
 	private static final long serialVersionUID = 1L;
   private String applicationName;
   private String featureName;
+  private Integer featureId;
+
+  public Integer getFeatureId() {
+    return featureId;
+  }
+
+  public void setFeatureId(Integer featureId) {
+    this.featureId = featureId;
+  }
 
   /**
    * Creates a new instance
@@ -71,8 +80,9 @@ public class Feature implements Serializable {
   @Override
   public String toString() {
     return "Feature{" + 
-            "applicationName=" + applicationName + 
-            ", featureName=" + featureName + 
+            "applicationName=" + applicationName +
+            ", featureId=" + featureId +
+            ", featureName=" + featureName +
             '}';
   }
 
