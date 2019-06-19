@@ -39,7 +39,7 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
     private static final String PROP_SUBJECT = "subject";
     private static final String PROP_ISSUER = "issuer";
     private static final String PROP_ID = "id";
-    private static final long DEFAULT_TTL = (30 * 60 * 1000);
+    private static final long DEFAULT_TTL = (8 * 60 * 60 * 1000);
     private static final String DEFAULT_KEY = "usmSecretKey";
     private static final String DEFAULT_ID = "usm/authentication";
     private static final String DEFAULT_ISSUER = "usm";
