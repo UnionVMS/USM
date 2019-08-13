@@ -273,4 +273,8 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
     private byte[] getSecretKey() {
         return secretKey;
     }
+
+    public static long getDefaultTtl() {
+        return DEFAULT_TTL;
+    }
 }
