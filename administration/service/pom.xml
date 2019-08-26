@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
 			<artifactId>audit-model</artifactId>
-			<version>4.0.11</version>
+			<version>4.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>fish.focus.uvms.maven</groupId>
@@ -43,7 +43,7 @@
 		<dependency> <!--org.eu.ingwar.tools:arquillian-suite-extension compability -->
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>20.0</version>
+			<version>28.0-jre</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
