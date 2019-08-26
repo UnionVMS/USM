@@ -9,7 +9,7 @@
 	</parent>
 
 	<groupId>eu.europa.ec.mare.usm</groupId>
-	<version>2.1.10</version>
+	<version>2.1.11-SNAPSHOT</version>
 	<artifactId>backend-modules</artifactId>
 	<packaging>pom</packaging>
 
@@ -74,7 +74,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/UnionVMS/USM.git</connection>
 		<url>https://github.com/UnionVMS/USM</url>
-		<tag>backend-modules-2.1.10</tag>
+		<tag>HEAD</tag>
 	</scm>
 	
 	<distributionManagement>
