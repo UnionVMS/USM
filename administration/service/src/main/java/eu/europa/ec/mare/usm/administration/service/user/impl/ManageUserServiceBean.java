@@ -1,43 +1,9 @@
 package eu.europa.ec.mare.usm.administration.service.user.impl;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.ejb.EJB;
-import javax.ejb.EJBException;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-import javax.mail.MessagingException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.europa.ec.fisheries.uvms.audit.model.exception.AuditModelMarshallException;
-import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogMapper;
 import eu.europa.ec.mare.audit.logger.AuditLogger;
 import eu.europa.ec.mare.audit.logger.AuditLoggerFactory;
 import eu.europa.ec.mare.audit.logger.AuditRecord;
-import eu.europa.ec.mare.usm.administration.domain.AuditObjectTypeEnum;
-import eu.europa.ec.mare.usm.administration.domain.AuditOperationEnum;
-import eu.europa.ec.mare.usm.administration.domain.ChallengeInformation;
-import eu.europa.ec.mare.usm.administration.domain.ChallengeInformationResponse;
-import eu.europa.ec.mare.usm.administration.domain.ChangePassword;
-import eu.europa.ec.mare.usm.administration.domain.Notification;
-import eu.europa.ec.mare.usm.administration.domain.NotificationQuery;
-import eu.europa.ec.mare.usm.administration.domain.Organisation;
-import eu.europa.ec.mare.usm.administration.domain.Person;
-import eu.europa.ec.mare.usm.administration.domain.ResetPasswordQuery;
-import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
-import eu.europa.ec.mare.usm.administration.domain.USMApplication;
-import eu.europa.ec.mare.usm.administration.domain.USMFeature;
-import eu.europa.ec.mare.usm.administration.domain.UnauthenticatedException;
-import eu.europa.ec.mare.usm.administration.domain.UnauthorisedException;
-import eu.europa.ec.mare.usm.administration.domain.UserAccount;
-import eu.europa.ec.mare.usm.administration.domain.UserStatus;
+import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.service.NotificationBuilder;
 import eu.europa.ec.mare.usm.administration.service.NotificationSender;
 import eu.europa.ec.mare.usm.administration.service.PasswordDigester;
@@ -49,11 +15,20 @@ import eu.europa.ec.mare.usm.administration.service.user.PasswordGenerator;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationRequest;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
 import eu.europa.ec.mare.usm.authentication.service.AuthenticationService;
-import eu.europa.ec.mare.usm.information.entity.ChallengeEntity;
-import eu.europa.ec.mare.usm.information.entity.OrganisationEntity;
-import eu.europa.ec.mare.usm.information.entity.PasswordHistEntity;
-import eu.europa.ec.mare.usm.information.entity.PersonEntity;
-import eu.europa.ec.mare.usm.information.entity.UserEntity;
+import eu.europa.ec.mare.usm.information.entity.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.mail.MessagingException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

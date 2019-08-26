@@ -1,37 +1,22 @@
 package eu.europa.ec.mare.usm.administration.service.policy.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import eu.europa.ec.mare.audit.logger.AuditLogger;
+import eu.europa.ec.mare.audit.logger.AuditLoggerFactory;
+import eu.europa.ec.mare.audit.logger.AuditRecord;
+import eu.europa.ec.mare.usm.administration.domain.*;
+import eu.europa.ec.mare.usm.administration.service.policy.DefinitionService;
+import eu.europa.ec.mare.usm.administration.service.policy.PolicyService;
+import eu.europa.ec.mare.usm.information.entity.PolicyEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.europa.ec.fisheries.uvms.audit.model.exception.AuditModelMarshallException;
-import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogMapper;
-import eu.europa.ec.mare.audit.logger.AuditLogger;
-import eu.europa.ec.mare.audit.logger.AuditLoggerFactory;
-import eu.europa.ec.mare.audit.logger.AuditRecord;
-import eu.europa.ec.mare.usm.administration.domain.AuditObjectTypeEnum;
-import eu.europa.ec.mare.usm.administration.domain.AuditOperationEnum;
-import eu.europa.ec.mare.usm.administration.domain.AuditRecordFactory;
-import eu.europa.ec.mare.usm.administration.domain.FindPoliciesQuery;
-import eu.europa.ec.mare.usm.administration.domain.NoBody;
-import eu.europa.ec.mare.usm.administration.domain.Policy;
-import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
-import eu.europa.ec.mare.usm.administration.domain.USMApplication;
-import eu.europa.ec.mare.usm.administration.domain.USMFeature;
-import eu.europa.ec.mare.usm.administration.domain.UnauthorisedException;
-
-import eu.europa.ec.mare.usm.administration.service.policy.DefinitionService;
-import eu.europa.ec.mare.usm.administration.service.policy.PolicyService;
-import eu.europa.ec.mare.usm.information.entity.PolicyEntity;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Stateless session bean implementation of the ViewPoliciesService

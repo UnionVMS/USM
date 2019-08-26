@@ -1,46 +1,25 @@
 package eu.europa.ec.mare.usm.administration.service.role.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-
-import javax.ejb.EJB;
-import javax.ejb.EJBException;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.europa.ec.fisheries.uvms.audit.model.exception.AuditModelMarshallException;
-import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogMapper;
 import eu.europa.ec.mare.audit.logger.AuditLogger;
 import eu.europa.ec.mare.audit.logger.AuditLoggerFactory;
 import eu.europa.ec.mare.audit.logger.AuditRecord;
-import eu.europa.ec.mare.usm.administration.domain.AuditObjectTypeEnum;
-import eu.europa.ec.mare.usm.administration.domain.AuditOperationEnum;
-import eu.europa.ec.mare.usm.administration.domain.AuditRecordFactory;
-import eu.europa.ec.mare.usm.administration.domain.ComprehensiveRole;
-import eu.europa.ec.mare.usm.administration.domain.Feature;
-import eu.europa.ec.mare.usm.administration.domain.FindPermissionsQuery;
-import eu.europa.ec.mare.usm.administration.domain.FindRolesQuery;
-import eu.europa.ec.mare.usm.administration.domain.GetRoleQuery;
-import eu.europa.ec.mare.usm.administration.domain.PaginationResponse;
-import eu.europa.ec.mare.usm.administration.domain.Role;
-import eu.europa.ec.mare.usm.administration.domain.RoleQuery;
-import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
-import eu.europa.ec.mare.usm.administration.domain.USMApplication;
-import eu.europa.ec.mare.usm.administration.domain.USMFeature;
-import eu.europa.ec.mare.usm.administration.domain.UnauthorisedException;
-
+import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.service.role.RoleService;
 import eu.europa.ec.mare.usm.administration.service.user.impl.UserJpaDao;
 import eu.europa.ec.mare.usm.information.entity.FeatureEntity;
 import eu.europa.ec.mare.usm.information.entity.RoleEntity;
 import eu.europa.ec.mare.usm.information.entity.UserContextEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Stateless session bean implementation of the RoleService
