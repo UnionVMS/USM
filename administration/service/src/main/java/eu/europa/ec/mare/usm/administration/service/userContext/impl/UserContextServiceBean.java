@@ -1,9 +1,8 @@
 package eu.europa.ec.mare.usm.administration.service.userContext.impl;
 
-import eu.europa.ec.mare.audit.logger.AuditLogger;
-import eu.europa.ec.mare.audit.logger.AuditLoggerFactory;
-import eu.europa.ec.mare.audit.logger.AuditRecord;
+import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogModelMapper;
 import eu.europa.ec.mare.usm.administration.domain.*;
+import eu.europa.ec.mare.usm.administration.service.AuditProducer;
 import eu.europa.ec.mare.usm.administration.service.role.impl.RoleJpaDao;
 import eu.europa.ec.mare.usm.administration.service.scope.impl.ScopeJpaDao;
 import eu.europa.ec.mare.usm.administration.service.user.impl.UserJpaDao;
@@ -49,16 +48,10 @@ public class UserContextServiceBean implements UserContextService {
   
   @Inject
   private ScopeJpaDao scopeJpaDao;
+
+  @Inject
+  private AuditProducer auditProducer;
   
-  private final AuditLogger auditLogger;
-  
-  /**
-   * Creates a new instance
-   */
-  public UserContextServiceBean() 
-  {
-    auditLogger = AuditLoggerFactory.getAuditLogger();
-  }
 
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -95,10 +88,9 @@ public class UserContextServiceBean implements UserContextService {
     copy(entity, request.getBody());
     entity = userContextJpaDao.create(entity);
     
-    AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-				AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.CONTEXT.getValue(), request.getRequester(),
-				request.getBody().getUserName(), request.getBody().getUserName());
-		auditLogger.logEvent(auditRecord);
+
+    String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.CONTEXT.getValue() + " " + request.getBody().getUserName(), request.getBody().getUserName(), request.getRequester());
+    auditProducer.sendModuleMessage(auditLog);
 	
 
     LOGGER.info("createUserContext() - (LEAVE)");
@@ -122,11 +114,9 @@ public class UserContextServiceBean implements UserContextService {
     
 
 		String userName = request.getBody().getUserName();
-		AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-				AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.CONTEXT.getValue(), request.getRequester(),
-				userName, userName);
-		auditLogger.logEvent(auditRecord);
-	
+
+    String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.CONTEXT.getValue() + " " + request.getBody().getUserName(), request.getBody().getUserName(), request.getRequester());
+    auditProducer.sendModuleMessage(auditLog);
 
     LOGGER.info("updateUserContext() - (LEAVE)");
     return convert(updatedUserContext);
@@ -142,11 +132,8 @@ public class UserContextServiceBean implements UserContextService {
     
     userContextJpaDao.delete(Long.valueOf(request.getBody()));
     
-    AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-				AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.CONTEXT.getValue(), request.getRequester(),
-				request.getBody(),request.getBody());
-		auditLogger.logEvent(auditRecord);
-	
+    String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.CONTEXT.getValue() + " " + request.getBody(), request.getBody(),  request.getRequester());
+    auditProducer.sendModuleMessage(auditLog);
 
     LOGGER.info("deleteUserContext() - (LEAVE)");
   }
@@ -186,11 +173,8 @@ public class UserContextServiceBean implements UserContextService {
       userContextJpaDao.create(entity);
     }
     
-    AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-				AuditOperationEnum.COPY.getValue(), AuditObjectTypeEnum.CONTEXT.getValue(), request.getRequester(),
-				toUserName, toUserName);
-		auditLogger.logEvent(auditRecord);
-	
+    String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.COPY.getValue(), AuditObjectTypeEnum.CONTEXT.getValue() + " " + toUserName, toUserName, request.getRequester());
+    auditProducer.sendModuleMessage(auditLog);
 
     LOGGER.info("copyUserProfiles() - (LEAVE)");
   }

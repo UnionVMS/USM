@@ -1,9 +1,8 @@
 package eu.europa.ec.mare.usm.administration.service.user.impl;
 
-import eu.europa.ec.mare.audit.logger.AuditLogger;
-import eu.europa.ec.mare.audit.logger.AuditLoggerFactory;
-import eu.europa.ec.mare.audit.logger.AuditRecord;
+import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogModelMapper;
 import eu.europa.ec.mare.usm.administration.domain.*;
+import eu.europa.ec.mare.usm.administration.service.AuditProducer;
 import eu.europa.ec.mare.usm.administration.service.NotificationBuilder;
 import eu.europa.ec.mare.usm.administration.service.NotificationSender;
 import eu.europa.ec.mare.usm.administration.service.PasswordDigester;
@@ -77,16 +76,9 @@ public class ManageUserServiceBean implements ManageUserService {
   @Inject
   private ManageUserValidator validator;
 
-  private final AuditLogger auditLogger;
+  @Inject
+  private AuditProducer auditProducer;
 
-  /**
-   * Creates a new instance
-   */
-  public ManageUserServiceBean() 
-  {
-    auditLogger = AuditLoggerFactory.getAuditLogger();
-  }
-  
   @Override
   public UserAccount createUser(ServiceRequest<UserAccount> request) 
   {
@@ -106,10 +98,8 @@ public class ManageUserServiceBean implements ManageUserService {
 
     UserEntity user=userDao.create(entity);
     
-    AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-				AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.USER.getValue(), request.getRequester(),
-					request.getBody().getUserName(), request.getBody().getNotes());
-		auditLogger.logEvent(auditRecord);
+    String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.USER.getValue() + " " + request.getBody().getUserName(), request.getBody().getNotes(), request.getRequester());
+    auditProducer.sendModuleMessage(auditLog);
 	
     
     LOGGER.info("createUser() - (LEAVE)");
@@ -136,10 +126,8 @@ public class ManageUserServiceBean implements ManageUserService {
     
     UserAccount userAccount = request.getBody();
 
-		AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-				AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.USER.getValue(),
-				request.getRequester(), userAccount.getUserName(), userAccount.getNotes());
-		auditLogger.logEvent(auditRecord);
+    String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.USER.getValue() + " " + request.getBody().getUserName(), request.getBody().getNotes(), request.getRequester());
+    auditProducer.sendModuleMessage(auditLog);
 	
     
     LOGGER.info("updateUser() - (LEAVE)");
@@ -182,11 +170,8 @@ public class ManageUserServiceBean implements ManageUserService {
     // Just do it! 
     changePassword(entity, request, false);
     
-    AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-				AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.PASSWORD.getValue(), requester,
-					userName, userName);
-		auditLogger.logEvent(auditRecord);
-	
+      String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.PASSWORD.getValue() + " " + request.getBody().getUserName(), request.getRequester());
+      auditProducer.sendModuleMessage(auditLog);
 
     LOGGER.info("changePassword() - (LEAVE)");
   }
@@ -314,17 +299,10 @@ public class ManageUserServiceBean implements ManageUserService {
  }
   private void auditAction(String actionName, ServiceRequest<UserAccount> request) 
   {
-    AuditRecord ar = new AuditRecord();
-    
-    ar.setActionName(actionName);
-    ar.setApplicationName(USMApplication.USM.name());
-    ar.setComponentName("ManageUserService");
-    ar.setFailure(false);
-    ar.setUserId(request.getRequester());
-    ar.setResourceName(request.getBody().getUserName());
-    ar.setRawData(request.getBody().getNotes());
-    
-    auditLogger.logEvent(ar);
+
+    String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), actionName, "ManageUserService " + request.getBody().getUserName(), request.getRequester(), request.getBody().getNotes());
+    auditProducer.sendModuleMessage(auditLog);
+
   }
   
   private void changePassword(UserEntity entity, ServiceRequest<ChangePassword> request, boolean isTemporaryPassword) 
@@ -538,11 +516,8 @@ public class ManageUserServiceBean implements ManageUserService {
                 auditOperation = AuditOperationEnum.UPDATE.getValue();
             }
             
-            AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-    					auditOperation, AuditObjectTypeEnum.CHALLENGE.getValue(),
-    						request.getRequester(), userName, userName);
-    			auditLogger.logEvent(auditRecord);
-    		
+            String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), auditOperation, AuditObjectTypeEnum.CHALLENGE.getValue() + " " + userName, userName, request.getRequester());
+            auditProducer.sendModuleMessage(auditLog);
             
             challengeInformation.setChallengeId(challengeEntity.getChallengeId());
         }
@@ -580,12 +555,9 @@ public class ManageUserServiceBean implements ManageUserService {
 			throw new IllegalArgumentException(INVALID_ANSWERS);
 		}
 		
-		AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-					AuditOperationEnum.RESET.getValue(), AuditObjectTypeEnum.PASSWORD.getValue(),
-						request.getRequester(), userName, userName);
-			auditLogger.logEvent(auditRecord);
-		
-		
+
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.RESET.getValue(), AuditObjectTypeEnum.PASSWORD.getValue() + " " + userName, userName, request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
 	    LOGGER.info("resetPassword() - (LEAVE)");
 	}
 	
@@ -667,11 +639,8 @@ public class ManageUserServiceBean implements ManageUserService {
       throw new RuntimeException("Failed to send e-mail to " + recipient, ex);
     }
 
-		AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-              AuditOperationEnum.RESET.getValue(), AuditObjectTypeEnum.PASSWORD.getValue(),
-              request.getRequester(), userName, userName);
-      auditLogger.logEvent(auditRecord);
-
+      String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.RESET.getValue(), AuditObjectTypeEnum.PASSWORD.getValue() + " " + userName, userName, request.getRequester());
+      auditProducer.sendModuleMessage(auditLog);
     LOGGER.info("resetPasswordAndNotify() - (LEAVE)");
 	}
 	

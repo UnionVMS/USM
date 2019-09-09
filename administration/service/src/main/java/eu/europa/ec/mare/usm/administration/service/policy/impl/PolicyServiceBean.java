@@ -1,9 +1,8 @@
 package eu.europa.ec.mare.usm.administration.service.policy.impl;
 
-import eu.europa.ec.mare.audit.logger.AuditLogger;
-import eu.europa.ec.mare.audit.logger.AuditLoggerFactory;
-import eu.europa.ec.mare.audit.logger.AuditRecord;
+import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogModelMapper;
 import eu.europa.ec.mare.usm.administration.domain.*;
+import eu.europa.ec.mare.usm.administration.service.AuditProducer;
 import eu.europa.ec.mare.usm.administration.service.policy.DefinitionService;
 import eu.europa.ec.mare.usm.administration.service.policy.PolicyService;
 import eu.europa.ec.mare.usm.information.entity.PolicyEntity;
@@ -37,16 +36,10 @@ public class PolicyServiceBean implements PolicyService {
 
   @EJB
   private DefinitionService definitionService;
-  
-  private final AuditLogger auditLogger;
 
-  /**
-   * Creates a new instance
-   */
-  public PolicyServiceBean() 
-  {
-    auditLogger = AuditLoggerFactory.getAuditLogger();
-  }
+  @Inject
+  private AuditProducer auditProducer;
+
 
   @Override
   public Policy updatePolicy(ServiceRequest<Policy> request)
@@ -71,12 +64,8 @@ public class PolicyServiceBean implements PolicyService {
 
         definitionService.evictDefinition(subject);
         
-
-    		AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-    				AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.POLICY.getValue(), request.getRequester(),
-    				name, request.getBody().getDescription());
-    		auditLogger.logEvent(auditRecord);
-    	
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.POLICY.getValue() + " " + name, request.getBody().getDescription(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
 
         return convertToDomain(policyEntity);
       }

@@ -1,40 +1,24 @@
 package eu.europa.ec.mare.usm.administration.service.organisation.impl;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.europa.ec.mare.audit.logger.AuditLogger;
-import eu.europa.ec.mare.audit.logger.AuditLoggerFactory;
-import eu.europa.ec.mare.audit.logger.AuditRecord;
-import eu.europa.ec.mare.usm.administration.domain.AuditObjectTypeEnum;
-import eu.europa.ec.mare.usm.administration.domain.AuditOperationEnum;
-import eu.europa.ec.mare.usm.administration.domain.Channel;
-import eu.europa.ec.mare.usm.administration.domain.EndPoint;
-import eu.europa.ec.mare.usm.administration.domain.EndPointContact;
-import eu.europa.ec.mare.usm.administration.domain.FindOrganisationsQuery;
-import eu.europa.ec.mare.usm.administration.domain.Organisation;
-import eu.europa.ec.mare.usm.administration.domain.OrganisationNameResponse;
-import eu.europa.ec.mare.usm.administration.domain.OrganisationQuery;
-import eu.europa.ec.mare.usm.administration.domain.PaginationResponse;
-import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
-import eu.europa.ec.mare.usm.administration.domain.USMApplication;
-import eu.europa.ec.mare.usm.administration.domain.USMFeature;
-import eu.europa.ec.mare.usm.administration.domain.UnauthorisedException;
+import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogModelMapper;
+import eu.europa.ec.mare.usm.administration.domain.*;
+import eu.europa.ec.mare.usm.administration.service.AuditProducer;
 import eu.europa.ec.mare.usm.administration.service.organisation.OrganisationService;
 import eu.europa.ec.mare.usm.administration.service.person.impl.PersonJpaDao;
 import eu.europa.ec.mare.usm.information.entity.ChannelEntity;
 import eu.europa.ec.mare.usm.information.entity.EndPointContactEntity;
 import eu.europa.ec.mare.usm.information.entity.EndPointEntity;
 import eu.europa.ec.mare.usm.information.entity.OrganisationEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Stateless session bean implementation of the OrganisationService
@@ -64,16 +48,8 @@ public class OrganisationServiceBean implements OrganisationService {
     @Inject
     private PersonJpaDao personJpaDao;
     
-    
-    private final AuditLogger auditLogger;
-
-    /**
-     * Creates a new instance
-     */
-    public OrganisationServiceBean() 
-    {
-      auditLogger = AuditLoggerFactory.getAuditLogger();
-    }
+    @Inject
+    private AuditProducer auditProducer;
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -96,11 +72,8 @@ public class OrganisationServiceBean implements OrganisationService {
         entity.setCreatedOn(new Date());
         entity = jpaDao.create(entity);
         
-    		AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-    				AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue(), 
-    				request.getRequester(), request.getBody().getName(), request.getBody().getDescription());
-    		auditLogger.logEvent(auditRecord);
-
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("createOrganisation() - (LEAVE)");
         return converter.convertEntityToDomain(entity);
@@ -135,12 +108,8 @@ public class OrganisationServiceBean implements OrganisationService {
         }
         entity = jpaDao.update(entity);
         
-
-    		AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-    				AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue(),
-    				request.getRequester(), request.getBody().getName(), request.getBody().getDescription());
-    		auditLogger.logEvent(auditRecord);
-
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("updateOrganisation() - (LEAVE)");
         return converter.convertEntityToDomain(entity);
@@ -161,11 +130,8 @@ public class OrganisationServiceBean implements OrganisationService {
         }
         jpaDao.delete(request.getBody());
         
-    		AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-    				AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue(),
-    				request.getRequester(), Long.toString(request.getBody()), Long.toString(request.getBody()));
-    		auditLogger.logEvent(auditRecord);
-
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("deleteOrganisation() - (LEAVE)");
     }
@@ -320,11 +286,8 @@ public class OrganisationServiceBean implements OrganisationService {
         entity.setCreatedOn(new Date());
         entity = endPointJpaDao.create(entity);
         
-        AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-    				AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue(), 
-    				request.getRequester(), request.getBody().getName(), request.getBody().getDescription());
-    		auditLogger.logEvent(auditRecord);
-    	
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("createEndPoint() - (LEAVE)");
         return converter.convertEndPointEntityToDomain(entity, true);
@@ -346,11 +309,8 @@ public class OrganisationServiceBean implements OrganisationService {
         entity.setModifiedOn(new Date());
         ret = converter.convertEndPointEntityToDomain(endPointJpaDao.update(entity), false);
         
-        AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-    				AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue(),
-    				request.getRequester(), request.getBody().getName(), request.getBody().getDescription());
-    		auditLogger.logEvent(auditRecord);
-    	
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("updateEndPoint() - (LEAVE)");
         return ret;
@@ -364,11 +324,8 @@ public class OrganisationServiceBean implements OrganisationService {
         validator.assertValid(request, USMFeature.manageOrganisations, "endpointId");
         endPointJpaDao.delete(request.getBody());
         
-        AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-    				AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue(),
-    				request.getRequester(), Long.toString(request.getBody()), Long.toString(request.getBody()));
-    		auditLogger.logEvent(auditRecord);
-    	
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("deleteEndPoint() - (LEAVE)");
     }
@@ -408,12 +365,8 @@ public class OrganisationServiceBean implements OrganisationService {
         entity.setCreatedOn(new Date());
         entity = channelJpaDao.create(entity);
         
-        AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-    				AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue(),
-    				request.getRequester(), Long.toString(request.getBody().getEndpointId()), 
-    				Long.toString(request.getBody().getEndpointId()));
-    		auditLogger.logEvent(auditRecord);
-
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " + request.getBody().getEndpointId(), "" + request.getBody().getEndpointId(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
         LOGGER.info("createChannel() - (LEAVE)");
         return converter.convertChannelEntityToDomain(entity);
     }
@@ -445,12 +398,8 @@ public class OrganisationServiceBean implements OrganisationService {
 
         ret = converter.convertChannelEntityToDomain(channelJpaDao.update(entity));
         
-        AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-    				AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue(),
-    				request.getRequester(), Long.toString(request.getBody().getEndpointId()), 
-    				Long.toString(request.getBody().getEndpointId()));
-    		auditLogger.logEvent(auditRecord);
-    	
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " + request.getBody().getEndpointId(), "" + request.getBody().getEndpointId(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("updateChannel() - (LEAVE)");
         return ret;
@@ -464,11 +413,8 @@ public class OrganisationServiceBean implements OrganisationService {
         validator.assertValid(request, USMFeature.manageOrganisations, "channelId");
         channelJpaDao.delete(request.getBody());
         
-        AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-    				AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue(),
-    				request.getRequester(), Long.toString(request.getBody()), Long.toString(request.getBody()));
-    		auditLogger.logEvent(auditRecord);
-    	
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
         
         LOGGER.info("deleteChannel() - (LEAVE)");
     }
@@ -523,12 +469,8 @@ public class OrganisationServiceBean implements OrganisationService {
             endPointContactJpaDao.delete(epcontact);
         }
         
-        AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-    				AuditOperationEnum.REMOVE.getValue(), AuditObjectTypeEnum.ENDPOINT_CONTACT.getValue(),
-    				request.getRequester(), Long.toString(request.getBody().getEndPointContactId()), 
-    				Long.toString(request.getBody().getEndPointContactId()));
-    		auditLogger.logEvent(auditRecord);
-
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.REMOVE.getValue(), AuditObjectTypeEnum.ENDPOINT_CONTACT.getValue() + " " + request.getBody().getEndPointContactId(), "" + request.getBody().getEndPointContactId(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
         LOGGER.info("removeContact() - (LEAVE)");
     }
 
