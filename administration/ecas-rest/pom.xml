@@ -153,18 +153,6 @@
 	</build>
 
 	<dependencies>
-		<!-- dependency>
-			<groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
-			<artifactId>ecas-weblogic-10.3-authprovider</artifactId>
-			<version>4.3.2</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.oracle.weblogic</groupId>
-			<artifactId>wls-api</artifactId>
-			<version>12.1.3-0-0</version>
-			<scope>provided</scope>
-		</dependency -->
 		<dependency>
 			<groupId>eu.europa.ec.mare.usm</groupId>
 			<artifactId>Administration-http-Rest-Service</artifactId>
