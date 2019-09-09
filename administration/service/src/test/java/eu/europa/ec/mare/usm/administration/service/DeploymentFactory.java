@@ -127,9 +127,7 @@ public class DeploymentFactory {
     ;
     File[] files = Maven.configureResolver().loadPomFromFile("pom.xml")
         .importRuntimeAndTestDependencies().resolve(
-                "eu.europa.ec.mare.oss.auditing:Logger-API", 
-                "eu.europa.ec.mare.oss.auditing:CSV-Logger",
-                "eu.europa.ec.mare.usm:Information-Service", 
+                "eu.europa.ec.mare.usm:Information-Service",
                 "eu.europa.ec.mare.usm:Authentication-Service",
                 "eu.europa.ec.mare.usm:Information-Model", 
                 "eu.europa.ec.mare.usm:Authentication-Model",

@@ -1,9 +1,8 @@
 package eu.europa.ec.mare.usm.administration.service.person.impl;
 
-import eu.europa.ec.mare.audit.logger.AuditLogger;
-import eu.europa.ec.mare.audit.logger.AuditLoggerFactory;
-import eu.europa.ec.mare.audit.logger.AuditRecord;
+import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogModelMapper;
 import eu.europa.ec.mare.usm.administration.domain.*;
+import eu.europa.ec.mare.usm.administration.service.AuditProducer;
 import eu.europa.ec.mare.usm.administration.service.person.PersonService;
 import eu.europa.ec.mare.usm.administration.service.policy.DefinitionService;
 import eu.europa.ec.mare.usm.administration.service.user.impl.UserJpaDao;
@@ -61,16 +60,8 @@ public class PersonServiceBean implements PersonService {
   @EJB
   DefinitionService definition;
 
-  
-  private final AuditLogger auditLogger;
-
-  /**
-   * Creates a new instance
-   */
-  public PersonServiceBean() 
-  {
-    auditLogger = AuditLoggerFactory.getAuditLogger();
-  }
+  @Inject
+  private AuditProducer auditProducer;
 
   @Override
   public Person getPerson(ServiceRequest<Long> personRequest)
@@ -167,10 +158,8 @@ public class PersonServiceBean implements PersonService {
     }
     
 		String requester = request.getRequester();
-		AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-				AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.CONTACT_DETAILS.getValue(), 
-				requester, requester, requester);
-		auditLogger.logEvent(auditRecord);
+    String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.CONTACT_DETAILS.getValue() + " " + requester, requester, requester);
+    auditProducer.sendModuleMessage(auditLog);
 
     LOGGER.info("updateContactDetails() - (LEAVE)");
     return ret;

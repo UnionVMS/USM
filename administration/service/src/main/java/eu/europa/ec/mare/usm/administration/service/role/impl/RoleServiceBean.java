@@ -1,9 +1,8 @@
 package eu.europa.ec.mare.usm.administration.service.role.impl;
 
-import eu.europa.ec.mare.audit.logger.AuditLogger;
-import eu.europa.ec.mare.audit.logger.AuditLoggerFactory;
-import eu.europa.ec.mare.audit.logger.AuditRecord;
+import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogModelMapper;
 import eu.europa.ec.mare.usm.administration.domain.*;
+import eu.europa.ec.mare.usm.administration.service.AuditProducer;
 import eu.europa.ec.mare.usm.administration.service.role.RoleService;
 import eu.europa.ec.mare.usm.administration.service.user.impl.UserJpaDao;
 import eu.europa.ec.mare.usm.information.entity.FeatureEntity;
@@ -45,16 +44,9 @@ public class RoleServiceBean implements RoleService {
   private RoleConverter converter;
   
 
-  
-  private final AuditLogger auditLogger;
+  @Inject
+  private AuditProducer auditProducer;
 
-  /**
-   * Creates a new instance
-   */
-  public RoleServiceBean() 
-  {
-    auditLogger = AuditLoggerFactory.getAuditLogger();
-  }
 
   @Override
   public List<String> getRoleNames(ServiceRequest<RoleQuery> request) 
@@ -131,11 +123,8 @@ public class RoleServiceBean implements RoleService {
     ComprehensiveRole ret = converter.convertComprehensively(entity);
     
 
-		AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-				AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ROLE.getValue(), request.getRequester(),
-				request.getBody().getName(), request.getBody().getDescription());
-		auditLogger.logEvent(auditRecord);
-
+    String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ROLE.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+    auditProducer.sendModuleMessage(auditLog);
 
     LOGGER.info("createRole() - (LEAVE)");
     return ret;
@@ -162,11 +151,8 @@ public class RoleServiceBean implements RoleService {
     roleJpaDao.update(entity);
     
 
-		AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-				AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.ROLE.getValue(), request.getRequester(),
-				request.getBody().getName(), request.getBody().getDescription());
-		auditLogger.logEvent(auditRecord);
-	
+    String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.ROLE.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+    auditProducer.sendModuleMessage(auditLog);
 
     LOGGER.info("updateRole() - (LEAVE)");
   }
@@ -181,11 +167,8 @@ public class RoleServiceBean implements RoleService {
     validator.assertValid(request, USMFeature.manageRoles, "roleId");
     roleJpaDao.delete(request.getBody());
     
-    AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-				AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.ROLE.getValue(), request.getRequester(),
-				Long.toString(request.getBody()), Long.toString(request.getBody()));
-		auditLogger.logEvent(auditRecord);
-	
+    String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.ROLE.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+    auditProducer.sendModuleMessage(auditLog);
 
     LOGGER.info("deleteRole() - (LEAVE)");
   }

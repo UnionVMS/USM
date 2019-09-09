@@ -1,9 +1,8 @@
 package eu.europa.ec.mare.usm.administration.service.scope.impl;
 
-import eu.europa.ec.mare.audit.logger.AuditLogger;
-import eu.europa.ec.mare.audit.logger.AuditLoggerFactory;
-import eu.europa.ec.mare.audit.logger.AuditRecord;
+import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogModelMapper;
 import eu.europa.ec.mare.usm.administration.domain.*;
+import eu.europa.ec.mare.usm.administration.service.AuditProducer;
 import eu.europa.ec.mare.usm.administration.service.scope.ScopeService;
 import eu.europa.ec.mare.usm.administration.service.user.impl.UserJpaDao;
 import eu.europa.ec.mare.usm.information.entity.DatasetEntity;
@@ -44,15 +43,8 @@ public class ScopeServiceBean implements ScopeService {
     @Inject
     private UserJpaDao userJpaDao;
 
-
-    private final AuditLogger auditLogger;
-
-    /**
-     * Creates a new instance
-     */
-    public ScopeServiceBean() {
-        auditLogger = AuditLoggerFactory.getAuditLogger();
-    }
+    @Inject
+    private AuditProducer auditProducer;
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -73,11 +65,8 @@ public class ScopeServiceBean implements ScopeService {
 
         Scope ret = convertEntityToResponse(scope);
 
-        AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-                    AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.SCOPE.getValue(), request.getRequester(),
-                    request.getBody().getName(), request.getBody().getDescription());
-            auditLogger.logEvent(auditRecord);
-        
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.SCOPE.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("createScope() - (LEAVE)");
         return ret;
@@ -102,11 +91,8 @@ public class ScopeServiceBean implements ScopeService {
 
         Scope ret = convertEntityToResponse(scope);
 
-        AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-                    AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.SCOPE.getValue(), request.getRequester(),
-                    request.getBody().getName(), request.getBody().getDescription());
-            auditLogger.logEvent(auditRecord);
-        
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.SCOPE.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("updateScope() - (LEAVE)");
         return ret;
@@ -121,11 +107,8 @@ public class ScopeServiceBean implements ScopeService {
         validator.assertValid(request, USMFeature.manageScopes, "scopeId");
         jpaDao.delete(request.getBody());
 
-        AuditRecord auditRecord = new AuditRecord(USMApplication.USM.name(),
-                    AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.SCOPE.getValue(), request.getRequester(),
-                    Long.toString(request.getBody()), Long.toString(request.getBody()));
-            auditLogger.logEvent(auditRecord);
-        
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.SCOPE.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+        auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("deleteScope() - (LEAVE)");
     }
