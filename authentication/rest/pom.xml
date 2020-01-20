@@ -208,7 +208,7 @@
 		<dependency>
 			<groupId>com.sun.jersey.contribs</groupId>
 			<artifactId>jersey-multipart</artifactId>
-			<version>1.9</version>
+			<version>1.19.4</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
