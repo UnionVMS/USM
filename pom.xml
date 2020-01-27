@@ -14,7 +14,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<docker.dev.version>3.32.0.w16</docker.dev.version>
+		<docker.dev.version>3.40.20.w18</docker.dev.version>
 		<uvms.pom.version>2.6</uvms.pom.version>
 	</properties>
 
