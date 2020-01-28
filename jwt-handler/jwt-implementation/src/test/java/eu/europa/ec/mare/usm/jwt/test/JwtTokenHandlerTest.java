@@ -59,9 +59,7 @@ public class JwtTokenHandlerTest {
     }
 
     @Before
-    public void clearProperties() throws NamingException {
-        InitialContext ic = new InitialContext();
-        ic.unbind("USM/secretKey");
+    public void clearProperties() {
         System.clearProperty("USM.secretKey");
         testSubject = new DefaultJwtTokenHandler();
         testSubject.init();
@@ -87,7 +85,7 @@ public class JwtTokenHandlerTest {
 
     @Test
     @OperateOnDeployment("withProperties")
-    public void testtamperedParseToken() {
+    public void testTamperedParseToken() {
         String parsed = testSubject.parseToken(RANDOM_SIG_TOKEN);
         assertThat(parsed, is(not(USER_NAME)));
         assertNull(parsed);
@@ -118,6 +116,8 @@ public class JwtTokenHandlerTest {
 
         DefaultJwtTokenHandler jwtHandler = new DefaultJwtTokenHandler();
         jwtHandler.init();
+
+        ic.unbind("USM/secretKey");
 
         String parsedUsername = jwtHandler.parseToken(token);
         assertThat(parsedUsername, CoreMatchers.is(CoreMatchers.nullValue()));
