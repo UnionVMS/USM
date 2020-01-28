@@ -135,7 +135,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.9.1</version>
+						<version>3.1.1</version>
 						<executions>
 							<execution>
 								<id>generate-service-docs</id>
@@ -171,7 +171,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.6</version>
+				<version>3.2.3</version>
 				<configuration>
 					<warName>${project.artifactId}</warName>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
@@ -195,19 +195,19 @@
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-client</artifactId>
-			<version>1.9</version>
+			<version>1.19.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
-			<version>1.9</version>
+			<version>1.19.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey.contribs</groupId>
 			<artifactId>jersey-multipart</artifactId>
-			<version>1.9</version>
+			<version>1.19.4</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
