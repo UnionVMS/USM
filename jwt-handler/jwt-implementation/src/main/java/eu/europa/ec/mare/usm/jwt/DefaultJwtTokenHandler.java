@@ -206,13 +206,14 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
     private void initKey() {
         // get the key from properties if set
         String key = System.getProperty(SYSTEM_KEY);
-        String jndikey = "USM/" + PROP_KEY;
+
         if (key == null || key.isEmpty()) {
             LOGGER.debug("no key defined in system property {}. Checking in properties file", SYSTEM_KEY);
             key = properties.getProperty(PROP_KEY);
             if (key == null || key.isEmpty()) {
                 LOGGER.debug("no key defined in property. Checking in JNDI context");
                 // let's look if a key exist in JNDI
+                String jndikey = "USM/" + PROP_KEY;
                 try {
                     key = JndiUtil.lookup(jndikey).toString();
                     LOGGER.debug("Found Key bound to JNDI name {} with value {}", jndikey, key);

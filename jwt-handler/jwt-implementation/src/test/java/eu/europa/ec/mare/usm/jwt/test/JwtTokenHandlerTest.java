@@ -16,6 +16,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,8 +32,7 @@ public class JwtTokenHandlerTest {
     private static final String USER_NAME = "usm_user";
     private static final String RANDOM_SIG_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2MTA3NzUxMSwiZXhwIjoxNDYxMDc5MzExLCJ1c2VyTmFtZSI6InVzbV91c2VyIn0.QIn18uc09ajddT6ydLqMPO-P3IdmEa9L8e4s8Zck_YQ";
 
-    @EJB
-    private JwtTokenHandler testSubject;
+    private DefaultJwtTokenHandler testSubject;
 
     @Deployment(name = "withProperties", order = 2)
     public static WebArchive createDeployment() {
@@ -58,10 +58,14 @@ public class JwtTokenHandlerTest {
         return war;
     }
 
-    /**
-     * Creates a new instance
-     */
-    public JwtTokenHandlerTest() {}
+    @Before
+    public void clearProperties() throws NamingException {
+        InitialContext ic = new InitialContext();
+        ic.unbind("USM/secretKey");
+        System.clearProperty("USM.secretKey");
+        testSubject = new DefaultJwtTokenHandler();
+        testSubject.init();
+    }
 
     /**
      * Tests the getApplicationNames method
