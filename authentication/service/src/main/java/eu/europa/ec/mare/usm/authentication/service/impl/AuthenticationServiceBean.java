@@ -32,23 +32,23 @@ import javax.inject.Inject;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class AuthenticationServiceBean implements AuthenticationService {
-  private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceBean.class);
-  private static final String AUTHENTICATION_SUBJECT = "Authentication";
-  private static final String RENEWAL_REMINDER = "password.renewalReminder";
-  private static final String LOCKOUT_DURATION = "account.lockoutDuration";
-  private static final String LOCKOUT_FRESHOLD = "account.lockoutFreshold";
-  private static final String LDAP_ENABLED = "ldap.enabled";
-  private static final long ONE_MINUTE = (1000L * 60L);
-  private static final long ONE_DAY = (1000L * 60 * 60 * 24);
-  private static final String LOCKED = "L";
-  private static final String DISABLED = "D";
-  private static final String ENABLED = "E";
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceBean.class);
+    private static final String AUTHENTICATION_SUBJECT = "Authentication";
+    private static final String RENEWAL_REMINDER = "password.renewalReminder";
+    private static final String LOCKOUT_DURATION = "account.lockoutDuration";
+    private static final String LOCKOUT_FRESHOLD = "account.lockoutFreshold";
+    private static final String LDAP_ENABLED = "ldap.enabled";
+    private static final long ONE_MINUTE = (1000L * 60L);
+    private static final long ONE_DAY = (1000L * 60 * 60 * 24);
+    private static final String LOCKED = "L";
+    private static final String DISABLED = "D";
+    private static final String ENABLED = "E";
 
-  @EJB
-  private AuthenticationDao dao;
+    @EJB
+    private AuthenticationDao dao;
 
-  @EJB
-  private PolicyProvider policyProvider;
+    @EJB
+    private PolicyProvider policyProvider;
 
   @Inject
   private RequestValidator validator;
@@ -63,9 +63,9 @@ public class AuthenticationServiceBean implements AuthenticationService {
     
     boolean ret = Boolean.parseBoolean(props.getProperty(LDAP_ENABLED, "false"));
 
-    LOGGER.info("isLDAPEnabled() - (LEAVE): " + ret);
-    return ret;
-  }
+        LOGGER.info("isLDAPEnabled() - (LEAVE): " + ret);
+        return ret;
+    }
 
   @Override
   public boolean isPasswordExpired(String userName)
@@ -160,12 +160,11 @@ public class AuthenticationServiceBean implements AuthenticationService {
     return ret;
   }
 
-  @Override
-  public ChallengeResponse getUserChallenge(AuthenticationQuery query) 
-  {
-    LOGGER.info("getUserChallenge(" + query + ") - (ENTER)");
+    @Override
+    public ChallengeResponse getUserChallenge(AuthenticationQuery query) {
+        LOGGER.info("getUserChallenge(" + query + ") - (ENTER)");
 
-    validator.assertValid(query);
+        validator.assertValid(query);
 
     ChallengeResponse ret = null;
     try {
@@ -184,11 +183,10 @@ public class AuthenticationServiceBean implements AuthenticationService {
     return ret;
   }
 
-  @Override
-  public AuthenticationResponse authenticateUser(ChallengeResponse request) 
-  {
-    LOGGER.info("authenticateUser(" + request + ") - (ENTER)");
-    validator.assertValid(request);
+    @Override
+    public AuthenticationResponse authenticateUser(ChallengeResponse request) {
+        LOGGER.info("authenticateUser(" + request + ") - (ENTER)");
+        validator.assertValid(request);
 
     AuthenticationResponse ret = new AuthenticationResponse();
     try {
@@ -298,11 +296,11 @@ public class AuthenticationServiceBean implements AuthenticationService {
   {
     String ret = null;
 
-    if (password != null) {
-      MessageDigest md = MessageDigest.getInstance("MD5");
-      md.update(password.getBytes());
+        if (password != null) {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(password.getBytes());
 
-      byte[] digest = md.digest();
+            byte[] digest = md.digest();
 
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < digest.length; i++) {
