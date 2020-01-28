@@ -2,9 +2,8 @@ package eu.europa.ec.mare.usm.jwt.test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
+
 import java.util.Arrays;
 import java.util.List;
 import javax.ejb.EJB;
@@ -17,6 +16,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +31,8 @@ import eu.europa.ec.mare.usm.jwt.JwtTokenHandler;
 public class JwtTokenHandlerTest {
     private static final String USER_NAME = "usm_user";
     private static final String RANDOM_SIG_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2MTA3NzUxMSwiZXhwIjoxNDYxMDc5MzExLCJ1c2VyTmFtZSI6InVzbV91c2VyIn0.QIn18uc09ajddT6ydLqMPO-P3IdmEa9L8e4s8Zck_YQ";
+
+    private DefaultJwtTokenHandler testSubject;
 
     @Deployment(name = "withProperties", order = 2)
     public static WebArchive createDeployment() {
@@ -56,13 +58,12 @@ public class JwtTokenHandlerTest {
         return war;
     }
 
-    @EJB
-    JwtTokenHandler testSubject;
-
-    /**
-     * Creates a new instance
-     */
-    public JwtTokenHandlerTest() {}
+    @Before
+    public void clearProperties() {
+        System.clearProperty("USM.secretKey");
+        testSubject = new DefaultJwtTokenHandler();
+        testSubject.init();
+    }
 
     /**
      * Tests the getApplicationNames method
@@ -70,38 +71,30 @@ public class JwtTokenHandlerTest {
     @Test
     @OperateOnDeployment("withProperties")
     public void testCreateToken() {
-
         String token = testSubject.createToken(USER_NAME);
-        // Verify
         assertNotNull("Unexpected null response", token);
     }
 
     @Test
     @OperateOnDeployment("withProperties")
     public void testParseToken() {
-
         String token = testSubject.createToken(USER_NAME);
         String parsed = testSubject.parseToken(token);
-
-        // Verify
         assertEquals(USER_NAME, parsed);
     }
 
     @Test
     @OperateOnDeployment("withProperties")
-    public void testtamperedParseToken() {
-
+    public void testTamperedParseToken() {
         String parsed = testSubject.parseToken(RANDOM_SIG_TOKEN);
-
-        // Verify
         assertThat(parsed, is(not(USER_NAME)));
-        assertEquals(null, parsed);
+        assertNull(parsed);
 
     }
 
     @Test
     @OperateOnDeployment("withoutProperties")
-    public void testGenerateKeyAndJndiBind() throws NamingException {
+    public void testGenerateKeyAndJndiBind() {
         String user = "Test";
         String token = testSubject.createToken(user);
 
@@ -123,6 +116,8 @@ public class JwtTokenHandlerTest {
 
         DefaultJwtTokenHandler jwtHandler = new DefaultJwtTokenHandler();
         jwtHandler.init();
+
+        ic.unbind("USM/secretKey");
 
         String parsedUsername = jwtHandler.parseToken(token);
         assertThat(parsedUsername, CoreMatchers.is(CoreMatchers.nullValue()));
