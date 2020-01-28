@@ -479,23 +479,21 @@ public class AuthenticationDao extends AbstractJdbcDao {
     public void createPersonForUser(Map<String, Object> userMap, String userName) {
         LOGGER.info("createPersonForUser(" + userName + ") - (ENTER)");
 
-        Connection co = null;
+        Connection connection = null;
         PreparedStatement select = null;
         PreparedStatement insert = null;
         PreparedStatement update = null;
 
         try {
-
             String[] queryAttributes = LDAP.getQueryAttributes(userMap);
             String[] values = new String[PERSON_COLUMNS.length];
 
-            co = getConnection();
-            insert = co.prepareStatement("insert into person_t(first_name, last_name, phone_number, mobile_number, "
+            connection = getConnection();
+            insert = connection.prepareStatement("insert into person_t(first_name, last_name, phone_number, mobile_number, "
                             + "fax_number, e_mail) values (?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
 
-            int i;
-            for (i = 0; i < PERSON_COLUMNS.length; i++) {
+            for (int i = 0; i < PERSON_COLUMNS.length; i++) {
                 if (i < queryAttributes.length) {
                     values[i] = (String) userMap.get(queryAttributes[i]);
                     insert.setString(i + 1, values[i]);
@@ -504,49 +502,42 @@ public class AuthenticationDao extends AbstractJdbcDao {
                 }
             }
 
-            int cnt = insert.executeUpdate();
+            int numberOfRowsInserted = insert.executeUpdate();
 
-            LOGGER.debug("Insert Row count: " + cnt);
+            LOGGER.debug("Insert Row count: " + numberOfRowsInserted);
 
-            ResultSet rs = insert.getGeneratedKeys();
-            rs.next();
-            String rowId = rs.getString(1);
+            ResultSet resultSet = insert.getGeneratedKeys();
+            resultSet.next();
+            String rowId = resultSet.getString(1);
             if (rowId.length() > 10) {
-
                 LOGGER.debug("Created Person rowid: " + rowId);
 
-                select = co.prepareStatement("select person_id from person_t where rowid=?");
+                select = connection.prepareStatement("select person_id from person_t where rowid=?");
                 select.setString(1, rowId);
                 ResultSet rsPersonId = select.executeQuery();
                 rsPersonId.next();
-                update = co.prepareStatement("update user_t set person_id = ? where user_name = ?");
+                update = connection.prepareStatement("update user_t set person_id = ? where user_name = ?");
                 update.setInt(1, rsPersonId.getInt(1));
-                update.setString(2, userName);
-                cnt = update.executeUpdate();
 
-                LOGGER.debug("Update Row count: " + cnt);
             } else {
-
                 int personId = Integer.parseInt(rowId);
 
                 LOGGER.debug("Created Person id: " + personId);
 
-                update = co.prepareStatement("update user_t set person_id = ? where user_name = ?");
+                update = connection.prepareStatement("update user_t set person_id = ? where user_name = ?");
                 update.setInt(1, personId);
-                update.setString(2, userName);
-                cnt = update.executeUpdate();
 
-                LOGGER.debug("Update Row count: " + cnt);
             }
-
-
+            update.setString(2, userName);
+            numberOfRowsInserted = update.executeUpdate();
+            LOGGER.debug("Update Row count: " + numberOfRowsInserted);
         } catch (Exception ex) {
             handleException(ex);
         } finally {
             closeStatement(select);
             closeStatement(insert);
             closeStatement(update);
-            closeConnection(co);
+            closeConnection(connection);
         }
 
         LOGGER.info("createPersonForUser() - (LEAVE)");
