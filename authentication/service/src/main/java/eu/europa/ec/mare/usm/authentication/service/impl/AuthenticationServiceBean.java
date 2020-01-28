@@ -228,35 +228,46 @@ public class AuthenticationServiceBean implements AuthenticationService {
     private AuthenticationResponse authenticateLdap(AuthenticationRequest request) {
         LOGGER.debug("authenticateLdap(" + request + ") - (ENTER)");
         AuthenticationResponse authenticationResponse = createResponse();
+        String username = request.getUserName();
 
         LDAP ldap = new LDAP(policyProvider.getProperties(AUTHENTICATION_SUBJECT));
-        Map<String, Object> userMap = ldap.authenticate(request.getUserName(), request.getPassword());
+        Map<String, Object> userMap = ldap.authenticate(username, request.getPassword());
         LOGGER.debug("ldap.authenticate: " + userMap);
 
-        if (userMap != null) {
-            if (userMap.get(LDAP.STATUS_CODE) == null) {
-                String status = dao.getUserStatus(request.getUserName());
-                if (ENABLED.equals(status)) {
-                    authenticationResponse.setAuthenticated(true);
-                    authenticationResponse.setStatusCode(AuthenticationResponse.SUCCESS);
-                } else if (DISABLED.equals(status)) {
-                    authenticationResponse.setStatusCode(AuthenticationResponse.ACCOUNT_DISABLED);
-                } else if (LOCKED.equals(status)) {
-                    authenticationResponse.setStatusCode(AuthenticationResponse.ACCOUNT_LOCKED);
-                } else {
-                    authenticationResponse.setStatusCode(AuthenticationResponse.OTHER);
-                }
-            } else {
-                authenticationResponse.setStatusCode(((Integer) userMap.get(LDAP.STATUS_CODE)));
-            }
+        if (userMap == null) {
+            LOGGER.debug("authenticateLdap() - (LEAVE): " + authenticationResponse);
+            return authenticationResponse;
         }
 
-        if (authenticationResponse.isAuthenticated()) {
+        if (hasLdapError(userMap)) {
+            authenticationResponse.setStatusCode(((Integer) userMap.get(LDAP.STATUS_CODE)));
+            LOGGER.debug("authenticateLdap() - (LEAVE): " + authenticationResponse);
+            return authenticationResponse;
+        }
+
+        if (personDoesNotExistInDatabase(username)) {
+            createPersonInDatabaseFromLdap(username, userMap);
+        }
+
+        String status = dao.getUserStatus(username);
+        if (ENABLED.equals(status)) {
+            authenticationResponse.setAuthenticated(true);
             authenticationResponse.setUserMap(userMap);
+            authenticationResponse.setStatusCode(AuthenticationResponse.SUCCESS);
+        } else if (DISABLED.equals(status)) {
+            authenticationResponse.setStatusCode(AuthenticationResponse.ACCOUNT_DISABLED);
+        } else if (LOCKED.equals(status)) {
+            authenticationResponse.setStatusCode(AuthenticationResponse.ACCOUNT_LOCKED);
+        } else {
+            authenticationResponse.setStatusCode(AuthenticationResponse.OTHER);
         }
 
         LOGGER.debug("authenticateLdap() - (LEAVE): " + authenticationResponse);
         return authenticationResponse;
+    }
+
+    private boolean hasLdapError(Map<String, Object> userMap) {
+        return userMap.get(LDAP.STATUS_CODE) != null;
     }
 
     private AuthenticationResponse createResponse() {
@@ -309,6 +320,14 @@ public class AuthenticationServiceBean implements AuthenticationService {
         } else {
             dao.syncPerson(userMap, personId);
         }
+    }
+
+    private boolean personDoesNotExistInDatabase(String username) {
+        return dao.getPersonId(username) != 0;
+    }
+
+    private void createPersonInDatabaseFromLdap(String username, Map<String, Object> userMap) {
+        dao.createPersonForUser(userMap, username);
     }
 
     private void handleLoginFailure(String userName) {
