@@ -55,10 +55,10 @@ public class AuthenticationServiceBean implements AuthenticationService {
         LOGGER.info("isLDAPEnabled() - (ENTER)");
 
         Properties props = policyProvider.getProperties(AUTHENTICATION_SUBJECT);
-        boolean ret = Boolean.parseBoolean(props.getProperty(LDAP_ENABLED, "false"));
+        boolean ldapEnabled = Boolean.parseBoolean(props.getProperty(LDAP_ENABLED, "false"));
 
-        LOGGER.info("isLDAPEnabled() - (LEAVE): " + ret);
-        return ret;
+        LOGGER.info("isLDAPEnabled() - (LEAVE): " + ldapEnabled);
+        return ldapEnabled;
     }
 
     @Override
@@ -117,25 +117,29 @@ public class AuthenticationServiceBean implements AuthenticationService {
         } else {
             authenticationResponse = authenticateLocal(request);
         }
-        if (authenticationResponse.isAuthenticated()) {
-            Date now = new Date();
-            Date expiry = handleLoginSuccess(authenticationResponse.getUserMap(), request.getUserName());
-            if (expiry != null) {
-                if (expiry.before(now)) {
-                    authenticationResponse.setStatusCode(AuthenticationResponse.PASSWORD_EXPIRED);
-                } else {
-                    Properties props = policyProvider.getProperties(AUTHENTICATION_SUBJECT);
-                    int days = policyProvider.getIntProperty(props, RENEWAL_REMINDER, 0);
-                    if (days != 0) {
-                        Date reminder = new Date(expiry.getTime() - (days * ONE_DAY));
-                        if (reminder.before(now)) {
-                            authenticationResponse.setStatusCode(AuthenticationResponse.MUST_CHANGE_PASSWORD);
-                        }
+
+        if (!authenticationResponse.isAuthenticated()) {
+            handleLoginFailure(request.getUserName());
+            LOGGER.info("authenticateUser() - (LEAVE): " + authenticationResponse);
+            return authenticationResponse;
+        }
+
+        Date now = new Date();
+        Date passwordExpiryDate = handleLoginSuccess(authenticationResponse.getUserMap(), request.getUserName());
+
+        if (passwordExpiryDate != null) {
+            if (passwordExpiryDate.before(now)) {
+                authenticationResponse.setStatusCode(AuthenticationResponse.PASSWORD_EXPIRED);
+            } else {
+                Properties properties = policyProvider.getProperties(AUTHENTICATION_SUBJECT);
+                int days = policyProvider.getIntProperty(properties, RENEWAL_REMINDER, 0);
+                if (days != 0) {
+                    Date reminder = new Date(passwordExpiryDate.getTime() - (days * ONE_DAY));
+                    if (reminder.before(now)) {
+                        authenticationResponse.setStatusCode(AuthenticationResponse.MUST_CHANGE_PASSWORD);
                     }
                 }
             }
-        } else {
-            handleLoginFailure(request.getUserName());
         }
         LOGGER.info("authenticateUser() - (LEAVE): " + authenticationResponse);
         return authenticationResponse;
@@ -156,8 +160,8 @@ public class AuthenticationServiceBean implements AuthenticationService {
                 int index = randomGenerator.nextInt(userChallenges.size());
                 challengeResponse = userChallenges.get(index);
             }
-        } catch (Exception exc) {
-            throw new RuntimeException("Problem: " + exc.getMessage(), exc);
+        } catch (Exception e) {
+            throw new RuntimeException("Problem: " + e.getMessage(), e);
         }
 
         LOGGER.info("getUserChallenge() - (LEAVE): " + challengeResponse);
@@ -216,8 +220,8 @@ public class AuthenticationServiceBean implements AuthenticationService {
                     authenticationResponse.setStatusCode(AuthenticationResponse.OTHER);
                 }
             }
-        } catch (Exception exc) {
-            LOGGER.error("Problem: " + exc.getMessage(), exc);
+        } catch (Exception e) {
+            LOGGER.error("Problem: " + e.getMessage(), e);
             authenticationResponse.setStatusCode(AuthenticationResponse.INTERNAL_ERROR);
         }
 
@@ -278,22 +282,21 @@ public class AuthenticationServiceBean implements AuthenticationService {
     }
 
     private String hashPassword(String password) throws NoSuchAlgorithmException {
-        String hashedPassword = null;
-
-        if (password != null) {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(password.getBytes());
-
-            byte[] digest = md.digest();
-
-            StringBuilder stringBuilder = new StringBuilder();
-            for (byte b : digest) {
-                stringBuilder.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
-            }
-            hashedPassword = stringBuilder.toString();
+        if (password == null) {
+            return null;
         }
 
-        return hashedPassword;
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(password.getBytes());
+
+        byte[] digest = md.digest();
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (byte b : digest) {
+            stringBuilder.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+        }
+
+        return stringBuilder.toString();
     }
 
     private Date handleLoginSuccess(Map<String, Object> userMap, String userName) {
@@ -301,7 +304,7 @@ public class AuthenticationServiceBean implements AuthenticationService {
 
         dao.recordLoginSuccess(userName);
 
-        Date passwordExpiry = dao.getPasswordExpiry(userName);
+        Date passwordExpiryDate = dao.getPasswordExpiry(userName);
 
         if (isLDAPEnabled() && userMap != null && !userMap.isEmpty()) {
             handleSyncWithLDAP(userMap, userName);
@@ -310,7 +313,7 @@ public class AuthenticationServiceBean implements AuthenticationService {
         }
 
         LOGGER.info("handleLoginSuccess() - (LEAVE)");
-        return passwordExpiry;
+        return passwordExpiryDate;
     }
 
     private void handleSyncWithLDAP(Map<String, Object> userMap, String userName) {
@@ -341,8 +344,7 @@ public class AuthenticationServiceBean implements AuthenticationService {
         if (threshold != 0 && duration != 0) {
             int failures = dao.getLoginFailures(userName);
             if (failures >= threshold) {
-                Date lockoutExpiry = new Date(System.currentTimeMillis() +
-                        duration * ONE_MINUTE);
+                Date lockoutExpiry = new Date(System.currentTimeMillis() + duration * ONE_MINUTE);
                 dao.lockUser(userName, lockoutExpiry);
             }
         }
