@@ -34,7 +34,7 @@ import io.jsonwebtoken.security.SecurityException;
 public class DefaultJwtTokenHandler implements JwtTokenHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenHandler.class);
     private static final String PROPERTIES_FILE = "/jwt.properties";
-    private static final String SYSTEM_KEY = "USM/secretKey";
+    private static final String SYSTEM_KEY = "USM.secretKey";
     private static final String PROP_KEY = "secretKey";
     private static final String PROP_SUBJECT = "subject";
     private static final String PROP_ISSUER = "issuer";
