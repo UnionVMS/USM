@@ -21,6 +21,10 @@
 			<artifactId>Information-Model</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>fish.focus.uvms.maven</groupId>
 			<artifactId>uvms-pom-arquillian-deps</artifactId>
 			<type>pom</type>

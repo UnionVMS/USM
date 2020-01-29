@@ -16,6 +16,7 @@
 	<properties>
 		<docker.dev.version>3.40.20.w18</docker.dev.version>
 		<uvms.pom.version>2.6</uvms.pom.version>
+		<jaxb.version>2.3.1</jaxb.version>
 	</properties>
 
 	<dependencyManagement>
@@ -55,6 +56,12 @@
 				<artifactId>uvms-pom-arquillian-deps</artifactId>
 				<version>${uvms.pom.version}</version>
 				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>${jaxb.version}</version>
+				<scope>compile</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

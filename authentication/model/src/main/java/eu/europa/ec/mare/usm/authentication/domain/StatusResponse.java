@@ -1,7 +1,7 @@
 package eu.europa.ec.mare.usm.authentication.domain;
 
-import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  * Holds a status response

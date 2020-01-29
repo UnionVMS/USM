@@ -1,22 +1,5 @@
 package eu.europa.ec.mare.usm.information.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.europa.ec.mare.usm.information.domain.deployment.Application;
 import eu.europa.ec.mare.usm.information.domain.deployment.Dataset;
 import eu.europa.ec.mare.usm.information.domain.deployment.Feature;
@@ -27,6 +10,14 @@ import eu.europa.ec.mare.usm.information.entity.FeatureEntity;
 import eu.europa.ec.mare.usm.information.entity.OptionEntity;
 import eu.europa.ec.mare.usm.information.service.DeploymentService;
 import eu.europa.ec.mare.usm.policy.service.impl.PolicyProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import java.util.*;
 
 /**
  * Stateless session bean implementation of the DeploymentService
@@ -179,7 +170,7 @@ public class DeploymentServiceBean implements DeploymentService {
                                                  Application src) {
         ApplicationEntity ret = new ApplicationEntity();
 
-        if(src.getRetainDatasets() == null || !src.getRetainDatasets()){
+        if(src.isRetainDatasets() == null || !src.isRetainDatasets()){
         	if (entity.getDatasetList() != null) {
                 ret.setDatasetList(new ArrayList<DatasetEntity>());
                 Iterator<DatasetEntity> i = entity.getDatasetList().iterator();
