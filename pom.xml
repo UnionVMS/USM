@@ -15,7 +15,7 @@
 
 	<properties>
 		<docker.dev.version>3.40.20.w18</docker.dev.version>
-		<uvms.pom.version>2.6</uvms.pom.version>
+		<uvms.pom.version>3.0</uvms.pom.version>
 	</properties>
 
 	<dependencyManagement>
