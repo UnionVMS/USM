@@ -1,7 +1,22 @@
 package eu.europa.ec.mare.usm.administration.service.user.impl;
 
 import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogModelMapper;
-import eu.europa.ec.mare.usm.administration.domain.*;
+import eu.europa.ec.mare.usm.administration.domain.AuditObjectTypeEnum;
+import eu.europa.ec.mare.usm.administration.domain.AuditOperationEnum;
+import eu.europa.ec.mare.usm.administration.domain.ChallengeInformation;
+import eu.europa.ec.mare.usm.administration.domain.ChallengeInformationResponse;
+import eu.europa.ec.mare.usm.administration.domain.ChangePassword;
+import eu.europa.ec.mare.usm.administration.domain.Notification;
+import eu.europa.ec.mare.usm.administration.domain.NotificationQuery;
+import eu.europa.ec.mare.usm.administration.domain.Organisation;
+import eu.europa.ec.mare.usm.administration.domain.Person;
+import eu.europa.ec.mare.usm.administration.domain.ResetPasswordQuery;
+import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
+import eu.europa.ec.mare.usm.administration.domain.USMApplication;
+import eu.europa.ec.mare.usm.administration.domain.USMFeature;
+import eu.europa.ec.mare.usm.administration.domain.UnauthorisedException;
+import eu.europa.ec.mare.usm.administration.domain.UserAccount;
+import eu.europa.ec.mare.usm.administration.domain.UserStatus;
 import eu.europa.ec.mare.usm.administration.service.AuditProducer;
 import eu.europa.ec.mare.usm.administration.service.NotificationBuilder;
 import eu.europa.ec.mare.usm.administration.service.NotificationSender;
@@ -14,7 +29,11 @@ import eu.europa.ec.mare.usm.administration.service.user.PasswordGenerator;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationRequest;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
 import eu.europa.ec.mare.usm.authentication.service.AuthenticationService;
-import eu.europa.ec.mare.usm.information.entity.*;
+import eu.europa.ec.mare.usm.information.entity.ChallengeEntity;
+import eu.europa.ec.mare.usm.information.entity.OrganisationEntity;
+import eu.europa.ec.mare.usm.information.entity.PasswordHistEntity;
+import eu.europa.ec.mare.usm.information.entity.PersonEntity;
+import eu.europa.ec.mare.usm.information.entity.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,11 +73,10 @@ public class ManageUserServiceBean implements ManageUserService {
     private PasswordPolicyEnforcer policyEnforcer;
 
     @EJB
-    AuthenticationService authService;
+    private AuthenticationService authService;
 
     @EJB
-    DefinitionService definitionService;
-
+    private DefinitionService definitionService;
 
     @Inject
     private UserJpaDao userDao;
@@ -99,7 +117,6 @@ public class ManageUserServiceBean implements ManageUserService {
         String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.USER.getValue() + " " + request.getBody().getUserName(), request.getBody().getNotes(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-
         LOGGER.info("createUser() - (LEAVE)");
         return convert(user);
     }
@@ -113,27 +130,23 @@ public class ManageUserServiceBean implements ManageUserService {
         if (entity == null) {
             throw new IllegalArgumentException(USER_DOES_NOT_EXIST);
         }
+
         update(entity, request.getBody());
         entity.setModifiedBy(request.getRequester());
         entity.setModifiedOn(new Date());
 
         UserEntity updatedUser = userDao.update(entity);
-
-        UserAccount ret = convert(updatedUser);
-
-        UserAccount userAccount = request.getBody();
+        UserAccount userAccount = convert(updatedUser);
 
         String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.USER.getValue() + " " + request.getBody().getUserName(), request.getBody().getNotes(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-
         LOGGER.info("updateUser() - (LEAVE)");
-        return ret;
+        return userAccount;
     }
 
     @Override
-    public void changePassword(ServiceRequest<ChangePassword> request)
-            throws IllegalArgumentException, UnauthorisedException, UnauthenticatedException, RuntimeException {
+    public void changePassword(ServiceRequest<ChangePassword> request) throws RuntimeException {
         LOGGER.info("changePassword(" + request + ") - (ENTER)");
 
         // Sanity check
@@ -172,40 +185,39 @@ public class ManageUserServiceBean implements ManageUserService {
         LOGGER.info("changePassword() - (LEAVE)");
     }
 
-    private void authenticateUser(String userName, String password)
-            throws IllegalArgumentException {
-        AuthenticationRequest sr = new AuthenticationRequest();
-        sr.setUserName(userName);
-        sr.setPassword(password);
-        AuthenticationResponse ret = authService.authenticateUser(sr);
+    private void authenticateUser(String userName, String password) throws IllegalArgumentException {
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest();
+        authenticationRequest.setUserName(userName);
+        authenticationRequest.setPassword(password);
+        AuthenticationResponse authenticationResponse = authService.authenticateUser(authenticationRequest);
 
-        if (!ret.isAuthenticated()) {
-            String msg;
+        if (!authenticationResponse.isAuthenticated()) {
+            String message;
 
-            switch (ret.getStatusCode()) {
+            switch (authenticationResponse.getStatusCode()) {
                 case AuthenticationResponse.ACCOUNT_DISABLED:
-                    msg = ACCOUNT_DISABLED;
+                    message = ACCOUNT_DISABLED;
                     break;
                 case AuthenticationResponse.ACCOUNT_LOCKED:
-                    msg = ACCOUNT_LOCKED;
+                    message = ACCOUNT_LOCKED;
                     break;
                 case AuthenticationResponse.INTERNAL_ERROR:
-                    msg = INTERNAL_ERROR;
+                    message = INTERNAL_ERROR;
                     break;
                 case AuthenticationResponse.INVALID_CREDENTIALS:
-                    msg = INVALID_CREDENTIALS;
+                    message = INVALID_CREDENTIALS;
                     break;
                 case AuthenticationResponse.INVALID_TIME:
-                    msg = INVALID_TIME;
+                    message = INVALID_TIME;
                     break;
                 case AuthenticationResponse.OTHER:
                     // Fall through
                 default:
-                    msg = USER_UNAUTHENTICATED;
+                    message = USER_UNAUTHENTICATED;
                     break;
             }
 
-            throw new IllegalArgumentException(msg);
+            throw new IllegalArgumentException(message);
         }
     }
 
@@ -238,37 +250,38 @@ public class ManageUserServiceBean implements ManageUserService {
         user.setPerson(person);
     }
 
-    private UserAccount convert(UserEntity src) {
-        UserAccount ret = null;
-        if (src != null) {
-            ret = new UserAccount();
-            ret.setStatus(src.getStatus());
-            ret.setUserName(src.getUserName());
-            ret.setActiveFrom(src.getActiveFrom());
-            ret.setActiveTo(src.getActiveTo());
-            ret.setLastLogon(src.getLastLogon());
-            ret.setLockoutReason(src.getLockoutReason());
-            ret.setLockoutTo(src.getLockoutTo());
-            ret.setNotes(src.getNotes());
-            ret.setPerson(convertPersonEntityToDomain(src.getPerson()));
-            ret.setOrganisation(convertOrgEntityToDomain(src.getOrganisation()));
-            if (ret.getOrganisation() != null) {
-                ret.setOrganisation_parent(ret.getOrganisation().getParent() + " / " + ret.getOrganisation().getName());
+    private UserAccount convert(UserEntity userEntity) {
+        UserAccount userAccount = null;
+        if (userEntity != null) {
+            userAccount = new UserAccount();
+            userAccount.setStatus(userEntity.getStatus());
+            userAccount.setUserName(userEntity.getUserName());
+            userAccount.setActiveFrom(userEntity.getActiveFrom());
+            userAccount.setActiveTo(userEntity.getActiveTo());
+            userAccount.setLastLogon(userEntity.getLastLogon());
+            userAccount.setLockoutReason(userEntity.getLockoutReason());
+            userAccount.setLockoutTo(userEntity.getLockoutTo());
+            userAccount.setNotes(userEntity.getNotes());
+            userAccount.setPerson(convertPersonEntityToDomain(userEntity.getPerson()));
+            userAccount.setOrganisation(convertOrgEntityToDomain(userEntity.getOrganisation()));
+
+            if (userAccount.getOrganisation() != null) {
+                userAccount.setOrganisation_parent(userAccount.getOrganisation().getParent() + " / " + userAccount.getOrganisation().getName());
             }
         }
 
-        return ret;
+        return userAccount;
     }
 
     private Organisation convertOrgEntityToDomain(OrganisationEntity entity) {
         if (entity != null) {
-            Organisation org = new Organisation();
-            org.setName(entity.getName());
+            Organisation organisation = new Organisation();
+            organisation.setName(entity.getName());
             if (entity.getParentOrganisation() != null) {
-                org.setParent(entity.getParentOrganisation().getName());
+                organisation.setParent(entity.getParentOrganisation().getName());
             }
-            org.setNation(entity.getIsoa3code());
-            return org;
+            organisation.setNation(entity.getIsoa3code());
+            return organisation;
         } else {
             return null;
         }
@@ -276,15 +289,15 @@ public class ManageUserServiceBean implements ManageUserService {
 
     private Person convertPersonEntityToDomain(PersonEntity entity) {
         if (entity != null) {
-            Person ret = new Person();
-            ret.setPersonId(entity.getPersonId());
-            ret.setFirstName(entity.getFirstName());
-            ret.setLastName(entity.getLastName());
-            ret.setFaxNumber(entity.getFaxNumber());
-            ret.setEmail(entity.getEMail());
-            ret.setMobileNumber(entity.getMobileNumber());
-            ret.setPhoneNumber(entity.getPhoneNumber());
-            return ret;
+            Person person = new Person();
+            person.setPersonId(entity.getPersonId());
+            person.setFirstName(entity.getFirstName());
+            person.setLastName(entity.getLastName());
+            person.setFaxNumber(entity.getFaxNumber());
+            person.setEmail(entity.getEMail());
+            person.setMobileNumber(entity.getMobileNumber());
+            person.setPhoneNumber(entity.getPhoneNumber());
+            return person;
         } else {
             return null;
         }
@@ -292,10 +305,8 @@ public class ManageUserServiceBean implements ManageUserService {
     }
 
     private void auditAction(String actionName, ServiceRequest<UserAccount> request) {
-
         String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), actionName, "ManageUserService " + request.getBody().getUserName(), request.getRequester(), request.getBody().getNotes());
         auditProducer.sendModuleMessage(auditLog);
-
     }
 
     private void changePassword(UserEntity entity, ServiceRequest<ChangePassword> request, boolean isTemporaryPassword) {
@@ -315,7 +326,7 @@ public class ManageUserServiceBean implements ManageUserService {
             h.setCreatedBy(request.getRequester());
             h.setCreatedOn(now);
             h.setUser(entity);
-            entity.setPasswordHistList(new ArrayList<PasswordHistEntity>());
+            entity.setPasswordHistList(new ArrayList<>());
             entity.getPasswordHistList().add(h);
         }
 
@@ -349,10 +360,8 @@ public class ManageUserServiceBean implements ManageUserService {
         auditAction(actionName, userAccountRequest);
     }
 
-
     @Override
-    public ChallengeInformationResponse getChallengeInformation(ServiceRequest<String> request)
-            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public ChallengeInformationResponse getChallengeInformation(ServiceRequest<String> request) throws RuntimeException {
         LOGGER.info("getChallengeInformation(" + request + ") - (ENTER)");
 
         String userName = request.getBody();
@@ -368,17 +377,12 @@ public class ManageUserServiceBean implements ManageUserService {
         // Check who is using the feature?        
         String requester = request.getRequester();
         if (requester.equals(userName)) {
-
             if (UserStatus.DISABLED.getValue().equals(entity.getStatus())) {
                 throw new UnauthorisedException(USER_IS_DISABLED);
             }
 
             List<ChallengeEntity> challengeEntities = challengeJpaDao.getChallenges(userName);
-
-            // return exactly the number of messages needed 
-            //trunkChallenges(challengeEntities);
-
-            List<ChallengeInformation> challengeInformations = new ArrayList<ChallengeInformation>();
+            List<ChallengeInformation> challengeInformations = new ArrayList<>();
 
             for (ChallengeEntity challengeEntity : challengeEntities) {
                 ChallengeInformation challengeInformation = new ChallengeInformation();
@@ -401,38 +405,18 @@ public class ManageUserServiceBean implements ManageUserService {
         return response;
     }
 
-
-    private void trunkChallenges(List<ChallengeEntity> challengeEntities) {
-        if (challengeEntities.size() < NUMBER_OF_CHALLENGES) {
-            while (challengeEntities.size() < NUMBER_OF_CHALLENGES) {
-                challengeEntities.add(new ChallengeEntity());
-
-            }
-        }
-
-        if (challengeEntities.size() > NUMBER_OF_CHALLENGES) {
-            while (challengeEntities.size() > NUMBER_OF_CHALLENGES) {
-                challengeEntities.remove(challengeEntities.size() - 1);
-
-            }
-        }
-    }
-
-    private void trunkChallengeInformation(List<ChallengeInformation> challengeInformations, boolean isGetOperation) {
-
+    private void trunkChallengeInformation(List<ChallengeInformation> challengeInformationList, boolean isGetOperation) {
         int numberOfChallenges = getNumberOfChallenges();
 
-        if (challengeInformations.size() < numberOfChallenges && isGetOperation) {
-            while (challengeInformations.size() < numberOfChallenges) {
-                challengeInformations.add(new ChallengeInformation());
-
+        if (challengeInformationList.size() < numberOfChallenges && isGetOperation) {
+            while (challengeInformationList.size() < numberOfChallenges) {
+                challengeInformationList.add(new ChallengeInformation());
             }
         }
 
-        if (challengeInformations.size() > numberOfChallenges) {
-            while (challengeInformations.size() > numberOfChallenges) {
-                challengeInformations.remove(challengeInformations.size() - 1);
-
+        if (challengeInformationList.size() > numberOfChallenges) {
+            while (challengeInformationList.size() > numberOfChallenges) {
+                challengeInformationList.remove(challengeInformationList.size() - 1);
             }
         }
     }
@@ -444,7 +428,7 @@ public class ManageUserServiceBean implements ManageUserService {
 
         if (policyProperty != null) {
             try {
-                numberOfChallenges = Integer.valueOf(policyProperty);
+                numberOfChallenges = Integer.parseInt(policyProperty);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
@@ -454,9 +438,7 @@ public class ManageUserServiceBean implements ManageUserService {
 
 
     @Override
-    public ChallengeInformationResponse setChallengeInformation(ServiceRequest<ChallengeInformationResponse> request, String userName)
-            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-
+    public ChallengeInformationResponse setChallengeInformation(ServiceRequest<ChallengeInformationResponse> request, String userName) throws RuntimeException {
         LOGGER.info("setChallengeInformation(" + request + ") - (ENTER)");
 
         validator.assertValidChallengeUSer(request, null, userName);
@@ -466,18 +448,15 @@ public class ManageUserServiceBean implements ManageUserService {
         String password = challengeInformationResponse.getUserPassword();
         List<ChallengeInformation> challengeInformations = challengeInformationResponse.getResults();
 
-
         UserEntity userEntity = userDao.read(userName);
         if (userEntity == null) {
             throw new IllegalArgumentException(USER_DOES_NOT_EXIST);
         }
 
         // try to authenticate it
-
         authenticateUser(userName, password);
 
         // if everything is ok then update the chanllenge information
-
         List<ChallengeEntity> challengeEntities = challengeJpaDao.getChallenges(userName);
 
         // return exactly the number of messages needed
@@ -498,7 +477,7 @@ public class ManageUserServiceBean implements ManageUserService {
             challengeEntity.setChallenge(challengeInformation.getChallenge());
             challengeEntity.setResponse(challengeInformation.getResponse());
 
-            String auditOperation = null;
+            String auditOperation;
 
             if (challengeEntity.getChallengeId() == null) {
                 challengeJpaDao.create(challengeEntity);
@@ -515,13 +494,11 @@ public class ManageUserServiceBean implements ManageUserService {
         }
 
         LOGGER.info("setChallengeInformation() - (LEAVE)");
-
         return challengeInformationResponse;
     }
 
     @Override
-    public void resetPassword(ServiceRequest<ResetPasswordQuery> request)
-            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public void resetPassword(ServiceRequest<ResetPasswordQuery> request) throws RuntimeException {
         LOGGER.info("resetPassword(" + request + ") - (ENTER)");
 
         String userName = request.getBody().getUserName();
@@ -547,15 +524,12 @@ public class ManageUserServiceBean implements ManageUserService {
             throw new IllegalArgumentException(INVALID_ANSWERS);
         }
 
-
         String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.RESET.getValue(), AuditObjectTypeEnum.PASSWORD.getValue() + " " + userName, userName, request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
         LOGGER.info("resetPassword() - (LEAVE)");
     }
 
-    private boolean verifySecurityAnswers(List<ChallengeInformation> userChallenges,
-                                          List<ChallengeEntity> challengesStroredInDB) {
-
+    private boolean verifySecurityAnswers(List<ChallengeInformation> userChallenges, List<ChallengeEntity> challengesStroredInDB) {
         int correctAnswers = 0;
 
         for (ChallengeEntity challengeInDB : challengesStroredInDB) {
@@ -567,13 +541,8 @@ public class ManageUserServiceBean implements ManageUserService {
             }
         }
 
-        if (correctAnswers == challengesStroredInDB.size()) {
-            return true;
-        } else {
-            return false;
-        }
+        return correctAnswers == challengesStroredInDB.size();
     }
-
 
     private void resetPassword(UserEntity entity, String newPassword, boolean isTemporaryPassword) {
         // make sure the user's password is not empty
@@ -586,7 +555,6 @@ public class ManageUserServiceBean implements ManageUserService {
         changePassword.setNewPassword(newPassword);
         request.setBody(changePassword);
         changePassword(entity, request, isTemporaryPassword);
-
     }
 
     @Override
@@ -642,6 +610,4 @@ public class ManageUserServiceBean implements ManageUserService {
         LOGGER.info("getPasswordPolicy() - (LEAVE)");
         return policy;
     }
-
-
 }
