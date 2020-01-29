@@ -7,6 +7,10 @@ import eu.europa.ec.mare.usm.administration.domain.ResetPasswordQuery;
 import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
 import eu.europa.ec.mare.usm.administration.domain.UnauthorisedException;
 import eu.europa.ec.mare.usm.administration.domain.UserAccount;
+import eu.europa.ec.mare.usm.authentication.service.impl.CreateLdapUser;
+import eu.europa.ec.mare.usm.authentication.service.impl.CreateLdapUserEvent;
+
+import javax.enterprise.event.Observes;
 
 /**
  * Provides operations for the management of users.
@@ -28,6 +32,8 @@ public interface ManageUserService {
      */
     UserAccount createUser(ServiceRequest<UserAccount> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException;
+
+    void createUserFromLdap(@Observes @CreateLdapUser CreateLdapUserEvent event);
 
     /**
      * Updates an existing user

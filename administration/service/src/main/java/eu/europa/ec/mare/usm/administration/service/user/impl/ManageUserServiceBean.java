@@ -29,6 +29,8 @@ import eu.europa.ec.mare.usm.administration.service.user.PasswordGenerator;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationRequest;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
 import eu.europa.ec.mare.usm.authentication.service.AuthenticationService;
+import eu.europa.ec.mare.usm.authentication.service.impl.CreateLdapUser;
+import eu.europa.ec.mare.usm.authentication.service.impl.CreateLdapUserEvent;
 import eu.europa.ec.mare.usm.information.entity.ChallengeEntity;
 import eu.europa.ec.mare.usm.information.entity.OrganisationEntity;
 import eu.europa.ec.mare.usm.information.entity.PasswordHistEntity;
@@ -41,6 +43,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 import java.util.ArrayList;
@@ -119,6 +122,23 @@ public class ManageUserServiceBean implements ManageUserService {
 
         LOGGER.info("createUser() - (LEAVE)");
         return convert(user);
+    }
+
+    public void createUserFromLdap(@Observes @CreateLdapUser CreateLdapUserEvent event) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUserName(event.username);
+
+        userEntity.setStatus("E");
+        userEntity.setCreatedBy("LDAP");
+
+        Date createdOn = new Date();
+        userEntity.setActiveFrom(createdOn);
+        userEntity.setCreatedOn(createdOn);
+
+        userDao.create(userEntity);
+
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.USER.getValue() + " " + event.username, "", "LDAP");
+        auditProducer.sendModuleMessage(auditLog);
     }
 
     @Override

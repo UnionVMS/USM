@@ -14,6 +14,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -49,6 +50,10 @@ public class AuthenticationServiceBean implements AuthenticationService {
 
     @Inject
     private RequestValidator validator;
+
+    @Inject
+    @CreateLdapUser
+    private Event<CreateLdapUserEvent> ldapUserEventEvent;
 
     @Override
     public boolean isLDAPEnabled() {
@@ -249,6 +254,10 @@ public class AuthenticationServiceBean implements AuthenticationService {
             return authenticationResponse;
         }
 
+        if (userDoesNotExistInDatabase(username)) {
+            createUserInDatabaseFromLdap(username);
+        }
+
         if (personDoesNotExistInDatabase(username)) {
             createPersonInDatabaseFromLdap(username, userMap);
         }
@@ -326,11 +335,21 @@ public class AuthenticationServiceBean implements AuthenticationService {
     }
 
     private boolean personDoesNotExistInDatabase(String username) {
-        return dao.getPersonId(username) != 0;
+        return dao.getPersonId(username) == 0;
     }
 
     private void createPersonInDatabaseFromLdap(String username, Map<String, Object> userMap) {
         dao.createPersonForUser(userMap, username);
+    }
+
+    private boolean userDoesNotExistInDatabase(String username) {
+        return dao.getUserStatus(username) == null;
+    }
+
+    private void createUserInDatabaseFromLdap(String username) {
+        CreateLdapUserEvent createLdapUserEvent = new CreateLdapUserEvent();
+        createLdapUserEvent.username = username;
+        ldapUserEventEvent.fire(createLdapUserEvent);
     }
 
     private void handleLoginFailure(String userName) {
