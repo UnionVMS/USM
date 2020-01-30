@@ -24,13 +24,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 
-/**
- * Stateless Session Bean implementation of the AuthenticationService.
- */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class AuthenticationServiceBean implements AuthenticationService {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceBean.class);
+
     private static final String AUTHENTICATION_SUBJECT = "Authentication";
     private static final String RENEWAL_REMINDER = "password.renewalReminder";
     private static final String LOCKOUT_DURATION = "account.lockoutDuration";
@@ -57,18 +56,18 @@ public class AuthenticationServiceBean implements AuthenticationService {
 
     @Override
     public boolean isLDAPEnabled() {
-        LOGGER.info("isLDAPEnabled() - (ENTER)");
+        LOGGER.debug("isLDAPEnabled() - (ENTER)");
 
         Properties props = policyProvider.getProperties(AUTHENTICATION_SUBJECT);
         boolean ldapEnabled = Boolean.parseBoolean(props.getProperty(LDAP_ENABLED, "false"));
 
-        LOGGER.info("isLDAPEnabled() - (LEAVE): " + ldapEnabled);
+        LOGGER.debug("isLDAPEnabled() - (LEAVE): " + ldapEnabled);
         return ldapEnabled;
     }
 
     @Override
     public boolean isPasswordExpired(String userName) {
-        LOGGER.info("isPasswordExpired() - (ENTER)");
+        LOGGER.debug("isPasswordExpired() - (ENTER)");
 
         boolean passwordExpired = false;
 
@@ -82,13 +81,13 @@ public class AuthenticationServiceBean implements AuthenticationService {
             }
         }
 
-        LOGGER.info("isPasswordExpired() - (LEAVE)");
+        LOGGER.debug("isPasswordExpired() - (LEAVE)");
         return passwordExpired;
     }
 
     @Override
     public boolean isPasswordAboutToExpire(String userName) {
-        LOGGER.info("isPasswordAboutToExpire() - (ENTER)");
+        LOGGER.debug("isPasswordAboutToExpire() - (ENTER)");
 
         boolean passwordAboutToExpire = false;
 
@@ -107,13 +106,13 @@ public class AuthenticationServiceBean implements AuthenticationService {
             }
         }
 
-        LOGGER.info("isPasswordAboutToExpire() - (LEAVE)");
+        LOGGER.debug("isPasswordAboutToExpire() - (LEAVE)");
         return passwordAboutToExpire;
     }
 
     @Override
     public AuthenticationResponse authenticateUser(AuthenticationRequest request) {
-        LOGGER.info("authenticateUser(" + request + ") - (ENTER)");
+        LOGGER.debug("authenticateUser(" + request + ") - (ENTER)");
         validator.assertValid(request);
 
         AuthenticationResponse authenticationResponse;
@@ -125,7 +124,7 @@ public class AuthenticationServiceBean implements AuthenticationService {
 
         if (!authenticationResponse.isAuthenticated()) {
             handleLoginFailure(request.getUserName());
-            LOGGER.info("authenticateUser() - (LEAVE): " + authenticationResponse);
+            LOGGER.debug("authenticateUser() - (LEAVE): " + authenticationResponse);
             return authenticationResponse;
         }
 
@@ -146,13 +145,13 @@ public class AuthenticationServiceBean implements AuthenticationService {
                 }
             }
         }
-        LOGGER.info("authenticateUser() - (LEAVE): " + authenticationResponse);
+        LOGGER.debug("authenticateUser() - (LEAVE): " + authenticationResponse);
         return authenticationResponse;
     }
 
     @Override
     public ChallengeResponse getUserChallenge(AuthenticationQuery query) {
-        LOGGER.info("getUserChallenge(" + query + ") - (ENTER)");
+        LOGGER.debug("getUserChallenge(" + query + ") - (ENTER)");
 
         validator.assertValid(query);
 
@@ -169,13 +168,13 @@ public class AuthenticationServiceBean implements AuthenticationService {
             throw new RuntimeException("Problem: " + e.getMessage(), e);
         }
 
-        LOGGER.info("getUserChallenge() - (LEAVE): " + challengeResponse);
+        LOGGER.debug("getUserChallenge() - (LEAVE): " + challengeResponse);
         return challengeResponse;
     }
 
     @Override
     public AuthenticationResponse authenticateUser(ChallengeResponse request) {
-        LOGGER.info("authenticateUser(" + request + ") - (ENTER)");
+        LOGGER.debug("authenticateUser(" + request + ") - (ENTER)");
         validator.assertValid(request);
 
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
@@ -193,7 +192,7 @@ public class AuthenticationServiceBean implements AuthenticationService {
             authenticationResponse.setStatusCode(AuthenticationResponse.INTERNAL_ERROR);
         }
 
-        LOGGER.info("authenticateUser(" + request.getUserName() + ") - (LEAVE): " + authenticationResponse);
+        LOGGER.debug("authenticateUser(" + request.getUserName() + ") - (LEAVE): " + authenticationResponse);
         return authenticationResponse;
     }
 
@@ -321,7 +320,7 @@ public class AuthenticationServiceBean implements AuthenticationService {
             LOGGER.debug("No handle sync with LDAP need");
         }
 
-        LOGGER.info("handleLoginSuccess() - (LEAVE)");
+        LOGGER.debug("handleLoginSuccess() - (LEAVE)");
         return passwordExpiryDate;
     }
 
@@ -368,6 +367,6 @@ public class AuthenticationServiceBean implements AuthenticationService {
             }
         }
 
-        LOGGER.info("handleLoginFailure() - (LEAVE)");
+        LOGGER.debug("handleLoginFailure() - (LEAVE)");
     }
 }
