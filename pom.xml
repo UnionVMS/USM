@@ -14,6 +14,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
+		<cas.client.core>3.6.1</cas.client.core>
 		<docker.dev.version>3.40.20.w18</docker.dev.version>
 		<uvms.pom.version>3.0</uvms.pom.version>
 	</properties>

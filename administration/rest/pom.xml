@@ -276,7 +276,7 @@
 				<dependency>
 					<groupId>org.jasig.cas.client</groupId>
 					<artifactId>cas-client-core</artifactId>
-					<version>3.5.1</version>
+					<version>${cas.client.core}</version>
 					<exclusions>
 						<exclusion>
 							<groupId>javax.servlet</groupId>
@@ -365,7 +365,7 @@
 		<dependency>
 			<groupId>org.jasig.cas.client</groupId>
 			<artifactId>cas-client-core</artifactId>
-			<version>3.5.1</version>
+			<version>${cas.client.core}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.servlet</groupId>
