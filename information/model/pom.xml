@@ -10,12 +10,20 @@
 	<artifactId>Information-Model</artifactId>
 	<packaging>jar</packaging>
 
+	<dependencies>
+		<dependency>
+			<groupId>fish.focus.uvms.maven</groupId>
+			<artifactId>uvms-pom-java11-deps</artifactId>
+			<type>pom</type>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-xjc-plugin</artifactId>
-				<version>2.3.0</version>
+				<version>3.3.1</version>
 				<configuration>
 					<extensions>
 						<extension>org.apache.cxf.xjcplugins:cxf-xjc-dv:2.3.0</extension>
