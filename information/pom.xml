@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>eu.europa.ec.mare.usm</groupId>
-		<version>2.1.12-SWE-SNAPSHOT</version>
+		<version>2.1.12-SWE</version>
 		<artifactId>backend-modules</artifactId>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>Information-Module</artifactId>
-	<version>2.1.12-SWE-SNAPSHOT</version>
+	<version>2.1.12-SWE</version>
 	<packaging>pom</packaging>
 	<name>USM Information Module</name>
 
@@ -24,12 +24,12 @@
 			<dependency>
 				<groupId>eu.europa.ec.mare.usm</groupId>
 				<artifactId>Information-Model</artifactId>
-				<version>2.1.12-SWE-SNAPSHOT</version>
+				<version>2.1.12-SWE</version>
 			</dependency>
 			<dependency>
 				<groupId>eu.europa.ec.mare.usm</groupId>
 				<artifactId>Information-Service</artifactId>
-				<version>2.1.12-SWE-SNAPSHOT</version>
+				<version>2.1.12-SWE</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
