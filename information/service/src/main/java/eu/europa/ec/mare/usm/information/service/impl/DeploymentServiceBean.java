@@ -179,7 +179,7 @@ public class DeploymentServiceBean implements DeploymentService {
                                                  Application src) {
         ApplicationEntity ret = new ApplicationEntity();
 
-        if(src.getRetainDatasets() == null || !src.getRetainDatasets()){
+        if(src.isRetainDatasets() == null || !src.isRetainDatasets()){
         	if (entity.getDatasetList() != null) {
                 ret.setDatasetList(new ArrayList<DatasetEntity>());
                 Iterator<DatasetEntity> i = entity.getDatasetList().iterator();

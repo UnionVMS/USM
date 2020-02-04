@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>eu.europa.ec.mare.usm</groupId>
 		<artifactId>Information-Module</artifactId>
-		<version>2.1.12-SNAPSHOT</version>
+		<version>2.1.12-SWE-SNAPSHOT</version>
 	</parent>
 	<artifactId>Information-http-Rest-Service</artifactId>
 	<packaging>war</packaging>
@@ -199,7 +199,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.mare.usm</groupId>
 			<artifactId>Information-Rest-Service</artifactId>
-			<version>2.1.12-SNAPSHOT</version>
+			<version>2.1.12-SWE-SNAPSHOT</version>
 			<type>war</type>
 		</dependency>
 	</dependencies>

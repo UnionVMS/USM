@@ -5,10 +5,25 @@
 	<parent>
 		<groupId>eu.europa.ec.mare.usm</groupId>
 		<artifactId>Information-Module</artifactId>
-		<version>2.1.12-SNAPSHOT</version>
+		<version>2.1.12-SWE-SNAPSHOT</version>
 	</parent>
 	<artifactId>Information-Model</artifactId>
 	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
