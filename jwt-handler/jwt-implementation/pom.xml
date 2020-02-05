@@ -15,7 +15,7 @@
 	<properties>
 		<docker.dev.start.phase>test-compile</docker.dev.start.phase>
 		<docker.dev.prestop.phase>validate</docker.dev.prestop.phase>
-		<jjwt.version>0.10.7</jjwt.version>
+		<jjwt.version>0.10.8</jjwt.version>
 	</properties>
 
 	<dependencies>
