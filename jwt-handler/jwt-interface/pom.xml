@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>eu.europa.ec.mare.usm</groupId>
 		<artifactId>jwt-handler</artifactId>
-		<version>2.1.13-SWE-SNAPSHOT</version>
+		<version>2.1.13-SWE</version>
 	</parent>
 	
 	<artifactId>jwt-handler-api</artifactId>
