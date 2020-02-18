@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>eu.europa.ec.mare.usm</groupId>
-    <artifactId>Authentication-Module</artifactId>
-    <version>2.1.14-SWE-SNAPSHOT</version>
-  </parent>
-  <artifactId>Authentication-Model</artifactId>
-  <packaging>jar</packaging>
+	<parent>
+		<groupId>eu.europa.ec.mare.usm</groupId>
+		<artifactId>Authentication-Module</artifactId>
+		<version>2.2.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>Authentication-Model</artifactId>
+	<packaging>jar</packaging>
 
-  <dependencies>
-    <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-    </dependency>
-  </dependencies>
-
+	<dependencies>
+		<dependency>
+			<groupId>fish.focus.uvms.maven</groupId>
+			<artifactId>uvms-pom-java11-deps</artifactId>
+			<type>pom</type>
+		</dependency>
+	</dependencies>
 </project>

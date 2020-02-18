@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>eu.europa.ec.mare.usm</groupId>
 		<artifactId>jwt-handler</artifactId>
-		<version>2.1.14-SWE-SNAPSHOT</version>
+		<version>2.2.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>jwt-handler-impl</artifactId>
@@ -15,29 +15,30 @@
 	<properties>
 		<docker.dev.start.phase>test-compile</docker.dev.start.phase>
 		<docker.dev.prestop.phase>validate</docker.dev.prestop.phase>
+		<jjwt.version>0.10.8</jjwt.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>eu.europa.ec.mare.usm</groupId>
 			<artifactId>jwt-handler-api</artifactId>
-			<version>2.1.14-SWE-SNAPSHOT</version>
+			<version>2.2.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
-			<version>0.10.7</version>
+			<version>${jjwt.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
-			<version>0.10.7</version>
+			<version>${jjwt.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
-			<version>0.10.7</version>
+			<version>${jjwt.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
