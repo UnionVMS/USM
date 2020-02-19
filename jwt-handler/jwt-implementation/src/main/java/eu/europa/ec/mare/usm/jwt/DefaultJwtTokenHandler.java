@@ -34,12 +34,12 @@ import io.jsonwebtoken.security.SecurityException;
 public class DefaultJwtTokenHandler implements JwtTokenHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenHandler.class);
     private static final String PROPERTIES_FILE = "/jwt.properties";
-    private static final String SYSTEM_KEY = "USM.secretKey";
-    private static final String PROP_KEY = "secretKey";
+    private static final String SIGNATURE_KEY_PROPERTY_NAME = "secretKey";
     private static final String PROP_SUBJECT = "subject";
     private static final String PROP_ISSUER = "issuer";
     private static final String PROP_ID = "id";
-    private static final long DEFAULT_TTL = (8 * 60 * 60 * 1000);
+    private static final long DEFAULT_TTL = 8 * 60 * 60 * 1000;
+    private static final String TTL_PROPERTY_NAME = "timeToLiveInMinutes";
     private static final String DEFAULT_KEY = "usmSecretKey";
     private static final String DEFAULT_ID = "usm/authentication";
     private static final String DEFAULT_ISSUER = "usm";
@@ -123,13 +123,31 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
 
             long now = System.currentTimeMillis();
             claims.setIssuedAt(new Date(now));
-            claims.setExpiration(new Date(now + DEFAULT_TTL));
+            claims.setExpiration(new Date(now + getTtlInMilliseconds()));
 
             ret = signClaims(claims);
         }
 
         LOGGER.debug("extendToken() - (LEAVE)");
         return ret;
+    }
+
+    private long getTtlInMilliseconds() {
+        String configValue = getConfigValue(TTL_PROPERTY_NAME);
+        if (configValue != null && !configValue.isEmpty()) {
+            try {
+                long ttlInMinutes = Long.parseLong(configValue);
+                long ttlInMilliseconds = ttlInMinutes * 60 * 1000;
+                if (ttlInMilliseconds > 0) {
+                    return ttlInMilliseconds;
+                }
+                LOGGER.warn("Configured TTL value is not positive: {}", ttlInMinutes);
+            } catch (NumberFormatException e) {
+                LOGGER.warn("Failed to parse TTL config value to number: {}", configValue);
+            }
+        }
+
+        return DEFAULT_TTL;
     }
 
     /**
@@ -204,32 +222,16 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
     }
 
     private void initKey() {
-        // get the key from properties if set
-        String key = System.getProperty(SYSTEM_KEY);
-
-        if (key == null || key.isEmpty()) {
-            LOGGER.debug("no key defined in system property {}. Checking in properties file", SYSTEM_KEY);
-            key = properties.getProperty(PROP_KEY);
-            if (key == null || key.isEmpty()) {
-                LOGGER.debug("no key defined in property. Checking in JNDI context");
-                // let's look if a key exist in JNDI
-                String jndikey = "USM/" + PROP_KEY;
-                try {
-                    key = JndiUtil.lookup(jndikey).toString();
-                    LOGGER.debug("Found Key bound to JNDI name {} with value {}", jndikey, key);
-                } catch (Exception e) {
-                    LOGGER.debug("No secret key bound to JNDI name {}", jndikey);
-                }
-                if (key == null || key.isEmpty()) {
-                    LOGGER.debug("no key in JNDI context. Generating a random one");
-                    key = generateAndBindKey(jndikey);
-                }
-            }
+        String base64signatureKey = getConfigValue(SIGNATURE_KEY_PROPERTY_NAME);
+        if (base64signatureKey == null || base64signatureKey.isEmpty()) {
+            LOGGER.debug("No secret JWT signature key found. Generating a random one");
+            base64signatureKey = generateAndBindKey("USM/" + SIGNATURE_KEY_PROPERTY_NAME);
         }
-        LOGGER.debug("Secret Key set to: {}", key);
 
-        secretKey = Base64.getDecoder().decode(key);
-        LOGGER.debug("parsed Base64 key: {}", secretKey);
+        LOGGER.debug("Secret JWT signature key set to: {}", base64signatureKey);
+
+        secretKey = Base64.getDecoder().decode(base64signatureKey);
+        LOGGER.debug("Parsed Base64 JWT signature key: {}", secretKey);
     }
 
     private String generateAndBindKey(String jndikey) {
@@ -251,15 +253,15 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
 
     private void removeKey() {
         // get the key from properties if set
-        String key = properties.getProperty(PROP_KEY);
-        String jndikey = "USM/" + PROP_KEY;
+        String key = properties.getProperty(SIGNATURE_KEY_PROPERTY_NAME);
+        String jndikey = "USM/" + SIGNATURE_KEY_PROPERTY_NAME;
         // let's look if a key exist in JNDI
         try {
             key = (String) JndiUtil.lookup(jndikey);
-            LOGGER.debug("Key bound to JNDI name {}", PROP_KEY);
+            LOGGER.debug("Key bound to JNDI name {}", SIGNATURE_KEY_PROPERTY_NAME);
             try {
                 JndiUtil.unbind(jndikey);
-                LOGGER.debug("Unbound JNDI name {}", PROP_KEY);
+                LOGGER.debug("Unbound JNDI name {}", SIGNATURE_KEY_PROPERTY_NAME);
             } catch (Exception e) {
                 LOGGER.error("Error unbinding key", e);
             }
@@ -269,6 +271,35 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
         }
 
         secretKey = null;
+    }
+
+    private String getConfigValue(String key) {
+        // get the value from properties if set
+        String value = System.getProperty("USM." + key);
+
+        if (value != null && !value.isEmpty()) {
+            LOGGER.debug("{} found in system properties.", key);
+            return value;
+        }
+        LOGGER.debug("{} not found in system properties. Checking in properties file.", key);
+
+        value = properties.getProperty(key);
+        if (value != null && !value.isEmpty()) {
+            LOGGER.debug("{} found in JWT properties file.", key);
+            return value;
+        }
+        LOGGER.debug("{} not found in JWT properties file. Checking in JNDI context.", key);
+
+        String jndikey = "USM/" + key;
+        Object lookup = JndiUtil.lookup(jndikey);
+        if (lookup != null && !lookup.toString().isEmpty()) {
+            value = lookup.toString();
+            LOGGER.debug("Found JNDI entry {} with value {}", jndikey, value);
+        } else {
+            LOGGER.debug("No JNDI entry {} found", jndikey);
+        }
+
+        return value;
     }
 
     private byte[] getSecretKey() {

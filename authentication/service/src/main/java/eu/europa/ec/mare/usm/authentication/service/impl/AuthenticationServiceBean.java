@@ -1,22 +1,12 @@
 package eu.europa.ec.mare.usm.authentication.service.impl;
 
-import eu.europa.ec.mare.usm.policy.service.impl.PolicyProvider;
-import eu.europa.ec.mare.usm.service.impl.RequestValidator;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationQuery;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationRequest;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
 import eu.europa.ec.mare.usm.authentication.domain.ChallengeResponse;
 import eu.europa.ec.mare.usm.authentication.service.AuthenticationService;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
-import java.text.SimpleDateFormat;
-
+import eu.europa.ec.mare.usm.policy.service.impl.PolicyProvider;
+import eu.europa.ec.mare.usm.service.impl.RequestValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,344 +14,359 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
 
-/**
- * Stateless Session Bean implementation of the AuthenticationService.
- */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class AuthenticationServiceBean implements AuthenticationService {
-  private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceBean.class);
-  private static final String AUTHENTICATION_SUBJECT = "Authentication";
-  private static final String RENEWAL_REMINDER = "password.renewalReminder";
-  private static final String LOCKOUT_DURATION = "account.lockoutDuration";
-  private static final String LOCKOUT_FRESHOLD = "account.lockoutFreshold";
-  private static final String LDAP_ENABLED = "ldap.enabled";
-  private static final long ONE_MINUTE = (1000L * 60L);
-  private static final long ONE_DAY = (1000L * 60 * 60 * 24);
-  private static final String LOCKED = "L";
-  private static final String DISABLED = "D";
-  private static final String ENABLED = "E";
 
-  @EJB
-  private AuthenticationDao dao;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceBean.class);
 
-  @EJB
-  private PolicyProvider policyProvider;
+    private static final String AUTHENTICATION_SUBJECT = "Authentication";
+    private static final String RENEWAL_REMINDER = "password.renewalReminder";
+    private static final String LOCKOUT_DURATION = "account.lockoutDuration";
+    private static final String LOCKOUT_FRESHOLD = "account.lockoutFreshold";
+    private static final String LDAP_ENABLED = "ldap.enabled";
+    private static final long ONE_MINUTE = (1000L * 60L);
+    private static final long ONE_DAY = (1000L * 60 * 60 * 24);
+    private static final String LOCKED = "L";
+    private static final String DISABLED = "D";
+    private static final String ENABLED = "E";
 
-  @Inject
-  private RequestValidator validator;
-  
-  
-  @Override
-  public boolean isLDAPEnabled() 
-  {
-    LOGGER.info("isLDAPEnabled() - (ENTER)");
-  
-    Properties props = policyProvider.getProperties(AUTHENTICATION_SUBJECT);
-    
-    boolean ret = Boolean.parseBoolean(props.getProperty(LDAP_ENABLED, "false"));
+    @EJB
+    private AuthenticationDao dao;
 
-    LOGGER.info("isLDAPEnabled() - (LEAVE): " + ret);
-    return ret;
-  }
+    @EJB
+    private PolicyProvider policyProvider;
 
-  @Override
-  public boolean isPasswordExpired(String userName)
-  {
-	LOGGER.info("isPasswordExpired() - (ENTER)");
-    
-	boolean ret = false;
-	
-    dao.recordLoginSuccess(userName);
-    
-	Date now = new Date();
-	Date expiry = dao.getPasswordExpiry(userName);
-	if (expiry != null) {
-		String newstring = new SimpleDateFormat("yyyy-MM-dd").format(expiry);
-		if (expiry.before(now)) {
-			//ret.setStatusCode(AuthenticationResponse.PASSWORD_EXPIRED);
-			ret = true;
-		} 		
-	}
-    
-    LOGGER.info("isPasswordExpired() - (LEAVE)");
-    return ret;	  
-  }
-  
-  @Override
-  public boolean isPasswordAboutToExpire(String userName)
-  {
-	LOGGER.info("isPasswordAboutToExpire() - (ENTER)");
-    
-	boolean ret = false;
-	
-    dao.recordLoginSuccess(userName);
-    
-	Date now = new Date();
-	Date expiry = dao.getPasswordExpiry(userName);
-	if (expiry != null) {
-		String newstring = new SimpleDateFormat("yyyy-MM-dd").format(expiry);
-	    Properties props = policyProvider.getProperties(AUTHENTICATION_SUBJECT);
-	    int days = policyProvider.getIntProperty(props, RENEWAL_REMINDER, 0);							  
-	    if (days != 0) {
-          Date reminder = new Date(expiry.getTime() - (days * ONE_DAY));		
-		  if (reminder.before(now)) {
-		    //ret.setStatusCode(AuthenticationResponse.MUST_CHANGE_PASSWORD);
-		    ret = true;
-		  }
-	    }			
-	}
-    
-    LOGGER.info("isPasswordAboutToExpire() - (LEAVE)");
-    return ret;	  
-  }
-  
-  @Override
-  public AuthenticationResponse authenticateUser(AuthenticationRequest request) 
-  {
-    LOGGER.info("authenticateUser(" + request + ") - (ENTER)");
-	//System.out.format("authenticate: %s - %s\n", request.getUserName(), request.getPassword());		
-    validator.assertValid(request);
+    @Inject
+    private RequestValidator validator;
 
-    AuthenticationResponse ret;
-    if (isLDAPEnabled()) {
-	  //System.out.format("authenticate via LDAP\n");		
-      ret = authenticateLdap(request);
-    } else {
-	  //System.out.format("authenticate via local\n");		
-      ret = authenticateLocal(request);
+    @Inject
+    @CreateLdapUser
+    private Event<CreateLdapUserEvent> ldapUserEventEvent;
+
+    @Override
+    public boolean isLDAPEnabled() {
+        LOGGER.debug("isLDAPEnabled() - (ENTER)");
+
+        Properties props = policyProvider.getProperties(AUTHENTICATION_SUBJECT);
+        boolean ldapEnabled = Boolean.parseBoolean(props.getProperty(LDAP_ENABLED, "false"));
+
+        LOGGER.debug("isLDAPEnabled() - (LEAVE): " + ldapEnabled);
+        return ldapEnabled;
     }
-    if (ret.isAuthenticated()) {
-	  //System.out.format("isAuthenticated\n");		
-      Date now = new Date();
-      Date expiry = handleLoginSuccess(ret.getUserMap(), request.getUserName());
-      if (expiry != null) {
-		String newstring = new SimpleDateFormat("yyyy-MM-dd").format(expiry);	  
-        if (expiry.before(now)) {
-          ret.setStatusCode(AuthenticationResponse.PASSWORD_EXPIRED);
-        } else {
-          Properties props = policyProvider.getProperties(AUTHENTICATION_SUBJECT);
-          int days = policyProvider.getIntProperty(props, RENEWAL_REMINDER, 0);
-          if (days != 0) {
-            Date reminder = new Date(expiry.getTime() - (days * ONE_DAY));		
-            if (reminder.before(now)) {
-			  //System.out.format("MUST CHANGE PASSWORD\n");						
-              ret.setStatusCode(AuthenticationResponse.MUST_CHANGE_PASSWORD);
+
+    @Override
+    public boolean isPasswordExpired(String userName) {
+        LOGGER.debug("isPasswordExpired() - (ENTER)");
+
+        boolean passwordExpired = false;
+
+        dao.recordLoginSuccess(userName);
+
+        Date now = new Date();
+        Date expiry = dao.getPasswordExpiry(userName);
+        if (expiry != null) {
+            if (expiry.before(now)) {
+                passwordExpired = true;
             }
-          }
         }
-      }
-    } else {
-      handleLoginFailure(request.getUserName());
-    }
-    LOGGER.info("authenticateUser() - (LEAVE): " + ret);
-    return ret;
-  }
 
-  @Override
-  public ChallengeResponse getUserChallenge(AuthenticationQuery query) 
-  {
-    LOGGER.info("getUserChallenge(" + query + ") - (ENTER)");
-
-    validator.assertValid(query);
-
-    ChallengeResponse ret = null;
-    try {
-      List<ChallengeResponse> lst = dao.getUserChallenges(query.getUserName());
-
-      if (lst != null && !lst.isEmpty()) {
-        Random randomGenerator = new Random();
-        int index = randomGenerator.nextInt(lst.size());
-        ret = lst.get(index);
-      }
-    } catch (Exception exc) {
-      throw new RuntimeException("Problem: " + exc.getMessage(), exc);
+        LOGGER.debug("isPasswordExpired() - (LEAVE)");
+        return passwordExpired;
     }
 
-    LOGGER.info("getUserChallenge() - (LEAVE): " + ret);
-    return ret;
-  }
+    @Override
+    public boolean isPasswordAboutToExpire(String userName) {
+        LOGGER.debug("isPasswordAboutToExpire() - (ENTER)");
 
-  @Override
-  public AuthenticationResponse authenticateUser(ChallengeResponse request) 
-  {
-    LOGGER.info("authenticateUser(" + request + ") - (ENTER)");
-    validator.assertValid(request);
+        boolean passwordAboutToExpire = false;
 
-    AuthenticationResponse ret = new AuthenticationResponse();
-    try {
-      Long uid = dao.getActiveUserId(request);
+        dao.recordLoginSuccess(userName);
 
-      ret.setAuthenticated(uid != null);
-      if (ret.isAuthenticated()) {
-        ret.setStatusCode(AuthenticationResponse.SUCCESS);
-      } else {
-        ret.setStatusCode(AuthenticationResponse.INVALID_CREDENTIALS);
-      }
-    } catch (Exception exc) {
-      LOGGER.error("Problem: " + exc.getMessage(), exc);
-      ret.setStatusCode(AuthenticationResponse.INTERNAL_ERROR);
+        Date now = new Date();
+        Date expiry = dao.getPasswordExpiry(userName);
+        if (expiry != null) {
+            Properties props = policyProvider.getProperties(AUTHENTICATION_SUBJECT);
+            int days = policyProvider.getIntProperty(props, RENEWAL_REMINDER, 0);
+            if (days != 0) {
+                Date reminder = new Date(expiry.getTime() - (days * ONE_DAY));
+                if (reminder.before(now)) {
+                    passwordAboutToExpire = true;
+                }
+            }
+        }
+
+        LOGGER.debug("isPasswordAboutToExpire() - (LEAVE)");
+        return passwordAboutToExpire;
     }
 
-    LOGGER.info("authenticateUser(" + request.getUserName() + ") - (LEAVE): " + ret);
-    return ret;
-  }
+    @Override
+    public AuthenticationResponse authenticateUser(AuthenticationRequest request) {
+        LOGGER.debug("authenticateUser(" + request + ") - (ENTER)");
+        validator.assertValid(request);
 
-  private AuthenticationResponse authenticateLocal(AuthenticationRequest request) 
-  {
-    LOGGER.debug("authenticateLocal(" + request + ") - (ENTER)");
-    AuthenticationResponse ret = createResponse();
-    
-    try {
-      String password = hashPassword(request.getPassword());
-      Long uid = dao.getActiveUserId(request.getUserName(), password);
-	  String lockoutReason = dao.getLockoutReason(request.getUserName());
-      if (uid != null) {
-        ret.setAuthenticated(true);
-        ret.setStatusCode(AuthenticationResponse.SUCCESS);
-      } else {
-        String status = dao.getUserStatus(request.getUserName());
-        if (ENABLED.equals(status)) {
-          // Invalid password
-          ret.setStatusCode(AuthenticationResponse.INVALID_CREDENTIALS);
-        } else if (status == null) {
-          // Invalid userName
-          ret.setStatusCode(AuthenticationResponse.INVALID_CREDENTIALS);
-        } else if (DISABLED.equals(status)) {
-          ret.setStatusCode(AuthenticationResponse.ACCOUNT_DISABLED);
-        } else if (LOCKED.equals(status)) {
-          ret.setStatusCode(AuthenticationResponse.ACCOUNT_LOCKED);
-		  ret.setErrorDescription(lockoutReason);
+        AuthenticationResponse authenticationResponse;
+        if (isLDAPEnabled()) {
+            authenticationResponse = authenticateLdap(request);
         } else {
-          ret.setStatusCode(AuthenticationResponse.OTHER);
+            authenticationResponse = authenticateLocal(request);
         }
-      }
-    } catch (Exception exc) {
-      LOGGER.error("Problem: " + exc.getMessage(), exc);
-      ret.setStatusCode(AuthenticationResponse.INTERNAL_ERROR);
+
+        if (!authenticationResponse.isAuthenticated()) {
+            handleLoginFailure(request.getUserName());
+            LOGGER.debug("authenticateUser() - (LEAVE): " + authenticationResponse);
+            return authenticationResponse;
+        }
+
+        Date now = new Date();
+        Date passwordExpiryDate = handleLoginSuccess(authenticationResponse.getUserMap(), request.getUserName());
+
+        if (passwordExpiryDate != null) {
+            if (passwordExpiryDate.before(now)) {
+                authenticationResponse.setStatusCode(AuthenticationResponse.PASSWORD_EXPIRED);
+            } else {
+                Properties properties = policyProvider.getProperties(AUTHENTICATION_SUBJECT);
+                int days = policyProvider.getIntProperty(properties, RENEWAL_REMINDER, 0);
+                if (days != 0) {
+                    Date reminder = new Date(passwordExpiryDate.getTime() - (days * ONE_DAY));
+                    if (reminder.before(now)) {
+                        authenticationResponse.setStatusCode(AuthenticationResponse.MUST_CHANGE_PASSWORD);
+                    }
+                }
+            }
+        }
+        LOGGER.debug("authenticateUser() - (LEAVE): " + authenticationResponse);
+        return authenticationResponse;
     }
-    
-    LOGGER.debug("authenticateLocal() - (LEAVE): " + ret);
-    return ret;
-  }
 
-  private AuthenticationResponse authenticateLdap(AuthenticationRequest request) 
-  {
-    LOGGER.debug("authenticateLdap(" + request + ") - (ENTER)");
-    AuthenticationResponse ret = createResponse();
+    @Override
+    public ChallengeResponse getUserChallenge(AuthenticationQuery query) {
+        LOGGER.debug("getUserChallenge(" + query + ") - (ENTER)");
 
-    LDAP ldap = new LDAP(policyProvider.getProperties(AUTHENTICATION_SUBJECT));
-    Map<String, Object> userMap = ldap.authenticate(request.getUserName(),
-            request.getPassword());
-    LOGGER.debug("ldap.authenticate: " + userMap);
-    
-    if (userMap != null) {
-      if (userMap.get(LDAP.STATUS_CODE) == null) {
-        String status = dao.getUserStatus(request.getUserName());
+        validator.assertValid(query);
+
+        ChallengeResponse challengeResponse = null;
+        try {
+            List<ChallengeResponse> userChallenges = dao.getUserChallenges(query.getUserName());
+
+            if (userChallenges != null && !userChallenges.isEmpty()) {
+                Random randomGenerator = new Random();
+                int index = randomGenerator.nextInt(userChallenges.size());
+                challengeResponse = userChallenges.get(index);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Problem: " + e.getMessage(), e);
+        }
+
+        LOGGER.debug("getUserChallenge() - (LEAVE): " + challengeResponse);
+        return challengeResponse;
+    }
+
+    @Override
+    public AuthenticationResponse authenticateUser(ChallengeResponse request) {
+        LOGGER.debug("authenticateUser(" + request + ") - (ENTER)");
+        validator.assertValid(request);
+
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+        try {
+            Long uid = dao.getActiveUserId(request);
+
+            authenticationResponse.setAuthenticated(uid != null);
+            if (authenticationResponse.isAuthenticated()) {
+                authenticationResponse.setStatusCode(AuthenticationResponse.SUCCESS);
+            } else {
+                authenticationResponse.setStatusCode(AuthenticationResponse.INVALID_CREDENTIALS);
+            }
+        } catch (Exception e) {
+            LOGGER.error("Problem: " + e.getMessage(), e);
+            authenticationResponse.setStatusCode(AuthenticationResponse.INTERNAL_ERROR);
+        }
+
+        LOGGER.debug("authenticateUser(" + request.getUserName() + ") - (LEAVE): " + authenticationResponse);
+        return authenticationResponse;
+    }
+
+    private AuthenticationResponse authenticateLocal(AuthenticationRequest request) {
+        LOGGER.debug("authenticateLocal(" + request + ") - (ENTER)");
+        AuthenticationResponse authenticationResponse = createResponse();
+
+        try {
+            String password = hashPassword(request.getPassword());
+            Long uid = dao.getActiveUserId(request.getUserName(), password);
+            String lockoutReason = dao.getLockoutReason(request.getUserName());
+            if (uid != null) {
+                authenticationResponse.setAuthenticated(true);
+                authenticationResponse.setStatusCode(AuthenticationResponse.SUCCESS);
+            } else {
+                String status = dao.getUserStatus(request.getUserName());
+                if (ENABLED.equals(status)) {
+                    // Invalid password
+                    authenticationResponse.setStatusCode(AuthenticationResponse.INVALID_CREDENTIALS);
+                } else if (status == null) {
+                    // Invalid userName
+                    authenticationResponse.setStatusCode(AuthenticationResponse.INVALID_CREDENTIALS);
+                } else if (DISABLED.equals(status)) {
+                    authenticationResponse.setStatusCode(AuthenticationResponse.ACCOUNT_DISABLED);
+                } else if (LOCKED.equals(status)) {
+                    authenticationResponse.setStatusCode(AuthenticationResponse.ACCOUNT_LOCKED);
+                    authenticationResponse.setErrorDescription(lockoutReason);
+                } else {
+                    authenticationResponse.setStatusCode(AuthenticationResponse.OTHER);
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Problem: " + e.getMessage(), e);
+            authenticationResponse.setStatusCode(AuthenticationResponse.INTERNAL_ERROR);
+        }
+
+        LOGGER.debug("authenticateLocal() - (LEAVE): " + authenticationResponse);
+        return authenticationResponse;
+    }
+
+    private AuthenticationResponse authenticateLdap(AuthenticationRequest request) {
+        LOGGER.debug("authenticateLdap(" + request + ") - (ENTER)");
+        AuthenticationResponse authenticationResponse = createResponse();
+        String username = request.getUserName();
+
+        LDAP ldap = new LDAP(policyProvider.getProperties(AUTHENTICATION_SUBJECT));
+        Map<String, Object> userMap = ldap.authenticate(username, request.getPassword());
+        LOGGER.debug("ldap.authenticate: " + userMap);
+
+        if (userMap == null) {
+            LOGGER.debug("authenticateLdap() - (LEAVE): " + authenticationResponse);
+            return authenticationResponse;
+        }
+
+        if (hasLdapError(userMap)) {
+            authenticationResponse.setStatusCode(((Integer) userMap.get(LDAP.STATUS_CODE)));
+            LOGGER.debug("authenticateLdap() - (LEAVE): " + authenticationResponse);
+            return authenticationResponse;
+        }
+
+        if (userDoesNotExistInDatabase(username)) {
+            createUserInDatabaseFromLdap(username);
+        }
+
+        if (personDoesNotExistInDatabase(username)) {
+            createPersonInDatabaseFromLdap(username, userMap);
+        }
+
+        String status = dao.getUserStatus(username);
         if (ENABLED.equals(status)) {
-          ret.setAuthenticated(true);
-          ret.setStatusCode(AuthenticationResponse.SUCCESS);
+            authenticationResponse.setAuthenticated(true);
+            authenticationResponse.setUserMap(userMap);
+            authenticationResponse.setStatusCode(AuthenticationResponse.SUCCESS);
         } else if (DISABLED.equals(status)) {
-          ret.setStatusCode(AuthenticationResponse.ACCOUNT_DISABLED);
+            authenticationResponse.setStatusCode(AuthenticationResponse.ACCOUNT_DISABLED);
         } else if (LOCKED.equals(status)) {
-          ret.setStatusCode(AuthenticationResponse.ACCOUNT_LOCKED);
+            authenticationResponse.setStatusCode(AuthenticationResponse.ACCOUNT_LOCKED);
         } else {
-          ret.setStatusCode(AuthenticationResponse.OTHER);
+            authenticationResponse.setStatusCode(AuthenticationResponse.OTHER);
         }
-      } else {
-        ret.setStatusCode(((Integer) userMap.get(LDAP.STATUS_CODE)));
-      }
-    }
-    
-    if (ret.isAuthenticated())	{
-    	ret.setUserMap(userMap);
+
+        LOGGER.debug("authenticateLdap() - (LEAVE): " + authenticationResponse);
+        return authenticationResponse;
     }
 
-    LOGGER.debug("authenticateLdap() - (LEAVE): " + ret);
-    return ret;
-  }
-
-  private AuthenticationResponse createResponse() 
-  {
-    AuthenticationResponse ret = new AuthenticationResponse();
-    
-    ret.setAuthenticated(false);
-    ret.setStatusCode(AuthenticationResponse.INVALID_CREDENTIALS);
-    
-    return ret;
-  }
-
-  private String hashPassword(String password)
-  throws NoSuchAlgorithmException 
-  {
-    String ret = null;
-
-    if (password != null) {
-      MessageDigest md = MessageDigest.getInstance("MD5");
-      md.update(password.getBytes());
-
-      byte[] digest = md.digest();
-
-      StringBuilder sb = new StringBuilder();
-      for (int i = 0; i < digest.length; i++) {
-        sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
-      }
-      ret = sb.toString();
+    private boolean hasLdapError(Map<String, Object> userMap) {
+        return userMap.get(LDAP.STATUS_CODE) != null;
     }
 
-    return ret;
-  }
+    private AuthenticationResponse createResponse() {
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+        authenticationResponse.setAuthenticated(false);
+        authenticationResponse.setStatusCode(AuthenticationResponse.INVALID_CREDENTIALS);
+        return authenticationResponse;
+    }
 
-  private Date handleLoginSuccess(Map<String, Object> userMap, String userName)
-  {
-    LOGGER.debug("handleLoginSuccess(" + userName + ") - (ENTER)");
-    
-    dao.recordLoginSuccess(userName);
-    
-    Date ret = dao.getPasswordExpiry(userName);
-    
-    if (isLDAPEnabled() && userMap != null && !userMap.isEmpty()) {
-    	handleSyncWithLDAP(userMap, userName);
-    } else {
-    	LOGGER.debug("No handle sync with LDAP need");
+    private String hashPassword(String password) throws NoSuchAlgorithmException {
+        if (password == null) {
+            return null;
+        }
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(password.getBytes());
+
+        byte[] digest = md.digest();
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (byte b : digest) {
+            stringBuilder.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+        }
+
+        return stringBuilder.toString();
     }
-    
-    LOGGER.info("handleLoginSuccess() - (LEAVE)");
-    return ret;
-  }
-  
-  private void handleSyncWithLDAP(Map<String,Object> userMap, String userName) {
-	  int personId = dao.getPersonId(userName);
-	  if (personId == 0) {
-		  dao.createPersonForUser(userMap, userName);
-	  } else {
-		  dao.syncPerson(userMap, personId);
-	  }
-  }
-  
-  private boolean handleLoginFailure(String userName) 
-  {
-    LOGGER.debug("handleLoginFailure(" + userName + ") - (ENTER)");
-    
-    dao.recordLoginFailure(userName);
-    
-    boolean ret = false;
-    
-    Properties props = policyProvider.getProperties(AUTHENTICATION_SUBJECT);
-    int freshold = policyProvider.getIntProperty(props, LOCKOUT_FRESHOLD, 0);
-    int duration =  policyProvider.getIntProperty(props, LOCKOUT_DURATION, 0);
-    if (freshold != 0 && duration != 0) {
-      int failures = dao.getLoginFailures(userName);
-      if (failures >= freshold) {
-        Date lockoutExpiry = new Date (System.currentTimeMillis() + 
-                                       duration * ONE_MINUTE);
-        dao.lockUser(userName, lockoutExpiry);
-      }
+
+    private Date handleLoginSuccess(Map<String, Object> userMap, String userName) {
+        LOGGER.debug("handleLoginSuccess(" + userName + ") - (ENTER)");
+
+        dao.recordLoginSuccess(userName);
+
+        Date passwordExpiryDate = dao.getPasswordExpiry(userName);
+
+        if (isLDAPEnabled() && userMap != null && !userMap.isEmpty()) {
+            handleSyncWithLDAP(userMap, userName);
+        } else {
+            LOGGER.debug("No handle sync with LDAP need");
+        }
+
+        LOGGER.debug("handleLoginSuccess() - (LEAVE)");
+        return passwordExpiryDate;
     }
-    
-    LOGGER.info("handleLoginFailure() - (LEAVE): " + ret);
-    return ret;
-  }
+
+    private void handleSyncWithLDAP(Map<String, Object> userMap, String userName) {
+        int personId = dao.getPersonId(userName);
+        if (personId == 0) {
+            dao.createPersonForUser(userMap, userName);
+        } else {
+            dao.syncPerson(userMap, personId);
+        }
+    }
+
+    private boolean personDoesNotExistInDatabase(String username) {
+        return dao.getPersonId(username) == 0;
+    }
+
+    private void createPersonInDatabaseFromLdap(String username, Map<String, Object> userMap) {
+        dao.createPersonForUser(userMap, username);
+    }
+
+    private boolean userDoesNotExistInDatabase(String username) {
+        return dao.getUserStatus(username) == null;
+    }
+
+    private void createUserInDatabaseFromLdap(String username) {
+        CreateLdapUserEvent createLdapUserEvent = new CreateLdapUserEvent();
+        createLdapUserEvent.username = username;
+        ldapUserEventEvent.fire(createLdapUserEvent);
+    }
+
+    private void handleLoginFailure(String userName) {
+        LOGGER.debug("handleLoginFailure(" + userName + ") - (ENTER)");
+
+        dao.recordLoginFailure(userName);
+
+        Properties props = policyProvider.getProperties(AUTHENTICATION_SUBJECT);
+        int threshold = policyProvider.getIntProperty(props, LOCKOUT_FRESHOLD, 0);
+        int duration = policyProvider.getIntProperty(props, LOCKOUT_DURATION, 0);
+        if (threshold != 0 && duration != 0) {
+            int failures = dao.getLoginFailures(userName);
+            if (failures >= threshold) {
+                Date lockoutExpiry = new Date(System.currentTimeMillis() + duration * ONE_MINUTE);
+                dao.lockUser(userName, lockoutExpiry);
+            }
+        }
+
+        LOGGER.debug("handleLoginFailure() - (LEAVE)");
+    }
 }
