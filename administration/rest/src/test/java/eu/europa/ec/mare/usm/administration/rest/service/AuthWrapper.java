@@ -60,7 +60,7 @@ public class AuthWrapper {
     assertEquals("Unexpected 'statusCode' value", 
                  AuthenticationResponse.SUCCESS, 
                  result.getStatusCode());
-    authToken  = result.getJWToken();
+    authToken  = result.getJwtoken();
     return authToken;
   }
   

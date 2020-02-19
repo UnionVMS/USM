@@ -4,7 +4,7 @@ import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
 
 public class AuthenticationJwtResponse extends AuthenticationResponse {
 
-	private String JWToken;
+	private String jwtoken;
 	private String ip;
 	private String sessionId;
 	
@@ -15,12 +15,12 @@ public class AuthenticationJwtResponse extends AuthenticationResponse {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-	public String getJWToken() {
-		return JWToken;
+	public String getJwtoken() {
+		return jwtoken;
 	}
 
-	public void setJWToken(String jWToken) {
-		JWToken = jWToken;
+	public void setJwtoken(String jwtoken) {
+		this.jwtoken = jwtoken;
 	}
 
 	public String getSessionId() {
@@ -33,7 +33,7 @@ public class AuthenticationJwtResponse extends AuthenticationResponse {
 
 	@Override
 	public String toString() {
-		return "AuthenticationJwtResponse [JWToken=" + JWToken + ", ip=" + ip
+		return "AuthenticationJwtResponse [JWToken=" + jwtoken + ", ip=" + ip
 				+ ", sessionId=" + sessionId + "]";
 	}
 

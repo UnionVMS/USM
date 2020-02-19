@@ -163,7 +163,7 @@ public class UserProfileRestServiceIT extends AuthWrapper {
       fail("User '" + userName +"' failed to authenticate");
     }
     
-    return response.getJWToken();
+    return response.getJwtoken();
   }
 
 }

@@ -111,7 +111,7 @@ public class AuthenticationResource {
 		ret.setErrorDescription(response.getErrorDescription());
         if (response.isAuthenticated()) {
           List<Integer> features = informationService.getUserFeatures(request.getUserName());
-          ret.setJWToken(tokenHandler.createToken(request.getUserName(), features));
+          ret.setJwtoken(tokenHandler.createToken(request.getUserName(), features));
            
           sessionInfo = new SessionInfo();
           sessionInfo.setUserName(request.getUserName());

@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import eu.europa.ec.fisheries.uvms.commons.date.JsonBConfigurator;
 
 /**
  *
@@ -16,8 +16,7 @@ public class ApplicationConfig extends Application {
   public Set<Class<?>> getClasses() 
   {
     Set<Class<?>> resources = new HashSet<>();
-    // following code to customize Jersey 1.x JSON provider:
-    resources.add(JacksonJsonProvider.class);
+    resources.add(JsonBConfigurator.class);
 
     addRestResourceClasses(resources);
     return resources;

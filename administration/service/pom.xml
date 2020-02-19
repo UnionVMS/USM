@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
 			<artifactId>uvms-commons-message</artifactId>
-			<version>4.0.4</version>
+			<version>${uvms.commons.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>commons-logging</groupId>
