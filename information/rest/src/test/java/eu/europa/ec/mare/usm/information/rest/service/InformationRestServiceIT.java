@@ -1,451 +1,404 @@
 package eu.europa.ec.mare.usm.information.rest.service;
 
-import eu.europa.ec.mare.usm.information.domain.ContactDetails;
-import eu.europa.ec.mare.usm.information.domain.Context;
-import eu.europa.ec.mare.usm.information.domain.EndPoint;
-import eu.europa.ec.mare.usm.information.domain.Organisation;
-import eu.europa.ec.mare.usm.information.domain.Preference;
-import eu.europa.ec.mare.usm.information.domain.UserContext;
-import eu.europa.ec.mare.usm.information.domain.UserContextQuery;
-import eu.europa.ec.mare.usm.information.service.InformationService;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Properties;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import org.junit.Before;
+import eu.europa.ec.mare.usm.information.domain.*;
+import org.jboss.arquillian.container.test.api.OperateOnDeployment;
+import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-/**
- * Integration test for the (User) Information REST Service
- */
-public class InformationRestServiceIT {
-  private static final String APP_QUOTA = "Quota";
-  private static final String OPT_USER_LOCALE = "userLocale";
-  private static final String OPT_ROWS_PER_PAGE = "rowsPerPage";
-  private static final String OPT_LEVEL_CODE = "levelCode";
-  private static final String QUOTA_USR_GRC = "quota_usr_grc";
-  private static final String QUOTA_USR_FRA = "quota_usr_fra";
-  private static final String URL = "http://localhost:8080/usm-information/rest/";
-  private InformationRestClient testSubject = null;
-  private final String endPoint;
-  
-  /**
-   * Creates a new instance.
-   * 
-   * @throws IOException in case the test.properties can not be accessed
-   */
-  public InformationRestServiceIT() 
-  throws IOException 
-  {
-    InputStream is = getClass().getResourceAsStream("/test.properties");
-    Properties props = new Properties();
-    props.load(is);
-    endPoint = props.getProperty("rest.endpoint", URL);
-  }
-  
-  @Before
-  public void setUp() 
-  {
-    testSubject = new InformationRestClient(endPoint);
-  }
-  
-  /**
-   * Tests the getUserContext method.
-   */
-  @Test
-  public void testGetUserContext()
-  {
-    // Set-up
-    UserContextQuery query = new UserContextQuery();
-    query.setApplicationName(APP_QUOTA);
-    query.setUserName(QUOTA_USR_FRA);
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
 
-    // Execute
-    UserContext result = testSubject.getUserContext(query);
+import static org.junit.Assert.*;
 
-    // Verify
-    assertNotNull("Unexpected null result", result);
-    assertEquals("Unexpected null result.applicationName",
-                 query.getApplicationName(),  result.getApplicationName());
-    assertEquals("Unexpected null result.userName", 
-                 query.getUserName(),  result.getUserName());
-    assertNotNull("Unexpected null ContextSet", result.getContextSet());
-  }
-  
-  /**
-   * Tests the getUserContext method.
-   */
-  @Test
-  public void testGetUserContextWithPreferences() 
-  {
-    // Set-up
-    UserContextQuery query = new UserContextQuery();
-    query.setApplicationName(APP_QUOTA);
-    query.setUserName(QUOTA_USR_FRA);
+@RunWith(Arquillian.class)
+public class InformationRestServiceIT extends BuildInformationRestDeployment {
 
-    // Execute
-    UserContext result = testSubject.getUserContext(query);
-    
-    // Verify
-    String expectedLevelCodeValue = "FRA";
-    String expectedRowPerPageValue = "10";
-    String expectedRoleName = "MS Quota User";
-    assertNotNull("Unexpected null result", result);
-    assertEquals("Unexpected null result.applicationName",
-                 query.getApplicationName(),  result.getApplicationName());
-    assertEquals("Unexpected null result.userName", 
-                 query.getUserName(),  result.getUserName());
-    assertNotNull("Unexpected null result.contextSet", result.getContextSet());
-    assertNotNull("Unexpected null result.contextSet.contexts", 
-                  result.getContextSet().getContexts());
-    
-    boolean foudExpectedRole = false;
-    for (Context ct : result.getContextSet().getContexts()) {
-      assertNotNull("Unexpected null context.role", ct.getRole());
-      assertNotNull("Unexpected null context.role.name", ct.getRole().getRoleName());
-      
-      if (expectedRoleName.equals(ct.getRole().getRoleName())) {
-        foudExpectedRole = true;
-        assertNotNull("Unexpected null context.preferences", ct.getPreferences());
-        assertNotNull("Unexpected null context.preferences.preferences", 
-                      ct.getPreferences().getPreferences());
-        assertFalse("Unexpected empty context.preferences.preferences", 
-                    ct.getPreferences().getPreferences().isEmpty());
-        boolean foundLevelCode = false;
-        boolean foundRowsPerPage = false;
-        for (Preference item : ct.getPreferences().getPreferences()) {
-          if (OPT_LEVEL_CODE.equals(item.getOptionName())){
-            foundLevelCode = true;
-            assertEquals("Unexpected 'levelCode' preference value", 
-                         expectedLevelCodeValue, new String(item.getOptionValue()));
-          } else if (OPT_ROWS_PER_PAGE.equals(item.getOptionName())){
-            foundRowsPerPage = true;
-            assertEquals("Unexpected 'rowsPerPage' preference value", 
-                         expectedRowPerPageValue, new String(item.getOptionValue()));
-          }
+    private static final String APPLICATION_NAME_QUOTA = "Quota";
+    private static final String OPT_USER_LOCALE = "userLocale";
+    private static final String OPT_ROWS_PER_PAGE = "rowsPerPage";
+    private static final String OPT_LEVEL_CODE = "levelCode";
+    private static final String QUOTA_USERNAME_GRC = "quota_usr_grc";
+    private static final String QUOTA_USERNAME_FRA = "quota_usr_fra";
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void getUserContextTest() {
+        UserContextQuery query = new UserContextQuery();
+        query.setApplicationName(APPLICATION_NAME_QUOTA);
+        query.setUserName(QUOTA_USERNAME_FRA);
+
+        Response response = getUserContext(query);
+        UserContext userContext = response.readEntity(UserContext.class);
+
+        assertEquals(query.getApplicationName(), userContext.getApplicationName());
+        assertEquals(query.getUserName(), userContext.getUserName());
+        assertNotNull(userContext.getContextSet());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void getUserContextWithPreferencesTest() {
+        UserContextQuery query = new UserContextQuery();
+        query.setApplicationName(APPLICATION_NAME_QUOTA);
+        query.setUserName(QUOTA_USERNAME_FRA);
+
+        Response response = getUserContext(query);
+        UserContext userContext = response.readEntity(UserContext.class);
+
+        String expectedLevelCodeValue = "FRA";
+        String expectedRowPerPageValue = "10";
+        String expectedRoleName = "MS Quota User";
+
+        assertEquals(query.getApplicationName(), userContext.getApplicationName());
+        assertEquals(query.getUserName(), userContext.getUserName());
+        assertNotNull(userContext.getContextSet());
+        assertNotNull(userContext.getContextSet().getContexts());
+
+        boolean foundExpectedRole = false;
+
+        for (Context context : userContext.getContextSet().getContexts()) {
+
+            assertNotNull(context.getRole());
+            assertNotNull(context.getRole().getRoleName());
+
+            if (expectedRoleName.equals(context.getRole().getRoleName())) {
+                foundExpectedRole = true;
+                assertNotNull(context.getPreferences());
+                assertNotNull(context.getPreferences().getPreferences());
+                assertFalse(context.getPreferences().getPreferences().isEmpty());
+
+                boolean foundLevelCode = false;
+                boolean foundRowsPerPage = false;
+
+                for (Preference preference : context.getPreferences().getPreferences()) {
+                    if (OPT_LEVEL_CODE.equals(preference.getOptionName())) {
+                        foundLevelCode = true;
+                        assertEquals(expectedLevelCodeValue, preference.getOptionValue());
+                    } else if (OPT_ROWS_PER_PAGE.equals(preference.getOptionName())) {
+                        foundRowsPerPage = true;
+                        assertEquals(expectedRowPerPageValue, preference.getOptionValue());
+                    }
+                }
+                if (!foundLevelCode) {
+                    fail("Expected 'levelCode' preference not found in UserContext");
+                }
+                if (!foundRowsPerPage) {
+                    fail("Expected 'rowsPerPage' preference not found in UserContext");
+                }
+            }
         }
-        if (!foundLevelCode) {
-          fail("Expected 'levelCode' preference not found in UserContext");
+        if (!foundExpectedRole) {
+            fail("Role " + expectedRoleName + " not found in UserContext");
         }
-        if (!foundRowsPerPage) {
-          fail("Expected 'rowsPerPage' preference not found in UserContext");
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void updateUserContextWithPreferencesTest() {
+        UserContextQuery query = new UserContextQuery();
+        query.setApplicationName(APPLICATION_NAME_QUOTA);
+        query.setUserName(QUOTA_USERNAME_GRC);
+
+        Response response = getUserContext(query);
+        UserContext userContext = response.readEntity(UserContext.class);
+
+        assertNotNull(userContext);
+        assertNotNull(userContext.getContextSet());
+
+        String expectedRoleName = "MS Quota User";
+        boolean foundExpectedRole = false;
+
+        for (Context context : userContext.getContextSet().getContexts()) {
+            if (expectedRoleName.equals(context.getRole().getRoleName())) {
+                foundExpectedRole = true;
+
+                assertNotNull(context.getPreferences());
+                assertNotNull(context.getPreferences().getPreferences());
+
+                for (Preference preference : context.getPreferences().getPreferences()) {
+                    if (OPT_LEVEL_CODE.equals(preference.getOptionName())) {
+                        preference.setOptionValue("*");
+                    } else if (OPT_ROWS_PER_PAGE.equals(preference.getOptionName())) {
+                        preference.setOptionValue("7");
+                    } else if (OPT_USER_LOCALE.equals(preference.getOptionName())) {
+                        preference.setOptionValue("el_GR");
+                    }
+                }
+            }
         }
-      }
-    }
-    if (!foudExpectedRole) {
-      fail("Role " + expectedRoleName + " not found in UserContext");
-    }
-  }
-  
-  /**
-   * Tests the updateUserContext method.
-   */
-  @Test
-  public void testUpdateUserContextWithPreferences() 
-  {
-    // Set-up
-    UserContextQuery query = new UserContextQuery();
-    query.setApplicationName(APP_QUOTA);
-    query.setUserName(QUOTA_USR_GRC);
-    UserContext request = testSubject.getUserContext(query);
-    assertNotNull("Unexpected null UserContext", request);
-    assertNotNull("Unexpected null ContextSet", request.getContextSet());
-
-    // Execute
-    String expectedRoleName = "MS Quota User";
-    boolean foudExpectedRole = false;
-    for (Context ct : request.getContextSet().getContexts()) {
-      if (expectedRoleName.equals(ct.getRole().getRoleName())) {
-        foudExpectedRole = true;
-        assertNotNull("Unexpected null context.preferences", ct.getPreferences());
-        assertNotNull("Unexpected null context.preferences.preferences", 
-                      ct.getPreferences().getPreferences());
-        for (Preference item : ct.getPreferences().getPreferences()) {
-          if (OPT_LEVEL_CODE.equals(item.getOptionName())){
-            item.setOptionValue("*");
-          } else if (OPT_ROWS_PER_PAGE.equals(item.getOptionName())){
-            item.setOptionValue("7");
-          } else if (OPT_USER_LOCALE.equals(item.getOptionName())){
-            item.setOptionValue("el_GR");
-          }
+        if (!foundExpectedRole) {
+            fail("Role " + expectedRoleName + " not found in UserContext");
         }
-      } 
-    }
-    if (!foudExpectedRole) {
-      fail("Role " + expectedRoleName + " not found in UserContext");
-    }
-    testSubject.updateUserPreferences(request);
-    
-    // Verify
-    UserContext check = testSubject.getUserContext(query);
-    assertEquals("Unexpected null result.applicationName",
-                 query.getApplicationName(),  check.getApplicationName());
-    assertEquals("Unexpected null result.userName", 
-                 query.getUserName(),  check.getUserName());
-    foudExpectedRole = false;
-    for (Context ct : check.getContextSet().getContexts()) {
-      assertNotNull("Unexpected null context.role", ct.getRole());
-      assertNotNull("Unexpected null context.role.name", ct.getRole().getRoleName());
-      
-      if (expectedRoleName.equals(ct.getRole().getRoleName())) {
-        foudExpectedRole = true;
-        assertNotNull("Unexpected null context.preferences", ct.getPreferences());
-        assertNotNull("Unexpected null context.preferences.preferences", 
-                      ct.getPreferences().getPreferences());
-        for (Preference item : ct.getPreferences().getPreferences()) {
-          if (OPT_LEVEL_CODE.equals(item.getOptionName())){
-            assertEquals("Unexpected 'levelCode' preference value", 
-                         "*", new String(item.getOptionValue()));
-          } else if (OPT_ROWS_PER_PAGE.equals(item.getOptionName())){
-            assertEquals("Unexpected 'rowsPerPage' preference value", 
-                         "7", new String(item.getOptionValue()));
-          } else if (OPT_USER_LOCALE.equals(item.getOptionName())){
-            assertEquals("Unxpected 'userLocale' preference value", 
-                         "el_GR", new String(item.getOptionValue()));
-          }
+
+        Response updated = updateUserContext(userContext);
+        assertEquals(Response.Status.OK.getStatusCode(), updated.getStatus());
+
+        response = getUserContext(query);
+        UserContext verify = response.readEntity(UserContext.class);
+
+        assertEquals(query.getApplicationName(), verify.getApplicationName());
+        assertEquals(query.getUserName(), verify.getUserName());
+
+        foundExpectedRole = false;
+        for (Context context : verify.getContextSet().getContexts()) {
+            assertNotNull(context.getRole());
+            assertNotNull(context.getRole().getRoleName());
+
+            if (expectedRoleName.equals(context.getRole().getRoleName())) {
+                foundExpectedRole = true;
+
+                assertNotNull(context.getPreferences());
+                assertNotNull(context.getPreferences().getPreferences());
+
+                for (Preference item : context.getPreferences().getPreferences()) {
+                    if (OPT_LEVEL_CODE.equals(item.getOptionName())) {
+                        assertEquals("*", item.getOptionValue());
+                    } else if (OPT_ROWS_PER_PAGE.equals(item.getOptionName())) {
+                        assertEquals("7", item.getOptionValue());
+                    } else if (OPT_USER_LOCALE.equals(item.getOptionName())) {
+                        assertEquals("el_GR", item.getOptionValue());
+                    }
+                }
+            }
         }
-      }
-    }
-    if (!foudExpectedRole) {
-      fail("Role " + expectedRoleName + " not found in UserContext");
-    }
-  }
-  
-  /**
-   * Tests the updateUserContext method.
-   */
-  @Test
-  public void testUpdateUserContextWithoutPreferences() 
-  {
-    // Set-up
-    UserContextQuery query = new UserContextQuery();
-    query.setApplicationName(APP_QUOTA);
-    query.setUserName(QUOTA_USR_GRC);
-    UserContext request = testSubject.getUserContext(query);
-    assertNotNull("Unexpected null UserContext", request);
-    assertNotNull("Unexpected null ContextSet", request.getContextSet());
-
-    // Execute
-    for (Context ctx : request.getContextSet().getContexts()) {
-      ctx.setPreferences(null);
-    }
-    testSubject.updateUserPreferences(request);
-    
-    // Verify
-    UserContext check = testSubject.getUserContext(query);
-    assertNotNull("Unexpected null UserContext", check);
-    assertNotNull("Unexpected null ContextSet", check.getContextSet());
-    assertEquals("Unexpected null result.applicationName",
-                 query.getApplicationName(),  check.getApplicationName());
-    assertEquals("Unexpected null result.userName", 
-                 query.getUserName(),  check.getUserName());
-    
-    String expectedRoleName = "MS Quota User";
-    boolean foudExpectedRole = false;
-    for (Context ct : check.getContextSet().getContexts()) {
-      assertNotNull("Unexpected null context.role", ct.getRole());
-      assertNotNull("Unexpected null context.role.name", ct.getRole().getRoleName());
-      
-      if (expectedRoleName.equals(ct.getRole().getRoleName())) {
-        foudExpectedRole = true;
-        assertNotNull("Unexpected null context.preferences", ct.getPreferences());
-        assertNotNull("Unexpected null context.preferences.preferences", 
-                      ct.getPreferences().getPreferences());
-        for (Preference item : ct.getPreferences().getPreferences()) {
-          if (OPT_ROWS_PER_PAGE.equals(item.getOptionName())){
-            assertEquals("Unexpected 'rowsPerPage' preference value", 
-                         "10", new String(item.getOptionValue()));
-          } else if (OPT_USER_LOCALE.equals(item.getOptionName())){
-            assertEquals("Unexpected 'userLocale' preference value", 
-                         "en_GB", new String(item.getOptionValue()));
-          }
+        if (!foundExpectedRole) {
+            fail("Role " + expectedRoleName + " not found in UserContext");
         }
-      }
     }
-    if (!foudExpectedRole) {
-      fail("Role " + expectedRoleName + " not found in UserContext");
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void updateUserContextWithoutPreferencesTest() {
+        UserContextQuery query = new UserContextQuery();
+        query.setApplicationName(APPLICATION_NAME_QUOTA);
+        query.setUserName(QUOTA_USERNAME_GRC);
+
+        Response response = getUserContext(query);
+        UserContext userContext = response.readEntity(UserContext.class);
+
+        assertNotNull(userContext);
+        assertNotNull(userContext.getContextSet());
+
+        for (Context ctx : userContext.getContextSet().getContexts()) {
+            ctx.setPreferences(null);
+        }
+
+        Response updated = updateUserContext(userContext);
+        assertEquals(Response.Status.OK.getStatusCode(), updated.getStatus());
+
+        response = getUserContext(query);
+        UserContext verify = response.readEntity(UserContext.class);
+
+        assertNotNull(verify);
+        assertNotNull(verify.getContextSet());
+        assertEquals(query.getApplicationName(), verify.getApplicationName());
+        assertEquals(query.getUserName(), verify.getUserName());
+
+        String expectedRoleName = "MS Quota User";
+
+        boolean foundExpectedRole = false;
+        for (Context context : verify.getContextSet().getContexts()) {
+
+            assertNotNull(context.getRole());
+            assertNotNull(context.getRole().getRoleName());
+
+            if (expectedRoleName.equals(context.getRole().getRoleName())) {
+                foundExpectedRole = true;
+                assertNotNull(context.getPreferences());
+                assertNotNull(context.getPreferences().getPreferences());
+                for (Preference preference : context.getPreferences().getPreferences()) {
+                    if (OPT_ROWS_PER_PAGE.equals(preference.getOptionName())) {
+                        assertEquals("10", preference.getOptionValue());
+                    } else if (OPT_USER_LOCALE.equals(preference.getOptionName())) {
+                        assertEquals("en_GB", preference.getOptionValue());
+                    }
+                }
+            }
+        }
+        if (!foundExpectedRole) {
+            fail("Role " + expectedRoleName + " not found in UserContext");
+        }
     }
-  }
-  
-  /**
-   * Tests the getContactDetails method.
-   */
-  @Test
-  public void testGetContactDetails() 
-  {
-    // Execute
-    ContactDetails result = testSubject.getContactDetails(QUOTA_USR_FRA);
-    
-    // Verify
-    assertNotNull("Unexpected null result", result);
-    assertEquals("Unexpected result.email", 
-                  "quota_usr_fra@gouv.fr", 
-                  result.geteMail());
-    assertEquals("Unexpected result.organisationName", 
-                 "FRA", result.getOrganisationName());
-  }
 
-  /**
-   * Tests the getContactDetails method.
-   */
-  @Test
-  public void testGetContactDetailsNoOrganisation() 
-  {
-    // Execute
-    ContactDetails result = testSubject.getContactDetails("orphan");
-    
-    // Verify
-    assertNotNull("Unexpected null result", result);
-    assertEquals("Unexpected result.email", "orphan@mail.org", 
-                  result.geteMail());
-    assertNull("Unexpected non-null result.organisationName", 
-                result.getOrganisationName());
-  }
+    @Test
+    @OperateOnDeployment("normal")
+    public void getContactDetailsTest() {
+        Response response = getContactDetails(QUOTA_USERNAME_FRA);
+        ContactDetails contactDetails = response.readEntity(ContactDetails.class);
 
-  /**
-   * Tests the getContactDetails method.
-   */
-  @Test
-  public void testGetContactDetailsNotFound() 
-  {
-    // Execute
-    ContactDetails result = testSubject.getContactDetails("anonymous");
-    
-    // Verify
-    assertNull("Unexpected non-null result", result);
-  }
-
-  
-  /**
-   * Tests the findOrganisations method.
-   */
-  @Test
-  public void testFindOrganisations() 
-  {
-    // Execute
-    List<Organisation> result = testSubject.findOrganisations("EEC");
-    
-    // Verify
-    assertNotNull("Unexpected null result", result);
-    assertFalse("Unexpected empty result",  result.isEmpty());
-  }
-  
-  
-  /**
-   * Tests the getOrganisation method.
-   */
-  @Test
-  public void testGetOrganisationWithEndPoints() 
-  {
-    // Execute
-    Organisation result = testSubject.getOrganisation("FRA");
-    
-    // Verify
-    String expected = "FRA";
-    assertNotNull("Unexpected null result", result);
-    assertEquals("Unexpected result.nation value", expected, result.getNation());
-    assertTrue("Unexpected disabled result", result.isEnabled());
-    assertNotNull("Unexpected null result.endPoints", result.getEndPoints());
-    assertFalse("Unexpected empty result.endPoints", 
-                result.getEndPoints().isEmpty());
-  }
-  
-  /**
-   * Tests the getOrganisation method.
-   */
-  @Test
-  public void testGetOrganisationWithEndPointChannel() 
-  {
-    // Execute
-    Organisation result = testSubject.getOrganisation("GRC");
-    
-    // Verify
-    String expected = "GRC";
-    assertNotNull("Unexpected null result", result);
-    assertEquals("Unexpected result.nation value", expected, result.getNation());
-    assertTrue("Unexpected disabled result", result.isEnabled());
-    assertNotNull("Unexpected null result.endPoints", result.getEndPoints());
-    assertFalse("Unexpected empty result.endPoints", 
-                result.getEndPoints().isEmpty());
-    assertNotNull("Unexpected null result.endPoints[0].channels", 
-                  result.getEndPoints().get(0).getChannels());
-    
-    for (EndPoint ep : result.getEndPoints()) {
-      if ("FLUX.GRC_backup".equals(ep.getName())) {
-      assertNotNull("Unexpected null endPoint[FLUX.GRC_backup].channels", 
-                    ep.getChannels());
-        assertFalse("Unexpected empty endPoint[FLUX.GRC_backup].channels", 
-                    ep.getChannels().isEmpty());
-      }
+        assertNotNull(contactDetails);
+        assertEquals("quota_usr_fra@gouv.fr", contactDetails.geteMail());
+        assertEquals("FRA", contactDetails.getOrganisationName());
     }
-  }
-  
-  /**
-   * Tests the getOrganisation method.
-   */
-  @Test
-  public void testGetOrganisationWithoutEndPoints() 
-  {
-    // Execute
-    Organisation result = testSubject.getOrganisation("DG-MARE");
-    
-    // Verify
-    String expected = "EEC";
-    assertNotNull("Unexpected null result", result);
-    assertEquals("Unexpected result.nation value", expected, result.getNation());
-    assertTrue("Unexpected disabled result", result.isEnabled());
-    assertNull("Unexpected non-null result.endPoints", result.getEndPoints());
-  }
 
-  /**
-   * Tests the getOrganisation method.
-   */
-  @Test
-  public void testGetOrganisationWitParent() 
-  {
-    // Execute
-    Organisation result = testSubject.getOrganisation("DG-MARE");
-    
-    // Verify
-    String expected = "EC";
-    assertNotNull("Unexpected null result", result);
-    assertEquals("Unexpected result.nation value", expected, 
-                 result.getParentOrganisation());
-  }
-  
-  /**
-   * Tests the getOrganisation method.
-   */
-  @Test
-  public void testGetOrganisationWitChildren() 
-  {
-    // Execute
-    Organisation result = testSubject.getOrganisation("EC");
-    
-    // Verify
-    String expected = "DG-MARE";
-    assertNotNull("Unexpected null result", result);
-    assertNotNull("Unexpected null result.childOrganisations", 
-                  result.getChildOrganisations());
-    assertFalse("Unexpected empty result.childOrganisations", 
-                result.getChildOrganisations().isEmpty());
-
-    boolean foundIt = false;
-    for (String item : result.getChildOrganisations()) {
-      if (expected.equals(item)) {
-        foundIt = true;
-        break;
-      }
+    @Test
+    @OperateOnDeployment("normal")
+    public void getContactDetailsNotFoundTest() {
+        Response response = getContactDetails("anonymous");
+        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
     }
-    assertTrue("childOrganisation " + expected + " not found", foundIt);
-  }
-  
-  
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void getContactDetailsNoOrganisationTest() {
+        Response response = getContactDetails("orphan");
+        ContactDetails contactDetails = response.readEntity(ContactDetails.class);
+
+        assertNotNull(contactDetails);
+        assertEquals("orphan@mail.org", contactDetails.geteMail());
+        assertNull(contactDetails.getOrganisationName());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void getOrganisationsTest() {
+        Response response = getOrganisations("EEC");
+        List<Organisation> result = response.readEntity(new GenericType<>() {
+        });
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void getOrganisationsNotFoundTest() {
+        Response response = getOrganisations("dummy");
+        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void getOrganisationWithEndPointsTest() {
+        String organisationName = "FRA";
+        Response response = getOrganisation(organisationName);
+        Organisation result = response.readEntity(Organisation.class);
+
+        assertNotNull(result);
+        assertEquals(organisationName, result.getNation());
+        assertTrue(result.isEnabled());
+        assertNotNull(result.getEndPoints());
+        assertFalse(result.getEndPoints().isEmpty());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void getOrganisationWithEndPointChannelTest() {
+        String organisationName = "GRC";
+        Response response = getOrganisation(organisationName);
+        Organisation result = response.readEntity(Organisation.class);
+
+        assertNotNull(result);
+        assertEquals(organisationName, result.getNation());
+        assertTrue(result.isEnabled());
+        assertNotNull(result.getEndPoints());
+        assertFalse(result.getEndPoints().isEmpty());
+        assertNotNull(result.getEndPoints().get(0).getChannels());
+
+        for (EndPoint endPoint : result.getEndPoints()) {
+            if ("FLUX.GRC_backup".equals(endPoint.getName())) {
+                assertNotNull(endPoint.getChannels());
+                assertFalse(endPoint.getChannels().isEmpty());
+            }
+        }
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void getOrganisationWithoutEndPointsTest() {
+        String organisationName = "DG-MARE";
+        Response response = getOrganisation(organisationName);
+        Organisation result = response.readEntity(Organisation.class);
+
+        assertNotNull(result);
+        assertEquals("EEC", result.getNation());
+        assertTrue(result.isEnabled());
+        assertNull(result.getEndPoints());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void getOrganisationWithParentTest() {
+        String organisationName = "DG-MARE";
+        Response response = getOrganisation(organisationName);
+        Organisation result = response.readEntity(Organisation.class);
+
+        assertNotNull(result);
+        assertEquals("EC", result.getParentOrganisation());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void getOrganisationWithChildrenTest() {
+        String organisationName = "EC";
+        Response response = getOrganisation(organisationName);
+        Organisation result = response.readEntity(Organisation.class);
+
+        assertNotNull(result);
+        assertNotNull(result.getChildOrganisations());
+        assertFalse(result.getChildOrganisations().isEmpty());
+
+        boolean found = false;
+        for (String item : result.getChildOrganisations()) {
+            if ("DG-MARE".equals(item)) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found);
+    }
+
+
+    private Response getUserContext(UserContextQuery query) {
+        return getWebTargetInternal()
+                .path("userContext")
+                .path(query.getApplicationName())
+                .path(query.getUserName())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getTokenInternalRest())
+                .get();
+    }
+
+    private Response updateUserContext(UserContext userContext) {
+        return getWebTargetInternal()
+                .path("userContext")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getTokenInternalRest())
+                .put(Entity.json(userContext));
+    }
+
+    private Response getContactDetails(String username) {
+        return getWebTargetInternal()
+                .path("contactDetails")
+                .path(username)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getTokenInternalRest())
+                .get();
+    }
+
+    private Response getOrganisations(String nation) {
+        return getWebTargetInternal()
+                .path("organisation")
+                .path("nation")
+                .path(nation)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getTokenInternalRest())
+                .get();
+    }
+
+    private Response getOrganisation(String organisationName) {
+        return getWebTargetInternal()
+                .path("organisation")
+                .path(organisationName)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getTokenInternalRest())
+                .get();
+    }
+
+
 }
-

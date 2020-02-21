@@ -1,14 +1,18 @@
 package eu.europa.ec.mare.usm.information.rest.service;
 
+import eu.europa.ec.fisheries.uvms.commons.date.JsonBConfigurator;
 import eu.europa.ec.mare.usm.information.domain.deployment.Application;
+import eu.europa.ec.mare.usm.information.rest.common.ExceptionHandler;
 import eu.europa.ec.mare.usm.information.service.DeploymentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.json.bind.Jsonb;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -32,6 +36,13 @@ public class DeploymentResource {
     @Context
     private HttpServletRequest servletRequest;
 
+    private Jsonb jsonb;
+
+    @PostConstruct
+    public void init() {
+        jsonb = new JsonBConfigurator().getContext(null);
+    }
+
     /**
      * Retrieves the Deployment Descriptor for the application with the
      * provided name
@@ -53,12 +64,13 @@ public class DeploymentResource {
         try {
             Application application = deploymentService.getDeploymentDescriptor(applicationName);
             if (application != null) {
-                response = Response.ok(application).type(MediaType.APPLICATION_JSON).build();
+                String returnString = jsonb.toJson(application);
+                response = Response.ok(returnString).type(MediaType.APPLICATION_JSON).build();
             } else {
                 response = Response.noContent().type(MediaType.APPLICATION_JSON).build();
             }
-        } catch (Exception exc) {
-            response = Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            response = ExceptionHandler.handleException(e);
         }
 
         LOGGER.info("getDeployment() - (LEAVE)");
@@ -86,7 +98,7 @@ public class DeploymentResource {
             deploymentService.deployApplication(application);
             response = Response.ok().type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
-            response = Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
+            response = ExceptionHandler.handleException(e);
         }
         LOGGER.debug("deployApplication() - (LEAVE)");
         return response;
@@ -113,7 +125,7 @@ public class DeploymentResource {
             deploymentService.redeployApplication(application);
             response = Response.ok().type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
-            response = Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
+            response = ExceptionHandler.handleException(e);
         }
         LOGGER.debug("redeployApplication() - (LEAVE)");
         return response;
@@ -140,7 +152,7 @@ public class DeploymentResource {
             deploymentService.deployDatasets(application);
             response = Response.ok().type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
-            response = Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
+            response = ExceptionHandler.handleException(e);
         }
         LOGGER.debug("deployDatasets() - (LEAVE)");
         return response;
@@ -168,7 +180,7 @@ public class DeploymentResource {
             deploymentService.undeployApplication(applicationName);
             response = Response.ok().type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
-            response = Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
+            response = ExceptionHandler.handleException(e);
         }
         LOGGER.info("undeployApplication() - (ENTER)");
         return response;
