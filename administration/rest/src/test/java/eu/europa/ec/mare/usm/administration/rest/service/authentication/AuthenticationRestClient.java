@@ -1,18 +1,16 @@
 package eu.europa.ec.mare.usm.administration.rest.service.authentication;
 
-import javax.ws.rs.core.MediaType;
-
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-
 import eu.europa.ec.mare.usm.administration.domain.AuthenticationJwtResponse;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationRequest;
 import eu.europa.ec.mare.usm.authentication.domain.ChallengeResponse;
+
+import javax.json.bind.annotation.JsonbCreator;
+import javax.ws.rs.core.MediaType;
 
 public class AuthenticationRestClient {
 	private final WebResource webResource;
@@ -21,7 +19,7 @@ public class AuthenticationRestClient {
 	public AuthenticationRestClient(String uri) 
   {
 		ClientConfig config = new DefaultClientConfig();
-		config.getClasses().add(JacksonJsonProvider.class);
+		config.getClasses().add(JsonbCreator.class);
 		client = Client.create(config);
 		webResource = client.resource(uri);
 	}

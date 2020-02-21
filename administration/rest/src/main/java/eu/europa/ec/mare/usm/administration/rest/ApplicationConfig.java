@@ -1,10 +1,11 @@
 package eu.europa.ec.mare.usm.administration.rest;
 
+import eu.europa.ec.fisheries.uvms.commons.date.JsonBConfigurator;
+
 import java.util.HashSet;
 import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-import eu.europa.ec.fisheries.uvms.commons.date.JsonBConfigurator;
 
 
 /**

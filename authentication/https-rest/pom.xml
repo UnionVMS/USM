@@ -209,6 +209,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+			<artifactId>uvms-commons-date</artifactId>
+			<version>${uvms.commons.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-client</artifactId>
 			<version>${sun.jersey.version}</version>
