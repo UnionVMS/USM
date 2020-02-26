@@ -187,6 +187,42 @@
 			<artifactId>Authentication-Service</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>fish.focus.uvms.maven</groupId>
+			<artifactId>uvms-pom-arquillian-deps</artifactId>
+			<type>pom</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms</groupId>
+			<artifactId>usm4uvms</artifactId>
+			<version>${usm4uvms.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-jaxrs</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.sf.ehcache</groupId>
+					<artifactId>ehcache</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+					<artifactId>uvms-commons-message</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>28.2-jre</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+			<artifactId>uvms-commons-message</artifactId>
+			<version>${uvms.commons.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
 			<artifactId>uvms-commons-date</artifactId>
 			<version>${uvms.commons.version}</version>

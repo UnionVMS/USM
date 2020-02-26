@@ -1,9 +1,11 @@
 package eu.europa.ec.mare.usm.authentication.domain;
 
+import java.io.Serializable;
+
 /**
  * A user-id/password based authentication request.
  */
-public class AuthenticationRequest extends AuthenticationQuery {
+public class AuthenticationRequest extends AuthenticationQuery implements Serializable {
 
 	private static final long serialVersionUID = -8491581342090637677L;
 	private String password;
