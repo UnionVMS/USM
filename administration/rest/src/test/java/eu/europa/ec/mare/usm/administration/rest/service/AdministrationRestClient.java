@@ -1,10 +1,10 @@
 package eu.europa.ec.mare.usm.administration.rest.service;
 
 import com.sun.jersey.api.client.UniformInterfaceException;
-import eu.europa.ec.fisheries.uvms.commons.date.JsonBConfigurator;
 import eu.europa.ec.fisheries.uvms.rest.security.InternalRestTokenHandler;
 import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.rest.service.person.ContactDetailsRequest;
+import eu.europa.ec.mare.usm.administration.service.JsonBConfiguratorExtended;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationRequest;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
 import eu.europa.ec.mare.usm.authentication.domain.ChallengeResponse;
@@ -15,7 +15,6 @@ import javax.ws.rs.client.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import java.util.List;
 
 import static eu.europa.ec.mare.usm.administration.rest.common.ExceptionHandler.handleException;
@@ -31,7 +30,7 @@ public class AdministrationRestClient {
 
     protected WebTarget getWebTargetInternal() {
         Client client = ClientBuilder.newClient();
-        client.register(JsonBConfigurator.class);
+        client.register(JsonBConfiguratorExtended.class);
         return client.target(INTERNAL_TARGET_URL);
     }
 

@@ -365,20 +365,10 @@ public class UserRestServiceIT extends BuildAdministrationDeployment {
     @Test
     @OperateOnDeployment("normal")
     public void testGetUserPreferences() {
-//        ServiceRequest<FindUserPreferenceQuery> request = new ServiceRequest<>();
-//        request.setRequester(usmAdmin);
-//        FindUserPreferenceQuery query = new FindUserPreferenceQuery();
-//        query.setUserName("vms_super_fra");
-//        query.setGroupName("Union-VMS");
-//        request.setBody(query);
-
-
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
 
         String username = "vms_super_fra";
         String groupName = "Union-VMS";
-
-
-        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
 
         Response response = restClient.getUserPreferences(auth.getJwtoken(), username, groupName);
         assertEquals(OK.getStatusCode(), response.getStatus());
@@ -390,21 +380,6 @@ public class UserRestServiceIT extends BuildAdministrationDeployment {
         assertNotNull(upr.getResults());
         assertNotNull(getUserPreference(upr.getResults(), expectedOptionValue));
     }
-
-//        // Execute
-//        ClientResponse response = manageUserClient.getUserPreferences(ClientResponse.class, request);
-//
-//        GenericType<UserPreferenceResponse> gType = new GenericType<UserPreferenceResponse>() {
-//        };
-//
-//        // Verify
-//        String expectedOptionValue = "fr_FR";
-//        assertNotNull("Unexpected null response", response);
-//        UserPreferenceResponse upr = response.getEntity(gType);
-//        assertNotNull("Unexpected null UserPreferenceResponse", upr);
-//        assertNotNull("Unexpected null UserPreferenceResponse.results", upr.getResults());
-//        assertNotNull("Expected 'User' preference not found", getUserPreference(upr.getResults(), expectedOptionValue));
-//    }
 
     private UserAccount createUser() {
         UserAccount ret = new UserAccount();

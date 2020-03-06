@@ -1,6 +1,5 @@
 package eu.europa.ec.mare.usm.administration.rest.service.user;
 
-import eu.europa.ec.fisheries.uvms.commons.date.JsonBConfigurator;
 import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.rest.ResponseWrapper;
 import eu.europa.ec.mare.usm.administration.rest.ServiceArrayResponse;

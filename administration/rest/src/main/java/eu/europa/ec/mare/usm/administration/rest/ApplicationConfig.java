@@ -1,6 +1,6 @@
 package eu.europa.ec.mare.usm.administration.rest;
 
-import eu.europa.ec.fisheries.uvms.commons.date.JsonBConfigurator;
+import eu.europa.ec.mare.usm.administration.service.JsonBConfiguratorExtended;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -13,7 +13,7 @@ public class ApplicationConfig extends Application {
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new HashSet<>();
-        resources.add(JsonBConfigurator.class);
+        resources.add(JsonBConfiguratorExtended.class);
         addRestResourceClasses(resources);
         return resources;
     }
