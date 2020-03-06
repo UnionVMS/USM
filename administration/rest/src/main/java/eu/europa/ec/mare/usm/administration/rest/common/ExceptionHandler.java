@@ -43,10 +43,10 @@ public class ExceptionHandler {
     } else if (cause instanceof IllegalArgumentException) {
       LOGGER.info("Bad request: " + cause.getMessage());
       status = Response.Status.BAD_REQUEST;
+    } else if (cause instanceof IllegalStateException) {
+      LOGGER.error("Illegal request: " + cause.getMessage(), cause);
     } else if (cause instanceof RuntimeException) {
       LOGGER.error("Internal Server Error: " + cause.getMessage(), cause);
-    }else if (cause instanceof IllegalStateException) {
-      LOGGER.error("Illegal request: " + cause.getMessage(), cause);
     } else {
       LOGGER.error("Unknown Error: " + exc.getMessage(), exc);
       msg.setMessage(exc.getMessage());

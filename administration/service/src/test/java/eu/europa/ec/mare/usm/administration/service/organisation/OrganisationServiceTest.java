@@ -456,7 +456,7 @@ public class OrganisationServiceTest extends DeploymentFactory {
     ep.setOrganisationName(organisation);
     ep.setEmail("test@endpoint.com");
     ep.setStatus("E");
-    ep.setURI("test");
+    ep.setUri("test");
     newEndPoint.setBody(ep);
     return newEndPoint;
   }

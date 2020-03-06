@@ -52,8 +52,8 @@ public class OrganisationValidator extends RequestValidator {
 		assertNotEmpty("name", ep.getName());
 		assertNotTooLong("name", 128, ep.getName());
 
-		assertNotEmpty("URI", ep.getURI());
-		assertNotTooLong("URI", 256, ep.getURI());
+		assertNotEmpty("uri", ep.getUri());
+		assertNotTooLong("uri", 256, ep.getUri());
 
 		assertNotEmpty("status", ep.getStatus());
 		assertNotTooLong("status", 1, ep.getStatus());

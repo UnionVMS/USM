@@ -20,8 +20,7 @@ public class UserRestClient {
         webResource = client.resource(uri).path("users");
     }
 
-    public <T> T findUsers(Class<T> responseType, ServiceRequest<FindUsersQuery> request)
-            throws UniformInterfaceException {
+    public <T> T findUsers(Class<T> responseType, ServiceRequest<FindUsersQuery> request) throws UniformInterfaceException {
         WebResource resource = webResource;
         FindUsersQuery query = request.getBody();
         Paginator paginator = query.getPaginator();

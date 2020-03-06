@@ -101,7 +101,7 @@ public class OrganisationConverter {
 		ret.setEndpointId(entity.getEndPointId());
 		ret.setName(entity.getName());
 		ret.setDescription(entity.getDescription());
-		ret.setURI(entity.getUri());
+		ret.setUri(entity.getUri());
 		ret.setEmail(entity.getEmail());
 		ret.setStatus(entity.getStatus());
 		ret.setOrganisationName(entity.getOrganisation().getName());
@@ -144,7 +144,7 @@ public class OrganisationConverter {
 		entity.setDescription(domain.getDescription());
 		entity.setName(domain.getName());
 		entity.setStatus(domain.getStatus());
-		entity.setUri(domain.getURI());
+		entity.setUri(domain.getUri());
 		entity.setEmail(domain.getEmail());
 	}
 

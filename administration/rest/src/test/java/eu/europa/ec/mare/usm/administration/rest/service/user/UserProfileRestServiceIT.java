@@ -1,169 +1,102 @@
 package eu.europa.ec.mare.usm.administration.rest.service.user;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
-import java.util.Properties;
-
-import javax.ws.rs.core.Response;
-
-import org.junit.Before;
+import eu.europa.ec.mare.usm.administration.domain.*;
+import eu.europa.ec.mare.usm.administration.rest.service.AdministrationRestClient;
+import eu.europa.ec.mare.usm.administration.rest.service.BuildAdministrationDeployment;
+import org.jboss.arquillian.container.test.api.OperateOnDeployment;
+import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import com.sun.jersey.api.client.ClientResponse;
+import javax.ejb.EJB;
+import javax.ws.rs.core.Response;
+import java.util.Date;
 
-import eu.europa.ec.mare.usm.administration.domain.AuthenticationJwtResponse;
-import eu.europa.ec.mare.usm.administration.domain.ChangePassword;
-import eu.europa.ec.mare.usm.administration.domain.Organisation;
-import eu.europa.ec.mare.usm.administration.domain.Person;
-import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
-import eu.europa.ec.mare.usm.administration.domain.UserAccount;
-import eu.europa.ec.mare.usm.administration.rest.service.AuthWrapper;
-import eu.europa.ec.mare.usm.administration.rest.service.authentication.AuthenticationRestClient;
-import eu.europa.ec.mare.usm.authentication.domain.AuthenticationRequest;
+import static javax.ws.rs.core.Response.Status.OK;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-/**
- * Integration test for the exotic UserProfile REST service.
- */
-public class UserProfileRestServiceIT extends AuthWrapper {
-  private UserRestClient manageUserClient = null;
-  private UserProfileRestClient profileClient = null;
-  private AuthenticationRestClient  authenticationClient;
-  private String usmAdmin;
-  
+@RunWith(Arquillian.class)
+public class UserProfileRestServiceIT extends BuildAdministrationDeployment {
 
-  /**
-   * Creates a new instance.
-   * 
-   * @throws IOException if class-path resource "/test.properties" is not 
-   * readable
-   */
-  public UserProfileRestServiceIT()
-  throws IOException 
-  {}
+    private static final String USM_ADMIN = "usm_admin";
+    private static final String PASSWORD = "password";
 
-  @Before
-  public void setUp() 
-  {
-    manageUserClient = new UserRestClient(endPoint);
-    profileClient = new UserProfileRestClient(endPoint);
-    authenticationClient = new AuthenticationRestClient(endPoint);
-    usmAdmin = login("usm_admin", "password");
-  }
+    @EJB
+    private AdministrationRestClient restClient;
 
-  
-  /**
-   * Tests the changePassword operation
-   */
-  @Test
-  public void testChangePasswordByAdministrator() 
-  {
-    // Set-up
-    UserAccount testCuserAccount = createUser();
-    ServiceRequest<UserAccount> setup=new ServiceRequest<>();
-    setup.setBody(testCuserAccount);
-    setup.setRequester(usmAdmin);
-    ClientResponse response = manageUserClient.createUser(ClientResponse.class, 
-                                                setup);
-    assertEquals("Unexpected Response.Status", 
-                  Response.Status.OK.getStatusCode(), 
-                  response.getStatus());
+    @Test
+    @OperateOnDeployment("normal")
+    public void testChangePasswordByAdministrator() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
+        UserAccount testUserAccount = createUser();
 
-    // Execute
-    ServiceRequest<ChangePassword> request = new ServiceRequest<>();
-    request.setRequester(usmAdmin);
-    request.setBody(new ChangePassword());
-    request.getBody().setUserName(testCuserAccount.getUserName());
-    request.getBody().setNewPassword("p@3$w0rdD");
-    profileClient.changePassword(request);
-    
-    // Verify: test user logs-in with changed password
-    login(testCuserAccount.getUserName(), request.getBody().getNewPassword());
-  }
-  
-  /**
-   * Tests the changePassword operation
-   */
-  @Test
-  public void testChangePasswordByEndUser() 
-  {
-    // Set-up: as adminitrator create test user and set initial password
-    String initialPassword = "p@3$w0rdD";
+        Response response = restClient.createUser(auth.getJwtoken(), testUserAccount);
+        assertEquals(OK.getStatusCode(), response.getStatus());
 
-    // 1: adminitrator creates test user
-    UserAccount testCuserAccount = createUser();
-    ServiceRequest<UserAccount> setup = new ServiceRequest<>();
-    setup.setBody(testCuserAccount);
-    setup.setRequester(usmAdmin);
-    ClientResponse response = manageUserClient.createUser(ClientResponse.class,
-                                                setup);
-    assertEquals("Unexpected Response.Status",
-            Response.Status.OK.getStatusCode(),
-            response.getStatus());
-    
-    // 2: administrator sets the test user initial password
-    ServiceRequest<ChangePassword> request = new ServiceRequest<>();
-    request.setRequester(usmAdmin);
-    request.setBody(new ChangePassword());
-    request.getBody().setUserName(testCuserAccount.getUserName());
-    request.getBody().setNewPassword(initialPassword);
-    manageUserClient.changePassword(request);
+        ChangePassword changePassword = new ChangePassword();
+        changePassword.setUserName(testUserAccount.getUserName());
+        changePassword.setNewPassword("p@3$w0rdD");
 
-    // Execute: test user logs in and changes his own password
-    String testUser = login(testCuserAccount.getUserName(), initialPassword);
-    String updatedPassword = "P@3$w0rdD";
-    request.setRequester(testUser);
-    request.setBody(new ChangePassword());
-    request.getBody().setUserName(testCuserAccount.getUserName());
-    request.getBody().setCurrentPassword(initialPassword);
-    request.getBody().setNewPassword(updatedPassword);
-    profileClient.changePassword(request);
-    
-    // Verify: test user logs-in with changed password
-    login(testCuserAccount.getUserName(), updatedPassword);
-  }
+        response = restClient.changePassword(auth.getJwtoken(), changePassword);
+        assertEquals(OK.getStatusCode(), response.getStatus());
 
-  
-  
-  private UserAccount createUser() 
-  {
-    UserAccount ret = new UserAccount();
-
-    ret.setUserName("testRestUser" + System.currentTimeMillis());
-    ret.setStatus("E");
-    Organisation org=new Organisation();
-    ret.setOrganisation(org);
-    org.setName("DG-MARE");
-    
-    
-    Person person=new Person();
-    ret.setPerson(person);
-    person.setFirstName("Test-Rest");
-    person.setLastName("User");
-    person.setEmail(ret.getUserName() + "@email.com");
-    
-    ret.setActiveFrom(new Date(System.currentTimeMillis() - 3600000));
-    ret.setActiveTo(new Date(System.currentTimeMillis() + 36000000));
-
-    return ret;
-  }
-
-  
-  private String login(String userName, String password) 
-  {
-    AuthenticationRequest request = new AuthenticationRequest();
-    request.setUserName(userName);
-    request.setPassword(password);
-    
-    AuthenticationJwtResponse response = authenticationClient.authenticateUser(request);
-    if (!response.isAuthenticated()) {
-      fail("User '" + userName +"' failed to authenticate");
+        auth = restClient.authenticateUser(testUserAccount.getUserName(), changePassword.getNewPassword());
+        assertNotNull(auth);
     }
-    
-    return response.getJwtoken();
-  }
 
+    @Test
+    @OperateOnDeployment("normal")
+    public void testChangePasswordByEndUser() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
+        String initialPassword = "p@3$w0rdD";
+
+        // 1: Administrator creates test user
+        UserAccount userAccount = createUser();
+        Response response = restClient.createUser(auth.getJwtoken(), userAccount);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        // 2: Administrator sets the test user initial password
+        ChangePassword changePassword = new ChangePassword();
+        changePassword.setUserName(userAccount.getUserName());
+        changePassword.setNewPassword(initialPassword);
+
+        response = restClient.changePassword(auth.getJwtoken(), changePassword);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        // Execute: test user logs in and changes his own password
+        AuthenticationJwtResponse user = restClient.authenticateUser(userAccount.getUserName(), initialPassword);
+        String updatedPassword = "P@3$w0rdD";
+
+        changePassword = new ChangePassword();
+        changePassword.setUserName(userAccount.getUserName());
+        changePassword.setCurrentPassword(initialPassword);
+        changePassword.setNewPassword(updatedPassword);
+
+        response = restClient.changePassword(user.getJwtoken(), changePassword);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        // Verify: test user logs-in with changed password
+        user = restClient.authenticateUser(userAccount.getUserName(), updatedPassword);
+        assertNotNull(user);
+    }
+
+    private UserAccount createUser() {
+        UserAccount account = new UserAccount();
+        account.setUserName("testRestUser" + System.currentTimeMillis());
+        account.setStatus("E");
+        Organisation org = new Organisation();
+        account.setOrganisation(org);
+        org.setName("DG-MARE");
+
+        Person person = new Person();
+        account.setPerson(person);
+        person.setFirstName("Test-Rest");
+        person.setLastName("User");
+        person.setEmail(account.getUserName() + "@email.com");
+
+        account.setActiveFrom(new Date(System.currentTimeMillis() - 3600000));
+        account.setActiveTo(new Date(System.currentTimeMillis() + 36000000));
+        return account;
+    }
 }

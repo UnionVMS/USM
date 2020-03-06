@@ -1,16 +1,10 @@
 package eu.europa.ec.mare.usm.administration.domain;
 
-import eu.europa.ec.mare.usm.administration.common.jdbc.BaseJdbcDao;
-
 import java.io.Serializable;
 
-
-/**
- * Holds the details of the association between the end point and the person
- */
 public class EndPointContact implements Serializable {
-
     private static final long serialVersionUID = 1L;
+
     private Long endPointContactId;
     private Long endPointId;
     private Long personId;
@@ -21,44 +15,26 @@ public class EndPointContact implements Serializable {
     private String faxNumber;
     private String email;
 
-    /**
-     * @return the endPointContactId
-     */
     public Long getEndPointContactId() {
         return endPointContactId;
     }
 
-    /**
-     * @param endPointContactId the endPointContactId to set
-     */
     public void setEndPointContactId(Long endPointContactId) {
         this.endPointContactId = endPointContactId;
     }
 
-    /**
-     * @return the endPointId
-     */
     public Long getEndPointId() {
         return endPointId;
     }
 
-    /**
-     * @param endPointId the endPointId to set
-     */
     public void setEndPointId(Long endPointId) {
         this.endPointId = endPointId;
     }
 
-    /**
-     * @return the personId
-     */
     public Long getPersonId() {
         return personId;
     }
 
-    /**
-     * @param personId the personId to set
-     */
     public void setPersonId(Long personId) {
         this.personId = personId;
     }

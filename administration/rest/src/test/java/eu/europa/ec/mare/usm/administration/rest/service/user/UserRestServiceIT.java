@@ -1,631 +1,491 @@
 package eu.europa.ec.mare.usm.administration.rest.service.user;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
-
-import javax.ws.rs.core.Response;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
-
-import eu.europa.ec.mare.usm.administration.domain.AuthenticationJwtResponse;
-import eu.europa.ec.mare.usm.administration.domain.ChallengeInformation;
-import eu.europa.ec.mare.usm.administration.domain.ChallengeInformationResponse;
-import eu.europa.ec.mare.usm.administration.domain.ChangePassword;
-import eu.europa.ec.mare.usm.administration.domain.ComprehensiveUserContext;
-import eu.europa.ec.mare.usm.administration.domain.FindUserContextsQuery;
-import eu.europa.ec.mare.usm.administration.domain.FindUserPreferenceQuery;
-import eu.europa.ec.mare.usm.administration.domain.FindUsersQuery;
-import eu.europa.ec.mare.usm.administration.domain.GetUserQuery;
-import eu.europa.ec.mare.usm.administration.domain.Organisation;
-import eu.europa.ec.mare.usm.administration.domain.PaginationResponse;
-import eu.europa.ec.mare.usm.administration.domain.Paginator;
-import eu.europa.ec.mare.usm.administration.domain.Person;
-import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
-import eu.europa.ec.mare.usm.administration.domain.UserAccount;
-import eu.europa.ec.mare.usm.administration.domain.UserContext;
-import eu.europa.ec.mare.usm.administration.domain.UserContextResponse;
-import eu.europa.ec.mare.usm.administration.domain.Preference;
-import eu.europa.ec.mare.usm.administration.domain.UserPreferenceResponse;
+import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.rest.ServiceArrayResponse;
-import eu.europa.ec.mare.usm.administration.rest.service.AuthWrapper;
-import eu.europa.ec.mare.usm.administration.rest.service.authentication.AuthenticationRestClient;
-import eu.europa.ec.mare.usm.authentication.domain.AuthenticationRequest;
+import eu.europa.ec.mare.usm.administration.rest.service.AdministrationRestClient;
+import eu.europa.ec.mare.usm.administration.rest.service.BuildAdministrationDeployment;
+import org.jboss.arquillian.container.test.api.OperateOnDeployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-/**
- * Integration Test for REST Web Service implementation of the 
- * View/Manage User services
- */
-public class UserRestServiceIT extends AuthWrapper{
-  private static final String USER_NAME = "vms_user_fra";
-  private static final String ORGANISATION_NAME = "FRA";
-  private static final String VMS_ADMIN_COM_USER = "vms_admin_com";
-  private UserRestClient manageUserClient = null;
-  private AuthenticationRestClient  authenticationClient;
-  private final String vms_admin_com;
-  private String usmAdmin;
+import javax.ejb.EJB;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-  public UserRestServiceIT()
-  throws IOException 
-  {
-    super(VMS_ADMIN_COM_USER);
-    vms_admin_com = getAuthToken();
-  }
+import static javax.ws.rs.core.Response.Status.OK;
+import static org.junit.Assert.*;
 
-  @Before
-  public void setUp() 
-  {
-    manageUserClient = new UserRestClient(endPoint);
-    authenticationClient = new AuthenticationRestClient(endPoint);
-    usmAdmin = login("usm_admin", "password");
-  }
+@RunWith(Arquillian.class)
+public class UserRestServiceIT extends BuildAdministrationDeployment {
 
-  @Test
-  public void testFindUsers() 
-  {
-	  ServiceRequest<FindUsersQuery> request = new ServiceRequest<>();
-	  request.setRequester(vms_admin_com);
-	  Paginator paginator = new Paginator();
-	  paginator.setOffset(0);
-	  paginator.setLimit(4);
-	  paginator.setSortColumn("user_name");
-	  paginator.setSortDirection("ASC");
-    FindUsersQuery query = new FindUsersQuery();
-    query.setName(USER_NAME);
-    query.setOrganisation(ORGANISATION_NAME);
-    query.setPaginator(paginator);
-    request.setBody(query); 
+    private static final String USER_NAME = "vms_user_fra";
+    private static final String ORGANISATION_NAME = "FRA";
+    private static final String VMS_ADMIN_COM_USER = "vms_admin_com";
 
-    // Execute
-    ClientResponse response = manageUserClient.findUsers(ClientResponse.class, request);
-    GenericType<PaginationResponse<UserAccount>> gType = new GenericType<PaginationResponse<UserAccount>>() {
-    };
-    PaginationResponse<UserAccount> cur = response.getEntity(gType);
+    private UserRestClient manageUserClient = null;
 
-    // Verify
-    assertNotNull("Unexpected null result", response);
-    assertEquals("Unexpected 'userName' value", USER_NAME, 
-                 getSearchName(cur.getResults(), USER_NAME));
-  }
+    private static final String USM_ADMIN = "usm_admin";
+    private static final String PASSWORD = "password";
 
-  @Test
-  public void testFindUsersByManager() 
-  {
-    ServiceRequest<FindUsersQuery> request = new ServiceRequest<>();
-    request.setRequester(usmAdmin);
-    request.setRoleName("USM-UserManager");
-    Paginator paginator = new Paginator();
-    paginator.setOffset(0);
-    paginator.setLimit(4);
-    paginator.setSortColumn("user_name");
-    paginator.setSortDirection("ASC");
-    FindUsersQuery query = new FindUsersQuery();
-    query.setName(USER_NAME);
-    query.setOrganisation(ORGANISATION_NAME);
-    query.setPaginator(paginator);
-    request.setBody(query); 
+    //    remove
+    private static final String usmAdmin = "usm_admin";
 
-    // Execute
-    ClientResponse response = manageUserClient.findUsers(ClientResponse.class, request);
-    GenericType<PaginationResponse<UserAccount>> gType = new GenericType<PaginationResponse<UserAccount>>() {
-    };
-    PaginationResponse<UserAccount> cur = response.getEntity(gType);
+    @EJB
+    private AdministrationRestClient restClient;
 
-    // Verify
-    assertNotNull("Unexpected null result", response);
-    assertEquals("Unexpected 'userName' value", USER_NAME, 
-                 getSearchName(cur.getResults(), USER_NAME));
-  }
-  
-  @Test
-  public void testGetUser() 
-  {
-	  ServiceRequest<GetUserQuery> request = new ServiceRequest<>();
-	  request.setRequester(vms_admin_com);
-    GetUserQuery query = new GetUserQuery();
-    query.setUserName(USER_NAME);
-    request.setBody(query);
+//    private AuthenticationRestClient authenticationClient;
+//    private final String vms_admin_com;
+//    private String usmAdmin;
 
-    // Execute
-    UserAccount result = manageUserClient.getUser(UserAccount.class, request);
+//    public UserRestServiceIT()
+//            throws IOException {
+//        super(VMS_ADMIN_COM_USER);
+//        vms_admin_com = getAuthToken();
+//    }
+//
+//    @Before
+//    public void setUp() {
+//        manageUserClient = new UserRestClient(endPoint);
+//        authenticationClient = new AuthenticationRestClient(endPoint);
+//        usmAdmin = login("usm_admin", "password");
+//    }
 
-    // Verify
-    assertNotNull("Unexpected null result", result);
-    assertEquals("Unexpected 'userName' value", USER_NAME, result.getUserName());
-  }
-
-  @Test
-  public void testGetNames() 
-  {
-	  ServiceRequest<String> request = new ServiceRequest<>();
-	  request.setRequester(usmAdmin);
-    request.setBody("");
-
-    // Execute
-    ClientResponse response = manageUserClient.getUserNames(request);
-
-    // Verify
-    assertEquals("Unexpected http response status", 200, response.getStatus());
-    GenericType<ServiceArrayResponse<String>> gType = new GenericType<ServiceArrayResponse<String>>() {
-    };
-    ServiceArrayResponse<String> sar = response.getEntity(gType);
-    assertNotNull("Unexpected null service-response", response);
-    List<String> result = sar.getResults();
-    assertNotNull("Unexpected null result", result);
-    assertFalse("Unexpected empty result", result.isEmpty());
-  }
-
-  @Test
-  public void testCreateUser() 
-  {
-    // Set-up
-    UserAccount user = createUser();
-    ServiceRequest<UserAccount> request = new ServiceRequest<>();
-    request.setBody(user);
-    request.setRequester(usmAdmin);
-
-    // Execute
-    ClientResponse response = manageUserClient.createUser(ClientResponse.class, 
-                                                request);
-
-    // Verify
-    assertEquals("Unexpected Response.Status", 
-                  Response.Status.OK.getStatusCode(), 
-                  response.getStatus());
-  }
-
-  @Test
-  public void testUpdateUser() 
-  {
-    // Set-up
-    UserAccount user = createUser();
-    ServiceRequest<UserAccount> request=new ServiceRequest<>();
-    request.setBody(user);
-    request.setRequester(usmAdmin);
-    ClientResponse response = manageUserClient.createUser(ClientResponse.class, 
-    		request);
-    GenericType<UserAccount> gtype=new GenericType<UserAccount>(){};
-    
-    user=response.getEntity(gtype);
-    		
-    assertEquals("Unexpected Response.Status", 
-                  Response.Status.OK.getStatusCode(), 
-                  response.getStatus());
-
-    // Execute
-    user.getPerson().setFirstName("firstNameUpdated");
-    user.getPerson().setLastName("lastNameUpdated");
-    request.setBody(user);
-    request.setRequester(usmAdmin);
-    
-    ClientResponse response2 = manageUserClient.updateUser(ClientResponse.class,
-                                                request);
-
-    // Verify
-    assertEquals("Unexpected Response.Status", 
-                  Response.Status.OK.getStatusCode(), 
-                  response2.getStatus());
-  }
-
-  
-  /**
-   * Tests the changePassword operation
-   */
-  @Test
-  public void testChangePasswordByAdministrator() 
-  {
-    // Set-up
-    UserAccount testCuserAccount = createUser();
-    ServiceRequest<UserAccount> setup=new ServiceRequest<>();
-    setup.setBody(testCuserAccount);
-    setup.setRequester(usmAdmin);
-    ClientResponse response = manageUserClient.createUser(ClientResponse.class, 
-                                                setup);
-    assertEquals("Unexpected Response.Status", 
-                  Response.Status.OK.getStatusCode(), 
-                  response.getStatus());
-
-    // Execute
-    ServiceRequest<ChangePassword> request = new ServiceRequest<>();
-    request.setRequester(usmAdmin);
-    request.setBody(new ChangePassword());
-    request.getBody().setUserName(testCuserAccount.getUserName());
-    request.getBody().setNewPassword("p@3$w0rdD");
-    manageUserClient.changePassword(request);
-    
-    // Verify: test user logs-in with changed password
-    login(testCuserAccount.getUserName(), request.getBody().getNewPassword());
-  }
-  
-  /**
-   * Tests the changePassword operation
-   */
-  @Test
-  public void testChangePasswordByEndUser() 
-  {
-    // Set-up: as adminitrator create test user and set initial password
-    String initialPassword = "p@3$w0rdD";
-
-    // 1: adminitrator creates test user
-    UserAccount testCuserAccount = createUser();
-    ServiceRequest<UserAccount> setup = new ServiceRequest<>();
-    setup.setBody(testCuserAccount);
-    setup.setRequester(usmAdmin);
-    ClientResponse response = manageUserClient.createUser(ClientResponse.class,
-                                                setup);
-    assertEquals("Unexpected Response.Status",
-            Response.Status.OK.getStatusCode(),
-            response.getStatus());
-    
-    // 2: adminitrator sets the test user initial password
-    ServiceRequest<ChangePassword> request = new ServiceRequest<>();
-    request.setRequester(usmAdmin);
-    request.setBody(new ChangePassword());
-    request.getBody().setUserName(testCuserAccount.getUserName());
-    request.getBody().setNewPassword(initialPassword);
-    manageUserClient.changePassword(request);
-
-    // Execute: test user logs in and changes his own password
-    String testUser = login(testCuserAccount.getUserName(), initialPassword);
-    String updatedPassword = "P@3$w0rdD";
-    request.setRequester(testUser);
-    request.setBody(new ChangePassword());
-    request.getBody().setUserName(testCuserAccount.getUserName());
-    request.getBody().setCurrentPassword(initialPassword);
-    request.getBody().setNewPassword(updatedPassword);
-    manageUserClient.changePassword(request);
-    
-    // Verify: test user logs-in with changed password
-    login(testCuserAccount.getUserName(), updatedPassword);
-  }
-
-  
-	@Test
-	public void testGetUserContexts() 
-  {
-		ServiceRequest<FindUserContextsQuery> request = new ServiceRequest<>();
-		request.setRequester(usmAdmin);
-		FindUserContextsQuery query = new FindUserContextsQuery();
-		query.setUserName(USER_NAME);
-		request.setBody(query);
-
-		// Execute
-		ClientResponse response = manageUserClient.getUserContexts(ClientResponse.class, request);
-		
-		GenericType<UserContextResponse> gType = new GenericType<UserContextResponse>() {
-	    };
-	
-		// Verify
-		String expectedRoleName = "User";
-		assertNotNull("Unexpected null response", response);
-    UserContextResponse cur = response.getEntity(gType);
-		assertNotNull("Unexpected null UserContextResponse", cur);
-		assertNotNull("Unexpected null UserContextResponse.results", cur.getResults());
-		assertNotNull("Expected 'User' role not found", getUserContext(cur.getResults(),expectedRoleName));
-	}
-
-  
-  private UserAccount createUser() 
-  {
-    UserAccount ret = new UserAccount();
-
-    ret.setUserName("testRestUser" + System.currentTimeMillis());
-    ret.setStatus("E");
-    Organisation org=new Organisation();
-    ret.setOrganisation(org);
-    org.setName("DG-MARE");
-    
-    
-    Person person=new Person();
-    ret.setPerson(person);
-    person.setFirstName("Test-Rest");
-    person.setLastName("User");
-    person.setEmail(ret.getUserName() + "@email.com");
-    
-    ret.setActiveFrom(new Date(System.currentTimeMillis() - 3600000));
-    ret.setActiveTo(new Date(System.currentTimeMillis() + 36000000));
-
-    return ret;
-  }
-  
-  
-  private String login(String userName, String password) 
-  {
-    AuthenticationRequest request = new AuthenticationRequest();
-    request.setUserName(userName);
-    request.setPassword(password);
-    
-    AuthenticationJwtResponse response = authenticationClient.authenticateUser(request);
-    if (!response.isAuthenticated()) {
-      fail("User '" + userName +"' failed to authenticate");
-    }
-    
-    return response.getJwtoken();
-  }
-
-
-  private String getSearchName(List<UserAccount> cUsers, String expected) {
-    for (UserAccount cUser : cUsers) {
-      if (cUser.getUserName().equals(expected)) {
-        return expected;
-      } else if (cUser.getPerson().getFirstName().equals(expected)) {
-        return expected;
-      } else if (cUser.getPerson().getLastName().equals(expected)) {
-        return expected;
-      }
-    }
-
-    return null;
-  }
-  
-  private ComprehensiveUserContext getUserContext(List<ComprehensiveUserContext> cUserContexts, String expected) {
-	  if (cUserContexts!=null&&!cUserContexts.isEmpty()){
-		    for (ComprehensiveUserContext cUserContext : cUserContexts) {
-		      if (cUserContext!=null&&cUserContext.getRole()!=null&&cUserContext.getRole().equals(expected)) {
-		        return cUserContext;
-		      }
-		    }
-	  	}
-	    return null;
-	  }
-
-  @Test
-  public void testCreateUpdateDeleteUserContext()
-  {
-	  // Set-up
-      ServiceRequest<UserContext> userContextRequest = createRequest("updateUser");
-
-      FindUserContextsQuery query = new FindUserContextsQuery();
-      query.setUserName(userContextRequest.getBody().getUserName());
-      ServiceRequest<FindUserContextsQuery> sRequest = new ServiceRequest<>();
-      sRequest.setRequester(vms_admin_com);
-      sRequest.setBody(query);
-          
-      // Execute
-      UserContextResponse response = null;
-      try {      
-        response= manageUserClient.getUserContexts(UserContextResponse.class,sRequest);
-      } catch (UniformInterfaceException e) {
-        // A lack of contests will trigger a 404 response that may result in an exception
-      }
-      String expected = "Administrator";
-      Long userContextId = null;
-
-      if (response==null||getUserContext(response.getResults(), expected) == null) {
-          UserContext result = manageUserClient.createUserContext(UserContext.class,userContextRequest);
-          assertNotNull(result);
-          userContextId = result.getUserContextId();
-      } else {
-          userContextId = getUserContext(response.getResults(), expected).getUserContextId();
-      }
-	    // Execute
-	    UserContext userContext = userContextRequest.getBody();
-	    userContext.setRoleId(Long.valueOf(2));
-	    userContext.setScopeId(Long.valueOf(2));
-	    userContext.setUserContextId(userContextId);
-	    userContextRequest.setBody(userContext);
-
-	    userContext = manageUserClient.updateUserContext(UserContext.class,userContextRequest);
-	    
-	    assertNotNull(userContext);
-	    assertTrue("Scope was updated ", userContext.getScopeId().equals(2L));
-	    
-	    //delete the user context as well
-	    ServiceRequest<String> deleteRequest=new ServiceRequest<>();
-	    deleteRequest.setBody(userContextId.toString());
-	    deleteRequest.setRequester(usmAdmin);
-	    manageUserClient.deleteUserContext(ClientResponse.class,
-                                         userContextRequest.getBody().getUserName(),
-                                         deleteRequest);
-	    
-	    //test the deletion result
-      try { 
-        response = manageUserClient.getUserContexts(UserContextResponse.class,sRequest);
-        assertNull("After deletion the record was found",getUserContextId(response.getResults(), userContextId));
-      } catch (UniformInterfaceException e) {
-        // A lack of contests will trigger a 404 response that may result in an exception
-      }
-  }
-  
-   private ServiceRequest<UserContext> createRequest(String operation) 
-   {
-	    ServiceRequest<UserContext> request = new ServiceRequest<>();
-	    UserContext userContext = new UserContext();
-	    userContext.setUserName("guest");
-	
-	    userContext.setUserContextId(null);
-	    userContext.setRoleId(Long.valueOf(2));
-	    userContext.setScopeId(Long.valueOf(1));
-	
-	    request.setBody(userContext);
-	    request.setRequester(usmAdmin);
-	    return request;
-	}
-   
-   private Long getUserContextId(List<ComprehensiveUserContext> cUserContexts,
-			Long expected) {
-		for (ComprehensiveUserContext userContext : cUserContexts) {
-			if (userContext!=null&& userContext.getUserContextId().equals(expected)) {
-				return userContext.getUserContextId();
-			}
-		}
-
-		return null;
-	}
-   
-   @Test
-   public void testCopyUserContext(){
-	 //set-up
-	 		FindUserContextsQuery query = new FindUserContextsQuery();
-	 		query.setUserName("vms_admin_com");
-	 		ServiceRequest<FindUserContextsQuery> sRequest = new ServiceRequest<>();
-	 		sRequest.setRequester(vms_admin_com);
-	 		sRequest.setBody(query);
-	 		
-	 		//from user contexts
-	 		UserContextResponse responseUsmUser =  manageUserClient.getUserContexts(UserContextResponse.class,sRequest); 
-	 				
-
-	 		//toUser contexts
-	 		query.setUserName("vms_user_com");
-	 		UserContextResponse responseGuestInitial = manageUserClient.getUserContexts(UserContextResponse.class,sRequest); 
-	 		
-	 		ServiceRequest<UserContextResponse> requestCpy=new ServiceRequest<>();
-	 		requestCpy.setRequester(usmAdmin);
-	 		requestCpy.setBody(responseUsmUser);
-	 		
-	 		
-	 		ClientResponse resp=manageUserClient.copyUserProfiles(ClientResponse.class,requestCpy, "vms_user_com");
-	 		
-	 		assertEquals("The operation did not succeeded!",resp.getStatus(), Response.Status.OK.getStatusCode());
-	 		
-	 		UserContextResponse responseGuestFinal=manageUserClient.getUserContexts(UserContextResponse.class,sRequest); 
-	 		
-	 		assertTrue("Was the profile copied?", checkUserContexts(responseUsmUser.getResults(),responseGuestFinal.getResults()));
-	 	
-	 		ServiceRequest<String> contextRequest=new ServiceRequest<>();
-	 		contextRequest.setRequester(usmAdmin);
-	 		//tear down
-	 		
-	 		//delete copied contexts 
-	 		for (ComprehensiveUserContext element:responseGuestFinal.getResults()){
-	 				contextRequest.setBody(element.getUserContextId().toString());
-	 				manageUserClient.deleteUserContext(ClientResponse.class,"vms_user_com",contextRequest);
-	 		}
-	 		
-      try {
-        responseGuestFinal=manageUserClient.getUserContexts(UserContextResponse.class,sRequest); 
-        assertTrue("Some contexts not deleted", responseGuestFinal.getResults().isEmpty());
-      } catch (UniformInterfaceException e) {
-        // A lack of contests will trigger a 404 response that may result in an exception
-      }
-      
-	 		//add original contexts
-	 		ServiceRequest<UserContext> addedRequest=new ServiceRequest<>();
-	 		addedRequest.setRequester(usmAdmin);
-	 		UserContext uc=new UserContext();
-	 		uc.setUserName("vms_user_com");
-	 		addedRequest.setBody(uc);
-	 		for (ComprehensiveUserContext element:responseGuestInitial.getResults()){
-	 			uc.setRoleId(element.getRoleId());
-	 			uc.setScopeId(element.getScopeId());
-	 			manageUserClient.createUserContext(ClientResponse.class,addedRequest );
-	 		}
-	 		
-	 		responseGuestFinal=manageUserClient.getUserContexts(UserContextResponse.class,sRequest); 
-	 		assertTrue("Some contexts could not be added back to the original state", responseGuestFinal.getResults().size()>0);
-	 	}
-	 	
-	 	private boolean checkUserContexts(List<ComprehensiveUserContext> fromList, List<ComprehensiveUserContext> toList){
-	 		for (ComprehensiveUserContext element:fromList){
-	 			if (!toList.contains(element)){
-	 				return false;
-	 			}
-	 		}
-	 		return true;
-	 	}
-	 	
     @Test
+    @OperateOnDeployment("normal")
+    public void testFindUsers() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+
+        Response response = restClient.findUsers(auth.getJwtoken(),
+                "0", "4", "user_name", "ASC", USER_NAME, ORGANISATION_NAME, null);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        PaginationResponse<UserAccount> pr = response.readEntity(new javax.ws.rs.core.GenericType<>() {
+        });
+
+        assertNotNull(response);
+        assertEquals(USER_NAME, getSearchName(pr.getResults(), USER_NAME));
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testFindUsersByManager() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
+
+        Response response = restClient.findUsers(auth.getJwtoken(),
+                "0", "4", "user_name", "ASC", USER_NAME, ORGANISATION_NAME, "USM-UserManager");
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        PaginationResponse<UserAccount> pr = response.readEntity(new javax.ws.rs.core.GenericType<>() {
+        });
+
+        assertNotNull(response);
+        assertEquals(USER_NAME, getSearchName(pr.getResults(), USER_NAME));
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testGetUser() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+
+        Response response = restClient.getUser(auth.getJwtoken(), USER_NAME);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        UserAccount userAccount = response.readEntity(UserAccount.class);
+        assertEquals(USER_NAME, userAccount.getUserName());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testGetNames() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
+
+        Response response = restClient.getUserNames(auth.getJwtoken());
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        ServiceArrayResponse<String> sar = response.readEntity(new javax.ws.rs.core.GenericType<>() {
+        });
+        List<String> result = sar.getResults();
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testCreateUser() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
+        UserAccount user = createUser();
+
+        Response response = restClient.createUser(auth.getJwtoken(), user);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        UserAccount created = response.readEntity(UserAccount.class);
+        assertNotNull(created);
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testUpdateUser() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
+        UserAccount user = createUser();
+
+        Response response = restClient.createUser(auth.getJwtoken(), user);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        UserAccount created = response.readEntity(UserAccount.class);
+        assertNotNull(created);
+
+        // Update
+        created.getPerson().setFirstName("firstNameUpdated");
+        created.getPerson().setLastName("lastNameUpdated");
+
+        response = restClient.updateUser(auth.getJwtoken(), created);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        UserAccount updated = response.readEntity(UserAccount.class);
+        assertNotNull(updated);
+        assertEquals("firstNameUpdated", updated.getPerson().getFirstName());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testChangePasswordByAdministrator() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
+        UserAccount user = createUser();
+
+        Response response = restClient.createUser(auth.getJwtoken(), user);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        UserAccount created = response.readEntity(UserAccount.class);
+        assertNotNull(created);
+
+        ChangePassword request = new ChangePassword();
+        request.setUserName(user.getUserName());
+        request.setNewPassword("p@3$w0rdD");
+
+        response = restClient.changePassword(auth.getJwtoken(), request);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        // Verify: test user logs-in with changed password
+        auth = restClient.authenticateUser(request.getUserName(), request.getNewPassword());
+        assertNotNull(auth);
+        assertNotNull(auth.getJwtoken());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testChangePasswordByEndUser() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
+
+        // Create User
+        UserAccount user = createUser();
+        Response response = restClient.createUser(auth.getJwtoken(), user);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        UserAccount created = response.readEntity(UserAccount.class);
+        assertNotNull(created);
+
+        // User updated by Admin
+        String initialPassword = "p@3$w0rdD";
+        ChangePassword request = new ChangePassword();
+        request.setUserName(user.getUserName());
+        request.setNewPassword(initialPassword);
+
+        response = restClient.changePassword(auth.getJwtoken(), request);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        // User updated by User itself
+        String updatedPassword = "P@3$w0rdD";
+        request = new ChangePassword();
+        request.setUserName(user.getUserName());
+        request.setCurrentPassword(initialPassword);
+        request.setNewPassword(updatedPassword);
+
+        auth = restClient.authenticateUser(request.getUserName(), initialPassword);
+        response = restClient.changePassword(auth.getJwtoken(), request);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        auth = restClient.authenticateUser(request.getUserName(), request.getNewPassword());
+        assertNotNull(auth);
+        assertNotNull(auth.getJwtoken());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testGetUserContexts() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
+
+        Response response = restClient.getUserContexts(auth.getJwtoken(), USER_NAME);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        UserContextResponse uc = response.readEntity(UserContextResponse.class);
+        assertNotNull(uc);
+        assertNotNull(getUserContext(uc.getResults(), "User"));
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testCreateUpdateDeleteUserContext() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
+
+        String username = "guest";
+        UserContext userContext = createUserContextRequest(username);
+
+        Response response = restClient.getUserContexts(auth.getJwtoken(), username);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        UserContextResponse ucr = response.readEntity(UserContextResponse.class);
+
+        String expected = "Administrator";
+        Long userContextId;
+
+        // Create
+        if (getUserContext(ucr.getResults(), expected) == null) {
+            response = restClient.createUserContext(auth.getJwtoken(), userContext);
+            assertEquals(OK.getStatusCode(), response.getStatus());
+            userContext = response.readEntity(UserContext.class);
+            userContextId = userContext.getUserContextId();
+        } else {
+            userContextId = getUserContext(ucr.getResults(), expected).getUserContextId();
+        }
+
+        response = restClient.getUserContexts(auth.getJwtoken(), username);
+        ucr = response.readEntity(UserContextResponse.class);
+
+        // Update
+        userContext.setRoleId(2L);
+        userContext.setScopeId(2L);
+        userContext.setUserContextId(userContextId);
+
+        response = restClient.updateUserContext(auth.getJwtoken(), userContext);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+        userContext = response.readEntity(UserContext.class);
+        assertEquals(Long.valueOf(2), userContext.getScopeId());
+
+        // Delete
+        response = restClient.deleteUserContext(auth.getJwtoken(), userContext.getUserName(), userContextId.toString());
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        // Validation
+        response = restClient.getUserContexts(auth.getJwtoken(), userContext.getUserName());
+        assertEquals(OK.getStatusCode(), response.getStatus());
+        ucr = response.readEntity(UserContextResponse.class);
+        assertNull(getUserContextId(ucr.getResults(), userContextId));
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testCopyUserContext() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
+
+        // From user contexts
+        Response response = restClient.getUserContexts(auth.getJwtoken(), VMS_ADMIN_COM_USER);
+        UserContextResponse responseUsmUser = response.readEntity(UserContextResponse.class);
+
+        // To user contexts
+        response = restClient.getUserContexts(auth.getJwtoken(), "vms_user_com");
+        UserContextResponse responseGuestInitial = response.readEntity(UserContextResponse.class);
+
+        response = restClient.copyUserProfiles(auth.getJwtoken(), "vms_user_com", responseUsmUser.getResults());
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        response = restClient.getUserContexts(auth.getJwtoken(), VMS_ADMIN_COM_USER);
+        UserContextResponse responseGuestFinal = response.readEntity(UserContextResponse.class);
+
+        assertTrue(checkUserContexts(responseUsmUser.getResults(), responseGuestFinal.getResults()));
+
+        // Delete copied contexts
+        for (ComprehensiveUserContext element : responseGuestFinal.getResults()) {
+            response = restClient.deleteUserContext(auth.getJwtoken(),
+                    "vms_user_com", element.getUserContextId().toString());
+            assertEquals(OK.getStatusCode(), response.getStatus());
+        }
+
+        responseGuestFinal = restClient.getUserContexts(auth.getJwtoken(), VMS_ADMIN_COM_USER)
+                .readEntity(UserContextResponse.class);
+        assertTrue(responseGuestFinal.getResults().isEmpty());
+
+        // Add original contexts
+        UserContext uc = new UserContext();
+        uc.setUserName("vms_user_com");
+
+        for (ComprehensiveUserContext element : responseGuestInitial.getResults()) {
+            uc.setRoleId(element.getRoleId());
+            uc.setScopeId(element.getScopeId());
+            restClient.createUserContext(auth.getJwtoken(), uc);
+        }
+
+        responseGuestFinal = restClient.getUserContexts(auth.getJwtoken(), "vms_user_com")
+                .readEntity(UserContextResponse.class);
+        assertTrue(responseGuestFinal.getResults().size() > 0);
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
     public void testGetChallenges() {
-        ServiceRequest<String> request = new ServiceRequest<String>();
-        request.setRequester(vms_admin_com);
-        String userName = "vms_admin_com";
+        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
 
-        // Execute
-        ClientResponse response = manageUserClient.getChallenges(ClientResponse.class, userName, request);
+        Response response = restClient.getChallenges(auth.getJwtoken(), VMS_ADMIN_COM_USER);
+        assertEquals(OK.getStatusCode(), response.getStatus());
 
-        GenericType<ChallengeInformationResponse> gType = new GenericType<ChallengeInformationResponse>() {
-        };
-;
-        // Verify
-        String expectedRoleName = "User";
-        assertNotNull("Unexpected null response", response);
-        ChallengeInformationResponse challengeInformationResponse = response.getEntity(gType);
-        assertNotNull("Unexpected null UserContextResponse", challengeInformationResponse);
-        assertNotNull("Unexpected null UserContextResponse.results", challengeInformationResponse.getResults());
+        ChallengeInformationResponse cir = response.readEntity(ChallengeInformationResponse.class);
 
+        assertNotNull(cir);
+        assertNotNull(cir.getResults());
     }
-    
+
     @Test
+    @OperateOnDeployment("normal")
     public void testSetChallenges() {
-        ServiceRequest<ChallengeInformationResponse> request = new ServiceRequest<ChallengeInformationResponse>();
-        request.setRequester(vms_admin_com);
-        String userName = "vms_admin_com";
-        ChallengeInformationResponse challengeInformationRequest = new ChallengeInformationResponse();
-        challengeInformationRequest.setUserPassword("password");
-        List<ChallengeInformation> results = new ArrayList<ChallengeInformation>();        
+        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+
+        ChallengeInformationResponse request = new ChallengeInformationResponse();
+        request.setUserPassword("password");
+        List<ChallengeInformation> results = new ArrayList<>();
         ChallengeInformation challengeInformation = new ChallengeInformation();
-        //challengeInformation.setChallengeId(100014l);
         challengeInformation.setChallenge("Name of first pet updated!");
         challengeInformation.setResponse("Tartampion updated!");
         results.add(challengeInformation);
-        challengeInformationRequest.setResults(results);
-        request.setBody(challengeInformationRequest);
+        request.setResults(results);
 
-        // Execute
-        ClientResponse response = manageUserClient.setChallenges(ClientResponse.class, userName, request);
+        Response response = restClient.setChallenges(auth.getJwtoken(), VMS_ADMIN_COM_USER, request);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+        ChallengeInformationResponse cir = response.readEntity(ChallengeInformationResponse.class);
 
-        GenericType<ChallengeInformationResponse> gType = new GenericType<ChallengeInformationResponse>() {
-        };
-;
-        // Verify
-        String expectedRoleName = "User";
-        assertNotNull("Unexpected null response", response);
-        ChallengeInformationResponse challengeInformationResponse = response.getEntity(gType);
-        assertNotNull("Unexpected null UserContextResponse", challengeInformationResponse);
-        assertNotNull("Unexpected null UserContextResponse.results", challengeInformationResponse.getResults());
+        assertNotNull(cir);
+        assertNotNull(cir.getResults());
+    }
 
-    }   
-    
     @Test
-	public void testGetUserPreferences() 
-  {
-		ServiceRequest<FindUserPreferenceQuery> request = new ServiceRequest<>();
-		request.setRequester(usmAdmin);
-		FindUserPreferenceQuery query = new FindUserPreferenceQuery();
-		query.setUserName("vms_super_fra");
-		query.setGroupName("Union-VMS");
-		request.setBody(query);
+    @OperateOnDeployment("normal")
+    public void testGetUserPreferences() {
+//        ServiceRequest<FindUserPreferenceQuery> request = new ServiceRequest<>();
+//        request.setRequester(usmAdmin);
+//        FindUserPreferenceQuery query = new FindUserPreferenceQuery();
+//        query.setUserName("vms_super_fra");
+//        query.setGroupName("Union-VMS");
+//        request.setBody(query);
 
-		// Execute
-		ClientResponse response = manageUserClient.getUserPreferences(ClientResponse.class, request);
-		
-		GenericType<UserPreferenceResponse> gType = new GenericType<UserPreferenceResponse>() {
-	    };
-	
-		// Verify
-		String expectedOptionValue = "fr_FR";
-		assertNotNull("Unexpected null response", response);
-		UserPreferenceResponse upr = response.getEntity(gType);
-		assertNotNull("Unexpected null UserPreferenceResponse", upr);
-		assertNotNull("Unexpected null UserPreferenceResponse.results", upr.getResults());
-		assertNotNull("Expected 'User' preference not found", getUserPreference(upr.getResults(),expectedOptionValue));
-	}
-    
+
+
+        String username = "vms_super_fra";
+        String groupName = "Union-VMS";
+
+
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
+
+        Response response = restClient.getUserPreferences(auth.getJwtoken(), username, groupName);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        UserPreferenceResponse upr = response.readEntity(UserPreferenceResponse.class);
+
+        String expectedOptionValue = "fr_FR";
+        assertNotNull(upr);
+        assertNotNull(upr.getResults());
+        assertNotNull(getUserPreference(upr.getResults(), expectedOptionValue));
+    }
+
+//        // Execute
+//        ClientResponse response = manageUserClient.getUserPreferences(ClientResponse.class, request);
+//
+//        GenericType<UserPreferenceResponse> gType = new GenericType<UserPreferenceResponse>() {
+//        };
+//
+//        // Verify
+//        String expectedOptionValue = "fr_FR";
+//        assertNotNull("Unexpected null response", response);
+//        UserPreferenceResponse upr = response.getEntity(gType);
+//        assertNotNull("Unexpected null UserPreferenceResponse", upr);
+//        assertNotNull("Unexpected null UserPreferenceResponse.results", upr.getResults());
+//        assertNotNull("Expected 'User' preference not found", getUserPreference(upr.getResults(), expectedOptionValue));
+//    }
+
+    private UserAccount createUser() {
+        UserAccount ret = new UserAccount();
+        ret.setUserName("testRestUser" + System.currentTimeMillis());
+        ret.setStatus("E");
+        Organisation org = new Organisation();
+        ret.setOrganisation(org);
+        org.setName("DG-MARE");
+
+        Person person = new Person();
+        ret.setPerson(person);
+        person.setFirstName("Test-Rest");
+        person.setLastName("User");
+        person.setEmail(ret.getUserName() + "@email.com");
+
+        ret.setActiveFrom(new Date(System.currentTimeMillis() - 3600000));
+        ret.setActiveTo(new Date(System.currentTimeMillis() + 36000000));
+
+        return ret;
+    }
+
+    private String getSearchName(List<UserAccount> userAccounts, String expected) {
+        for (UserAccount userAccount : userAccounts) {
+            if (userAccount.getUserName().equals(expected)) {
+                return expected;
+            } else if (userAccount.getPerson().getFirstName().equals(expected)) {
+                return expected;
+            } else if (userAccount.getPerson().getLastName().equals(expected)) {
+                return expected;
+            }
+        }
+        return null;
+    }
+
+    private ComprehensiveUserContext getUserContext(List<ComprehensiveUserContext> list, String expected) {
+        if (list != null && !list.isEmpty()) {
+            for (ComprehensiveUserContext item : list) {
+                if (item != null && item.getRole() != null && item.getRole().equals(expected)) {
+                    return item;
+                }
+            }
+        }
+        return null;
+    }
+
+    private UserContext createUserContextRequest(String username) {
+        UserContext userContext = new UserContext();
+        userContext.setUserName(username);
+        userContext.setUserContextId(null);
+        userContext.setRoleId(2L);
+        userContext.setScopeId(1L);
+        return userContext;
+    }
+
+    private Long getUserContextId(List<ComprehensiveUserContext> cUserContexts, Long expected) {
+        for (ComprehensiveUserContext userContext : cUserContexts) {
+            if (userContext != null && userContext.getUserContextId().equals(expected)) {
+                return userContext.getUserContextId();
+            }
+        }
+        return null;
+    }
+
     private Preference getUserPreference(List<Preference> cUserPreferences, String expected) {
-  	  if (cUserPreferences!=null&&!cUserPreferences.isEmpty()){
-  		    for (Preference cUserPreference : cUserPreferences) {
-  		      if (cUserPreference!=null&&cUserPreference.getOptionValue()!=null&&expected.equals(new String(cUserPreference.getOptionValue()))) {
-  		        return cUserPreference;
-  		      }
-  		    }
-  	  	}
-  	    return null;
-  	  }
-	 	
+        if (cUserPreferences != null && !cUserPreferences.isEmpty()) {
+            for (Preference cUserPreference : cUserPreferences) {
+                if (cUserPreference != null && cUserPreference.getOptionValue() != null &&
+                        expected.equals(new String(cUserPreference.getOptionValue()))) {
+                    return cUserPreference;
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean checkUserContexts(List<ComprehensiveUserContext> fromList, List<ComprehensiveUserContext> toList) {
+        for (ComprehensiveUserContext element : fromList) {
+            if (!toList.contains(element)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

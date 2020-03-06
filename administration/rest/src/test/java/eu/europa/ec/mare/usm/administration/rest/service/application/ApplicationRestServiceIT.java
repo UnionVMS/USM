@@ -1,150 +1,89 @@
 package eu.europa.ec.mare.usm.administration.rest.service.application;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertFalse;
+import eu.europa.ec.mare.usm.administration.domain.Application;
+import eu.europa.ec.mare.usm.administration.domain.AuthenticationJwtResponse;
+import eu.europa.ec.mare.usm.administration.domain.Feature;
+import eu.europa.ec.mare.usm.administration.domain.PaginationResponse;
+import eu.europa.ec.mare.usm.administration.rest.ServiceArrayResponse;
+import eu.europa.ec.mare.usm.administration.rest.service.AdministrationRestClient;
+import eu.europa.ec.mare.usm.administration.rest.service.BuildAdministrationDeployment;
+import org.jboss.arquillian.container.test.api.OperateOnDeployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import java.io.IOException;
+import javax.ejb.EJB;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.GenericType;
+@RunWith(Arquillian.class)
+public class ApplicationRestServiceIT extends BuildAdministrationDeployment {
 
-import eu.europa.ec.mare.usm.administration.domain.Application;
-import eu.europa.ec.mare.usm.administration.domain.ApplicationQuery;
-import eu.europa.ec.mare.usm.administration.domain.Feature;
-import eu.europa.ec.mare.usm.administration.domain.FindApplicationQuery;
-import eu.europa.ec.mare.usm.administration.domain.PaginationResponse;
-import eu.europa.ec.mare.usm.administration.domain.Paginator;
-import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
-import eu.europa.ec.mare.usm.administration.rest.ServiceArrayResponse;
-import eu.europa.ec.mare.usm.administration.rest.service.AuthWrapper;
+    private static final String APPLICATION_USM = "USM";
+    private static final String APPLICATION_QUOTA = "Quota";
+    private static final String APPLICATION_UVMS = "Union-VMS";
+    private static final String VMS_ADMIN_COM_USER = "vms_admin_com";
+    private static final String PASSWORD = "password";
 
-public class ApplicationRestServiceIT extends AuthWrapper {
-	private static final String APPLICATION_USM = "USM";
-	private static final String APPLICATION_QUOTA = "Quota";
-	private static final String APPLICATION_UVMS = "Union-VMS";
-  private static final String VMS_ADMIN_COM_USER = "vms_admin_com";
-	private ApplicationRestClient client = null;
-	private final String vms_admin_com;
+    @EJB
+    private AdministrationRestClient restClient;
 
-	/**
-	 * Creates a new instance.
-	 * 
-	 * @throws IOException
-	 *             in case the '/test.properties' class-path resource cannot be
-	 *             loaded
-	 */
-	public ApplicationRestServiceIT() throws IOException {
-	  super(VMS_ADMIN_COM_USER);
-		vms_admin_com = getAuthToken();
-	}
-	
-	
-
-	@Before
-	public void setUp() {
-		client = new ApplicationRestClient(endPoint);
-	}
-
-    /**
-     * Tests the findApplications operation.
-     */
     @Test
+    @OperateOnDeployment("normal")
     public void testFindApplications() {
-        // Execute
-        ServiceRequest<FindApplicationQuery> request = new ServiceRequest<>();
-        request.setRequester(vms_admin_com);
-        FindApplicationQuery query = new FindApplicationQuery();
-        query.setName(APPLICATION_USM);
-        query.setPaginator(getDefaultPaginator());
-        request.setBody(query);
-        ClientResponse response = client.findApplications(ClientResponse.class, request);
-        GenericType<PaginationResponse<Application>> gType = new GenericType<PaginationResponse<Application>>() {
-        };
-        PaginationResponse<Application> sar = response.getEntity(gType);
-        // Verify
+        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        Response response = restClient.findApplications(auth.getJwtoken(), APPLICATION_USM);
+        PaginationResponse<Application> paginationResponse = response.readEntity(new GenericType<>() {});
+
         assertNotNull("Unexpected null result", response);
-        List<Application> applications = sar.getResults();
+        List<Application> applications = paginationResponse.getResults();
         assertNotNull("Expected Scope " + APPLICATION_USM + " not found", getApplication(applications, APPLICATION_USM));
     }
 
-	/**
-	 * Tests the getApplicationNames operation.
-	 */
-	@Test
-	public void testApplicationNames() {
-		// Execute
-		ServiceRequest<ApplicationQuery> request = new ServiceRequest<>();
-		request.setRequester(vms_admin_com);
-		request.setBody(new ApplicationQuery());
+    @Test
+    @OperateOnDeployment("normal")
+    public void testApplicationNames() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        Response response = restClient.getApplicationNames(auth.getJwtoken());
+        ServiceArrayResponse<String> sar = response.readEntity(new GenericType<>() {});
 
-		ClientResponse response = client.getApplicationNames(ClientResponse.class, request);
-		GenericType<ServiceArrayResponse<String>> gType = new GenericType<ServiceArrayResponse<String>>() {
-		};
-		ServiceArrayResponse<String> sar = response.getEntity(gType);
+        assertNotNull("Unexpected null result", response);
+        List<String> appNames = sar.getResults();
+        assertEquals("Unexpected 'orgName' value", APPLICATION_USM, getAppName(appNames, APPLICATION_USM));
+        assertEquals("Unexpected 'orgName' value", APPLICATION_QUOTA, getAppName(appNames, APPLICATION_QUOTA));
+        assertEquals("Unexpected 'orgName' value", APPLICATION_UVMS, getAppName(appNames, APPLICATION_UVMS));
+    }
 
-		// Verify
-		assertNotNull("Unexpected null result", response);
-		List<String> appNames = sar.getResults();
-		assertEquals("Unexpected 'orgName' value", APPLICATION_USM,
-				getAppName(appNames, APPLICATION_USM));
-		assertEquals("Unexpected 'orgName' value", APPLICATION_QUOTA,
-				getAppName(appNames, APPLICATION_QUOTA));
-		assertEquals("Unexpected 'orgName' value", APPLICATION_UVMS,
-				getAppName(appNames, APPLICATION_UVMS));
-	}
+    @Test
+    @OperateOnDeployment("normal")
+    public void testGetApplicationFeatures() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        Response response = restClient.getApplicationFeatures(auth.getJwtoken(), APPLICATION_USM);
+        ServiceArrayResponse<Feature> sar = response.readEntity(new GenericType<>() {});
 
-	private String getAppName(List<String> aNames, String expected) {
-		for (String name : aNames) {
-			if (name.equals(expected)) {
-				return expected;
-			}
-		}
+        assertNotNull("Unexpected null result", response);
+        List<Feature> featureNames = sar.getResults();
 
-		return null;
-	}
-	
-	
-	@Test
-	public void testGetApplicationFeatures(){
-		
-		ServiceRequest<String> request=new ServiceRequest<>();
-		request.setRequester(vms_admin_com);
-		request.setBody("USM");
-		
-		ClientResponse response = client.getApplicationFeatures(ClientResponse.class, request);
-		GenericType<ServiceArrayResponse<Feature>> gType = new GenericType<ServiceArrayResponse<Feature>>() {
-		};
-		ServiceArrayResponse<Feature> sar = response.getEntity(gType);
+        assertFalse("List of application features is empty", featureNames.isEmpty());
+    }
 
-		
-		assertNotNull("Unexpected null result", response);
-		List<Feature> featureNames = sar.getResults();
-		
-		assertFalse("List of application features is empty", featureNames.isEmpty());
-		
-	}
+    /* HELPER METHODS */
 
-    private Paginator getDefaultPaginator(){
-        Paginator paginator = new Paginator();
-        paginator.setLimit(8);
-        paginator.setOffset(0);
-        paginator.setSortColumn("name");
-        paginator.setSortDirection("DESC");
-        return paginator;
+    private String getAppName(List<String> aNames, String expected) {
+        return aNames.stream()
+                .filter(n -> n.equals(expected))
+                .findAny()
+                .orElse(null);
     }
 
     private String getApplication(List<Application> applications, String expected) {
-        for (Application application : applications) {
-            if (application.getName().equals(expected)) {
-                return application.getName();
-            }
-        }
-
-        return null;
+        return applications.stream()
+                .filter(app -> app.getName().equals(expected))
+                .findAny()
+                .map(Application::getName)
+                .orElse(null);
     }
 }
