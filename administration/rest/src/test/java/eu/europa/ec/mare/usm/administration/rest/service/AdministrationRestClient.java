@@ -523,4 +523,31 @@ public class AdministrationRestClient {
                 .get();
     }
 
+    public Response findPolicies(String jwtToken, String name, String subject) {
+        return getWebTargetInternal()
+                .path("policies")
+                .queryParam("name", name)
+                .queryParam("subject", subject)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response updatePolicy(String jwtToken, Policy policy) {
+        return getWebTargetInternal()
+                .path("policies")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .put(Entity.json(policy));
+    }
+
+    public Response getSubjects(String jwtToken) {
+        return getWebTargetInternal()
+                .path("policies")
+                .path("subjects")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
 }

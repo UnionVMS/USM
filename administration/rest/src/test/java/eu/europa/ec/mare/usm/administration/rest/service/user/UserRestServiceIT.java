@@ -1,8 +1,5 @@
 package eu.europa.ec.mare.usm.administration.rest.service.user;
 
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.UniformInterfaceException;
 import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.rest.ServiceArrayResponse;
 import eu.europa.ec.mare.usm.administration.rest.service.AdministrationRestClient;
@@ -13,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,34 +25,11 @@ public class UserRestServiceIT extends BuildAdministrationDeployment {
     private static final String USER_NAME = "vms_user_fra";
     private static final String ORGANISATION_NAME = "FRA";
     private static final String VMS_ADMIN_COM_USER = "vms_admin_com";
-
-    private UserRestClient manageUserClient = null;
-
     private static final String USM_ADMIN = "usm_admin";
     private static final String PASSWORD = "password";
 
-    //    remove
-    private static final String usmAdmin = "usm_admin";
-
     @EJB
     private AdministrationRestClient restClient;
-
-//    private AuthenticationRestClient authenticationClient;
-//    private final String vms_admin_com;
-//    private String usmAdmin;
-
-//    public UserRestServiceIT()
-//            throws IOException {
-//        super(VMS_ADMIN_COM_USER);
-//        vms_admin_com = getAuthToken();
-//    }
-//
-//    @Before
-//    public void setUp() {
-//        manageUserClient = new UserRestClient(endPoint);
-//        authenticationClient = new AuthenticationRestClient(endPoint);
-//        usmAdmin = login("usm_admin", "password");
-//    }
 
     @Test
     @OperateOnDeployment("normal")
@@ -65,8 +40,7 @@ public class UserRestServiceIT extends BuildAdministrationDeployment {
                 "0", "4", "user_name", "ASC", USER_NAME, ORGANISATION_NAME, null);
         assertEquals(OK.getStatusCode(), response.getStatus());
 
-        PaginationResponse<UserAccount> pr = response.readEntity(new javax.ws.rs.core.GenericType<>() {
-        });
+        PaginationResponse<UserAccount> pr = response.readEntity(new GenericType<>() {});
 
         assertNotNull(response);
         assertEquals(USER_NAME, getSearchName(pr.getResults(), USER_NAME));
@@ -81,8 +55,7 @@ public class UserRestServiceIT extends BuildAdministrationDeployment {
                 "0", "4", "user_name", "ASC", USER_NAME, ORGANISATION_NAME, "USM-UserManager");
         assertEquals(OK.getStatusCode(), response.getStatus());
 
-        PaginationResponse<UserAccount> pr = response.readEntity(new javax.ws.rs.core.GenericType<>() {
-        });
+        PaginationResponse<UserAccount> pr = response.readEntity(new GenericType<>() {});
 
         assertNotNull(response);
         assertEquals(USER_NAME, getSearchName(pr.getResults(), USER_NAME));
@@ -108,8 +81,7 @@ public class UserRestServiceIT extends BuildAdministrationDeployment {
         Response response = restClient.getUserNames(auth.getJwtoken());
         assertEquals(OK.getStatusCode(), response.getStatus());
 
-        ServiceArrayResponse<String> sar = response.readEntity(new javax.ws.rs.core.GenericType<>() {
-        });
+        ServiceArrayResponse<String> sar = response.readEntity(new GenericType<>() {});
         List<String> result = sar.getResults();
 
         assertNotNull(result);
