@@ -635,4 +635,64 @@ public class AdministrationRestClient {
                 .header(HttpHeaders.AUTHORIZATION, jwtToken)
                 .get();
     }
+
+    public Response findScopes(String jwtToken, FindScopesQuery query) {
+        return getWebTargetInternal()
+                .path("scopes")
+                .queryParam("offset", query.getPaginator().getOffset())
+                .queryParam("limit", query.getPaginator().getLimit())
+                .queryParam("sortColumn", query.getPaginator().getSortColumn())
+                .queryParam("sortDirection", query.getPaginator().getSortDirection())
+                .queryParam("name", query.getScopeName())
+                .queryParam("application", query.getApplicationName())
+                .queryParam("status", query.getStatus())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response getScope(String jwtToken, String scopeId) {
+        return getWebTargetInternal()
+                .path("scopes")
+                .path(scopeId)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response createScope(String jwtToken, Scope scope) {
+        return getWebTargetInternal()
+                .path("scopes")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .post(Entity.json(scope));
+    }
+
+    public Response updateScope(String jwtToken, Scope scope) {
+        return getWebTargetInternal()
+                .path("scopes")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .put(Entity.json(scope));
+    }
+
+    public Response findDatasets(String jwtToken, String application, String category) {
+        return getWebTargetInternal()
+                .path("scopes")
+                .path("datasets")
+                .queryParam("application", application)
+                .queryParam("category", category)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response deleteScope(String jwtToken, String scopeId) {
+        return getWebTargetInternal()
+                .path("scopes")
+                .path(scopeId)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .delete();
+    }
 }

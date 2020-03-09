@@ -34,7 +34,7 @@ public class UserRestServiceIT extends BuildAdministrationDeployment {
     @Test
     @OperateOnDeployment("normal")
     public void testFindUsers() {
-        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
 
         Response response = restClient.findUsers(auth.getJwtoken(),
                 "0", "4", "user_name", "ASC", USER_NAME, ORGANISATION_NAME, null);

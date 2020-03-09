@@ -4,6 +4,7 @@ import eu.europa.ec.mare.usm.administration.domain.AuthenticationJwtResponse;
 import eu.europa.ec.mare.usm.administration.domain.ContactDetails;
 import eu.europa.ec.mare.usm.administration.domain.PendingContactDetails;
 import eu.europa.ec.mare.usm.administration.domain.Person;
+import eu.europa.ec.mare.usm.administration.rest.ResponseWrapper;
 import eu.europa.ec.mare.usm.administration.rest.ServiceArrayResponse;
 import eu.europa.ec.mare.usm.administration.rest.service.AdministrationRestClient;
 import eu.europa.ec.mare.usm.administration.rest.service.BuildAdministrationDeployment;
@@ -39,7 +40,8 @@ public class PersonResourceTest extends BuildAdministrationDeployment {
 
         Response response = restClient.getPersons(auth.getJwtoken());
         assertEquals(OK.getStatusCode(), response.getStatus());
-        List<Person> people = response.readEntity(new GenericType<>() {});
+        ServiceArrayResponse<Person> sar = response.readEntity(new GenericType<>() {});
+        List<Person> people = sar.getResults();
 
         assertFalse("Unexpected empty response", people.isEmpty());
     }
@@ -108,7 +110,8 @@ public class PersonResourceTest extends BuildAdministrationDeployment {
         Response response = restClient.findPendingContactDetails(auth.getJwtoken());
         assertEquals(OK.getStatusCode(), response.getStatus());
 
-        List<PendingContactDetails> list = response.readEntity(new GenericType<>(){});
+        ServiceArrayResponse<PendingContactDetails> sar = response.readEntity(new GenericType<>(){});
+        List<PendingContactDetails> list = sar.getResults();
         assertFalse(list.isEmpty());
     }
 
@@ -205,7 +208,8 @@ public class PersonResourceTest extends BuildAdministrationDeployment {
 
     private void setUp(AuthenticationJwtResponse auth) {
         Response response = restClient.isReviewContactDetailsEnabled(auth.getJwtoken());
-        Boolean enabled = response.readEntity(Boolean.class);
+        ResponseWrapper<Boolean> responseWrapper = response.readEntity(new GenericType<>(){});
+        Boolean enabled = responseWrapper.getResult();
 
         if (enabled) {
             createPendingChange(QUOTA_USR_GRC);

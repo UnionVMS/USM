@@ -19,7 +19,6 @@ import static org.junit.Assert.assertNotNull;
 public class EndpointResourceTest extends BuildAdministrationDeployment {
 
     private static final String ORGANISATION_EC = "EC";
-    private static final String VMS_ADMIN_COM_USER = "vms_admin_com";
     private static final String USM_ADMIN = "usm_admin";
     private static final String PASSWORD = "password";
 

@@ -45,7 +45,6 @@ public class PolicyResourceIT extends BuildAdministrationDeployment {
         assertFalse(policies.isEmpty());
     }
 
-
     @Test
     @OperateOnDeployment("normal")
     public void testUpdatePolicy() {
@@ -82,7 +81,6 @@ public class PolicyResourceIT extends BuildAdministrationDeployment {
 
         updatedPolicy = response.readEntity(Policy.class);
         assertEquals("password.minLength updated to its original value of 8", "8", updatedPolicy.getValue());
-
     }
 
     @Test
