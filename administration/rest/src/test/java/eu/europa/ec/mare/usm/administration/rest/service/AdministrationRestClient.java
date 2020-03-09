@@ -550,4 +550,89 @@ public class AdministrationRestClient {
                 .get();
     }
 
+    public Response getRoleNames(String jwtToken) {
+        return getWebTargetInternal()
+                .path("roles")
+                .path("names")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response findRoles(String jwtToken, FindRolesQuery query) {
+        return getWebTargetInternal()
+                .path("roles")
+                .queryParam("offset", query.getPaginator().getOffset())
+                .queryParam("limit", query.getPaginator().getLimit())
+                .queryParam("sortColumn", query.getPaginator().getSortColumn())
+                .queryParam("sortDirection", query.getPaginator().getSortDirection())
+                .queryParam("role", query.getRoleName())
+                .queryParam("application", query.getApplicationName())
+                .queryParam("status", query.getStatus())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response getRole(String jwtToken, String roleId) {
+        return getWebTargetInternal()
+                .path("roles")
+                .path(roleId)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response createRole(String jwtToken, ComprehensiveRole role) {
+        return getWebTargetInternal()
+                .path("roles")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .post(Entity.json(role));
+    }
+
+    public Response updateRole(String jwtToken, ComprehensiveRole role) {
+        return getWebTargetInternal()
+                .path("roles")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .put(Entity.json(role));
+    }
+
+    public Response deleteRole(String jwtToken, String roleId) {
+        return getWebTargetInternal()
+                .path("roles")
+                .path(roleId)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .delete();
+    }
+
+    public Response getFeatureGroupNames(String jwtToken) {
+        return getWebTargetInternal()
+                .path("roles")
+                .path("features/group/names")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response findPermissions(String jwtToken, String application, String group) {
+        return getWebTargetInternal()
+                .path("roles")
+                .queryParam("application", application)
+                .queryParam("group", group)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response getRoles(String jwtToken) {
+        return getWebTargetInternal()
+                .path("roles")
+                .path("comprehensives")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
 }
