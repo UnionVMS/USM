@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import javax.ejb.EJB;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Random;
 
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.junit.Assert.*;
@@ -39,7 +40,7 @@ public class OrganisationResourceTest extends BuildAdministrationDeployment {
     @Test
     @OperateOnDeployment("normal")
     public void testOrganisationNames() {
-        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
         Response response = restClient.getOrganisationNames(auth.getJwtoken());
         assertEquals(OK.getStatusCode(), response.getStatus());
 
@@ -54,7 +55,7 @@ public class OrganisationResourceTest extends BuildAdministrationDeployment {
     @Test
     @OperateOnDeployment("normal")
     public void testGetOrganisationParentNames() {
-        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
         Response response = restClient.getOrganisationParentNames(String.valueOf(21), auth.getJwtoken());
         assertEquals(OK.getStatusCode(), response.getStatus());
 
@@ -66,7 +67,7 @@ public class OrganisationResourceTest extends BuildAdministrationDeployment {
     @Test
     @OperateOnDeployment("normal")
     public void testNationNames() {
-        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
         Response response = restClient.getNationNames(auth.getJwtoken());
         assertEquals(OK.getStatusCode(), response.getStatus());
 
@@ -78,7 +79,7 @@ public class OrganisationResourceTest extends BuildAdministrationDeployment {
     @Test
     @OperateOnDeployment("normal")
     public void testFindOrganisations() {
-        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
         Response response = restClient.findOrganisations(auth.getJwtoken(), null);
         assertEquals(OK.getStatusCode(), response.getStatus());
 
@@ -92,7 +93,7 @@ public class OrganisationResourceTest extends BuildAdministrationDeployment {
     @Test
     @OperateOnDeployment("normal")
     public void testGetOrganisation() {
-        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
         Organisation organisation = getOrganisationByName(auth.getJwtoken(), ORGANISATION_GRC);
         assertEquals(ORGANISATION_GRC, organisation.getName());
     }
@@ -143,7 +144,7 @@ public class OrganisationResourceTest extends BuildAdministrationDeployment {
     @Test
     @OperateOnDeployment("normal")
     public void testGetOrganisationEndPoint() {
-        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
         long organisationId = testHelper.getOrganisationIdByName(auth.getJwtoken(), ORGANISATION_GRC);
         Response response = restClient.getOrganisationById(auth.getJwtoken(), String.valueOf(organisationId));
         assertEquals(OK.getStatusCode(), response.getStatus());
@@ -161,7 +162,7 @@ public class OrganisationResourceTest extends BuildAdministrationDeployment {
     @Test
     @OperateOnDeployment("normal")
     public void testGetEndPointContact() {
-        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USM_ADMIN, PASSWORD);
         long organisationId = testHelper.getOrganisationIdByName(auth.getJwtoken(), ORGANISATION_GRC);
         Response response = restClient.getOrganisationById(auth.getJwtoken(), String.valueOf(organisationId));
         Organisation organisation = response.readEntity(Organisation.class);
@@ -205,7 +206,8 @@ public class OrganisationResourceTest extends BuildAdministrationDeployment {
     private EndPointContact assignContactRequest(String jwtToken) {
         EndPoint endPoint = testHelper.findOrganisationEndPoint(ORGANISATION_GRC, ENDPOINT_NAME_GRC_BACK, jwtToken);
         EndPointContact contact = new EndPointContact();
-        contact.setPersonId(4L);
+        long personId = new Random().nextLong();
+        contact.setPersonId(personId);
         contact.setEndPointId(endPoint.getEndpointId());
         return contact;
     }
