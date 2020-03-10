@@ -1,646 +1,473 @@
 package eu.europa.ec.mare.usm.information.rest.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
-import javax.ejb.EJBException;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import eu.europa.ec.mare.usm.information.domain.deployment.Application;
 import eu.europa.ec.mare.usm.information.domain.deployment.Dataset;
 import eu.europa.ec.mare.usm.information.domain.deployment.Feature;
 import eu.europa.ec.mare.usm.information.domain.deployment.Option;
-import eu.europa.ec.mare.usm.information.service.DeploymentService;
+import org.jboss.arquillian.container.test.api.OperateOnDeployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-/**
- * Integration-test for the REST implementation of the DeploymentService
- *
- */
-public class DeploymentRestServiceIT {
-  private static final String UPDATED = "Updated: ";
-	private DeploymentService testSubject;
-	private final String endPoint;
-	private final String serviceRequester;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-	/**
-	 * Creates a new instance.
-	 * 
-	 * @throws IOException in case the '/test.properties' class-path resource 
-   * cannot be loaded
-	 */
-	public DeploymentRestServiceIT() 
-  throws IOException 
-  {
-		InputStream is = getClass().getResourceAsStream("/test.properties");
-		Properties props = new Properties();
-		props.load(is);
-		endPoint = props.getProperty("rest.endpoint");
-		serviceRequester = props.getProperty("jwtoken.usm_admin");
-	}
+import static org.junit.Assert.*;
 
-	@Before
-	public void setUp() 
-  {
-		testSubject = new DeploymentRestClient(endPoint);
-	}
+@RunWith(Arquillian.class)
+public class DeploymentRestServiceIT extends BuildInformationRestDeployment {
 
-	/**
-	 * Tests the getDeploymentDescriptor method
-	 */
-	@Test
-	public void testGetDeploymentDescriptor() 
-  {
-		// Setup
-    String appName = "USM";
+    private static final String DEPLOYMENTS_ENDPOINT = "deployments";
 
-		// Execute
-		Application response = testSubject.getDeploymentDescriptor(appName);
-
-		// Verify
-		assertNotNull("Unexpected null response", response);
-		assertEquals("Unexpected name", appName, response.getName());
-    assertFalse("Unexpected empty feature list", response.getFeature().isEmpty());
-    assertTrue("Unexpected non-empty dataset list", response.getDataset().isEmpty());
-    assertTrue("Unexpected non-empty option list", response.getOption().isEmpty());
-	}
-
-	/**
-	 * Tests the deployApplication method
-	 */
-	@Test
-	public void testDeployApplication() 
-  {
-		// Setup
-		Application request = testSubject.getDeploymentDescriptor("Quota");
-		assertNotNull("Unexpected null response", request);
-
-    // Execute
-    request.setName("Test:testDeployApplication-" +
-                              System.currentTimeMillis());
-    Feature nf = new Feature();
-    nf.setName("Test:testDeployApplication");
-    nf.setDescription("Tests the deployApplication method");
-    request.getFeature().add(nf);
-		testSubject.deployApplication(request);
-
-		// Verify
-		Application verify = testSubject.getDeploymentDescriptor(request.getName());
-		assertNotNull("Unexpected null response", verify);
-		assertEquals("Unexpected name", request.getName(), 
-                                    verify.getName());
-    assertFalse("Unexpected empty feature list", verify.getFeature().isEmpty());
-    assertFalse("Unexpected empty dataset list", verify.getDataset().isEmpty());
-    assertFalse("Unexpected empty option list", verify.getOption().isEmpty());
-	}
-
-	/**
-	 * Tests the deployApplication method
-	 */
-	@Test
-	public void testDeployApplicationWithDuplicates() 
-  {
-		// Setup
-		Application request = testSubject.getDeploymentDescriptor("Quota");
-		assertNotNull("Unexpected null response", request);
-
-    // Execute
-    request.setName("Test:testDeployApplicationWithDuplicates-" +
-                              System.currentTimeMillis());
-    Feature nf = new Feature();
-    nf.setName("Test:testDeployApplicationWithDuplicates");
-    nf.setDescription("Tests the deployApplication method");
-    request.getFeature().add(nf);
-    request.getFeature().add(nf);
-    Option  no = new Option();
-    no.setName("Test:testOption");
-    no.setDescription("Test options");
-    no.setDataType("JSON");
-   
-    // no.setDefaultValue("{\"Name\"= \"Value\"}");
-    
-    request.getOption().add(no);
-    request.getOption().add(no);
-    Dataset  nd = new Dataset();
-    nd.setName("Test:testDataset");
-    nd.setDescription("Test datasets");
-    nd.setCategory("Test");
-    nd.setDiscriminator("Name=testRedeployApplication");
-    request.getDataset().add(nd);
-    request.getDataset().add(nd);
-
-    // Execute
-    try {
-      testSubject.deployApplication(request);
-      // Verify
-      fail("Expected IllegalArgumentException not reported");
-    } catch(EJBException | IllegalArgumentException e) {
-      System.out.println("Caught expected exception:" + e.getMessage());
-    }    
-	}
-
-	/**
-	 * Tests the deployApplication method
-	 */
-	@Test
-	public void testDeployMinimalisticApplication() 
-  {
-		// Setup
-    Application request =new Application();
-    request.setName("Test:testDeployMinimalisticApplication-" + 
-                              System.currentTimeMillis());
-
-    // Execute
-		testSubject.deployApplication(request);
-
-		// Verify
-		Application verify = testSubject.getDeploymentDescriptor(request.getName());
-		assertNotNull("Unexpected null response", verify);
-		assertEquals("Unexpected name", request.getName(), 
-                                    verify.getName());
-    assertTrue("Unexpected non-empty feature list", verify.getFeature().isEmpty());
-    assertTrue("Unexpected non-empty dataset list", verify.getDataset().isEmpty());
-    assertTrue("Unexpected non-empty option list", verify.getOption().isEmpty());
-	}
-
-	/**
-	 * Tests the deployApplication method
-	 */
-	@Test
-	public void testDeployFeaturesOnlyApplication() 
-  {
-		// Setup
-    Application request = new Application();
-    request.setName("Test:testDeployFeaturesOnlyApplication-" + 
-                              System.currentTimeMillis());
-    Feature nf = new Feature();
-    nf.setName("Test:testDeployFeaturesOnlyApplication");
-    nf.setDescription("Tests the deployApplication method");
-    request.getFeature().add(nf);
-
-    // Execute
-		testSubject.deployApplication(request);
-
-		// Verify
-		Application verify = testSubject.getDeploymentDescriptor(request.getName());
-		assertNotNull("Unexpected null response", verify);
-		assertEquals("Unexpected name", request.getName(), 
-                                    verify.getName());
-    assertFalse("Unexpected empty feature list", verify.getFeature().isEmpty());
-    assertTrue("Unexpected non-empty dataset list", verify.getDataset().isEmpty());
-    assertTrue("Unexpected non-empty option list", verify.getOption().isEmpty());
-	}
-
-	/**
-	 * Tests the undeployApplication method
-	 */
-	@Test
-	public void testUndeployApplication() 
-  {
-		// Setup
-		Application setup = testSubject.getDeploymentDescriptor("Quota");
-		assertNotNull("Unexpected null response", setup);
-		setup.setName("Test:testUndeployApplication-" + 
-                            System.currentTimeMillis());
-		testSubject.deployApplication(setup);
-
-    // Execute
-		testSubject.undeployApplication(setup.getName());
-
-		// Verify
-		Application verify = testSubject.getDeploymentDescriptor(setup.getName());
-		assertNull("Unexpected non null response", verify);
-	}
-  
-	/**
-	 * Tests the undeployApplication method with an invalid request
-	 */
-	@Test
-	public void testUndeployApplicationNotAllowed() 
-  {
-		// Setup
-		String request = "USM";
-		
-    // Execute
-    try {
-      testSubject.undeployApplication(request);
-      // Verify
-      fail("Expected IllegalArgumentException not reported");
-    } catch (EJBException | IllegalArgumentException e) {
-      System.out.println("Caught expected exception:" + e.getMessage());
+    @Test
+    @OperateOnDeployment("normal")
+    public void getDeploymentTest() {
+        Application application = getApplicationByName("USM");
+        assertNotNull(application);
     }
 
-		// Verify
-		Application verify = testSubject.getDeploymentDescriptor(request);
-		assertNotNull("Unexpected null response", verify);
-	}
-  
-	/**
-	 * Tests the redeployApplication method
-	 */
-	@Test
-	public void testRedeployApplicationRetainingAllDatasets() 
-  {
-		// Setup
-		Application request = testSubject.getDeploymentDescriptor("Quota");
-		String appName = "Test:testRedeployApplicationAddDetails-" + 
-                System.currentTimeMillis(); 
-		request.setName(appName);
-		testSubject.deployApplication(request);
-		
-	    Dataset  nd = new Dataset();
-	    nd.setName("Test:testDataset");
-	    nd.setDescription("Test datasets");
-	    nd.setCategory("Test");
-	    nd.setDiscriminator("Name=testRedeployApplication");
-	    request.getDataset().add(nd);
-	    
-	    Dataset  ndt = new Dataset();
-	    ndt.setName("Test:testDataset2");
-	    ndt.setDescription("Test datasets 2");
-	    ndt.setCategory("Test");
-	    ndt.setDiscriminator("Name=testRedeployApplication");
-	    request.getDataset().add(ndt);
-		
-		testSubject.deployDatasets(request);
-		
-		Application datasetsVerify = testSubject.getDeploymentDescriptor(appName);
-		assertNotNull("Unexpected null response", datasetsVerify);
-		assertEquals("Unexpected number of Datasets", 
-                 request.getDataset().size(), 
-                 datasetsVerify.getDataset().size());
+    @Test
+    @OperateOnDeployment("normal")
+    public void deployApplicationTest() {
+        Application application = getApplicationByName("Quota");
+        application.setName("Test:testDeployApplication-" + System.currentTimeMillis());
 
-		request = testSubject.getDeploymentDescriptor("Quota");
-		request.setName(appName);
-		request.setRetainDatasets(true);
-		
-	    // Execute
-		testSubject.redeployApplication(request);
-	
-		// Verify
-		Application verify = testSubject.getDeploymentDescriptor(request.getName());
-		assertNotNull("Unexpected null response", verify);
-	    assertEquals("Unexpected number of Features", 
-	                 request.getFeature().size(), 
-	                 verify.getFeature().size());
-	    assertEquals("Unexpected number of Options", 
-	                 request.getOption().size(), 
-	                 verify.getOption().size());
-	    assertEquals("Unexpected number of Datasets", 
-	    			datasetsVerify.getDataset().size(), 
-	                 verify.getDataset().size());
-	}
-	
-	@Test
-	public void testRedeployApplication() 
-  {
-		// Setup
-		Application request = testSubject.getDeploymentDescriptor("Quota");
-    request.setName("Test:testRedeployApplication-" + 
-                              System.currentTimeMillis());
-		testSubject.deployApplication(request);
+        Feature feature = new Feature();
+        feature.setName("Test:testDeployApplication");
+        feature.setDescription("Tests the deployApplication method");
+        application.getFeature().add(feature);
 
-    // Execute
-    request.getFeature().remove(0);
-    Feature nf = new Feature();
-    nf.setName("Test:testRedeployApplication");
-    nf.setDescription("Tests the undeployApplication method");
-    request.getFeature().add(nf);
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 
-    request.getOption().remove(0);
-    Option  no = new Option();
-    no.setName("Test:testOption");
-    no.setDescription("Test options");
-    no.setDataType("JSON");
-    
-    //no.setDefaultValue("{\"Name\"= \"Value\"}");
-   
-    request.getOption().add(no);
+        Application fetchedApp = getApplicationByName(application.getName());
 
-    request.getDataset().remove(0);
-    Dataset  nd = new Dataset();
-    nd.setName("Test:testDataset");
-    nd.setDescription("Test datasets");
-    nd.setCategory("Test");
-    nd.setDiscriminator("Name=testRedeployApplication");
-    request.getDataset().add(nd);
-    
-		testSubject.redeployApplication(request);
-
-		// Verify
-		Application verify = testSubject.getDeploymentDescriptor(request.getName());
-		assertNotNull("Unexpected null response", verify);
-    assertEquals("Unexpected number of Features", 
-                 request.getFeature().size(), 
-                 verify.getFeature().size());
-    assertEquals("Unexpected number of Options", 
-                 request.getOption().size(), 
-                 verify.getOption().size());
-    assertEquals("Unexpected number of Datasets", 
-                 request.getDataset().size(), 
-                 verify.getDataset().size());
-	}
-  
-	/**
-	 * Tests the redeployApplication method
-	 */
-	@Test
-	public void testRedeployApplicationNoChanges() 
-  {
-		// Setup
-		Application request = testSubject.getDeploymentDescriptor("Quota");
-		assertNotNull("Unexpected null response", request);
-		request.setName("Test:testRedeployApplicationNoChanges-" + 
-            System.currentTimeMillis());
-    
-		testSubject.deployApplication(request);
-
-		// Execute
-		testSubject.redeployApplication(request);
-
-		// Verify
-		Application verify = testSubject.getDeploymentDescriptor(request.getName());
-		assertNotNull("Unexpected null response", verify);
-    assertEquals("Unexpected number of Features", 
-                 request.getFeature().size(), 
-                 verify.getFeature().size());
-    assertEquals("Unexpected number of Options", 
-                 request.getOption().size(), 
-                 verify.getOption().size());
-    assertEquals("Unexpected number of Datasets", 
-                 request.getDataset().size(), 
-                 verify.getDataset().size());
-	}
-  
-	/**
-	 * Tests the redeployApplication method
-	 */
-	@Test
-	public void testRedeployApplicationAddDetails() 
-  {
-		// Setup
-		Application request = testSubject.getDeploymentDescriptor("Quota");
-		assertNotNull("Unexpected null response", request);
-    request.setName("Test:testRedeployApplicationAddDetails-" + 
-                              System.currentTimeMillis());
-		testSubject.deployApplication(request);
-
-    // Execute
-    Feature nf = new Feature();
-    nf.setName("Test:testRedeployApplication");
-    nf.setDescription("Tests the undeployApplication method");
-    request.getFeature().add(nf);
-
-    Option  no = new Option();
-    no.setName("Test:testOption");
-    no.setDescription("Test options");
-    no.setDataType("JSON");
-    
-    //no.setDefaultValue("{\"Name\"= \"Value\"}");
-    
-    request.getOption().add(no);
-
-    Dataset  nd = new Dataset();
-    nd.setName("Test:testDataset");
-    nd.setDescription("Test datasets");
-    nd.setCategory("Test");
-    nd.setDiscriminator("Name=testRedeployApplication");
-    request.getDataset().add(nd);
-    
-		testSubject.redeployApplication(request);
-
-		// Verify
-		Application verify =testSubject.getDeploymentDescriptor(request.getName());
-		assertNotNull("Unexpected null response", verify);
-    assertEquals("Unexpected number of Features", 
-                 request.getFeature().size(), 
-                 verify.getFeature().size());
-    assertEquals("Unexpected number of Options", 
-                 request.getOption().size(), 
-                 verify.getOption().size());
-    assertEquals("Unexpected number of Datasets", 
-                 request.getDataset().size(), 
-                 verify.getDataset().size());
-	}
-  
-	/**
-	 * Tests the redeployApplication method
-	 */
-	@Test
-	public void testRedeployApplicationUpdateDescriptions() 
-  {
-		// Setup
-		Application request = testSubject.getDeploymentDescriptor("Quota");
-		request.setName("Test:testRedeployApplicationUpdateDescriptions-" + 
-                              System.currentTimeMillis());
-		testSubject.deployApplication(request);
-
-    // Execute
-    for (Feature nf : request.getFeature()) {
-      nf.setDescription(UPDATED + nf.getDescription());
+        assertNotNull(fetchedApp);
+        assertEquals(application.getName(), fetchedApp.getName());
     }
-    for (Option  no : request.getOption()) {
-      no.setDescription(UPDATED + no.getDescription());
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void deployApplicationWithDuplicatesTest() {
+        Application application = getApplicationByName("Quota");
+
+        application.setName("Test:testDeployApplicationWithDuplicates-" + System.currentTimeMillis());
+        Feature feature = new Feature();
+        feature.setName("Test:testDeployApplicationWithDuplicates");
+        feature.setDescription("Tests the deployApplication method");
+
+        application.getFeature().add(feature);
+        application.getFeature().add(feature);
+
+        Option option = new Option();
+        option.setName("Test:testOption");
+        option.setDescription("Test options");
+        option.setDataType("JSON");
+
+        application.getOption().add(option);
+        application.getOption().add(option);
+
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
-    for (Dataset  nd : request.getDataset()) {
-      nd.setDescription(UPDATED + nd.getDescription());
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void deployMinimalisticApplicationTest() {
+        Application application = new Application();
+        application.setName("Test:testDeployMinimalisticApplication-" + System.currentTimeMillis());
+
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        Application fetchedApp = getApplicationByName(application.getName());
+        assertNotNull(fetchedApp);
+        assertEquals(application.getName(), fetchedApp.getName());
     }
-    
-		testSubject.redeployApplication(request);
 
-		// Verify
-		Application verify = testSubject.getDeploymentDescriptor(request.getName());
-		assertNotNull("Unexpected null response", verify);
-    assertEquals("Unexpected number of Features", 
-                 request.getFeature().size(), 
-                 verify.getFeature().size());
-    assertEquals("Unexpected number of Options", 
-                 request.getOption().size(), 
-                 verify.getOption().size());
-    assertEquals("Unexpected number of Datasets", 
-                 request.getDataset().size(), 
-                 verify.getDataset().size());
-    for (Feature nf : request.getFeature()) {
-      assertTrue("Unexpected description", 
-                 nf.getDescription().startsWith(UPDATED));
+    @Test
+    @OperateOnDeployment("normal")
+    public void deployFeaturesOnlyApplicationTest() {
+        Application application = new Application();
+        application.setName("Test:testDeployFeaturesOnlyApplication-" + System.currentTimeMillis());
+
+        Feature feature = new Feature();
+        feature.setName("Test:testDeployFeaturesOnlyApplication");
+        feature.setDescription("Tests the deployApplication method");
+        application.getFeature().add(feature);
+
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        Application fetchedApp = getApplicationByName(application.getName());
+
+        assertNotNull(fetchedApp);
+        assertEquals(application.getName(), fetchedApp.getName());
+        assertTrue(fetchedApp.getDataset().isEmpty());
+        assertTrue(fetchedApp.getOption().isEmpty());
+        assertFalse(fetchedApp.getFeature().isEmpty());
     }
-    for (Option  no : request.getOption()) {
-      assertTrue("Unexpected description", 
-                 no.getDescription().startsWith(UPDATED));
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void unDeployApplicationTest() {
+        Application application = getApplicationByName("Quota");
+        application.setName("Test:testUndeployApplication-" + System.currentTimeMillis());
+
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        Response delete = deleteApplication(application.getName());
+        assertEquals(Response.Status.OK.getStatusCode(), delete.getStatus());
+
+        Application fetchedApp = getApplicationByName(application.getName());
+        assertNull(fetchedApp);
     }
-    for (Dataset  nd : request.getDataset()) {
-      assertTrue("Unexpected description", 
-                 nd.getDescription().startsWith(UPDATED));
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void unDeployApplicationNotAllowedTest() {
+        String applicationName = "USM";
+        Response delete = deleteApplication(applicationName);
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), delete.getStatus());
     }
-  }
-  
-	/**
-	 * Tests the redeployApplication method
-	 */
-	@Test
-	public void testRedeployApplicationDropDetails() 
-  {
-		// Setup
-		Application request =testSubject.getDeploymentDescriptor("Quota");
-		assertNotNull("Unexpected null response", request);
-		
-    request.setName("Test:testRedeployApplicationDropDetails-" + 
-                              System.currentTimeMillis());
-		testSubject.deployApplication(request);
 
-    // Execute
-    request.getFeature().clear();
-    request.getOption().clear();
-    request.getDataset().clear();
-    
-		testSubject.redeployApplication(request);
+    @Test
+    @OperateOnDeployment("normal")
+    public void redeployApplicationRetainingAllDataSetsTest() {
+        // GET Quota Application
+        Application application = getApplicationByName("Quota");
 
-		// Verify
-		Application verify = testSubject.getDeploymentDescriptor(request.getName());
-		assertNotNull("Unexpected null response", verify);
-    assertEquals("Unexpected number of Features", 
-                 request.getFeature().size(), 
-                 verify.getFeature().size());
-    assertEquals("Unexpected number of Options", 
-                 request.getOption().size(), 
-                 verify.getOption().size());
-    assertEquals("Unexpected number of Datasets", 
-                 request.getDataset().size(), 
-                 verify.getDataset().size());
-	}
-  
-	/**
-	 * Tests the redeployApplication method
-	 */
-	@Test
-	public void testRedeployApplicationReplaceDetails() 
-  {
-		// Setup
-		Application request = testSubject.getDeploymentDescriptor("Quota");
-		assertNotNull("Unexpected null response", request);
-		request.setName("Test:testRedeployApplicationReplaceDetails-" + 
-                              System.currentTimeMillis());
-		testSubject.deployApplication(request);
+        String appName = "Test:testRedeployApplicationAddDetails-" + System.currentTimeMillis();
+        application.setName(appName);
 
-    // Execute
-    request.getFeature().clear();
-    request.getOption().clear();
-    request.getDataset().clear();
-    Feature nf = new Feature();
-    nf.setName("Test:testRedeployApplication");
-    nf.setDescription("Tests the undeployApplication method");
-    request.getFeature().add(nf);
+        // Update the name and create as new
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 
-    Option  no = new Option();
-    no.setName("Test:testOption");
-    no.setDescription("Test options");
-    no.setDataType("JSON");
-    
-    //no.setDefaultValue("{\"Name\"= \"Value\"}");
-    
-    request.getOption().add(no);
+        // Add 2 DataSets to Application
+        Dataset dataset1 = new Dataset();
+        dataset1.setName("Test:testDataset");
+        dataset1.setDescription("Test datasets");
+        dataset1.setCategory("Test");
+        dataset1.setDiscriminator("Name=testRedeployApplication");
+        application.getDataset().add(dataset1);
 
-    Dataset  nd = new Dataset();
-    nd.setName("Test:testDataset");
-    nd.setDescription("Test datasets");
-    nd.setCategory("Test");
-    nd.setDiscriminator("Name=testRedeployApplication");
-    request.getDataset().add(nd);
-    
-		testSubject.redeployApplication(request);
+        Dataset dataset2 = new Dataset();
+        dataset2.setName("Test:testDataset2");
+        dataset2.setDescription("Test datasets 2");
+        dataset2.setCategory("Test");
+        dataset2.setDiscriminator("Name=testRedeployApplication");
+        application.getDataset().add(dataset2);
 
-		// Verify
-		Application verify = testSubject.getDeploymentDescriptor(request.getName());
-		assertNotNull("Unexpected null response", verify);
-    assertEquals("Unexpected number of Features", 
-                 request.getFeature().size(), 
-                 verify.getFeature().size());
-    assertEquals("Unexpected number of Options", 
-                 request.getOption().size(), 
-                 verify.getOption().size());
-    assertEquals("Unexpected number of Datasets", 
-                 request.getDataset().size(), 
-                 verify.getDataset().size());
-	}
-  
-	/**
-	 * Tests the deployDatasets method
-	 */
-	@Test
-	public void testDeployDatasets() 
-  {
-		// Setup
-		Application request = new Application();
-    request.setName("Test:testDeployDatasets-" + System.currentTimeMillis());
-		testSubject.deployApplication(request);
+        // UPDATE Application with 2 DataSets
+        Response update = updateDataSets(application);
+        assertEquals(Response.Status.OK.getStatusCode(), update.getStatus());
 
-    // Execute
-    Dataset  nd = new Dataset();
-    nd.setName("Test:testDataset1");
-    nd.setDescription("Test dataset one");
-    nd.setCategory("Test");
-    nd.setDiscriminator("Name=testDeployDatasets1");
-    request.getDataset().add(nd);
-    nd = new Dataset();
-    nd.setName("Test:testDataset2");
-    nd.setDescription("Test dataset two");
-    nd.setCategory("Test");
-    nd.setDiscriminator("Name=testDeployDatasets2");
-    request.getDataset().add(nd);
-    
-		testSubject.deployDatasets(request);
+        // GET Quota application again
+        Application fetchedApp = getApplicationByName("Quota");
 
-		// Verify
-		Application verify = testSubject.getDeploymentDescriptor(request.getName());
-		assertNotNull("Unexpected null response", verify);
-    assertEquals("Unexpected number of Datasets", 
-                 request.getDataset().size(), 
-                 verify.getDataset().size());
-	}
-  
-	/**
-	 * Tests the deployDatasets method with an invalid request
-	 */
-	@Test
-	public void testDeployDatasetsWithDuplicates() 
-  {
-		// Setup
-		Application request = new Application();
-		request.setName("Test:testDeployDuplicateDatasets-" + 
-                              System.currentTimeMillis());
-		testSubject.deployApplication(request);
+        fetchedApp.setName(appName);
+        fetchedApp.setRetainDatasets(true);
 
-    Dataset nd = new Dataset();
-    nd.setName("Test:testDataset1");
-    nd.setDescription("Test dataset one");
-    nd.setCategory("Test");
-    nd.setDiscriminator("Name=testDeployDatasets1");
-    request.getDataset().add(nd);
-    nd = new Dataset();
-    nd.setName("Test:testDataset1");
-    nd.setDescription("Test dataset two");
-    nd.setCategory("Test");
-    nd.setDiscriminator("Name=testDeployDatasets2");
-    request.getDataset().add(nd);
+        // UPDATE Quota and setRetainDataSets
+        redeployApplication(fetchedApp);
 
-    // Execute
-    try {
-      testSubject.deployDatasets(request);
-      // Verify
-      fail("Expected IllegalArgumentException not reported");
-    } catch(EJBException | IllegalArgumentException e) {
-      System.out.println("Caught expected exception:" + e.getMessage());
+        // GET updated Quota Application
+        fetchedApp = getApplicationByName(fetchedApp.getName());
+
+        assertEquals(fetchedApp.getFeature().size(), application.getFeature().size());
+        assertEquals(fetchedApp.getDataset().size(), application.getDataset().size());
+        assertEquals(fetchedApp.getOption().size(), application.getOption().size());
     }
-	}
-  
-  
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void redeployApplicationTest() {
+        Application application = getApplicationByName("Quota");
+        application.setName("Test:testRedeployApplication-" + System.currentTimeMillis());
+
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        application.getFeature().remove(0);
+        Feature feature = new Feature();
+        feature.setName("Test:testRedeployApplication");
+        feature.setDescription("Tests the undeployApplication method");
+        application.getFeature().add(feature);
+
+        application.getOption().remove(0);
+        Option option = new Option();
+        option.setName("Test:testOption");
+        option.setDescription("Test options");
+        option.setDataType("JSON");
+        application.getOption().add(option);
+
+        application.getDataset().remove(0);
+        Dataset dataset = new Dataset();
+        dataset.setName("Test:testDataset");
+        dataset.setDescription("Test datasets");
+        dataset.setCategory("Test");
+        dataset.setDiscriminator("Name=testRedeployApplication");
+        application.getDataset().add(dataset);
+
+        Response update = redeployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), update.getStatus());
+
+        Application fetchedApp = getApplicationByName(application.getName());
+
+        assertNotNull(fetchedApp);
+        assertEquals(application.getOption().size(), fetchedApp.getOption().size());
+        assertEquals(application.getFeature().size(), fetchedApp.getFeature().size());
+        assertEquals(application.getDataset().size(), fetchedApp.getDataset().size());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void redeployApplicationNoChangesTest() {
+        Application application = getApplicationByName("Quota");
+        application.setName("Test:testRedeployApplicationNoChanges-" + System.currentTimeMillis());
+
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        Response update = redeployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), update.getStatus());
+
+        Application fetchedApp = getApplicationByName(application.getName());
+
+        assertNotNull(fetchedApp);
+        assertEquals(application.getOption().size(), fetchedApp.getOption().size());
+        assertEquals(application.getFeature().size(), fetchedApp.getFeature().size());
+        assertEquals(application.getDataset().size(), fetchedApp.getDataset().size());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void redeployApplicationAddDetailsTest() {
+        Application application = getApplicationByName("Quota");
+        application.setName("Test:testRedeployApplicationAddDetails-" + System.currentTimeMillis());
+
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        Feature feature = new Feature();
+        feature.setName("Test:testRedeployApplication");
+        feature.setDescription("Tests the undeployApplication method");
+        application.getFeature().add(feature);
+
+        Option option = new Option();
+        option.setName("Test:testOption");
+        option.setDescription("Test options");
+        option.setDataType("JSON");
+        application.getOption().add(option);
+
+        Dataset dataset = new Dataset();
+        dataset.setName("Test:testDataset");
+        dataset.setDescription("Test datasets");
+        dataset.setCategory("Test");
+        dataset.setDiscriminator("Name=testRedeployApplication");
+        application.getDataset().add(dataset);
+
+        Response update = redeployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), update.getStatus());
+
+        Application fetchedApp = getApplicationByName(application.getName());
+
+        assertNotNull(fetchedApp);
+        assertEquals(application.getOption().size(), fetchedApp.getOption().size());
+        assertEquals(application.getFeature().size(), fetchedApp.getFeature().size());
+        assertEquals(application.getDataset().size(), fetchedApp.getDataset().size());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void redeployApplicationUpdateDescriptionsTest() {
+        Application application = getApplicationByName("Quota");
+        application.setName("Test:testRedeployApplicationUpdateDescriptions-" + System.currentTimeMillis());
+
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        final String UPDATED = "Updated: ";
+
+        application.getFeature().forEach(f -> f.setDescription(UPDATED + f.getDescription()));
+        application.getOption().forEach(o -> o.setDescription(UPDATED + o.getDescription()));
+        application.getDataset().forEach(d -> d.setDescription(UPDATED + d.getDescription()));
+
+        Response update = redeployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), update.getStatus());
+
+        Application fetchedApp = getApplicationByName(application.getName());
+
+        fetchedApp.getFeature().forEach(f -> assertTrue(f.getDescription().startsWith(UPDATED)));
+        fetchedApp.getOption().forEach(o -> assertTrue(o.getDescription().startsWith(UPDATED)));
+        fetchedApp.getDataset().forEach(d -> assertTrue(d.getDescription().startsWith(UPDATED)));
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void redeployApplicationDropDetailsTest() {
+        Application application = getApplicationByName("Quota");
+        application.setName("Test:testRedeployApplicationDropDetails-" + System.currentTimeMillis());
+
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        application.getFeature().clear();
+        application.getOption().clear();
+        application.getDataset().clear();
+
+        Response update = redeployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), update.getStatus());
+
+        Application fetchedApp = getApplicationByName(application.getName());
+
+        assertTrue(fetchedApp.getFeature().isEmpty());
+        assertTrue(fetchedApp.getOption().isEmpty());
+        assertTrue(fetchedApp.getDataset().isEmpty());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void redeployApplicationReplaceDetailsTest() {
+        Application application = getApplicationByName("Quota");
+        application.setName("Test:testRedeployApplicationReplaceDetails-" + System.currentTimeMillis());
+
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        application.getFeature().clear();
+        application.getOption().clear();
+        application.getDataset().clear();
+
+        Feature feature = new Feature();
+        feature.setName("Test:testRedeployApplication");
+        feature.setDescription("Tests the undeployApplication method");
+        application.getFeature().add(feature);
+
+        Option option = new Option();
+        option.setName("Test:testOption");
+        option.setDescription("Test options");
+        option.setDataType("JSON");
+        application.getOption().add(option);
+
+        Dataset dataset = new Dataset();
+        dataset.setName("Test:testDataset");
+        dataset.setDescription("Test datasets");
+        dataset.setCategory("Test");
+        dataset.setDiscriminator("Name=testRedeployApplication");
+        application.getDataset().add(dataset);
+
+        Response update = redeployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), update.getStatus());
+
+        Application fetchedApp = getApplicationByName(application.getName());
+
+        assertEquals(application.getFeature().size(), fetchedApp.getFeature().size());
+        assertEquals(application.getOption().size(), fetchedApp.getOption().size());
+        assertEquals(application.getDataset().size(), fetchedApp.getDataset().size());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void deployDataSetsTest() {
+        Application application = new Application();
+        application.setName("Test:testDeployDatasets-" + System.currentTimeMillis());
+
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        Dataset dataset1 = new Dataset();
+        dataset1.setName("Test:testDataset1");
+        dataset1.setDescription("Test dataset one");
+        dataset1.setCategory("Test");
+        dataset1.setDiscriminator("Name=testDeployDatasets1");
+        application.getDataset().add(dataset1);
+
+        Dataset dataset2 = new Dataset();
+        dataset2.setName("Test:testDataset2");
+        dataset2.setDescription("Test dataset two");
+        dataset2.setCategory("Test");
+        dataset2.setDiscriminator("Name=testDeployDatasets2");
+        application.getDataset().add(dataset2);
+
+        Response update = updateDataSets(application);
+        assertEquals(Response.Status.OK.getStatusCode(), update.getStatus());
+
+        Application fetchedApp = getApplicationByName(application.getName());
+        assertEquals(application.getDataset().size(), fetchedApp.getDataset().size());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void deployDataSetsWithDuplicatesTest() {
+        Application application = new Application();
+        application.setName("Test:testDeployDuplicateDatasets-" + System.currentTimeMillis());
+
+        Response response = deployApplication(application);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        Dataset dataset1 = new Dataset();
+        dataset1.setName("Test:testDataset1");
+        dataset1.setDescription("Test dataset one");
+        dataset1.setCategory("Test");
+        dataset1.setDiscriminator("Name=testDeployDatasets1");
+        application.getDataset().add(dataset1);
+
+        Dataset dataset2 = new Dataset();
+        dataset2.setName("Test:testDataset1");
+        dataset2.setDescription("Test dataset two");
+        dataset2.setCategory("Test");
+        dataset2.setDiscriminator("Name=testDeployDatasets2");
+        application.getDataset().add(dataset2);
+
+        Response update = updateDataSets(application);
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), update.getStatus());
+    }
+
+    private Application getApplicationByName(String applicationName) {
+        return getWebTargetInternal()
+                .path(DEPLOYMENTS_ENDPOINT)
+                .path(applicationName)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getTokenInternalRest())
+                .get(Application.class);
+    }
+
+    private Response deployApplication(Application application) {
+        return getWebTargetInternal()
+                .path(DEPLOYMENTS_ENDPOINT)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getTokenInternalRest())
+                .post(Entity.json(application));
+    }
+
+    private Response redeployApplication(Application application) {
+        return getWebTargetInternal()
+                .path(DEPLOYMENTS_ENDPOINT)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getTokenInternalRest())
+                .put(Entity.json(application));
+    }
+
+    private Response deleteApplication(String applicationName) {
+        return getWebTargetInternal()
+                .path(DEPLOYMENTS_ENDPOINT)
+                .path(applicationName)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getTokenInternalRest())
+                .delete();
+    }
+
+    private Response updateDataSets(Application application) {
+        return getWebTargetInternal()
+                .path(DEPLOYMENTS_ENDPOINT)
+                .path("datasets")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getTokenInternalRest())
+                .put(Entity.json(application));
+    }
 }

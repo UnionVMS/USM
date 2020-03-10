@@ -40,8 +40,8 @@ public class AuthenticationFilter implements Filter {
   @EJB
   JwtTokenHandler tokenHandler;
 
-  @Inject 
-  BasicAuthenticationHandler basicHandler;
+  @Inject
+  private BasicAuthenticationHandler basicHandler;
   
   @EJB
   private AuthenticationService service;

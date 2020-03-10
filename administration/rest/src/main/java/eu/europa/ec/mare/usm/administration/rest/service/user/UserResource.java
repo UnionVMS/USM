@@ -1,51 +1,6 @@
 package eu.europa.ec.mare.usm.administration.rest.service.user;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Max;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.europa.ec.mare.usm.administration.domain.ChallengeInformation;
-import eu.europa.ec.mare.usm.administration.domain.ChallengeInformationResponse;
-import eu.europa.ec.mare.usm.administration.domain.ChangePassword;
-import eu.europa.ec.mare.usm.administration.domain.ComprehensiveUserContext;
-import eu.europa.ec.mare.usm.administration.domain.FindUserContextsQuery;
-import eu.europa.ec.mare.usm.administration.domain.FindUserPreferenceQuery;
-import eu.europa.ec.mare.usm.administration.domain.FindUsersQuery;
-import eu.europa.ec.mare.usm.administration.domain.GetUserQuery;
-import eu.europa.ec.mare.usm.administration.domain.NotificationQuery;
-import eu.europa.ec.mare.usm.administration.domain.PaginationResponse;
-import eu.europa.ec.mare.usm.administration.domain.Paginator;
-import eu.europa.ec.mare.usm.administration.domain.ResetPasswordQuery;
-import eu.europa.ec.mare.usm.administration.domain.ResetPasswordResponse;
-import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
-import eu.europa.ec.mare.usm.administration.domain.UserAccount;
-import eu.europa.ec.mare.usm.administration.domain.UserContext;
-import eu.europa.ec.mare.usm.administration.domain.UserContextResponse;
-import eu.europa.ec.mare.usm.administration.domain.UserPreferenceResponse;
+import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.rest.ResponseWrapper;
 import eu.europa.ec.mare.usm.administration.rest.ServiceArrayResponse;
 import eu.europa.ec.mare.usm.administration.rest.common.DateParser;
@@ -54,6 +9,22 @@ import eu.europa.ec.mare.usm.administration.service.user.ManageUserService;
 import eu.europa.ec.mare.usm.administration.service.user.ViewUsersService;
 import eu.europa.ec.mare.usm.administration.service.userContext.UserContextService;
 import eu.europa.ec.mare.usm.administration.service.userPreference.UserPreferenceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Max;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * REST Web Service implementation of the View/Manage User services
@@ -61,6 +32,8 @@ import eu.europa.ec.mare.usm.administration.service.userPreference.UserPreferenc
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 @Path("users")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
 
@@ -78,12 +51,6 @@ public class UserResource {
 
     @Context
     private HttpServletRequest servletRequest;
-
-    /**
-     * Creates a new instance
-     */
-    public UserResource() {
-    }
 
     /**
      * Retrieves a list of users(containing only the basic info) plus a total
@@ -112,16 +79,18 @@ public class UserResource {
      * code in case the end user is not authorised to perform the operation
      */
     @GET
-    @Produces("application/json")
     public Response findUsers(@HeaderParam("authorization") String jwtToken,
                               @HeaderParam("roleName") String roleName,
                               @HeaderParam("scopeName") String scopeName,
                               @DefaultValue("0") @QueryParam("offset") int offset,
                               @DefaultValue("10") @Max(100) @QueryParam("limit") int limit,
                               @DefaultValue("user_name") @QueryParam("sortColumn") String sortColumn,
-                              @DefaultValue("DESC") @QueryParam("sortDirection") String sortDirection, @QueryParam("user") String user,
-                              @QueryParam("nation") String nation, @QueryParam("organisation") String organisation,
-                              @QueryParam("activeFrom") String activeFrom, @QueryParam("activeTo") String activeTo,
+                              @DefaultValue("DESC") @QueryParam("sortDirection") String sortDirection,
+                              @QueryParam("user") String user,
+                              @QueryParam("nation") String nation,
+                              @QueryParam("organisation") String organisation,
+                              @QueryParam("activeFrom") String activeFrom,
+                              @QueryParam("activeTo") String activeTo,
                               @QueryParam("status") String status) {
         LOGGER.info("findUsers() - (ENTER)");
 
@@ -185,8 +154,6 @@ public class UserResource {
      * operation
      */
     @POST
-    @Consumes("application/json")
-    @Produces("application/json")
     public Response createUser(@HeaderParam("authorization") String jwtToken,
                                @HeaderParam("roleName") String roleName,
                                @HeaderParam("scopeName") String scopeName,
@@ -234,8 +201,6 @@ public class UserResource {
      * code in case the end user is not authorised to perform the operation
      */
     @PUT
-    @Consumes("application/json")
-    @Produces("application/json")
     public Response updateUser(@HeaderParam("authorization") String jwtToken,
                                @HeaderParam("roleName") String roleName,
                                @HeaderParam("scopeName") String scopeName,
@@ -285,8 +250,6 @@ public class UserResource {
      */
     @PUT
     @Path("password")
-    @Consumes("application/json")
-    @Produces("application/json")
     public Response changePassword(@HeaderParam("authorization") String jwtToken,
                                    @HeaderParam("roleName") String roleName,
                                    @HeaderParam("scopeName") String scopeName,
@@ -328,7 +291,6 @@ public class UserResource {
      */
     @GET
     @Path("{userName}")
-    @Produces("application/json")
     public Response getUser(@HeaderParam("authorization") String jwtToken,
                             @HeaderParam("roleName") String roleName,
                             @HeaderParam("scopeName") String scopeName,
@@ -378,7 +340,6 @@ public class UserResource {
      */
     @GET
     @Path("{userName}/userContexts")
-    @Produces("application/json")
     public Response getUserContexts(@HeaderParam("authorization") String jwtToken,
                                     @HeaderParam("roleName") String roleName,
                                     @HeaderParam("scopeName") String scopeName,
@@ -431,7 +392,6 @@ public class UserResource {
      */
     @DELETE
     @Path("{userName}/userContexts/{userContextId}")
-    @Produces("application/json")
     public Response deleteUserContext(@HeaderParam("authorization") String jwtToken,
                                       @HeaderParam("roleName") String roleName,
                                       @HeaderParam("scopeName") String scopeName,
@@ -476,7 +436,6 @@ public class UserResource {
      */
     @POST
     @Path("{userName}/userContexts")
-    @Produces("application/json")
     public Response createUserContext(@HeaderParam("authorization") String jwtToken,
                                       @HeaderParam("roleName") String roleName,
                                       @HeaderParam("scopeName") String scopeName,
@@ -529,7 +488,6 @@ public class UserResource {
      */
     @PUT
     @Path("{userName}/userContexts")
-    @Produces("application/json")
     public Response updateUserContext(@HeaderParam("authorization") String jwtToken,
                                       @HeaderParam("roleName") String roleName,
                                       @HeaderParam("scopeName") String scopeName,
@@ -581,7 +539,6 @@ public class UserResource {
      */
     @GET
     @Path("names")
-    @Produces("application/json")
     public Response getUsersNames(@HeaderParam("authorization") String jwtToken,
                                   @HeaderParam("roleName") String roleName,
                                   @HeaderParam("scopeName") String scopeName) {
@@ -635,7 +592,6 @@ public class UserResource {
      */
     @PUT
     @Path("{toUserName}/userPreferences")
-    @Produces("application/json")
     public Response copyUserProfiles(@HeaderParam("authorization") String jwtToken,
                                      @HeaderParam("roleName") String roleName,
                                      @HeaderParam("scopeName") String scopeName,
@@ -679,7 +635,6 @@ public class UserResource {
      */
     @GET
     @Path("{userName}/challenges")
-    @Produces("application/json")
     public Response getChallenges(@HeaderParam("authorization") String jwtToken,
                                   @PathParam("userName") String userName) {
         LOGGER.info("getChallenges() - (ENTER)");
@@ -724,7 +679,6 @@ public class UserResource {
      */
     @PUT
     @Path("{userName}/challenges")
-    @Produces("application/json")
     public Response setChallenges(@HeaderParam("authorization") String jwtToken,
                                   @PathParam("userName") String userName,
                                   ChallengeInformationResponse challengeInformationResponse) {
@@ -765,7 +719,6 @@ public class UserResource {
      */
     @GET
     @Path("{userName}/userPreferences")
-    @Produces("application/json")
     public Response getUserPreferences(@HeaderParam("authorization") String jwtToken,
                                        @HeaderParam("roleName") String roleName,
                                        @HeaderParam("scopeName") String scopeName,
@@ -806,15 +759,8 @@ public class UserResource {
      *
      * @param userName Name of the userName that is asking for a password reset
      */
-   /*
-  @POST
-  @Path("resetUserPassword")
-  @Produces("application/json")
-  public Response authenticate(String userName)
-   */
     @GET
     @Path("resetUserPassword")
-    @Produces("application/json")
     public Response resetUserPassword(@HeaderParam("userName") String userName)
             throws WebApplicationException {
         LOGGER.info("resetUserPassword() - (ENTER)");
@@ -897,7 +843,6 @@ public class UserResource {
 
     @PUT
     @Path("resetUserPassword")
-    @Produces("application/json")
     public Response resetUserPassword(@HeaderParam("userName") String userName, @HeaderParam("isTemporaryPassword") Boolean isTemporaryPassword,
                                       ChallengeInformationResponse challengeInformationResponse) {
         LOGGER.info("resetUserPassword() - (ENTER)");
@@ -937,8 +882,6 @@ public class UserResource {
 
     @GET
     @Path("passpolicy")
-    @Consumes("application/json")
-    @Produces("application/json")
     public Response getPasswordPolicy() {
         LOGGER.info("getPasswordPolicy() - (ENTER)");
 

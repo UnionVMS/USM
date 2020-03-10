@@ -1,22 +1,5 @@
 package eu.europa.ec.mare.usm.information.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.europa.ec.mare.usm.information.domain.deployment.Application;
 import eu.europa.ec.mare.usm.information.domain.deployment.Dataset;
 import eu.europa.ec.mare.usm.information.domain.deployment.Feature;
@@ -27,6 +10,14 @@ import eu.europa.ec.mare.usm.information.entity.FeatureEntity;
 import eu.europa.ec.mare.usm.information.entity.OptionEntity;
 import eu.europa.ec.mare.usm.information.service.DeploymentService;
 import eu.europa.ec.mare.usm.policy.service.impl.PolicyProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import java.util.*;
 
 /**
  * Stateless session bean implementation of the DeploymentService
@@ -35,17 +26,17 @@ import eu.europa.ec.mare.usm.policy.service.impl.PolicyProvider;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class DeploymentServiceBean implements DeploymentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeploymentServiceBean.class);
-    private static final String OPTION_VALUE_POLICY="option.valueSize";
-    private static final String INFORMATION_POLICY="Information";
-    
-    private int optionValuePolicy=50;
-    
+    private static final String OPTION_VALUE_POLICY = "option.valueSize";
+    private static final String INFORMATION_POLICY = "Information";
+
+    private int optionValuePolicy = 50;
+
     @EJB
     private ApplicationJpaDao jpaDao;
 
     @EJB
     private DeploymentValidator validator;
-    
+
     @EJB
     private PolicyProvider policyProvider;
 
@@ -54,12 +45,12 @@ public class DeploymentServiceBean implements DeploymentService {
             throws IllegalArgumentException, RuntimeException {
         LOGGER.info("deployApplication(" + request + ") - (ENTER)");
 
-        validator.assertValid(request,  true);
+        validator.assertValid(request, true);
 
         Properties props = policyProvider.getProperties(INFORMATION_POLICY);
         optionValuePolicy = policyProvider.getIntProperty(props, OPTION_VALUE_POLICY, optionValuePolicy);
-     
-        LOGGER.info("Deploy application policy provider "+optionValuePolicy);
+
+        LOGGER.info("Deploy application policy provider " + optionValuePolicy);
         String appName = request.getName();
         ApplicationEntity check = jpaDao.read(appName);
         if (check != null) {
@@ -67,7 +58,7 @@ public class DeploymentServiceBean implements DeploymentService {
         }
 
         ApplicationEntity entity = convert(request);
-       // entity.setCreatedBy(request.getRequester());
+        // entity.setCreatedBy(request.getRequester());
         entity.setCreatedOn(new Date());
 
         jpaDao.create(entity);
@@ -77,19 +68,19 @@ public class DeploymentServiceBean implements DeploymentService {
 
     @Override
     public void redeployApplication(Application request)
-            throws IllegalArgumentException,  RuntimeException {
+            throws IllegalArgumentException, RuntimeException {
         LOGGER.info("redeployApplication(" + request + ") - (ENTER)");
 
-        validator.assertValid(request,  true);
+        validator.assertValid(request, true);
 
         String appName = request.getName();
         ApplicationEntity entity = jpaDao.readApplication(appName);
         if (entity == null) {
             entity = new ApplicationEntity();
-           // entity.setCreatedBy(request.getRequester());
+            // entity.setCreatedBy(request.getRequester());
             entity.setCreatedOn(new Date());
         } else {
-          //  entity.setModifiedBy(request.getRequester());
+            //  entity.setModifiedBy(request.getRequester());
             entity.setModifiedOn(new Date());
         }
         entity = update(entity, request);
@@ -114,13 +105,13 @@ public class DeploymentServiceBean implements DeploymentService {
 
         validator.assertValidDatasets(request);
 
-       
+
         ApplicationEntity entity = jpaDao.readApplication(request.getName());
         if (entity == null) {
             throw new IllegalArgumentException("Application " + request.getName() +
                     " does not exist");
         }
-       // entity.setModifiedBy(request.getRequester());
+        // entity.setModifiedBy(request.getRequester());
         entity.setModifiedOn(new Date());
 
         entity = updateDatasets(entity, request);
@@ -158,7 +149,7 @@ public class DeploymentServiceBean implements DeploymentService {
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public Application getDeploymentDescriptor(String appName)
-            throws IllegalArgumentException,  RuntimeException {
+            throws IllegalArgumentException, RuntimeException {
         LOGGER.info("getDeploymentDescriptor(" + appName + ") - (ENTER)");
 
         validator.assertValidApplication(appName);
@@ -179,8 +170,8 @@ public class DeploymentServiceBean implements DeploymentService {
                                                  Application src) {
         ApplicationEntity ret = new ApplicationEntity();
 
-        if(src.isRetainDatasets() == null || !src.isRetainDatasets()){
-        	if (entity.getDatasetList() != null) {
+        if (src.isRetainDatasets() == null || !src.isRetainDatasets()) {
+            if (entity.getDatasetList() != null) {
                 ret.setDatasetList(new ArrayList<DatasetEntity>());
                 Iterator<DatasetEntity> i = entity.getDatasetList().iterator();
                 while (i.hasNext()) {
@@ -310,7 +301,7 @@ public class DeploymentServiceBean implements DeploymentService {
                     o.setName(oe.getName());
                     o.setDescription(oe.getDescription());
                     o.setDataType(oe.getDataType());
-                    o.setDefaultValue(oe.getDefaultValue()!=null?new String(oe.getDefaultValue()):null);
+                    o.setDefaultValue(oe.getDefaultValue() != null ? new String(oe.getDefaultValue()) : null);
 
                     ret.getOption().add(o);
                 }
@@ -330,21 +321,21 @@ public class DeploymentServiceBean implements DeploymentService {
         return ret;
     }
 
-    private ApplicationEntity update(ApplicationEntity ret, Application src) {
-        ret.setName(src.getName());
-        ret.setDescription(src.getDescription());
+    private ApplicationEntity update(ApplicationEntity target, Application source) {
+        target.setName(source.getName());
+        target.setDescription(source.getDescription());
 
-        String parentName = src.getParent();
+        String parentName = source.getParent();
         if (parentName != null) {
             ApplicationEntity parentEntity = jpaDao.readApplication(parentName);
-            ret.setParentApplication(parentEntity);
+            target.setParentApplication(parentEntity);
         }
 
-        ret = updateFeatures(ret, src);
-        ret = updateDatasets(ret, src);
-        ret = updateOptions(ret, src);
+        target = updateFeatures(target, source);
+        target = updateDatasets(target, source);
+        target = updateOptions(target, source);
 
-        return ret;
+        return target;
     }
 
     private ApplicationEntity updateFeatures(ApplicationEntity ret, Application src) {
@@ -379,12 +370,11 @@ public class DeploymentServiceBean implements DeploymentService {
             }
 
             for (Option oe : src.getOption()) {
-            	if (oe.getDefaultValue()!=null &&oe.getDefaultValue().getBytes().length>=optionValuePolicy*1024)
-            	{
-            		throw new IllegalArgumentException ("The value of the option "+oe.getName()+ " is greater than the accepted limit "+optionValuePolicy);
-            	}
-            	
-            	
+                if (oe.getDefaultValue() != null && oe.getDefaultValue().getBytes().length >= optionValuePolicy * 1024) {
+                    throw new IllegalArgumentException("The value of the option " + oe.getName() + " is greater than the accepted limit " + optionValuePolicy);
+                }
+
+
                 OptionEntity o = findOptionEntity(oe.getName(), ret.getOptionList());
                 if (o == null) {
                     o = new OptionEntity();
@@ -393,7 +383,7 @@ public class DeploymentServiceBean implements DeploymentService {
                 }
                 o.setDescription(oe.getDescription());
                 o.setDataType(oe.getDataType());
-                o.setDefaultValue(oe.getDefaultValue()!=null?oe.getDefaultValue().getBytes():null);
+                o.setDefaultValue(oe.getDefaultValue() != null ? oe.getDefaultValue().getBytes() : null);
                 o.setGroupName(oe.getGroup());
             }
         }
@@ -401,11 +391,10 @@ public class DeploymentServiceBean implements DeploymentService {
         return ret;
     }
 
-    private ApplicationEntity updateDatasets(ApplicationEntity ret,
-                                             Application src) {
+    private ApplicationEntity updateDatasets(ApplicationEntity ret, Application src) {
         if (!src.getDataset().isEmpty()) {
             List<DatasetEntity> lst = ret.getDatasetList();
-            ret.setDatasetList(new ArrayList<DatasetEntity>());
+            ret.setDatasetList(new ArrayList<>());
             if (lst != null && !lst.isEmpty()) {
                 ret.getDatasetList().addAll(lst);
             }

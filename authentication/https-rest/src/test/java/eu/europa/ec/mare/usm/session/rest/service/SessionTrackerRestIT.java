@@ -1,108 +1,118 @@
 package eu.europa.ec.mare.usm.session.rest.service;
 
+import com.sun.jersey.api.client.ClientResponse;
+import eu.europa.ec.mare.usm.BuildAuthenticationHttpsRestDeployment;
+import eu.europa.ec.mare.usm.authentication.domain.StatusResponse;
+import eu.europa.ec.mare.usm.session.domain.SessionIdWrapper;
 import eu.europa.ec.mare.usm.session.domain.SessionInfo;
+import org.jboss.arquillian.container.test.api.OperateOnDeployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetAddress;
-import java.util.Properties;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import org.junit.Before;
-import org.junit.Test;
 
-/**
- * Unit test for the REST implementation of the SessionTracker.
- */
-public class SessionTrackerRestIT {
-  private SessionTrackerRestClient testSubject = null;
-  private final String endPoint;
-  private String userSite = null;
+@RunWith(Arquillian.class)
+public class SessionTrackerRestIT extends BuildAuthenticationHttpsRestDeployment {
+    private String userSite;
 
-  /**
-   * Creates a new instance.
-   * 
-   * @throws IOException if class-path resource /test.properties can't be 
-   * accessed
-   */
-  public SessionTrackerRestIT() 
-  throws IOException 
-  {
-    userSite = InetAddress.getLocalHost().getHostAddress();
+    public SessionTrackerRestIT() throws IOException {
+        userSite = InetAddress.getLocalHost().getHostAddress();
+    }
 
-    InputStream is = getClass().getResourceAsStream("/test.properties");
-    Properties props = new Properties();
-    props.load(is);
-    endPoint = props.getProperty("rest.endpoint");
-  }
+    @Test
+    @OperateOnDeployment("normal")
+    public void testStartSessionOneSite() {
+        // Execute
+        SessionInfo sessionId = createSessionInfo("testStartSession");
 
-  @Before
-  public void setUp()
-  {
-    testSubject = new SessionTrackerRestClient(endPoint);
-  }
+        String result = startSession(sessionId);
 
-  
-  /**
-   * Tests the startSession method.
-   */
-  @Test
-  public void testStartSessionOneSite() 
-  {
-    // Execute
-    SessionInfo sessionId = createSessionInfo("testStartSession");
-    
-    String result = testSubject.startSession(sessionId);
-    
-    // Verify
-    assertNotNull("Unexpected null result", result);
-  }
+        // Verify
+        assertNotNull("Unexpected null result", result);
+    }
 
-  /**
-   * Tests the getSession method.
-   */
-  @Test
-  public void testGetSession() 
-  {
-    // Set-up
-    SessionInfo sessionInfo = createSessionInfo("testGetSession");
-    String uniqueId = testSubject.startSession(sessionInfo);
+    @Test
+    @OperateOnDeployment("normal")
+    public void testGetSession() {
+        // Set-up
+        SessionInfo sessionInfo = createSessionInfo("testGetSession");
+        String uniqueId = startSession(sessionInfo);
 
-    // Execute
-    SessionInfo result = testSubject.getSession(uniqueId);
-    
-    // Verify
-    assertNotNull("Unexpected null result", result);
-    assertEquals("Unexpected userName value", sessionInfo.getUserName(), result.getUserName());
-    assertEquals("Unexpected userSite value", sessionInfo.getUserSite(), result.getUserSite());
-  }
-  
-  /**
-   * Tests the endSession method.
-   */
-  @Test
-  public void testEndSession() 
-  {
-    // Set-up
-    SessionInfo sessionInfo = createSessionInfo("testEndSession");
-    String uniqueId = testSubject.startSession(sessionInfo);
+        // Execute
+        SessionInfo result = getSession(uniqueId);
 
-    // Execute
-    testSubject.endSession(uniqueId);
-  }
-  
-  SessionInfo createSessionInfo(String userName)
-  {
-    return createSessionInfo(userName, userSite);
-  }
-  
-  SessionInfo createSessionInfo(String userName, String userSite)
-  {
-    SessionInfo ret = new SessionInfo();
-    
-    ret.setUserName(userName);
-    ret.setUserSite(userSite);
-    
-    return ret;
-  }
- 
+        // Verify
+        assertNotNull("Unexpected null result", result);
+        assertEquals("Unexpected userName value", sessionInfo.getUserName(), result.getUserName());
+        assertEquals("Unexpected userSite value", sessionInfo.getUserSite(), result.getUserSite());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testEndSession() {
+        // Set-up
+        SessionInfo sessionInfo = createSessionInfo("testEndSession");
+        String uniqueId = startSession(sessionInfo);
+
+        // Execute
+        Response response = endSession(uniqueId);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+
+    SessionInfo createSessionInfo(String userName) {
+        SessionInfo sessionInfo = new SessionInfo();
+        sessionInfo.setUserName(userName);
+        sessionInfo.setUserSite(userSite);
+        return sessionInfo;
+    }
+
+    private SessionInfo getSession(String userNameToken) {
+        return getWebTargetInternal()
+                .path("sessions")
+                .path(userNameToken)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getTokenInternalRest())
+                .get(SessionInfo.class);
+    }
+
+    private String startSession(SessionInfo request) {
+        SessionIdWrapper response = getWebTargetInternal()
+                .path("sessions")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getTokenInternalRest())
+                .post(Entity.json(request), SessionIdWrapper.class);
+        return response.getSessionId();
+    }
+
+    private Response endSession(String userNameToken) {
+        return getWebTargetInternal()
+                .path("sessions")
+                .path(userNameToken)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getTokenInternalRest())
+                .delete();
+    }
+
+    private void handleError(ClientResponse cr) throws RuntimeException {
+        if (ClientResponse.Status.BAD_REQUEST == cr.getStatusInfo()) {
+            StatusResponse sr = cr.getEntity(StatusResponse.class);
+            throw new IllegalArgumentException(sr.getMessage());
+        } else if (ClientResponse.Status.CONFLICT == cr.getStatusInfo()) {
+            StatusResponse sr = cr.getEntity(StatusResponse.class);
+            throw new IllegalStateException(sr.getMessage());
+        } else if (ClientResponse.Status.INTERNAL_SERVER_ERROR == cr.getStatusInfo()) {
+            StatusResponse sr = cr.getEntity(StatusResponse.class);
+            throw new RuntimeException(sr.getMessage());
+        }
+    }
+
 }

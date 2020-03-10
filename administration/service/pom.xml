@@ -10,11 +10,6 @@
 	<artifactId>Administration-Service</artifactId>
 	<packaging>jar</packaging>
 	
-	<properties>
-        <docker.dev.stop.phase>verify</docker.dev.stop.phase>
-        <docker.dev.prestop.phase>install</docker.dev.prestop.phase>        	
-    </properties>
-	
 	<dependencies>
 		<dependency>
 			<groupId>eu.europa.ec.mare.usm</groupId>
@@ -31,8 +26,13 @@
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+			<artifactId>uvms-commons-date</artifactId>
+			<version>${uvms.commons.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
 			<artifactId>uvms-commons-message</artifactId>
-			<version>4.1.5</version>
+			<version>${uvms.commons.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>commons-logging</groupId>

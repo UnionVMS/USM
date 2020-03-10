@@ -184,14 +184,69 @@
 		<dependency>
 			<groupId>eu.europa.ec.mare.usm</groupId>
 			<artifactId>Information-Service</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.jaxrs</groupId>
-			<artifactId>jackson-jaxrs-json-provider</artifactId>
-			<version>${jackson.version}</version>
-			<scope>provided</scope>
+			<groupId>fish.focus.uvms.maven</groupId>
+			<artifactId>uvms-pom-arquillian-deps</artifactId>
+			<type>pom</type>
+			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms</groupId>
+			<artifactId>usm4uvms</artifactId>
+			<version>${usm4uvms.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-jaxrs</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.sf.ehcache</groupId>
+					<artifactId>ehcache</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+					<artifactId>uvms-commons-message</artifactId>
+				</exclusion>
+			</exclusions>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+			<artifactId>uvms-commons-message</artifactId>
+			<version>${uvms.commons.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>2.30</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.inject</groupId>
+			<artifactId>jersey-hk2</artifactId>
+			<version>2.30</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-binding</artifactId>
+			<version>2.30</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+			<artifactId>uvms-commons-date</artifactId>
+			<version>${uvms.commons.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-client</artifactId>
