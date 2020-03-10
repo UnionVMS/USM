@@ -237,6 +237,7 @@
 					<artifactId>uvms-commons-message</artifactId>
 				</exclusion>
 			</exclusions>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>

@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
 import javax.ejb.EJB;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Random;
 
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.junit.Assert.*;
@@ -206,8 +205,7 @@ public class OrganisationResourceTest extends BuildAdministrationDeployment {
     private EndPointContact assignContactRequest(String jwtToken) {
         EndPoint endPoint = testHelper.findOrganisationEndPoint(ORGANISATION_GRC, ENDPOINT_NAME_GRC_BACK, jwtToken);
         EndPointContact contact = new EndPointContact();
-        long personId = new Random().nextLong();
-        contact.setPersonId(personId);
+        contact.setPersonId(4L);
         contact.setEndPointId(endPoint.getEndpointId());
         return contact;
     }
