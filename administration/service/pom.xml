@@ -10,11 +10,6 @@
 	<artifactId>Administration-Service</artifactId>
 	<packaging>jar</packaging>
 	
-	<properties>
-        <docker.dev.stop.phase>verify</docker.dev.stop.phase>
-        <docker.dev.prestop.phase>install</docker.dev.prestop.phase>        	
-    </properties>
-	
 	<dependencies>
 		<dependency>
 			<groupId>eu.europa.ec.mare.usm</groupId>

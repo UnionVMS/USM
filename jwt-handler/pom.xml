@@ -8,6 +8,11 @@
 		<artifactId>backend-modules</artifactId>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
+
+	<properties>
+		<docker.dev.stop.phase>verify</docker.dev.stop.phase>
+		<docker.dev.prestop.phase>install</docker.dev.prestop.phase>
+	</properties>
 	
 	<version>2.2.2-SNAPSHOT</version>
 	<artifactId>jwt-handler</artifactId>
