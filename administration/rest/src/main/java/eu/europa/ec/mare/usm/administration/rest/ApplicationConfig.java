@@ -30,7 +30,6 @@ public class ApplicationConfig extends Application {
         resources.add(eu.europa.ec.mare.usm.administration.rest.service.role.RoleResource.class);
         resources.add(eu.europa.ec.mare.usm.administration.rest.service.scope.ScopeResource.class);
         resources.add(eu.europa.ec.mare.usm.administration.rest.service.user.LdapUserResource.class);
-        resources.add(eu.europa.ec.mare.usm.administration.rest.service.user.UserProfileResource.class);
         resources.add(eu.europa.ec.mare.usm.administration.rest.service.user.UserResource.class);
     }
 
