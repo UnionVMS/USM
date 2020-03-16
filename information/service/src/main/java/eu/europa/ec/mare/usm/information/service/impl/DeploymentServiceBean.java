@@ -18,6 +18,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * Stateless session bean implementation of the DeploymentService
@@ -41,8 +42,7 @@ public class DeploymentServiceBean implements DeploymentService {
     private PolicyProvider policyProvider;
 
     @Override
-    public void deployApplication(Application request)
-            throws IllegalArgumentException, RuntimeException {
+    public void deployApplication(Application request) throws IllegalArgumentException, RuntimeException {
         LOGGER.info("deployApplication(" + request + ") - (ENTER)");
 
         validator.assertValid(request, true);
@@ -67,8 +67,7 @@ public class DeploymentServiceBean implements DeploymentService {
     }
 
     @Override
-    public void redeployApplication(Application request)
-            throws IllegalArgumentException, RuntimeException {
+    public void redeployApplication(Application request) throws IllegalArgumentException, RuntimeException {
         LOGGER.info("redeployApplication(" + request + ") - (ENTER)");
 
         validator.assertValid(request, true);
@@ -77,10 +76,8 @@ public class DeploymentServiceBean implements DeploymentService {
         ApplicationEntity entity = jpaDao.readApplication(appName);
         if (entity == null) {
             entity = new ApplicationEntity();
-            // entity.setCreatedBy(request.getRequester());
             entity.setCreatedOn(new Date());
         } else {
-            //  entity.setModifiedBy(request.getRequester());
             entity.setModifiedOn(new Date());
         }
         entity = update(entity, request);
@@ -94,27 +91,22 @@ public class DeploymentServiceBean implements DeploymentService {
             jpaDao.update(entity);
             jpaDao.deleteDetails(obsolete);
         }
-
         LOGGER.info("redeployApplication() - (LEAVE)");
     }
 
     @Override
-    public void deployDatasets(Application request)
-            throws IllegalArgumentException, RuntimeException {
+    public void deployDatasets(Application request) throws IllegalArgumentException, RuntimeException {
         LOGGER.info("deployDatasets(" + request + ") - (ENTER)");
 
         validator.assertValidDatasets(request);
 
-
         ApplicationEntity entity = jpaDao.readApplication(request.getName());
         if (entity == null) {
-            throw new IllegalArgumentException("Application " + request.getName() +
-                    " does not exist");
+            throw new IllegalArgumentException("Application " + request.getName() + " does not exist");
         }
-        // entity.setModifiedBy(request.getRequester());
         entity.setModifiedOn(new Date());
 
-        entity = updateDatasets(entity, request);
+        updateDatasets(entity, request);
 
         checkForDuplicateDetails(entity);
 
@@ -124,8 +116,7 @@ public class DeploymentServiceBean implements DeploymentService {
     }
 
     @Override
-    public void undeployApplication(String appName)
-            throws IllegalArgumentException, RuntimeException {
+    public void undeployApplication(String appName) throws IllegalArgumentException, RuntimeException {
         LOGGER.info("undeployApplication(" + appName + ") - (ENTER)");
 
         validator.assertValidApplication(appName);
@@ -140,7 +131,6 @@ public class DeploymentServiceBean implements DeploymentService {
             throw new IllegalArgumentException(appName + " may not be undeployed as it has " +
                     "children");
         }
-
         jpaDao.delete(appName);
 
         LOGGER.info("undeployApplication() - (LEAVE)");
@@ -148,8 +138,7 @@ public class DeploymentServiceBean implements DeploymentService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public Application getDeploymentDescriptor(String appName)
-            throws IllegalArgumentException, RuntimeException {
+    public Application getDeploymentDescriptor(String appName) throws IllegalArgumentException, RuntimeException {
         LOGGER.info("getDeploymentDescriptor(" + appName + ") - (ENTER)");
 
         validator.assertValidApplication(appName);
@@ -165,19 +154,15 @@ public class DeploymentServiceBean implements DeploymentService {
         return ret;
     }
 
-
-    private ApplicationEntity getObsoleteDetails(ApplicationEntity entity,
-                                                 Application src) {
+    private ApplicationEntity getObsoleteDetails(ApplicationEntity entity, Application src) {
         ApplicationEntity ret = new ApplicationEntity();
 
         if (src.isRetainDatasets() == null || !src.isRetainDatasets()) {
             if (entity.getDatasetList() != null) {
-                ret.setDatasetList(new ArrayList<DatasetEntity>());
-                Iterator<DatasetEntity> i = entity.getDatasetList().iterator();
-                while (i.hasNext()) {
-                    DatasetEntity e = i.next();
-                    if (e.getDatasetId() != null &&
-                            findDataset(e.getName(), src.getDataset()) == null) {
+                ret.setDatasetList(new ArrayList<>());
+                for (DatasetEntity e : entity.getDatasetList()) {
+                    Predicate<Dataset> filter = ds -> ds.getName().equalsIgnoreCase(e.getName());
+                    if (e.getDatasetId() != null && findInList(src.getDataset(), filter) == null) {
                         DatasetEntity n = new DatasetEntity();
                         n.setDatasetId(e.getDatasetId());
                         ret.getDatasetList().add(n);
@@ -187,12 +172,10 @@ public class DeploymentServiceBean implements DeploymentService {
         }
 
         if (entity.getFeatureList() != null) {
-            ret.setFeatureList(new ArrayList<FeatureEntity>());
-            Iterator<FeatureEntity> i = entity.getFeatureList().iterator();
-            while (i.hasNext()) {
-                FeatureEntity e = i.next();
-                if (e.getFeatureId() != null &&
-                        findFeature(e.getName(), src.getFeature()) == null) {
+            ret.setFeatureList(new ArrayList<>());
+            for (FeatureEntity e : entity.getFeatureList()) {
+                Predicate<Feature> filter = f -> f.getName().equalsIgnoreCase(e.getName());
+                if (e.getFeatureId() != null && findInList(src.getFeature(), filter) == null) {
                     FeatureEntity n = new FeatureEntity();
                     n.setFeatureId(e.getFeatureId());
                     ret.getFeatureList().add(n);
@@ -201,12 +184,10 @@ public class DeploymentServiceBean implements DeploymentService {
         }
 
         if (entity.getOptionList() != null) {
-            ret.setOptionList(new ArrayList<OptionEntity>());
-            Iterator<OptionEntity> i = entity.getOptionList().iterator();
-            while (i.hasNext()) {
-                OptionEntity e = i.next();
-                if (e.getOptionId() != null &&
-                        findOption(e.getName(), src.getOption()) == null) {
+            ret.setOptionList(new ArrayList<>());
+            for (OptionEntity e : entity.getOptionList()) {
+                Predicate<Option> filter = o -> o.getName().equalsIgnoreCase(e.getName());
+                if (e.getOptionId() != null && findInList(src.getOption(), filter) == null) {
                     OptionEntity n = new OptionEntity();
                     n.setOptionId(e.getOptionId());
                     ret.getOptionList().add(n);
@@ -224,8 +205,7 @@ public class DeploymentServiceBean implements DeploymentService {
             for (int i = 0; i < src.getDatasetList().size(); i++) {
                 DatasetEntity item = src.getDatasetList().get(i);
                 if (set.contains(item.getName())) {
-                    throw new IllegalArgumentException("Dataset " + item.getName() +
-                            " already defined");
+                    throw new IllegalArgumentException("Dataset " + item.getName() + " already defined");
                 } else {
                     set.add(item.getName());
                 }
@@ -238,8 +218,7 @@ public class DeploymentServiceBean implements DeploymentService {
             for (int i = 0; i < src.getFeatureList().size(); i++) {
                 FeatureEntity item = src.getFeatureList().get(i);
                 if (set.contains(item.getName())) {
-                    throw new IllegalArgumentException("Feature " + item.getName() +
-                            " already defined");
+                    throw new IllegalArgumentException("Feature " + item.getName() + " already defined");
                 } else {
                     set.add(item.getName());
                 }
@@ -252,15 +231,13 @@ public class DeploymentServiceBean implements DeploymentService {
             for (int i = 0; i < src.getOptionList().size(); i++) {
                 OptionEntity item = src.getOptionList().get(i);
                 if (set.contains(item.getName())) {
-                    throw new IllegalArgumentException("Option " + item.getName() +
-                            " already defined");
+                    throw new IllegalArgumentException("Option " + item.getName() + " already defined");
                 } else {
                     set.add(item.getName());
                 }
             }
         }
     }
-
 
     private Application convert(ApplicationEntity src) {
         Application ret = null;
@@ -331,23 +308,24 @@ public class DeploymentServiceBean implements DeploymentService {
             target.setParentApplication(parentEntity);
         }
 
-        target = updateFeatures(target, source);
-        target = updateDatasets(target, source);
-        target = updateOptions(target, source);
+        updateFeatures(target, source);
+        updateDatasets(target, source);
+        updateOptions(target, source);
 
         return target;
     }
 
-    private ApplicationEntity updateFeatures(ApplicationEntity ret, Application src) {
+    private void updateFeatures(ApplicationEntity ret, Application src) {
         if (!src.getFeature().isEmpty()) {
             List<FeatureEntity> lst = ret.getFeatureList();
-            ret.setFeatureList(new ArrayList<FeatureEntity>());
+            ret.setFeatureList(new ArrayList<>());
             if (lst != null && !lst.isEmpty()) {
                 ret.getFeatureList().addAll(lst);
             }
 
             for (Feature fe : src.getFeature()) {
-                FeatureEntity f = findFeatureEntity(fe.getName(), ret.getFeatureList());
+                Predicate<FeatureEntity> filter = f -> f.getName().equalsIgnoreCase(fe.getName());
+                FeatureEntity f = findInList(ret.getFeatureList(), filter);
                 if (f == null) {
                     f = new FeatureEntity();
                     f.setName(fe.getName());
@@ -357,14 +335,12 @@ public class DeploymentServiceBean implements DeploymentService {
                 f.setGroupName(fe.getGroup());
             }
         }
-
-        return ret;
     }
 
-    private ApplicationEntity updateOptions(ApplicationEntity ret, Application src) {
+    private void updateOptions(ApplicationEntity ret, Application src) {
         if (!src.getOption().isEmpty()) {
             List<OptionEntity> lst = ret.getOptionList();
-            ret.setOptionList(new ArrayList<OptionEntity>());
+            ret.setOptionList(new ArrayList<>());
             if (lst != null && !lst.isEmpty()) {
                 ret.getOptionList().addAll(lst);
             }
@@ -374,8 +350,8 @@ public class DeploymentServiceBean implements DeploymentService {
                     throw new IllegalArgumentException("The value of the option " + oe.getName() + " is greater than the accepted limit " + optionValuePolicy);
                 }
 
-
-                OptionEntity o = findOptionEntity(oe.getName(), ret.getOptionList());
+                Predicate<OptionEntity> filter = o -> o.getName().equalsIgnoreCase(oe.getName());
+                OptionEntity o = findInList(ret.getOptionList(), filter);
                 if (o == null) {
                     o = new OptionEntity();
                     o.setName(oe.getName());
@@ -387,11 +363,9 @@ public class DeploymentServiceBean implements DeploymentService {
                 o.setGroupName(oe.getGroup());
             }
         }
-
-        return ret;
     }
 
-    private ApplicationEntity updateDatasets(ApplicationEntity ret, Application src) {
+    private void updateDatasets(ApplicationEntity ret, Application src) {
         if (!src.getDataset().isEmpty()) {
             List<DatasetEntity> lst = ret.getDatasetList();
             ret.setDatasetList(new ArrayList<>());
@@ -400,7 +374,8 @@ public class DeploymentServiceBean implements DeploymentService {
             }
 
             for (Dataset de : src.getDataset()) {
-                DatasetEntity d = findDatasetEntity(de.getName(), ret.getDatasetList());
+                Predicate<DatasetEntity> filter = ds -> ds.getName().equalsIgnoreCase(de.getName());
+                DatasetEntity d = findInList(ret.getDatasetList(), filter);
                 if (d == null) {
                     d = new DatasetEntity();
                     d.setName(de.getName());
@@ -411,86 +386,10 @@ public class DeploymentServiceBean implements DeploymentService {
                 d.setDiscriminator(de.getDiscriminator());
             }
         }
-
-        return ret;
     }
 
-    private FeatureEntity findFeatureEntity(String name, List<FeatureEntity> list) {
-        FeatureEntity ret = null;
-
-        for (FeatureEntity item : list) {
-            if (item.getName().equals(name)) {
-                ret = item;
-                break;
-            }
-        }
-
-        return ret;
-    }
-
-    private DatasetEntity findDatasetEntity(String name, List<DatasetEntity> list) {
-        DatasetEntity ret = null;
-
-        for (DatasetEntity item : list) {
-            if (item.getName().equals(name)) {
-                ret = item;
-                break;
-            }
-        }
-
-        return ret;
-    }
-
-    private OptionEntity findOptionEntity(String name, List<OptionEntity> list) {
-        OptionEntity ret = null;
-
-        for (OptionEntity item : list) {
-            if (item.getName().equals(name)) {
-                ret = item;
-                break;
-            }
-        }
-
-        return ret;
-    }
-
-    private Feature findFeature(String name, List<Feature> list) {
-        Feature ret = null;
-
-        for (Feature item : list) {
-            if (item.getName().equals(name)) {
-                ret = item;
-                break;
-            }
-        }
-
-        return ret;
-    }
-
-    private Dataset findDataset(String name, List<Dataset> list) {
-        Dataset ret = null;
-
-        for (Dataset item : list) {
-            if (item.getName().equals(name)) {
-                ret = item;
-                break;
-            }
-        }
-
-        return ret;
-    }
-
-    private Option findOption(String name, List<Option> list) {
-        Option ret = null;
-
-        for (Option item : list) {
-            if (item.getName().equals(name)) {
-                ret = item;
-                break;
-            }
-        }
-
-        return ret;
+    private <T> T findInList(List<T> list, Predicate<T> predicate) {
+        return list.stream().filter(predicate).findFirst().orElse(null);
     }
 
 }

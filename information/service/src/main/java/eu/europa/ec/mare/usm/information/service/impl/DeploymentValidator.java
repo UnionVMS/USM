@@ -13,13 +13,6 @@ import java.util.Set;
 @Stateless
 public class DeploymentValidator extends RequestValidator {
 
-    /**
-     * Creates a new instance.
-     */
-    public DeploymentValidator() {
-    }
-
-
     public void assertValid(Application input, boolean checkDetails) {
         assertNotNull("request", input);
         assertNotEmpty("application.name", input.getName());
@@ -41,7 +34,6 @@ public class DeploymentValidator extends RequestValidator {
         checkForDuplicateDatasets(request);
     }
 
-
     private void checkDetails(Application app) {
         assertValid("application", app);
 
@@ -58,10 +50,7 @@ public class DeploymentValidator extends RequestValidator {
             String loc = "application.option[" + i + "]";
             assertValid(loc, d);
             assertNotTooLong(loc + ".category", 32, d.getDataType());
-
-            //assertNotTooLong(loc + ".discriminator", 512, d.getDefaultValue());
         }
-
         checkForDuplicates(app);
     }
 
@@ -131,6 +120,5 @@ public class DeploymentValidator extends RequestValidator {
             }
         }
     }
-
 
 }

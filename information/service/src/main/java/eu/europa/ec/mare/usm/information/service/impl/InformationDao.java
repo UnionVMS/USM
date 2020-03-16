@@ -34,13 +34,6 @@ public class InformationDao {
     private DataSource dataSource;
 
     /**
-     * Creates a new instance
-     */
-    public InformationDao() {
-    }
-
-
-    /**
      * Retrieves the JDBC data-source from the JNDI context using JNDI name
      * 'jdbc/USM2'.
      *
@@ -48,7 +41,6 @@ public class InformationDao {
      */
     @PostConstruct
     public void lookupDatasource() throws RuntimeException {
-
         try {
             javax.naming.Context context = new InitialContext();
             dataSource = (DataSource) context.lookup(DATASOURCE_NAME);
@@ -69,7 +61,6 @@ public class InformationDao {
      *                          the request
      */
     public ContactDetails getContactDetails(String userName) {
-
         ContactDetails ret = null;
         Connection connection = null;
         PreparedStatement stmt = null;
@@ -92,7 +83,6 @@ public class InformationDao {
                     Long parentId = rs.getLong("ORGANISATION_ID");
                     ret.setOrganisationName(getOrganisationName(connection, parentId));
                 }
-
             }
         } catch (Exception ex) {
             handleException(ex);
@@ -114,7 +104,6 @@ public class InformationDao {
      *                          the request
      */
     public Organisation getOrganisation(String organisationName) {
-
         Organisation ret = null;
         Connection connection = null;
         PreparedStatement stmt = null;
@@ -183,7 +172,6 @@ public class InformationDao {
     }
 
     private Organisation mapOrganisation(Connection co, ResultSet rs) throws SQLException {
-
         Organisation org = new Organisation();
         org.setName(rs.getString("NAME"));
         org.setNation(rs.getString("ISOA3CODE"));
@@ -201,7 +189,6 @@ public class InformationDao {
     }
 
     public boolean optionExists(String applicationName, String optionName) {
-
         Connection connection = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -228,7 +215,6 @@ public class InformationDao {
     }
 
     public boolean userExists(String userName) {
-
         Connection connection = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -248,12 +234,10 @@ public class InformationDao {
             close(stmt);
             close(connection);
         }
-
         return ret;
     }
 
     public boolean userContextExists(String userName, Context ctx) {
-
         Connection connection = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -296,7 +280,6 @@ public class InformationDao {
         }
         return ret;
     }
-
 
     /**
      * Updates the user preferences for the provided user and context.
@@ -403,9 +386,7 @@ public class InformationDao {
         }
     }
 
-
     private List<EndPoint> getEndPoints(Connection connection, long organisationId) {
-
         List<EndPoint> ret = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -445,7 +426,6 @@ public class InformationDao {
     }
 
     private List<String> getChildOrganisationNames(Connection connection, Long parentId) {
-
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<String> ret = null;
@@ -473,7 +453,6 @@ public class InformationDao {
     }
 
     private String getOrganisationName(Connection connection, Long organisationId) {
-
         PreparedStatement stmt = null;
         ResultSet rs = null;
         String ret = null;
@@ -506,7 +485,6 @@ public class InformationDao {
      *                          the request
      */
     public UserContext getUserContext(UserContextQuery query) {
-
         UserContext ret = null;
 
         Connection connection = null;
@@ -578,7 +556,6 @@ public class InformationDao {
             close(stmt);
             close(connection);
         }
-
         return ret;
     }
 
@@ -613,13 +590,13 @@ public class InformationDao {
     }
 
     private Set<Feature> getFeatures(Connection connection, long roleId) {
-
         PreparedStatement stmt = null;
         ResultSet rs = null;
         Set<Feature> ret = new HashSet<>();
 
         try {
-            stmt = connection.prepareStatement("select f.NAME as FEATURE_NAME, a.NAME as APPLICATION_NAME, f.FEATURE_ID as FEATURE_ID " +
+            stmt = connection.prepareStatement("select f.NAME as FEATURE_NAME, a.NAME" +
+                    " as APPLICATION_NAME, f.FEATURE_ID as FEATURE_ID" +
                     " from permission_t p,feature_t f,application_t a" +
                     " where f.feature_id=p.feature_id" +
                     " and a.application_id=f.application_id" +
@@ -645,7 +622,6 @@ public class InformationDao {
     }
 
     private Scope getScope(Connection connection, long scopeId) {
-
         Scope ret = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -678,7 +654,6 @@ public class InformationDao {
     }
 
     private Set<DataSet> getDataSets(Connection connection, long scopeId) {
-
         Set<DataSet> ret = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -711,12 +686,10 @@ public class InformationDao {
             close(rs);
             close(stmt);
         }
-
         return ret;
     }
 
     private Preferences getPreferences(Connection connection, UserContextQuery query, Long userContextId) {
-
         Preferences ret = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -766,9 +739,7 @@ public class InformationDao {
     }
 
     private List<ContactDetails> getContactDetails(Connection connection, long endPointId) {
-
         List<ContactDetails> ret = new ArrayList<>();
-
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
@@ -792,12 +763,10 @@ public class InformationDao {
             close(rs);
             close(stmt);
         }
-
         return ret;
     }
 
     private List<Channel> getChannels(Connection connection, long endPointId) {
-
         List<Channel> ret = new ArrayList<>();
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -828,8 +797,7 @@ public class InformationDao {
         return ret;
     }
 
-    private ContactDetails mapContactDetails(ResultSet rs)  throws SQLException {
-
+    private ContactDetails mapContactDetails(ResultSet rs) throws SQLException {
         ContactDetails ret = new ContactDetails();
         ret.setFirstName(rs.getString("FIRST_NAME"));
         ret.setLastName(rs.getString("LAST_NAME"));
@@ -876,6 +844,5 @@ public class InformationDao {
             }
         }
     }
-
 
 }
