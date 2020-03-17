@@ -15,7 +15,6 @@ public class JndiUtil {
     private JndiUtil() {}
     
     public static void createJNDI(String jndiName, String value) {
-
         try {
             ic = new InitialContext();
 
@@ -25,11 +24,9 @@ public class JndiUtil {
             } catch (Exception e) {
                 // ignore close error
             }
-
         } catch (Exception e) {
             LOGGER.warn("Could not bind jndi: {}", jndiName);
         }
-
     }
 
     public static Object lookup(String jndiName) {
@@ -62,7 +59,6 @@ public class JndiUtil {
             } catch (Exception e) {
                 // ignore close error
             }
-
         } catch (Exception e) {
             LOGGER.warn("Could not unbind jndi: {}", jndiName);
         }
@@ -73,14 +69,12 @@ public class JndiUtil {
      * Takes apart an argument. Arguments are name<type>=value type field is optional and defaults to String
      * 
      * @param ic
-     * @param arg
-     * @param value2
-     * @param type2
+     * @param jndiName
+     * @param type
+     * @param value
      */
     private static void parseArg(InitialContext ic, String jndiName, String type, String value) {
-
         Object valueObject = value;
-
         try {
             Class clazz = Class.forName(type);
             Constructor<String> constructor = clazz.getConstructor(String.class);

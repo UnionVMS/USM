@@ -1,30 +1,22 @@
 package eu.europa.ec.mare.usm.information.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.europa.ec.mare.usm.information.domain.DataSet;
 import eu.europa.ec.mare.usm.information.domain.DataSetFilter;
 import eu.europa.ec.mare.usm.information.entity.ApplicationEntity;
 import eu.europa.ec.mare.usm.information.entity.DatasetEntity;
 import eu.europa.ec.mare.usm.information.entity.OptionEntity;
-import eu.europa.ec.mare.usm.information.entity.PreferenceEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Stateless
 public class DataSetJpaDao {
@@ -41,25 +33,18 @@ public class DataSetJpaDao {
     @EJB
     private ApplicationJpaDao applicationDao;
 
-    /**
-     * Creates a new instance
-     */
-    public DataSetJpaDao() {
-    }
-
     public List<DatasetEntity> findDataSet(String applicationName, String category) {
         LOGGER.info("findDataSet(" + applicationName + "," + category + ")- ENTER");
 
         List<DatasetEntity> ret = null;
 
         try {
-
             CriteriaBuilder builder = em.getCriteriaBuilder();
             CriteriaQuery<DatasetEntity> criteriaQuery = builder.createQuery(DatasetEntity.class);
             Root<DatasetEntity> dataSet = criteriaQuery.from(DatasetEntity.class);
             Join<OptionEntity, ApplicationEntity> application = (Join) dataSet.fetch("application");
 
-            List<Predicate> conditions = new ArrayList<Predicate>();
+            List<Predicate> conditions = new ArrayList<>();
 
             if (category != null) {
                 conditions.add(builder.equal(dataSet.get("category"), category));
@@ -70,9 +55,7 @@ public class DataSetJpaDao {
 
             TypedQuery<DatasetEntity> typedQuery = em.createQuery(criteriaQuery
                             .select(dataSet)
-                            .where(conditions.toArray(new Predicate[]{}))
-                    //.distinct(true)
-            );
+                            .where(conditions.toArray(new Predicate[]{})));
             ret = typedQuery.getResultList();
 
         } catch (Exception ex) {
@@ -93,11 +76,9 @@ public class DataSetJpaDao {
         LOGGER.info("read(" + datasetId + ") - (ENTER)");
 
         DatasetEntity ret = null;
-
         try {
-            TypedQuery<DatasetEntity> q = em.createNamedQuery("DatasetEntity.findByDatasetId",
-                    DatasetEntity.class);
-
+            TypedQuery<DatasetEntity> q =
+                    em.createNamedQuery("DatasetEntity.findByDatasetId", DatasetEntity.class);
             q.setParameter("datasetId", datasetId);
             ret = q.getSingleResult();
         } catch (NoResultException ex) {
@@ -118,10 +99,6 @@ public class DataSetJpaDao {
         throw new RuntimeException(msg, ex);
     }
 
-
-    /**
-     * @param dataSet
-     */
     public void createDataSet(DataSet dataSet) {
         LOGGER.info("createDataSet(" + dataSet + ") - (ENTER)");
         try {
@@ -176,12 +153,8 @@ public class DataSetJpaDao {
             handleException("updateDataSet", ex);
         }
         LOGGER.info("updateDataSet() - (LEAVE): ");
-
     }
 
-    /**
-     * @param dataSet
-     */
     public void deleteDataSet(DataSet dataSet) {
         LOGGER.info("deleteDataSet(" + dataSet + ") - (ENTER)");
 
@@ -199,28 +172,20 @@ public class DataSetJpaDao {
         }
 
         LOGGER.info("deleteDataSet() - (LEAVE)");
-
     }
 
-
-    /**
-     * @param name
-     * @param applicationName
-     * @return
-     */
     public DatasetEntity findDataSetByNameAndApplication(String name, String applicationName) {
         LOGGER.info("findDataSetByNameAndApplication(" + name + "," + applicationName + ")- ENTER");
 
         DatasetEntity entity = null;
 
         try {
-
             CriteriaBuilder builder = em.getCriteriaBuilder();
             CriteriaQuery<DatasetEntity> criteriaQuery = builder.createQuery(DatasetEntity.class);
             Root<DatasetEntity> dataSet = criteriaQuery.from(DatasetEntity.class);
             Join<OptionEntity, ApplicationEntity> application = (Join) dataSet.fetch("application");
 
-            List<Predicate> conditions = new ArrayList<Predicate>();
+            List<Predicate> conditions = new ArrayList<>();
             conditions.add(builder.equal(dataSet.get("name"), name));
             conditions.add(builder.equal(application.get("name"), applicationName));
 
@@ -238,11 +203,6 @@ public class DataSetJpaDao {
         return entity;
     }
 
-    /**
-     * @param name
-     * @param discriminator
-     * @return
-     */
     public List<DatasetEntity> findDataSets(DataSetFilter dataSetFilter) {
         LOGGER.info("findDataSets(" + dataSetFilter.getName() + "," + dataSetFilter.getApplicationName() + ")- ENTER");
 
@@ -250,16 +210,15 @@ public class DataSetJpaDao {
             throw new IllegalArgumentException(APPLICATION_NAME_NOT_SPECIFIED);
         }
 
-        List<DatasetEntity> entityList = new ArrayList<DatasetEntity>();
+        List<DatasetEntity> entityList = new ArrayList<>();
 
         try {
-
             CriteriaBuilder builder = em.getCriteriaBuilder();
             CriteriaQuery<DatasetEntity> criteriaQuery = builder.createQuery(DatasetEntity.class);
             Root<DatasetEntity> dataSet = criteriaQuery.from(DatasetEntity.class);
             Join<OptionEntity, ApplicationEntity> application = (Join) dataSet.fetch("application");
 
-            List<Predicate> conditions = new ArrayList<Predicate>();
+            List<Predicate> conditions = new ArrayList<>();
             conditions.add(builder.equal(application.get("name"), dataSetFilter.getApplicationName()));
             if (dataSetFilter.getName() != null && dataSetFilter.getName().length() > 0) {
                 conditions.add(builder.equal(dataSet.get("name"), dataSetFilter.getName()));
@@ -282,6 +241,5 @@ public class DataSetJpaDao {
         LOGGER.info("findDataSets ()- LEAVE");
         return entityList;
     }
-
 
 }
