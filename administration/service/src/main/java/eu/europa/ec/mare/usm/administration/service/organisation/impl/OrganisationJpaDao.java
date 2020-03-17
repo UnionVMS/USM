@@ -1,14 +1,13 @@
 package eu.europa.ec.mare.usm.administration.service.organisation.impl;
 
+import eu.europa.ec.mare.usm.information.entity.OrganisationEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.europa.ec.mare.usm.information.entity.OrganisationEntity;
 
 /**
  * JPA based data access of Organisation data.
@@ -19,9 +18,6 @@ public class OrganisationJpaDao {
     @PersistenceContext(unitName = "USM-Administration")
     private EntityManager em;
 
-    /**
-     * Creates a new instance
-     */
     public OrganisationJpaDao() {
     }
 
@@ -57,8 +53,6 @@ public class OrganisationJpaDao {
 
         try {
             ret = em.find(OrganisationEntity.class, organisationId);
-
-
             TypedQuery<OrganisationEntity> q = em.createNamedQuery("OrganisationEntity.findByOrganisationId",
                     OrganisationEntity.class);
 

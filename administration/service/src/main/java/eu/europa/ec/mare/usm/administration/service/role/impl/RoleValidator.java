@@ -12,30 +12,23 @@ import eu.europa.ec.mare.usm.administration.service.RequestValidator;
  */
 public class RoleValidator extends RequestValidator {
 
-	/**
-	 * Creates a new instance.
-	 */
-	public RoleValidator() {
-	}
+    public RoleValidator() {
+    }
 
-	public void assertValid(ServiceRequest<ComprehensiveRole> request,
-                           USMFeature feature, boolean isCreate) 
-  {
-		assertValid(request, feature, "role");
-		assertNotEmpty("roleName", request.getBody().getName());
-		assertNotEmpty("status", request.getBody().getStatus());
-		
-		if (!isCreate){
-			assertNotNull("roleId", request.getBody().getRoleId());
-		}
-  }
+    public void assertValid(ServiceRequest<ComprehensiveRole> request, USMFeature feature, boolean isCreate) {
+        assertValid(request, feature, "role");
+        assertNotEmpty("roleName", request.getBody().getName());
+        assertNotEmpty("status", request.getBody().getStatus());
 
-	public void assertValidPermission(ServiceRequest<Permission> request,
-                                       USMFeature feature)
-	{
-		assertValid(request, feature, "persmission");
-		assertNotNull("roleId",request.getBody().getRoleId());
-		assertNotNull("featureId",request.getBody().getFeatureId());
-	}
-	
+        if (!isCreate) {
+            assertNotNull("roleId", request.getBody().getRoleId());
+        }
+    }
+
+    public void assertValidPermission(ServiceRequest<Permission> request, USMFeature feature) {
+        assertValid(request, feature, "persmission");
+        assertNotNull("roleId", request.getBody().getRoleId());
+        assertNotNull("featureId", request.getBody().getFeatureId());
+    }
+
 }

@@ -1,22 +1,7 @@
 package eu.europa.ec.mare.usm.administration.service.user.impl;
 
 import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogModelMapper;
-import eu.europa.ec.mare.usm.administration.domain.AuditObjectTypeEnum;
-import eu.europa.ec.mare.usm.administration.domain.AuditOperationEnum;
-import eu.europa.ec.mare.usm.administration.domain.ChallengeInformation;
-import eu.europa.ec.mare.usm.administration.domain.ChallengeInformationResponse;
-import eu.europa.ec.mare.usm.administration.domain.ChangePassword;
-import eu.europa.ec.mare.usm.administration.domain.Notification;
-import eu.europa.ec.mare.usm.administration.domain.NotificationQuery;
-import eu.europa.ec.mare.usm.administration.domain.Organisation;
-import eu.europa.ec.mare.usm.administration.domain.Person;
-import eu.europa.ec.mare.usm.administration.domain.ResetPasswordQuery;
-import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
-import eu.europa.ec.mare.usm.administration.domain.USMApplication;
-import eu.europa.ec.mare.usm.administration.domain.USMFeature;
-import eu.europa.ec.mare.usm.administration.domain.UnauthorisedException;
-import eu.europa.ec.mare.usm.administration.domain.UserAccount;
-import eu.europa.ec.mare.usm.administration.domain.UserStatus;
+import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.service.AuditProducer;
 import eu.europa.ec.mare.usm.administration.service.NotificationBuilder;
 import eu.europa.ec.mare.usm.administration.service.NotificationSender;
@@ -31,11 +16,7 @@ import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
 import eu.europa.ec.mare.usm.authentication.service.AuthenticationService;
 import eu.europa.ec.mare.usm.authentication.service.impl.CreateLdapUser;
 import eu.europa.ec.mare.usm.authentication.service.impl.CreateLdapUserEvent;
-import eu.europa.ec.mare.usm.information.entity.ChallengeEntity;
-import eu.europa.ec.mare.usm.information.entity.OrganisationEntity;
-import eu.europa.ec.mare.usm.information.entity.PasswordHistEntity;
-import eu.europa.ec.mare.usm.information.entity.PersonEntity;
-import eu.europa.ec.mare.usm.information.entity.UserEntity;
+import eu.europa.ec.mare.usm.information.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -117,7 +98,9 @@ public class ManageUserServiceBean implements ManageUserService {
 
         UserEntity user = userDao.create(entity);
 
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.USER.getValue() + " " + request.getBody().getUserName(), request.getBody().getNotes(), request.getRequester());
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(),
+                AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.USER.getValue() + " " +
+                        request.getBody().getUserName(), request.getBody().getNotes(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("createUser() - (LEAVE)");
@@ -137,7 +120,8 @@ public class ManageUserServiceBean implements ManageUserService {
 
         userDao.create(userEntity);
 
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.USER.getValue() + " " + event.username, "", "LDAP");
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(),
+                AuditObjectTypeEnum.USER.getValue() + " " + event.username, "", "LDAP");
         auditProducer.sendModuleMessage(auditLog);
     }
 
@@ -158,7 +142,9 @@ public class ManageUserServiceBean implements ManageUserService {
         UserEntity updatedUser = userDao.update(entity);
         UserAccount userAccount = convert(updatedUser);
 
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.USER.getValue() + " " + request.getBody().getUserName(), request.getBody().getNotes(), request.getRequester());
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(),
+                AuditObjectTypeEnum.USER.getValue() + " " +
+                        request.getBody().getUserName(), request.getBody().getNotes(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("updateUser() - (LEAVE)");
@@ -199,7 +185,8 @@ public class ManageUserServiceBean implements ManageUserService {
         // Just do it!
         changePassword(entity, request, false);
 
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.PASSWORD.getValue() + " " + request.getBody().getUserName(), request.getRequester());
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(),
+                AuditObjectTypeEnum.PASSWORD.getValue() + " " + request.getBody().getUserName(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("changePassword() - (LEAVE)");
@@ -236,7 +223,6 @@ public class ManageUserServiceBean implements ManageUserService {
                     message = USER_UNAUTHENTICATED;
                     break;
             }
-
             throw new IllegalArgumentException(message);
         }
     }
@@ -321,11 +307,11 @@ public class ManageUserServiceBean implements ManageUserService {
         } else {
             return null;
         }
-
     }
 
     private void auditAction(String actionName, ServiceRequest<UserAccount> request) {
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), actionName, "ManageUserService " + request.getBody().getUserName(), request.getRequester(), request.getBody().getNotes());
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), actionName,
+                "ManageUserService " + request.getBody().getUserName(), request.getRequester(), request.getBody().getNotes());
         auditProducer.sendModuleMessage(auditLog);
     }
 
@@ -456,7 +442,6 @@ public class ManageUserServiceBean implements ManageUserService {
         return numberOfChallenges;
     }
 
-
     @Override
     public ChallengeInformationResponse setChallengeInformation(ServiceRequest<ChallengeInformationResponse> request, String userName) throws RuntimeException {
         LOGGER.info("setChallengeInformation(" + request + ") - (ENTER)");
@@ -507,7 +492,8 @@ public class ManageUserServiceBean implements ManageUserService {
                 auditOperation = AuditOperationEnum.UPDATE.getValue();
             }
 
-            String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), auditOperation, AuditObjectTypeEnum.CHALLENGE.getValue() + " " + userName, userName, request.getRequester());
+            String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), auditOperation,
+                    AuditObjectTypeEnum.CHALLENGE.getValue() + " " + userName, userName, request.getRequester());
             auditProducer.sendModuleMessage(auditLog);
 
             challengeInformation.setChallengeId(challengeEntity.getChallengeId());
@@ -544,7 +530,8 @@ public class ManageUserServiceBean implements ManageUserService {
             throw new IllegalArgumentException(INVALID_ANSWERS);
         }
 
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.RESET.getValue(), AuditObjectTypeEnum.PASSWORD.getValue() + " " + userName, userName, request.getRequester());
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.RESET.getValue(),
+                AuditObjectTypeEnum.PASSWORD.getValue() + " " + userName, userName, request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
         LOGGER.info("resetPassword() - (LEAVE)");
     }
@@ -560,7 +547,6 @@ public class ManageUserServiceBean implements ManageUserService {
                 }
             }
         }
-
         return correctAnswers == challengesStroredInDB.size();
     }
 
@@ -618,7 +604,8 @@ public class ManageUserServiceBean implements ManageUserService {
             throw new RuntimeException("Failed to send e-mail to " + recipient, ex);
         }
 
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.RESET.getValue(), AuditObjectTypeEnum.PASSWORD.getValue() + " " + userName, userName, request.getRequester());
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.RESET.getValue(),
+                AuditObjectTypeEnum.PASSWORD.getValue() + " " + userName, userName, request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
         LOGGER.info("resetPasswordAndNotify() - (LEAVE)");
     }

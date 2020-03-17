@@ -11,19 +11,13 @@ import eu.europa.ec.mare.usm.administration.service.RequestValidator;
  */
 public class LDAPValidator extends RequestValidator {
 
-  /**
-   * Creates a new instance.
-   */
-  public LDAPValidator() 
-  {
-  }
+    public LDAPValidator() {
+    }
 
-  
-  public void assertValid(ServiceRequest<GetUserQuery> request) 
-  {
-    assertValid(request, USMFeature.manageUsers, "query");
-    String userName = request.getBody().getUserName();
-    assertNotEmpty("userName", userName);
-  }
+    public void assertValid(ServiceRequest<GetUserQuery> request) {
+        assertValid(request, USMFeature.manageUsers, "query");
+        String userName = request.getBody().getUserName();
+        assertNotEmpty("userName", userName);
+    }
 
 }

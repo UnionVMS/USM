@@ -11,26 +11,21 @@ import eu.europa.ec.mare.usm.administration.service.RequestValidator;
  */
 public class ScopeValidator extends RequestValidator {
 
-  /**
-   * Creates a new instance.
-   */
-  public ScopeValidator() {
-  }
-
-  public void assertValid(ServiceRequest<Scope> request,
-                            USMFeature feature, boolean isCreate) 
-  {
-    assertValid(request, feature, "scope");
-
-    Scope scope = request.getBody();
-    assertNotEmpty("scopeName", scope.getName());
-    assertNotEmpty("status", scope.getStatus());
-    assertNotNull("activeTo", scope.getActiveTo());
-    assertNotNull("activeFrom", scope.getActiveFrom());
-    assertValidPeriod("active", scope.getActiveFrom(), scope.getActiveTo());
-    assertValidPeriod("data", scope.getDataFrom(), scope.getDataTo());
-    if (!isCreate) {
-      assertNotNull("scopeId", scope.getScopeId());
+    public ScopeValidator() {
     }
-  }
+
+    public void assertValid(ServiceRequest<Scope> request, USMFeature feature, boolean isCreate) {
+        assertValid(request, feature, "scope");
+
+        Scope scope = request.getBody();
+        assertNotEmpty("scopeName", scope.getName());
+        assertNotEmpty("status", scope.getStatus());
+        assertNotNull("activeTo", scope.getActiveTo());
+        assertNotNull("activeFrom", scope.getActiveFrom());
+        assertValidPeriod("active", scope.getActiveFrom(), scope.getActiveTo());
+        assertValidPeriod("data", scope.getDataFrom(), scope.getDataTo());
+        if (!isCreate) {
+            assertNotNull("scopeId", scope.getScopeId());
+        }
+    }
 }

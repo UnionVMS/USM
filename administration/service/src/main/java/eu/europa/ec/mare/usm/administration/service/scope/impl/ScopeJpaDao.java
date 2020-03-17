@@ -1,168 +1,152 @@
 package eu.europa.ec.mare.usm.administration.service.scope.impl;
 
-import java.util.List;
+import eu.europa.ec.mare.usm.administration.domain.FindDataSetQuery;
+import eu.europa.ec.mare.usm.information.entity.DatasetEntity;
+import eu.europa.ec.mare.usm.information.entity.ScopeEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.europa.ec.mare.usm.administration.domain.FindDataSetQuery;
-import eu.europa.ec.mare.usm.information.entity.DatasetEntity;
-import eu.europa.ec.mare.usm.information.entity.ScopeEntity;
+import java.util.List;
 
 /**
  * JPA based data access of Scope data.
  */
 public class ScopeJpaDao {
-  private static final Logger LOGGER = LoggerFactory.getLogger(ScopeJpaDao.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScopeJpaDao.class);
 
-  @PersistenceContext(unitName = "USM-Administration")
-  private EntityManager em;
+    @PersistenceContext(unitName = "USM-Administration")
+    private EntityManager em;
 
-  /**
-   * Creates a new instance
-   */
-  public ScopeJpaDao() {
-  }
-
-  /**
-   * Creates a scope.
-   *
-   * @param scope the scope to be created
-   *
-   * @return The created scope entity
-   */
-  public ScopeEntity create(ScopeEntity scope) 
-  {
-    LOGGER.info("create(" + scope + ") - (ENTER)");
-
-    try {
-      em.persist(scope);
-      em.flush();
-    } catch (Exception ex) {
-      handleException("create", ex);
+    public ScopeJpaDao() {
     }
 
-    LOGGER.info("create() - (LEAVE)");
-    return scope;
-  }
+    /**
+     * Creates a scope.
+     *
+     * @param scope the scope to be created
+     * @return The created scope entity
+     */
+    public ScopeEntity create(ScopeEntity scope) {
+        LOGGER.info("create(" + scope + ") - (ENTER)");
 
-  /**
-   * Updates an existing scope.
-   *
-   * @param scope the scope to be updated
-   * 
-   * @return the updated entity 
-   */
-  public ScopeEntity update(ScopeEntity scope) 
-  {
-    LOGGER.info("update(" + scope + ") - (ENTER)");
-    
-    ScopeEntity ret = null;
-    try {
-      ret = em.merge(scope);
-      em.flush();
-    } catch (Exception ex) {
-      handleException("update", ex);
+        try {
+            em.persist(scope);
+            em.flush();
+        } catch (Exception ex) {
+            handleException("create", ex);
+        }
+
+        LOGGER.info("create() - (LEAVE)");
+        return scope;
     }
 
-    LOGGER.info("update() - (LEAVE)");
-    return ret;
-  }
+    /**
+     * Updates an existing scope.
+     *
+     * @param scope the scope to be updated
+     * @return the updated entity
+     */
+    public ScopeEntity update(ScopeEntity scope) {
+        LOGGER.info("update(" + scope + ") - (ENTER)");
 
-  /**
-   * Deletes an existing scope.
-   *
-   * @param scopeId the id of the scope to be deleted
-   */
-  public void delete(Long scopeId) 
-  {
-    LOGGER.info("delete(" + scopeId + ") - (ENTER)");
+        ScopeEntity ret = null;
+        try {
+            ret = em.merge(scope);
+            em.flush();
+        } catch (Exception ex) {
+            handleException("update", ex);
+        }
 
-    try {
-      ScopeEntity entity = read(scopeId);
-      if (entity != null) {
-        em.remove(entity);
-        em.flush();
-        em.clear();
-      }
-    } catch (Exception ex) {
-      handleException("delete", ex);
+        LOGGER.info("update() - (LEAVE)");
+        return ret;
     }
 
-    LOGGER.info("delete() - (LEAVE)");
-  }
+    /**
+     * Deletes an existing scope.
+     *
+     * @param scopeId the id of the scope to be deleted
+     */
+    public void delete(Long scopeId) {
+        LOGGER.info("delete(" + scopeId + ") - (ENTER)");
 
-  /**
-   * Reads the Scope with the provided identifier
-   *
-   * @param scopeId the id of the scope
-   *
-   * @return the matching Scope if it exists, null otherwise
-   */
-  public ScopeEntity read(Long scopeId) 
-  {
-    LOGGER.info("read(" + scopeId + ") - (ENTER)");
-    ScopeEntity ret = null;
+        try {
+            ScopeEntity entity = read(scopeId);
+            if (entity != null) {
+                em.remove(entity);
+                em.flush();
+                em.clear();
+            }
+        } catch (Exception ex) {
+            handleException("delete", ex);
+        }
 
-    try {
-      TypedQuery<ScopeEntity> q = em.createNamedQuery("ScopeEntity.findByScopeId",
-              ScopeEntity.class);
-
-      q.setParameter("scopeId", scopeId);
-      ret = q.getSingleResult();
-    } catch (NoResultException ex) {
-      LOGGER.info("Scope with id " + scopeId + " not found", ex);
-    } catch (Exception ex) {
-      handleException("read", ex);
+        LOGGER.info("delete() - (LEAVE)");
     }
 
-    LOGGER.info("read() - (LEAVE)");
-    return ret;
-  }
+    /**
+     * Reads the Scope with the provided identifier
+     *
+     * @param scopeId the id of the scope
+     * @return the matching Scope if it exists, null otherwise
+     */
+    public ScopeEntity read(Long scopeId) {
+        LOGGER.info("read(" + scopeId + ") - (ENTER)");
+        ScopeEntity ret = null;
 
-  public List<DatasetEntity> findDatasets(FindDataSetQuery request) 
-  {
-    LOGGER.info("findDatasets(" + request + ") - (ENTER)");
+        try {
+            TypedQuery<ScopeEntity> q = em.createNamedQuery("ScopeEntity.findByScopeId", ScopeEntity.class);
+            q.setParameter("scopeId", scopeId);
+            ret = q.getSingleResult();
+        } catch (NoResultException ex) {
+            LOGGER.info("Scope with id " + scopeId + " not found", ex);
+        } catch (Exception ex) {
+            handleException("read", ex);
+        }
 
-    String application = request.getApplicationName();
-    String category = request.getCategory();
-
-    List<DatasetEntity> ret = null;
-    try {
-      StringBuilder jpql = new StringBuilder("SELECT d FROM DatasetEntity d WHERE 1=1 ");
-      if (application != null) {
-        jpql.append(" AND d.application.name = :application ");
-      }
-      if (category != null) {
-        jpql.append(" AND d.category = :category ");
-      }
-      TypedQuery<DatasetEntity> query = em.createQuery(jpql.toString(), DatasetEntity.class);
-      if (application != null) {
-        query.setParameter("application", application);
-      }
-      if (category != null) {
-        query.setParameter("category", category);
-      }
-      ret = query.getResultList();
-    } catch (Exception ex) {
-      handleException("findDatasets of", ex);
+        LOGGER.info("read() - (LEAVE)");
+        return ret;
     }
 
-    LOGGER.info("findDatasets() - (LEAVE)");
-    return ret;
-  }
+    public List<DatasetEntity> findDatasets(FindDataSetQuery request) {
+        LOGGER.info("findDatasets(" + request + ") - (ENTER)");
 
-  private void handleException(String operation, Exception ex)
-  throws RuntimeException 
-  {
-	  String msg = "Failed to " + operation + " scope: " + ex.getMessage();
+        String application = request.getApplicationName();
+        String category = request.getCategory();
 
-    LOGGER.error(msg, ex);
-    throw new RuntimeException(msg, ex);
-  }
+        List<DatasetEntity> ret = null;
+        try {
+            StringBuilder jpql = new StringBuilder("SELECT d FROM DatasetEntity d WHERE 1=1 ");
+            if (application != null) {
+                jpql.append(" AND d.application.name = :application ");
+            }
+            if (category != null) {
+                jpql.append(" AND d.category = :category ");
+            }
+            TypedQuery<DatasetEntity> query = em.createQuery(jpql.toString(), DatasetEntity.class);
+            if (application != null) {
+                query.setParameter("application", application);
+            }
+            if (category != null) {
+                query.setParameter("category", category);
+            }
+            ret = query.getResultList();
+        } catch (Exception ex) {
+            handleException("findDatasets of", ex);
+        }
+
+        LOGGER.info("findDatasets() - (LEAVE)");
+        return ret;
+    }
+
+    private void handleException(String operation, Exception ex)
+            throws RuntimeException {
+        String msg = "Failed to " + operation + " scope: " + ex.getMessage();
+
+        LOGGER.error(msg, ex);
+        throw new RuntimeException(msg, ex);
+    }
 }

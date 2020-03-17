@@ -39,15 +39,12 @@ public class OrganisationServiceBean implements OrganisationService {
     private EndPointContactJpaDao endPointContactJpaDao;
     @Inject
     private ChannelJpaDao channelJpaDao;
-
     @Inject
     private OrganisationValidator validator;
     @Inject
     private OrganisationConverter converter;
-
     @Inject
     private PersonJpaDao personJpaDao;
-    
     @Inject
     private AuditProducer auditProducer;
 
@@ -71,8 +68,10 @@ public class OrganisationServiceBean implements OrganisationService {
         entity.setCreatedBy(request.getRequester());
         entity.setCreatedOn(new Date());
         entity = jpaDao.create(entity);
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(),
+                AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " +
+                        request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("createOrganisation() - (LEAVE)");
@@ -107,8 +106,10 @@ public class OrganisationServiceBean implements OrganisationService {
             entity.setParentOrganisation(null);
         }
         entity = jpaDao.update(entity);
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(),
+                AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " +
+                        request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("updateOrganisation() - (LEAVE)");
@@ -129,8 +130,9 @@ public class OrganisationServiceBean implements OrganisationService {
             throw new IllegalArgumentException("This organisation is parent to some organisations and cannot be deleted.");
         }
         jpaDao.delete(request.getBody());
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(),
+                AuditObjectTypeEnum.ORGANISATION.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("deleteOrganisation() - (LEAVE)");
@@ -173,7 +175,6 @@ public class OrganisationServiceBean implements OrganisationService {
         if (entity != null) {
             List<EndPointEntity> endPointList = endPointJpaDao.getEndPointsByOrganisationId(entity.getOrganisationId());
             entity.setEndPointList(endPointList);
-
         }
         Organisation ret = converter.convert(entity, 0);
 
@@ -185,7 +186,7 @@ public class OrganisationServiceBean implements OrganisationService {
     public List<OrganisationNameResponse> getOrganisationNames(ServiceRequest<OrganisationQuery> request) {
         LOGGER.info("getOrganisationNames(" + request + ") - (ENTER)");
 
-        HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
+        HashSet<USMFeature> featureSet = new HashSet<>();
         featureSet.add(USMFeature.viewOrganisations);
         featureSet.add(USMFeature.manageOrganisations);
 
@@ -200,7 +201,7 @@ public class OrganisationServiceBean implements OrganisationService {
     public List<String> getOrganisationParentNames(ServiceRequest<Long> request) {
         LOGGER.info("getOrganisationParentNames(" + request + ") - (ENTER)");
 
-        HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
+        HashSet<USMFeature> featureSet = new HashSet<>();
         featureSet.add(USMFeature.viewOrganisations);
         featureSet.add(USMFeature.manageOrganisations);
 
@@ -233,7 +234,8 @@ public class OrganisationServiceBean implements OrganisationService {
     }
 
     @Override
-    public PaginationResponse<Organisation> findOrganisations(ServiceRequest<FindOrganisationsQuery> request) throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public PaginationResponse<Organisation> findOrganisations(ServiceRequest<FindOrganisationsQuery> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("findOrganisations(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
@@ -249,10 +251,11 @@ public class OrganisationServiceBean implements OrganisationService {
     }
 
     @Override
-    public EndPoint getEndPoint(ServiceRequest<Long> request) throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public EndPoint getEndPoint(ServiceRequest<Long> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("getEndPoint(" + request.getBody() + ") - (ENTER)");
 
-        HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
+        HashSet<USMFeature> featureSet = new HashSet<>();
         featureSet.add(USMFeature.viewOrganisations);
         featureSet.add(USMFeature.manageOrganisations);
 
@@ -270,14 +273,17 @@ public class OrganisationServiceBean implements OrganisationService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public EndPoint createEndPoint(ServiceRequest<EndPoint> request) throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public EndPoint createEndPoint(ServiceRequest<EndPoint> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("createEndPoint(" + request + ") - (ENTER)");
 
         validator.assertValidEndPoint(request, USMFeature.manageOrganisations, true);
-        EndPointEntity entity = endPointJpaDao.retrieveEndPointByOrganisation(request.getBody().getName(), request.getBody().getOrganisationName());
+        EndPointEntity entity = endPointJpaDao.retrieveEndPointByOrganisation(request.getBody().getName(),
+                request.getBody().getOrganisationName());
 
         if (entity != null) {
-            throw new IllegalArgumentException("The name " + entity.getName() + " of the enpoint is already associated with the organisation " + entity.getOrganisation().getName());
+            throw new IllegalArgumentException("The name " + entity.getName() +
+                    " of the enpoint is already associated with the organisation " + entity.getOrganisation().getName());
         }
         entity = new EndPointEntity();
         converter.convertEndPointDomainToEntity(entity, request.getBody(), false);
@@ -285,8 +291,10 @@ public class OrganisationServiceBean implements OrganisationService {
         entity.setCreatedBy(request.getRequester());
         entity.setCreatedOn(new Date());
         entity = endPointJpaDao.create(entity);
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(),
+                AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue() + " " +
+                        request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("createEndPoint() - (LEAVE)");
@@ -295,21 +303,24 @@ public class OrganisationServiceBean implements OrganisationService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public EndPoint updateEndPoint(ServiceRequest<EndPoint> request) throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public EndPoint updateEndPoint(ServiceRequest<EndPoint> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("updateEndPoint(" + request + ") - (ENTER)");
 
         validator.assertValidEndPoint(request, USMFeature.manageOrganisations, false);
-        EndPoint ret = null;
-        EndPointEntity entity = endPointJpaDao.retrieveEndPointByOrganisation(request.getBody().getName(), request.getBody().getOrganisationName());
+
+        EndPointEntity entity = endPointJpaDao.retrieveEndPointByOrganisation(request.getBody().getName(),
+                request.getBody().getOrganisationName());
         if (entity == null) {
             throw new IllegalArgumentException("There is no such " + request.getBody().getName() + " endpoint in the database associated with given organisation");
         }
         converter.convertEndPointDomainToEntity(entity, request.getBody(), true);
         entity.setModifiedBy(request.getRequester());
         entity.setModifiedOn(new Date());
-        ret = converter.convertEndPointEntityToDomain(endPointJpaDao.update(entity), false);
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+        EndPoint ret = converter.convertEndPointEntityToDomain(endPointJpaDao.update(entity), false);
+
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(),
+                AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("updateEndPoint() - (LEAVE)");
@@ -318,20 +329,23 @@ public class OrganisationServiceBean implements OrganisationService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void deleteEndPoint(ServiceRequest<Long> request) throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public void deleteEndPoint(ServiceRequest<Long> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("deleteEndPoint(" + request + ") - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageOrganisations, "endpointId");
         endPointJpaDao.delete(request.getBody());
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(),
+                AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("deleteEndPoint() - (LEAVE)");
     }
 
     @Override
-    public Channel getChannel(ServiceRequest<Long> request) throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public Channel getChannel(ServiceRequest<Long> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("getChannel(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
@@ -348,7 +362,8 @@ public class OrganisationServiceBean implements OrganisationService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Channel createChannel(ServiceRequest<Channel> request) throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public Channel createChannel(ServiceRequest<Channel> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("createChannel(" + request + ") - (ENTER)");
 
         validator.assertValidChannel(request, USMFeature.manageOrganisations, true);
@@ -364,8 +379,10 @@ public class OrganisationServiceBean implements OrganisationService {
         entity.setCreatedBy(request.getRequester());
         entity.setCreatedOn(new Date());
         entity = channelJpaDao.create(entity);
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " + request.getBody().getEndpointId(), "" + request.getBody().getEndpointId(), request.getRequester());
+
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(),
+                AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " +
+                        request.getBody().getEndpointId(), "" + request.getBody().getEndpointId(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
         LOGGER.info("createChannel() - (LEAVE)");
         return converter.convertChannelEntityToDomain(entity);
@@ -373,7 +390,8 @@ public class OrganisationServiceBean implements OrganisationService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Channel updateChannel(ServiceRequest<Channel> request) throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public Channel updateChannel(ServiceRequest<Channel> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("updateChannel(" + request + ") - (ENTER)");
 
         validator.assertValidChannel(request, USMFeature.manageOrganisations, false);
@@ -397,8 +415,10 @@ public class OrganisationServiceBean implements OrganisationService {
         entity.setModifiedOn(new Date());
 
         ret = converter.convertChannelEntityToDomain(channelJpaDao.update(entity));
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " + request.getBody().getEndpointId(), "" + request.getBody().getEndpointId(), request.getRequester());
+
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(),
+                AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " +
+                        request.getBody().getEndpointId(), "" + request.getBody().getEndpointId(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("updateChannel() - (LEAVE)");
@@ -407,20 +427,24 @@ public class OrganisationServiceBean implements OrganisationService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void deleteChannel(ServiceRequest<Long> request) throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public void deleteChannel(ServiceRequest<Long> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("deleteChannel(" + request + ") - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageOrganisations, "channelId");
         channelJpaDao.delete(request.getBody());
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(),
+                AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " +
+                        request.getBody(), "" + request.getBody(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
-        
+
         LOGGER.info("deleteChannel() - (LEAVE)");
     }
 
     @Override
-    public EndPointContact getContact(ServiceRequest<Long> request) throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public EndPointContact getContact(ServiceRequest<Long> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("getContact(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
@@ -438,7 +462,8 @@ public class OrganisationServiceBean implements OrganisationService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public EndPointContact assignContact(ServiceRequest<EndPointContact> request) throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public EndPointContact assignContact(ServiceRequest<EndPointContact> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("assignContact(" + request + ") - (ENTER)");
 
         validator.assertValidEndpoint(request, USMFeature.manageOrganisations, true);
@@ -460,7 +485,8 @@ public class OrganisationServiceBean implements OrganisationService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void removeContact(ServiceRequest<EndPointContact> request) throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+    public void removeContact(ServiceRequest<EndPointContact> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("removeContact(" + request + ") - (ENTER)");
 
         validator.assertValidEndpoint(request, USMFeature.manageOrganisations, false);
@@ -468,8 +494,10 @@ public class OrganisationServiceBean implements OrganisationService {
         if (epcontact != null) {
             endPointContactJpaDao.delete(epcontact);
         }
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.REMOVE.getValue(), AuditObjectTypeEnum.ENDPOINT_CONTACT.getValue() + " " + request.getBody().getEndPointContactId(), "" + request.getBody().getEndPointContactId(), request.getRequester());
+
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(),
+                AuditOperationEnum.REMOVE.getValue(), AuditObjectTypeEnum.ENDPOINT_CONTACT.getValue() + " " +
+                        request.getBody().getEndPointContactId(), "" + request.getBody().getEndPointContactId(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
         LOGGER.info("removeContact() - (LEAVE)");
     }

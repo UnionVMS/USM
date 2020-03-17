@@ -6,57 +6,54 @@ import java.io.Serializable;
  * Holds one only definition/configuration property for a specific policy.
  */
 public class Policy implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	private Long policyId;
-	private String name;
-	private String description;
-	private String subject;
-	private String value;
-	
-	/*
-	 * Creates a new instance.
-	 */
-	public Policy() {
-	}
+    private static final long serialVersionUID = 1L;
 
-	public Long getPolicyId() {
-		return policyId;
-	}
+    private Long policyId;
+    private String name;
+    private String description;
+    private String subject;
+    private String value;
 
-	public void setPolicyId(Long policyId) {
-		this.policyId = policyId;
-	}
+    public Policy() {
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Long getPolicyId() {
+        return policyId;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
+    public void setPolicyId(Long policyId) {
+        this.policyId = policyId;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getSubject() {
-		return subject;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

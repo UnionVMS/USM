@@ -65,7 +65,9 @@ public class ScopeServiceBean implements ScopeService {
 
         Scope ret = convertEntityToResponse(scope);
 
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.SCOPE.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(),
+                AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.SCOPE.getValue() + " " +
+                        request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("createScope() - (LEAVE)");
@@ -91,7 +93,9 @@ public class ScopeServiceBean implements ScopeService {
 
         Scope ret = convertEntityToResponse(scope);
 
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.SCOPE.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(),
+                AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.SCOPE.getValue() + " " +
+                        request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("updateScope() - (LEAVE)");
@@ -107,7 +111,9 @@ public class ScopeServiceBean implements ScopeService {
         validator.assertValid(request, USMFeature.manageScopes, "scopeId");
         jpaDao.delete(request.getBody());
 
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.SCOPE.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(),
+                AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.SCOPE.getValue() + " " +
+                        request.getBody(), "" + request.getBody(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("deleteScope() - (LEAVE)");
@@ -234,7 +240,7 @@ public class ScopeServiceBean implements ScopeService {
 
                 entity.setDatasetList(actualList);
 
-                if (actualList != null) {
+                if (!actualList.isEmpty()) {
                     //add child to parent association
                     for (DatasetEntity element : actualList) {
                         element.getScopeList().add(entity);

@@ -1,19 +1,13 @@
 package eu.europa.ec.mare.usm.administration.service.user.impl;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.europa.ec.mare.usm.information.entity.PasswordHistEntity;
 import eu.europa.ec.mare.usm.information.entity.UserContextEntity;
 import eu.europa.ec.mare.usm.information.entity.UserEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * JPA based data access of user data.
@@ -24,9 +18,6 @@ public class UserJpaDao {
     @PersistenceContext(unitName = "USM-Administration")
     private EntityManager em;
 
-    /**
-     * Creates a new instance.
-     */
     public UserJpaDao() {
     }
 
@@ -97,8 +88,7 @@ public class UserJpaDao {
         UserEntity ret = null;
 
         try {
-            TypedQuery<UserEntity> q = em.createNamedQuery("UserEntity.findByUserName",
-                    UserEntity.class);
+            TypedQuery<UserEntity> q = em.createNamedQuery("UserEntity.findByUserName", UserEntity.class);
 
             q.setParameter("userName", userName);
             ret = q.getSingleResult();
