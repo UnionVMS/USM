@@ -1,271 +1,250 @@
 package eu.europa.ec.mare.usm.information.entity;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-/**
- * JPA Mapping for the USER_T table.
- */
 @Entity
 @SequenceGenerator(name = "userSequence", sequenceName = "SQ_USER", allocationSize = 1)
 @Table(name = "USER_T")
 @NamedQueries({
-  @NamedQuery(name = "UserEntity.findByUserId", 
-              query = "SELECT u FROM UserEntity u WHERE u.userId = :userId"),
-  @NamedQuery(name = "UserEntity.findByUserName", 
-              query = "SELECT u FROM UserEntity u WHERE u.userName = :userName"),
-  @NamedQuery(name = "UserEntity.findByOrganisationId", 
-              query = "Select u from UserEntity u where u.organisation.organisationId=:organisationId")})
-public class UserEntity  extends AbstractAuditedEntity {
-  private static final long serialVersionUID = 1L;
-  
-  @Id
-  @Basic(optional = false)
-  @Column(name = "USER_ID")
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSequence")
-  private Long userId;
-  
-  @Basic(optional = false)
-  @Column(name = "USER_NAME")
-  private String userName;
-  
-  @Basic(optional = false)
-  @Column(name = "STATUS")
-  private String status;
-  
-  @Column(name = "ACTIVE_FROM")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date activeFrom;
-  
-  @Column(name = "ACTIVE_TO")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date activeTo;
-  
-  @Column(name = "LAST_LOGON")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date lastLogon;
-  
-  @Column(name = "LOCKOUT_TO")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date lockoutTo;
-  
-  @Column(name = "PASSWORD_EXPIRY")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date passwordExpiry;
-  
-  @Column(name = "EXPIRY_NOTIFICATION")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date expiryNotification;
-  
-  @Column(name = "PASSWORD")
-  private String password;
-  
-  @Column(name = "LOCKOUT_REASON")
-  private String lockoutReason;
-  
-  @Column(name = "LOGON_FAILURE")
-  private Integer logonFailure;
-  
-  @Column(name = "NOTES")
-  private String notes;
+        @NamedQuery(name = "UserEntity.findByUserId", query = "SELECT u FROM UserEntity u WHERE u.userId = :userId"),
+        @NamedQuery(name = "UserEntity.findByUserName", query = "SELECT u FROM UserEntity u WHERE u.userName = :userName"),
+        @NamedQuery(name = "UserEntity.findByOrganisationId", query = "Select u from UserEntity u where u.organisation.organisationId=:organisationId")})
+public class UserEntity extends AbstractAuditedEntity {
+    private static final long serialVersionUID = 1L;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-  private List<ChallengeEntity> challengeList;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "USER_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSequence")
+    private Long userId;
 
-  @JoinColumn(name = "PERSON_ID", referencedColumnName = "PERSON_ID")
-  @ManyToOne
-  private PersonEntity person;
-  
-  @JoinColumn(name = "ORGANISATION_ID", referencedColumnName = "ORGANISATION_ID")
-  @ManyToOne
-  private OrganisationEntity organisation;
-  
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-  private List<PasswordHistEntity> passwordHistList;
-  
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-  private List<UserContextEntity> userContextList;
+    @Basic(optional = false)
+    @Column(name = "USER_NAME")
+    private String userName;
 
-  public UserEntity() {
-  }
+    @Basic(optional = false)
+    @Column(name = "STATUS")
+    private String status;
 
-  public Long getUserId() {
-    return userId;
-  }
+    @Column(name = "ACTIVE_FROM")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date activeFrom;
 
-  public void setUserId(Long userId) {
-    this.userId = userId;
-  }
+    @Column(name = "ACTIVE_TO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date activeTo;
 
-  public String getUserName() {
-    return userName;
-  }
+    @Column(name = "LAST_LOGON")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastLogon;
 
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
+    @Column(name = "LOCKOUT_TO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lockoutTo;
 
-  public String getStatus() {
-    return status;
-  }
+    @Column(name = "PASSWORD_EXPIRY")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date passwordExpiry;
 
-  public void setStatus(String status) {
-    this.status = status;
-  }
+    @Column(name = "EXPIRY_NOTIFICATION")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date expiryNotification;
 
-  public Date getActiveFrom() {
-    return activeFrom;
-  }
+    @Column(name = "PASSWORD")
+    private String password;
 
-  public void setActiveFrom(Date activeFrom) {
-    this.activeFrom = activeFrom;
-  }
+    @Column(name = "LOCKOUT_REASON")
+    private String lockoutReason;
 
-  public Date getActiveTo() {
-    return activeTo;
-  }
+    @Column(name = "LOGON_FAILURE")
+    private Integer logonFailure;
 
-  public void setActiveTo(Date activeTo) {
-    this.activeTo = activeTo;
-  }
+    @Column(name = "NOTES")
+    private String notes;
 
-  public Date getLastLogon() {
-    return lastLogon;
-  }
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<ChallengeEntity> challengeList;
 
-  public void setLastLogon(Date lastLogon) {
-    this.lastLogon = lastLogon;
-  }
+    @JoinColumn(name = "PERSON_ID", referencedColumnName = "PERSON_ID")
+    @ManyToOne
+    private PersonEntity person;
 
-  public Date getLockoutTo() {
-    return lockoutTo;
-  }
+    @JoinColumn(name = "ORGANISATION_ID", referencedColumnName = "ORGANISATION_ID")
+    @ManyToOne
+    private OrganisationEntity organisation;
 
-  public void setLockoutTo(Date lockoutTo) {
-    this.lockoutTo = lockoutTo;
-  }
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<PasswordHistEntity> passwordHistList;
 
-  public Date getPasswordExpiry() {
-    return passwordExpiry;
-  }
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<UserContextEntity> userContextList;
 
-  public void setPasswordExpiry(Date passwordExpiry) {
-    this.passwordExpiry = passwordExpiry;
-  }
+    public UserEntity() {
+    }
 
-  public Date getExpiryNotification() {
-    return expiryNotification;
-  }
+    public Long getUserId() {
+        return userId;
+    }
 
-  public void setExpiryNotification(Date expiryNotification) {
-    this.expiryNotification = expiryNotification;
-  }
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
-  public String getPassword() {
-    return password;
-  }
+    public String getUserName() {
+        return userName;
+    }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-  public String getLockoutReason() {
-    return lockoutReason;
-  }
+    public String getStatus() {
+        return status;
+    }
 
-  public void setLockoutReason(String lockoutReason) {
-    this.lockoutReason = lockoutReason;
-  }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-  public Integer getLogonFailure() {
-    return logonFailure;
-  }
+    public Date getActiveFrom() {
+        return activeFrom;
+    }
 
-  public void setLogonFailure(Integer logonFailure) {
-    this.logonFailure = logonFailure;
-  }
+    public void setActiveFrom(Date activeFrom) {
+        this.activeFrom = activeFrom;
+    }
 
-  public String getNotes() {
-    return notes;
-  }
+    public Date getActiveTo() {
+        return activeTo;
+    }
 
-  public void setNotes(String notes) {
-    this.notes = notes;
-  }
+    public void setActiveTo(Date activeTo) {
+        this.activeTo = activeTo;
+    }
 
-  public List<ChallengeEntity> getChallengeList() {
-    return challengeList;
-  }
+    public Date getLastLogon() {
+        return lastLogon;
+    }
 
-  public void setChallengeList(List<ChallengeEntity> challengeList) {
-    this.challengeList = challengeList;
-  }
+    public void setLastLogon(Date lastLogon) {
+        this.lastLogon = lastLogon;
+    }
 
-  public PersonEntity getPerson() {
-    return person;
-  }
+    public Date getLockoutTo() {
+        return lockoutTo;
+    }
 
-  public void setPerson(PersonEntity person) {
-    this.person = person;
-  }
+    public void setLockoutTo(Date lockoutTo) {
+        this.lockoutTo = lockoutTo;
+    }
 
-  public OrganisationEntity getOrganisation() {
-    return organisation;
-  }
+    public Date getPasswordExpiry() {
+        return passwordExpiry;
+    }
 
-  public void setOrganisation(OrganisationEntity organisation) {
-    this.organisation = organisation;
-  }
+    public void setPasswordExpiry(Date passwordExpiry) {
+        this.passwordExpiry = passwordExpiry;
+    }
 
-  public List<PasswordHistEntity> getPasswordHistList() {
-    return passwordHistList;
-  }
+    public Date getExpiryNotification() {
+        return expiryNotification;
+    }
 
-  public void setPasswordHistList(List<PasswordHistEntity> passwordHistList) {
-    this.passwordHistList = passwordHistList;
-  }
+    public void setExpiryNotification(Date expiryNotification) {
+        this.expiryNotification = expiryNotification;
+    }
 
-  public List<UserContextEntity> getUserContextList() {
-    return userContextList;
-  }
+    public String getPassword() {
+        return password;
+    }
 
-  public void setUserContextList(List<UserContextEntity> userContextList) {
-    this.userContextList = userContextList;
-  }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-  @Override
-  public String toString() {
-    return "UserEntity{" + 
-            "userId=" + userId + 
-            ", userName=" + userName + 
-            ", status=" + status + 
-            ", activeFrom=" + activeFrom + 
-            ", activeTo=" + activeTo + 
-            ", lastLogon=" + lastLogon + 
-            ", lockoutTo=" + lockoutTo + 
-            ", passwordExpiry=" + passwordExpiry + 
-            ", expiryNotification=" + expiryNotification +
-            ", password=" + (password == null ? "<null>" : "******") +
-            ", lockoutReason=" + lockoutReason + 
-            ", logonFailure=" + logonFailure + 
-            ", notes=" + notes + 
-            ", person="+person+
-            '}';
-  }
+    public String getLockoutReason() {
+        return lockoutReason;
+    }
+
+    public void setLockoutReason(String lockoutReason) {
+        this.lockoutReason = lockoutReason;
+    }
+
+    public Integer getLogonFailure() {
+        return logonFailure;
+    }
+
+    public void setLogonFailure(Integer logonFailure) {
+        this.logonFailure = logonFailure;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public List<ChallengeEntity> getChallengeList() {
+        return challengeList;
+    }
+
+    public void setChallengeList(List<ChallengeEntity> challengeList) {
+        this.challengeList = challengeList;
+    }
+
+    public PersonEntity getPerson() {
+        return person;
+    }
+
+    public void setPerson(PersonEntity person) {
+        this.person = person;
+    }
+
+    public OrganisationEntity getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(OrganisationEntity organisation) {
+        this.organisation = organisation;
+    }
+
+    public List<PasswordHistEntity> getPasswordHistList() {
+        return passwordHistList;
+    }
+
+    public void setPasswordHistList(List<PasswordHistEntity> passwordHistList) {
+        this.passwordHistList = passwordHistList;
+    }
+
+    public List<UserContextEntity> getUserContextList() {
+        return userContextList;
+    }
+
+    public void setUserContextList(List<UserContextEntity> userContextList) {
+        this.userContextList = userContextList;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "userId=" + userId +
+                ", userName=" + userName +
+                ", status=" + status +
+                ", activeFrom=" + activeFrom +
+                ", activeTo=" + activeTo +
+                ", lastLogon=" + lastLogon +
+                ", lockoutTo=" + lockoutTo +
+                ", passwordExpiry=" + passwordExpiry +
+                ", expiryNotification=" + expiryNotification +
+                ", password=" + (password == null ? "<null>" : "******") +
+                ", lockoutReason=" + lockoutReason +
+                ", logonFailure=" + logonFailure +
+                ", notes=" + notes +
+                ", person=" + person +
+                '}';
+    }
 }

@@ -1,144 +1,122 @@
 package eu.europa.ec.mare.usm.information.entity;
 
+import javax.persistence.*;
 import java.util.List;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-
-/**
- * JPA Mapping for the OPTION_T table.
- */
 @Entity
 @SequenceGenerator(name = "optionSequence", sequenceName = "SQ_OPTION", allocationSize = 1)
 @Table(name = "OPTION_T")
 @NamedQueries({
-  @NamedQuery(name = "OptionEntity.findByOptionId", query = "SELECT o FROM OptionEntity o WHERE o.optionId = :optionId"),
-  @NamedQuery(name = "OptionEntity.findByApplicationId", query = "SELECT o FROM OptionEntity o WHERE o.application.applicationId = :applicationId")})
-public class OptionEntity  extends AbstractAuditedEntity {
-  private static final long serialVersionUID = 1L;
-  
-  @Id
-  @Basic(optional = false)
-  @Column(name = "OPTION_ID")
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "optionSequence")
-  private Long optionId;
+        @NamedQuery(name = "OptionEntity.findByOptionId", query = "SELECT o FROM OptionEntity o WHERE o.optionId = :optionId"),
+        @NamedQuery(name = "OptionEntity.findByApplicationId", query = "SELECT o FROM OptionEntity o WHERE o.application.applicationId = :applicationId")})
+public class OptionEntity extends AbstractAuditedEntity {
+    private static final long serialVersionUID = 1L;
 
-  @Basic(optional = false)
-  @Column(name = "NAME")
-  private String name;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "OPTION_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "optionSequence")
+    private Long optionId;
 
-  @Column(name = "DESCRIPTION")
-  private String description;
+    @Basic(optional = false)
+    @Column(name = "NAME")
+    private String name;
 
-  @Column(name = "DATA_TYPE")
-  private String dataType;
+    @Column(name = "DESCRIPTION")
+    private String description;
 
-  
-  @Column(name = "DEFAULT_VALUE")
-  private byte[] defaultValue;
-  
-  @Column(name = "GROUP_NAME")
-  private String groupName;
+    @Column(name = "DATA_TYPE")
+    private String dataType;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "option")
-  private List<PreferenceEntity> preferenceList;
+    @Column(name = "DEFAULT_VALUE")
+    private byte[] defaultValue;
 
-  @JoinColumn(name = "APPLICATION_ID", referencedColumnName = "APPLICATION_ID")
-  @ManyToOne(optional = false)
-  private ApplicationEntity application;
+    @Column(name = "GROUP_NAME")
+    private String groupName;
 
-  public OptionEntity() {
-  }
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "option")
+    private List<PreferenceEntity> preferenceList;
 
-  public Long getOptionId() {
-    return optionId;
-  }
+    @JoinColumn(name = "APPLICATION_ID", referencedColumnName = "APPLICATION_ID")
+    @ManyToOne(optional = false)
+    private ApplicationEntity application;
 
-  public void setOptionId(Long optionId) {
-    this.optionId = optionId;
-  }
+    public OptionEntity() {
+    }
 
-  public String getName() {
-    return name;
-  }
+    public Long getOptionId() {
+        return optionId;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setOptionId(Long optionId) {
+        this.optionId = optionId;
+    }
 
-  public String getDescription() {
-    return description;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public String getDataType() {
-    return dataType;
-  }
+    public String getDescription() {
+        return description;
+    }
 
-  public void setDataType(String dataType) {
-    this.dataType = dataType;
-  }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-  
-  
-  public byte[] getDefaultValue() {
-	return defaultValue;
-}
+    public String getDataType() {
+        return dataType;
+    }
 
-public void setDefaultValue(byte[] defaultValue) {
-	this.defaultValue = defaultValue;
-}
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
+    }
 
-public List<PreferenceEntity> getPreferenceList() {
-    return preferenceList;
-  }
+    public byte[] getDefaultValue() {
+        return defaultValue;
+    }
 
-  public void setPreferenceList(List<PreferenceEntity> preferenceList) {
-    this.preferenceList = preferenceList;
-  }
+    public void setDefaultValue(byte[] defaultValue) {
+        this.defaultValue = defaultValue;
+    }
 
-  public ApplicationEntity getApplication() {
-    return application;
-  }
+    public List<PreferenceEntity> getPreferenceList() {
+        return preferenceList;
+    }
 
-  public void setApplication(ApplicationEntity application) {
-	this.application = application;
-  }
+    public void setPreferenceList(List<PreferenceEntity> preferenceList) {
+        this.preferenceList = preferenceList;
+    }
 
-  public String getGroupName() {
-	return groupName;
-  }
+    public ApplicationEntity getApplication() {
+        return application;
+    }
 
-  public void setGroupName(String groupName) {
-	this.groupName = groupName;
-  }
+    public void setApplication(ApplicationEntity application) {
+        this.application = application;
+    }
 
-  @Override
-  public String toString() {
-    return "OptionEntity{" + 
-            "optionId=" + optionId + 
-            ", name=" + name + 
-            ", description=" + description + 
-            ", dataType=" + dataType + 
-            ", defaultValue=" + defaultValue +
-            ", groupName=" + groupName +
-            '}';
-  }
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    @Override
+    public String toString() {
+        return "OptionEntity{" +
+                "optionId=" + optionId +
+                ", name=" + name +
+                ", description=" + description +
+                ", dataType=" + dataType +
+                ", defaultValue=" + defaultValue +
+                ", groupName=" + groupName +
+                '}';
+    }
 }

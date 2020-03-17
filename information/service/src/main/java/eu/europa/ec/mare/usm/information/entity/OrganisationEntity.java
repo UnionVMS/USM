@@ -1,172 +1,149 @@
 package eu.europa.ec.mare.usm.information.entity;
 
+import javax.persistence.*;
 import java.util.List;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-/**
- * JPA Mapping for the ORGANISATION_T table.
- */
 @Entity
 @SequenceGenerator(name = "organisationSequence", sequenceName = "SQ_ORGANISATION", allocationSize = 1)
 @Table(name = "ORGANISATION_T")
 @NamedQueries({
-  @NamedQuery(name = "OrganisationEntity.findByOrganisationId", query = "SELECT o FROM OrganisationEntity o join fetch o.endPointList WHERE o.organisationId = :organisationId"),
-  @NamedQuery(name = "OrganisationEntity.findByName", query = "SELECT o FROM OrganisationEntity o WHERE o.name = :name"),
-  @NamedQuery(name = "OrganisationEntity.findByIsoa3code", query = "SELECT o FROM OrganisationEntity o WHERE o.isoa3code = :isoa3code"),
-  @NamedQuery(name = "OrganisationEntity.findByStatus", query = "SELECT o FROM OrganisationEntity o WHERE o.status = :status")})
-public class OrganisationEntity  extends AbstractAuditedEntity {
-  private static final long serialVersionUID = 1L;
-  
-  @Id
-  @Basic(optional = false)
-  @Column(name = "ORGANISATION_ID")
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "organisationSequence")
-  private Long organisationId;
+        @NamedQuery(name = "OrganisationEntity.findByOrganisationId", query = "SELECT o FROM OrganisationEntity o join fetch o.endPointList WHERE o.organisationId = :organisationId"),
+        @NamedQuery(name = "OrganisationEntity.findByName", query = "SELECT o FROM OrganisationEntity o WHERE o.name = :name"),
+        @NamedQuery(name = "OrganisationEntity.findByIsoa3code", query = "SELECT o FROM OrganisationEntity o WHERE o.isoa3code = :isoa3code"),
+        @NamedQuery(name = "OrganisationEntity.findByStatus", query = "SELECT o FROM OrganisationEntity o WHERE o.status = :status")})
+public class OrganisationEntity extends AbstractAuditedEntity {
+    private static final long serialVersionUID = 1L;
 
-  @Basic(optional = false)
-  @Column(name = "NAME")
-  private String name;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "ORGANISATION_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "organisationSequence")
+    private Long organisationId;
 
-  @Basic(optional = false)
-  @Column(name = "ISOA3CODE")
-  private String isoa3code;
-  
-  @Column(name = "DESCRIPTION")
-  private String description;
-  
-  @Basic(optional = false)
-  @Column(name = "STATUS")
-  private String status;
-  
-  @OneToMany(mappedBy = "parentOrganisation")
-  private List<OrganisationEntity> childOrganisationList;
+    @Basic(optional = false)
+    @Column(name = "NAME")
+    private String name;
 
-  @JoinColumn(name = "PARENT_ID", referencedColumnName = "ORGANISATION_ID")
-  @ManyToOne
-  private OrganisationEntity parentOrganisation;
+    @Basic(optional = false)
+    @Column(name = "ISOA3CODE")
+    private String isoa3code;
 
-  @OneToMany(mappedBy = "organisation")
-  private List<UserEntity> userList;
+    @Column(name = "DESCRIPTION")
+    private String description;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisation", targetEntity=EndPointEntity.class)
-  private List<EndPointEntity> endPointList;
-  
-  @Column(name="E_MAIL")
-  private String email;
+    @Basic(optional = false)
+    @Column(name = "STATUS")
+    private String status;
 
-  public OrganisationEntity() {
-  }
+    @OneToMany(mappedBy = "parentOrganisation")
+    private List<OrganisationEntity> childOrganisationList;
 
-  public Long getOrganisationId() {
-    return organisationId;
-  }
+    @JoinColumn(name = "PARENT_ID", referencedColumnName = "ORGANISATION_ID")
+    @ManyToOne
+    private OrganisationEntity parentOrganisation;
 
-  public void setOrganisationId(Long organisationId) {
-    this.organisationId = organisationId;
-  }
+    @OneToMany(mappedBy = "organisation")
+    private List<UserEntity> userList;
 
-  public String getName() {
-    return name;
-  }
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisation", targetEntity = EndPointEntity.class)
+    private List<EndPointEntity> endPointList;
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    @Column(name = "E_MAIL")
+    private String email;
 
-  public String getIsoa3code() {
-    return isoa3code;
-  }
+    public OrganisationEntity() {
+    }
 
-  public void setIsoa3code(String isoa3code) {
-    this.isoa3code = isoa3code;
-  }
+    public Long getOrganisationId() {
+        return organisationId;
+    }
 
-  public String getDescription() {
-    return description;
-  }
+    public void setOrganisationId(Long organisationId) {
+        this.organisationId = organisationId;
+    }
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public String getStatus() {
-    return status;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public void setStatus(String status) {
-    this.status = status;
-  }
+    public String getIsoa3code() {
+        return isoa3code;
+    }
 
-  public List<OrganisationEntity> getChildOrganisationList() {
-    return childOrganisationList;
-  }
+    public void setIsoa3code(String isoa3code) {
+        this.isoa3code = isoa3code;
+    }
 
-  public void setChildOrganisationList(List<OrganisationEntity> childOrganisationList) {
-    this.childOrganisationList = childOrganisationList;
-  }
+    public String getDescription() {
+        return description;
+    }
 
-  public OrganisationEntity getParentOrganisation() {
-    return parentOrganisation;
-  }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-  public void setParentOrganisation(OrganisationEntity parentOrganisation) {
-    this.parentOrganisation = parentOrganisation;
-  }
+    public String getStatus() {
+        return status;
+    }
 
-  public List<UserEntity> getUserList() {
-    return userList;
-  }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-  public void setUserList(List<UserEntity> userList) {
-    this.userList = userList;
-  }
+    public List<OrganisationEntity> getChildOrganisationList() {
+        return childOrganisationList;
+    }
 
-  public List<EndPointEntity> getEndPointList() {
-    return endPointList;
-  }
+    public void setChildOrganisationList(List<OrganisationEntity> childOrganisationList) {
+        this.childOrganisationList = childOrganisationList;
+    }
 
-  public void setEndPointList(List<EndPointEntity> endPointList) {
-    this.endPointList = endPointList;
-  }
+    public OrganisationEntity getParentOrganisation() {
+        return parentOrganisation;
+    }
 
- /**
- * @return the email
- */
-public String getEmail() {
-	return email;
-}
+    public void setParentOrganisation(OrganisationEntity parentOrganisation) {
+        this.parentOrganisation = parentOrganisation;
+    }
 
-/**
- * @param email the email to set
- */
-public void setEmail(String email) {
-	this.email = email;
-}
+    public List<UserEntity> getUserList() {
+        return userList;
+    }
 
-@Override
-  public String toString() {
-    return "OrganisationEntity{" + 
-            "organisationId=" + organisationId + 
-            ", name=" + name + 
-            ", isoa3code=" + isoa3code + 
-            ", description=" + description + 
-            ", status=" + status +
-            ", email=" + email +
-            '}';
-  }
+    public void setUserList(List<UserEntity> userList) {
+        this.userList = userList;
+    }
+
+    public List<EndPointEntity> getEndPointList() {
+        return endPointList;
+    }
+
+    public void setEndPointList(List<EndPointEntity> endPointList) {
+        this.endPointList = endPointList;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "OrganisationEntity{" +
+                "organisationId=" + organisationId +
+                ", name=" + name +
+                ", isoa3code=" + isoa3code +
+                ", description=" + description +
+                ", status=" + status +
+                ", email=" + email +
+                '}';
+    }
 
 }
