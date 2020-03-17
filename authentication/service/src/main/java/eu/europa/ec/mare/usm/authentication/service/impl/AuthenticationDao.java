@@ -1,27 +1,19 @@
 package eu.europa.ec.mare.usm.authentication.service.impl;
 
+import eu.europa.ec.mare.usm.authentication.domain.ChallengeResponse;
 import eu.europa.ec.mare.usm.service.impl.AbstractJdbcDao;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-
-import eu.europa.ec.mare.usm.authentication.domain.ChallengeResponse;
-
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
-import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Stateless Session Bean, JDBC based data access object for the authentication
@@ -35,12 +27,9 @@ import javax.annotation.PostConstruct;
 public class AuthenticationDao extends AbstractJdbcDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationDao.class);
 
-    private static final String[] PERSON_COLUMNS = {"first_name", "last_name", "phone_number", "mobile_number",
-            "fax_number", "e_mail"};
+    private static final String[] PERSON_COLUMNS =
+            {"first_name", "last_name", "phone_number", "mobile_number", "fax_number", "e_mail" };
 
-    /**
-     * Creates a new instance.
-     */
     public AuthenticationDao() {
     }
 
@@ -50,11 +39,9 @@ public class AuthenticationDao extends AbstractJdbcDao {
      * @throws RuntimeException in case the JNDI lookup fails
      */
     @PostConstruct
-    public void postConstruct()
-            throws RuntimeException {
+    public void postConstruct() throws RuntimeException {
         lookupDatasource();
     }
-
 
     /**
      * Retrieves the unique identifier (PK) of the user with the given name and
@@ -77,9 +64,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
 
         try {
             co = getConnection();
-            ps = co.prepareStatement("select USER_ID from active_user_v" +
-                    " where user_name=?" +
-                    "   and password=?");
+            ps = co.prepareStatement("select USER_ID from active_user_v where user_name=? and password=?");
             ps.setString(1, userName);
             ps.setString(2, password);
             rs = ps.executeQuery();
@@ -118,8 +103,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
 
         try {
             co = getConnection();
-            ps = co.prepareStatement("select LOCKOUT_REASON from USER_T" +
-                    " where user_name=?");
+            ps = co.prepareStatement("select LOCKOUT_REASON from USER_T where user_name=?");
             ps.setString(1, userName);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -156,8 +140,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
 
         try {
             co = getConnection();
-            ps = co.prepareStatement("select STATUS from USER_T" +
-                    " where user_name=?");
+            ps = co.prepareStatement("select STATUS from USER_T where user_name=?");
             ps.setString(1, userName);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -200,9 +183,9 @@ public class AuthenticationDao extends AbstractJdbcDao {
             ps = co.prepareStatement("select c.USER_ID" +
                     " from active_user_v u, challenge_t c" +
                     " where c.USER_ID=u.USER_ID" +
-                    "  and u.USER_NAME=?" +
-                    "  and c.CHALLENGE=?" +
-                    "  and c.RESPONSE=?");
+                    " and u.USER_NAME=?" +
+                    " and c.CHALLENGE=?" +
+                    " and c.RESPONSE=?");
             ps.setString(1, request.getUserName());
             ps.setString(2, request.getChallenge());
             ps.setString(3, request.getResponse());
@@ -244,7 +227,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             ps = co.prepareStatement("select u.USER_NAME, c.CHALLENGE" +
                     " from active_user_v u, challenge_t c" +
                     " where c.USER_ID=u.USER_ID" +
-                    "  and u.USER_NAME=?" +
+                    " and u.USER_NAME=?" +
                     " order by CHALLENGE desc");
             ps.setString(1, userName);
             rs = ps.executeQuery();
@@ -317,8 +300,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
 
         try {
             co = getConnection();
-            ps = co.prepareStatement("select PASSWORD_EXPIRY from USER_T" +
-                    " where USER_NAME=?");
+            ps = co.prepareStatement("select PASSWORD_EXPIRY from USER_T where USER_NAME=?");
             ps.setString(1, userName);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -383,8 +365,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
 
         try {
             co = getConnection();
-            ps = co.prepareStatement("select LOGON_FAILURE from USER_T" +
-                    " where USER_NAME=?");
+            ps = co.prepareStatement("select LOGON_FAILURE from USER_T where USER_NAME=?");
             ps.setString(1, userName);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -450,8 +431,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
 
         try {
             co = getConnection();
-            ps = co.prepareStatement("select PERSON_ID from USER_T" +
-                    " where USER_NAME=?");
+            ps = co.prepareStatement("select PERSON_ID from USER_T where USER_NAME=?");
             ps.setString(1, userName);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -489,8 +469,8 @@ public class AuthenticationDao extends AbstractJdbcDao {
             String[] values = new String[PERSON_COLUMNS.length];
 
             connection = getConnection();
-            insert = connection.prepareStatement("insert into person_t(first_name, last_name, phone_number, mobile_number, "
-                            + "fax_number, e_mail) values (?, ?, ?, ?, ?, ?)",
+            insert = connection.prepareStatement("insert into person_t(first_name, last_name, " +
+                            "phone_number, mobile_number, fax_number, e_mail) values (?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
 
             for (int i = 0; i < PERSON_COLUMNS.length; i++) {
@@ -614,7 +594,6 @@ public class AuthenticationDao extends AbstractJdbcDao {
                 } else {
                     LOGGER.debug("No LDAP sync needed");
                 }
-
             }
         } catch (Exception ex) {
             handleException(ex);
@@ -628,6 +607,5 @@ public class AuthenticationDao extends AbstractJdbcDao {
         LOGGER.info("syncPerson() - (LEAVE)");
         return identical;
     }
-
 
 }

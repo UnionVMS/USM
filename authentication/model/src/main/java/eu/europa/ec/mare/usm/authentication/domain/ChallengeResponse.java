@@ -4,68 +4,37 @@ package eu.europa.ec.mare.usm.authentication.domain;
  * A challenge/response based authentication request.
  */
 public class ChallengeResponse extends AuthenticationQuery {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String challenge;
-	private String response;
+    private String challenge;
+    private String response;
 
-  /**
-   * Creates a new instance.
-   */
-  public ChallengeResponse() {
-  }
+    public ChallengeResponse() {
+    }
 
-  
-  /**
-   * Get the value of challenge
-   *
-   * @return the value of challenge
-   */
-  public String getChallenge() {
-    return challenge;
-  }
+    public String getChallenge() {
+        return challenge;
+    }
 
-  /**
-   * Set the value of challenge
-   *
-   * @param challenge new value of challenge
-   */
-  public void setChallenge(String challenge) {
-    this.challenge = challenge;
-  }
+    public void setChallenge(String challenge) {
+        this.challenge = challenge;
+    }
 
+    public String getResponse() {
+        return response;
+    }
 
-  /**
-   * Get the value of response
-   *
-   * @return the value of response
-   */
-  public String getResponse() {
-    return response;
-  }
+    public void setResponse(String response) {
+        this.response = response;
+    }
 
-  /**
-   * Set the value of response
-   *
-   * @param response new value of response
-   */
-  public void setResponse(String response) {
-    this.response = response;
-  }
-
-  /**
-   * Formats a human-readable view of this instance.
-   * 
-   * @return a human-readable view
-   */
-  @Override
-  public String toString() 
-  {
-    return "ChallengeResponse{" + 
-            "userName=" + getUserName() + 
-            "challenge=" + challenge + 
-            ", response=" + (response == null ? null : "******") + 
-            '}';
-  }
+    @Override
+    public String toString() {
+        return "ChallengeResponse{" +
+                "userName=" + getUserName() +
+                "challenge=" + challenge +
+                ", response=" + (response == null ? null : "******") +
+                '}';
+    }
 
 }
