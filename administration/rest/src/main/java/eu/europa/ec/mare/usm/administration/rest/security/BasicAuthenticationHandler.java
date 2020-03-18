@@ -24,7 +24,7 @@ public class BasicAuthenticationHandler {
             String decoded = new String(bytes);
             String[] parts = decoded.split(":");
 
-            if (parts != null && parts.length == 2) {
+            if (parts.length == 2) {
                 AuthenticationRequest request = new AuthenticationRequest();
                 request.setUserName(parts[0]);
                 request.setPassword(parts[1]);

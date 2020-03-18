@@ -1,6 +1,5 @@
 package eu.europa.ec.mare.usm.administration.rest.service.authentication;
 
-
 import eu.europa.ec.mare.usm.administration.domain.AuthenticationJwtResponse;
 import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
 import eu.europa.ec.mare.usm.administration.rest.common.ExceptionHandler;
@@ -31,9 +30,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import java.util.List;
 
-/**
- * REST Web Service for Authentication.
- */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 @Path("")
@@ -56,14 +52,8 @@ public class AuthenticationResource {
     @EJB
     private SessionTracker sessionTracker;
 
-
     private SessionInfo sessionInfo;
 
-    /**
-     * Creates a new instance.
-     */
-    public AuthenticationResource() {
-    }
 
     /**
      * Authenticates a user via the provided AuthenticationRequest.
@@ -78,12 +68,10 @@ public class AuthenticationResource {
      */
     @POST
     @Path("authenticate")
-    public AuthenticationJwtResponse authenticate(AuthenticationRequest request)
-            throws WebApplicationException {
+    public AuthenticationJwtResponse authenticate(AuthenticationRequest request) throws WebApplicationException {
         LOGGER.info("authenticate() - (ENTER)");
 
         AuthenticationJwtResponse ret = new AuthenticationJwtResponse();
-
         try {
             AuthenticationResponse response = service.authenticateUser(request);
 
@@ -186,8 +174,7 @@ public class AuthenticationResource {
             throw new WebApplicationException(exc, Response.Status.BAD_REQUEST);
         } catch (Exception exc) {
             LOGGER.error("Internal Server Error: " + exc.getMessage(), exc);
-            throw new WebApplicationException(exc,
-                    Response.Status.INTERNAL_SERVER_ERROR);
+            throw new WebApplicationException(exc, Response.Status.INTERNAL_SERVER_ERROR);
         }
 
         if (ret == null) {

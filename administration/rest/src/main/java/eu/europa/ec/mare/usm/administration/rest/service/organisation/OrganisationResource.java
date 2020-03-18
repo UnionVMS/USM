@@ -167,7 +167,6 @@ public class OrganisationResource {
         }
 
         LOGGER.info("deleteOrganisation() - (ENTER)");
-
         return ret;
     }
 
@@ -454,7 +453,6 @@ public class OrganisationResource {
      * error code in case an internal error prevented fulfilling the request or
      * UnauthorisedException with an UNAUTHORIZED error code in case the end user
      * is not authorised to perform the operation
-     *
      * @apiNote New Frontend should use {@link EndpointResource#getEndPoint(String, String, String, Long)}
      */
     @GET
@@ -505,7 +503,6 @@ public class OrganisationResource {
      * code in case an internal error prevented fulfilling the request or
      * UnauthorisedException with an UNAUTHORIZED error code in case the end user
      * is not authorised to perform the operation
-     *
      * @apiNote New Frontend should use {@link ChannelResource#getChannel(String, String, String, Long)}
      */
     @GET
@@ -556,7 +553,6 @@ public class OrganisationResource {
      * INTERNAL_SERVER_ERROR error code in case an internal error prevented
      * fulfilling the request or UnauthorisedException with an UNAUTHORIZED error
      * code in case the end user is not authorised to perform the operation
-     *
      * @apiNote New Frontend should use {@link EndpointResource#getEndPointContact(String, String, String, Long)}
      */
     @GET
