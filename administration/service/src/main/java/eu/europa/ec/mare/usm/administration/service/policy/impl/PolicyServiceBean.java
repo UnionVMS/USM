@@ -23,101 +23,98 @@ import java.util.List;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class PolicyServiceBean implements PolicyService {
-  private static final Logger LOGGER = LoggerFactory.getLogger(PolicyServiceBean.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(PolicyServiceBean.class.getName());
 
-  @Inject
-  private PolicyJpaDao policyJpaDao;
+    @Inject
+    private PolicyJpaDao policyJpaDao;
 
-  @Inject
-  private PolicyJdbcDao policyJdbcDao;
+    @Inject
+    private PolicyJdbcDao policyJdbcDao;
 
-  @Inject
-  private PolicyValidator validator;
+    @Inject
+    private PolicyValidator validator;
 
-  @EJB
-  private DefinitionService definitionService;
+    @EJB
+    private DefinitionService definitionService;
 
-  @Inject
-  private AuditProducer auditProducer;
+    @Inject
+    private AuditProducer auditProducer;
 
+    @Override
+    public Policy updatePolicy(ServiceRequest<Policy> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+        LOGGER.info("updatePolicy(" + request + ") - (ENTER)");
 
-  @Override
-  public Policy updatePolicy(ServiceRequest<Policy> request)
-  throws IllegalArgumentException, UnauthorisedException, RuntimeException 
-  {
-    LOGGER.info("updatePolicy(" + request + ") - (ENTER)");
+        validator.assertValidPolicyProperty(request);
 
-    validator.assertValidPolicyProperty(request);
+        String subject = request.getBody().getSubject();
+        String name = request.getBody().getName();
+        String value = request.getBody().getValue();
 
-    String subject = request.getBody().getSubject();
-    String name = request.getBody().getName();
-    String value = request.getBody().getValue();
+        List<PolicyEntity> policyEntities = policyJpaDao.readPolicy(subject);
 
-    List<PolicyEntity> policyEntities = policyJpaDao.readPolicy(subject);
+        for (PolicyEntity policyEntity : policyEntities) {
+            if (policyEntity.getName().equals(name)
+                    && policyEntity.getSubject().equals(subject)) {
 
-    for (PolicyEntity policyEntity : policyEntities) {
-      if (policyEntity.getName().equals(name)
-              && policyEntity.getSubject().equals(subject)) {
+                policyEntity.setValue(value);
+                policyJpaDao.updatePolicyProperty(policyEntity);
 
-        policyEntity.setValue(value);
-        policyJpaDao.updatePolicyProperty(policyEntity);
+                definitionService.evictDefinition(subject);
 
-        definitionService.evictDefinition(subject);
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.POLICY.getValue() + " " + name, request.getBody().getDescription(), request.getRequester());
-        auditProducer.sendModuleMessage(auditLog);
+                String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(),
+                        AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.POLICY.getValue() + " " +
+                                name, request.getBody().getDescription(), request.getRequester());
+                auditProducer.sendModuleMessage(auditLog);
 
-        return convertToDomain(policyEntity);
-      }
+                return convertToDomain(policyEntity);
+            }
+        }
+
+        LOGGER.info("updatePolicy() - (LEAVE)");
+        return null;
     }
 
-    LOGGER.info("updatePolicy() - (LEAVE)");
-    return null;
-  }
+    @Override
+    public List<Policy> findPolicies(ServiceRequest<FindPoliciesQuery> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+        LOGGER.info("findPolicies(" + request + ") - (ENTER)");
 
-  @Override
-  public List<Policy> findPolicies(ServiceRequest<FindPoliciesQuery> request)
-  throws IllegalArgumentException, UnauthorisedException, RuntimeException 
-  {
-    LOGGER.info("findPolicies(" + request + ") - (ENTER)");
+        validator.assertValid(request, USMFeature.configurePolicies, "query");
 
-    validator.assertValid(request, USMFeature.configurePolicies, "query");
+        List<PolicyEntity> policyEntities = policyJpaDao.findPolicies(request.getBody());
 
-    List<PolicyEntity> policyEntities = policyJpaDao.findPolicies(request.getBody());
+        List<Policy> ret = new ArrayList<>();
+        for (PolicyEntity e : policyEntities) {
+            ret.add(convertToDomain(e));
+        }
 
-    List<Policy> ret = new ArrayList<>();
-    for (PolicyEntity e : policyEntities) {
-      ret.add(convertToDomain(e));
+        LOGGER.info("findPolicies() - (LEAVE)");
+        return ret;
     }
 
-    LOGGER.info("findPolicies() - (LEAVE)");
-    return ret;
-  }
+    @Override
+    public List<String> getSubjects(ServiceRequest<NoBody> request) {
+        LOGGER.info("getSubjects(" + request + ") - (ENTER)");
 
-  @Override
-  public List<String> getSubjects(ServiceRequest<NoBody> request) 
-  {
-    LOGGER.info("getSubjects(" + request + ") - (ENTER)");
+        validator.assertValid(request, USMFeature.configurePolicies);
 
-    validator.assertValid(request, USMFeature.configurePolicies);
+        List<String> ret = policyJdbcDao.getSubjects();
 
-    List<String> ret = policyJdbcDao.getSubjects();
+        LOGGER.info("getSubjects() - (LEAVE)");
+        return ret;
+    }
 
-    LOGGER.info("getSubjects() - (LEAVE)");
-    return ret;
-  }
+    private Policy convertToDomain(PolicyEntity src) {
+        Policy ret = new Policy();
 
-  private Policy convertToDomain(PolicyEntity src) 
-  {
-    Policy ret = new Policy();
-    
-    ret.setPolicyId(src.getPolicyId());
-    ret.setName(src.getName());
-    ret.setDescription(src.getDescription());
-    ret.setSubject(src.getSubject());
-    ret.setValue(src.getValue());
-    
-    return ret;
-  }
+        ret.setPolicyId(src.getPolicyId());
+        ret.setName(src.getName());
+        ret.setDescription(src.getDescription());
+        ret.setSubject(src.getSubject());
+        ret.setValue(src.getValue());
+
+        return ret;
+    }
 
 }

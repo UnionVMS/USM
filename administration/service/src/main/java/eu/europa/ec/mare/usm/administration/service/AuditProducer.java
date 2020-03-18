@@ -26,17 +26,17 @@ public class AuditProducer extends AbstractProducer {
     @Resource(mappedName = "java:/" + MessageConstants.QUEUE_USER_RESPONSE)
     private Queue replyToQueue;
 
-    @Resource(mappedName =  "java:/" + MessageConstants.QUEUE_AUDIT_EVENT)
+    @Resource(mappedName = "java:/" + MessageConstants.QUEUE_AUDIT_EVENT)
     private Queue destination;
 
     public String sendModuleMessage(String text) {
         try {
             return sendModuleMessage(text, replyToQueue);
-        }catch (JMSException e){
+        } catch (JMSException e) {
             throw new RuntimeException("Error while sending log to audit", e);
         }
     }
-    
+
     @Override
     public Destination getDestination() {
         return destination;

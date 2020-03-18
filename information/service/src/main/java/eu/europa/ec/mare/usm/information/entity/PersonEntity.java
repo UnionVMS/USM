@@ -1,146 +1,133 @@
 package eu.europa.ec.mare.usm.information.entity;
 
+import javax.persistence.*;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
-/**
- * JPA Mapping for the PERSON_T table.
- */
 @Entity
 @SequenceGenerator(name = "personSequence", sequenceName = "SQ_PERSON", allocationSize = 1)
 @Table(name = "PERSON_T")
 @NamedQueries({
-  @NamedQuery(name = "PersonEntity.findByPersonId", query = "SELECT p FROM PersonEntity p WHERE p.personId = :personId"),
-  @NamedQuery(name = "PersonEntity.findAll", query = "Select p from PersonEntity p")})
-public class PersonEntity  extends AbstractAuditedEntity {
-  private static final long serialVersionUID = 1L;
-  
-  @Id
-  @Basic(optional = false)
-  @Column(name = "PERSON_ID")
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personSequence")
-  private Long personId;
+        @NamedQuery(name = "PersonEntity.findByPersonId", query = "SELECT p FROM PersonEntity p WHERE p.personId = :personId"),
+        @NamedQuery(name = "PersonEntity.findAll", query = "Select p from PersonEntity p")})
+public class PersonEntity extends AbstractAuditedEntity {
+    private static final long serialVersionUID = 1L;
 
-  @Column(name = "FIRST_NAME")
-  private String firstName;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "PERSON_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personSequence")
+    private Long personId;
 
-  @Column(name = "LAST_NAME")
-  private String lastName;
+    @Column(name = "FIRST_NAME")
+    private String firstName;
 
-  @Column(name = "PHONE_NUMBER")
-  private String phoneNumber;
+    @Column(name = "LAST_NAME")
+    private String lastName;
 
-  @Column(name = "MOBILE_NUMBER")
-  private String mobileNumber;
+    @Column(name = "PHONE_NUMBER")
+    private String phoneNumber;
 
-  @Column(name = "FAX_NUMBER")
-  private String faxNumber;
+    @Column(name = "MOBILE_NUMBER")
+    private String mobileNumber;
 
-  @Column(name = "E_MAIL")
-  private String eMail;
+    @Column(name = "FAX_NUMBER")
+    private String faxNumber;
 
-  @OneToMany(mappedBy="person")
-  private List<UserEntity> userList;
+    @Column(name = "E_MAIL")
+    private String eMail;
 
-  @OneToMany(mappedBy="person")
-  private List<EndPointContactEntity> endPointContactList;
+    @OneToMany(mappedBy = "person")
+    private List<UserEntity> userList;
 
-  public PersonEntity() {
-  }
+    @OneToMany(mappedBy = "person")
+    private List<EndPointContactEntity> endPointContactList;
 
-  public Long getPersonId() {
-    return personId;
-  }
+    public PersonEntity() {
+    }
 
-  public void setPersonId(Long personId) {
-    this.personId = personId;
-  }
+    public Long getPersonId() {
+        return personId;
+    }
 
-  public String getFirstName() {
-    return firstName;
-  }
+    public void setPersonId(Long personId) {
+        this.personId = personId;
+    }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
+    public String getFirstName() {
+        return firstName;
+    }
 
-  public String getLastName() {
-    return lastName;
-  }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
+    public String getLastName() {
+        return lastName;
+    }
 
-  public String getPhoneNumber() {
-    return phoneNumber;
-  }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
-  }
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-  public String getMobileNumber() {
-    return mobileNumber;
-  }
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-  public void setMobileNumber(String mobileNumber) {
-    this.mobileNumber = mobileNumber;
-  }
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
 
-  public String getFaxNumber() {
-    return faxNumber;
-  }
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
 
-  public void setFaxNumber(String faxNumber) {
-    this.faxNumber = faxNumber;
-  }
+    public String getFaxNumber() {
+        return faxNumber;
+    }
 
-  public String getEMail() {
-    return eMail;
-  }
+    public void setFaxNumber(String faxNumber) {
+        this.faxNumber = faxNumber;
+    }
 
-  public void setEMail(String eMail) {
-    this.eMail = eMail;
-  }
+    public String getEMail() {
+        return eMail;
+    }
 
-  public List<UserEntity> getUserList() {
-    return userList;
-  }
+    public void setEMail(String eMail) {
+        this.eMail = eMail;
+    }
 
-  public void setUserList(List<UserEntity> userList) {
-    this.userList = userList;
-  }
+    public List<UserEntity> getUserList() {
+        return userList;
+    }
 
-  public List<EndPointContactEntity> getEndPointContactList() {
-    return endPointContactList;
-  }
+    public void setUserList(List<UserEntity> userList) {
+        this.userList = userList;
+    }
 
-  public void setEndPointList(List<EndPointContactEntity> endPointContactList) {
-    this.endPointContactList = endPointContactList;
-  }
+    public List<EndPointContactEntity> getEndPointContactList() {
+        return endPointContactList;
+    }
 
-  @Override
-  public String toString() {
-    return "PersonEntity{" + 
-            "personId=" + personId + 
-            ", firstName=" + firstName + 
-            ", lastName=" + lastName + 
-            ", phoneNumber=" + phoneNumber + 
-            ", mobileNumber=" + mobileNumber + 
-            ", faxNumber=" + faxNumber + 
-            ", eMail=" + eMail + 
-            '}';
-  }
+    public void setEndPointList(List<EndPointContactEntity> endPointContactList) {
+        this.endPointContactList = endPointContactList;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonEntity{" +
+                "personId=" + personId +
+                ", firstName=" + firstName +
+                ", lastName=" + lastName +
+                ", phoneNumber=" + phoneNumber +
+                ", mobileNumber=" + mobileNumber +
+                ", faxNumber=" + faxNumber +
+                ", eMail=" + eMail +
+                '}';
+    }
 
 }

@@ -1,95 +1,75 @@
 package eu.europa.ec.mare.usm.information.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-/**
- * JPA Mapping for the PREFERENCE_T table.
- */
 @Entity
 @SequenceGenerator(name = "preferenceSequence", sequenceName = "SQ_PREFERENCE", allocationSize = 1)
 @Table(name = "PREFERENCE_T")
 @NamedQueries({
-  @NamedQuery(name = "PreferenceEntity.findByContextId", 
-		  query = "SELECT p FROM PreferenceEntity p WHERE p.userContext.userContextId = :contextId")
-  })
-
+        @NamedQuery(name = "PreferenceEntity.findByContextId", query = "SELECT p FROM PreferenceEntity p WHERE p.userContext.userContextId = :contextId")
+})
 public class PreferenceEntity extends AbstractAuditedEntity {
-  private static final long serialVersionUID = 1L;
-  
-  @Id
-  @Basic(optional = false)
-  @Column(name = "PREFERENCE_ID")
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "preferenceSequence")
-  private Long preferenceId;
-  
+    private static final long serialVersionUID = 1L;
 
-  @Basic(optional = false)
-  @Column(name = "OPTION_VALUE")
-  private byte[] optionValue;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "PREFERENCE_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "preferenceSequence")
+    private Long preferenceId;
 
-  @JoinColumn(name = "USER_CONTEXT_ID", referencedColumnName = "USER_CONTEXT_ID")
-  @ManyToOne(optional = false)
-  private UserContextEntity userContext;
-  
+    @Basic(optional = false)
+    @Column(name = "OPTION_VALUE")
+    private byte[] optionValue;
 
-  @JoinColumn(name = "OPTION_ID", referencedColumnName = "OPTION_ID")
-  @ManyToOne(optional = false)
-  private OptionEntity option;
+    @JoinColumn(name = "USER_CONTEXT_ID", referencedColumnName = "USER_CONTEXT_ID")
+    @ManyToOne(optional = false)
+    private UserContextEntity userContext;
 
-  public PreferenceEntity() {
-  }
+    @JoinColumn(name = "OPTION_ID", referencedColumnName = "OPTION_ID")
+    @ManyToOne(optional = false)
+    private OptionEntity option;
 
-  public Long getPreferenceId() {
-    return preferenceId;
-  }
+    public PreferenceEntity() {
+    }
 
-  public void setPreferenceId(Long preferenceId) {
-    this.preferenceId = preferenceId;
-  }
+    public Long getPreferenceId() {
+        return preferenceId;
+    }
 
-  
-  
-  public byte[] getOptionValue() {
-	return optionValue;
-}
+    public void setPreferenceId(Long preferenceId) {
+        this.preferenceId = preferenceId;
+    }
 
-public void setOptionValue(byte[] optionValue) {
-	this.optionValue = optionValue;
-}
+    public byte[] getOptionValue() {
+        return optionValue;
+    }
 
-public UserContextEntity getUserContext() {
-    return userContext;
-  }
+    public void setOptionValue(byte[] optionValue) {
+        this.optionValue = optionValue;
+    }
 
-  public void setUserContext(UserContextEntity userContext) {
-    this.userContext = userContext;
-  }
+    public UserContextEntity getUserContext() {
+        return userContext;
+    }
 
-  public OptionEntity getOption() {
-    return option;
-  }
+    public void setUserContext(UserContextEntity userContext) {
+        this.userContext = userContext;
+    }
 
-  public void setOption(OptionEntity option) {
-    this.option = option;
-  }
+    public OptionEntity getOption() {
+        return option;
+    }
 
-  @Override
-  public String toString() {
-    return "PreferenceEntity{" + 
-            "preferenceId=" + preferenceId + 
-            ", optionValue=" + optionValue + 
-            ", userContext="+userContext+
-            '}';
-  }
+    public void setOption(OptionEntity option) {
+        this.option = option;
+    }
+
+    @Override
+    public String toString() {
+        return "PreferenceEntity{" +
+                "preferenceId=" + preferenceId +
+                ", optionValue=" + optionValue +
+                ", userContext=" + userContext +
+                '}';
+    }
 }

@@ -1,12 +1,6 @@
 package eu.europa.ec.mare.usm.administration.service.user;
 
-import eu.europa.ec.mare.usm.administration.domain.ChallengeInformationResponse;
-import eu.europa.ec.mare.usm.administration.domain.ChangePassword;
-import eu.europa.ec.mare.usm.administration.domain.NotificationQuery;
-import eu.europa.ec.mare.usm.administration.domain.ResetPasswordQuery;
-import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
-import eu.europa.ec.mare.usm.administration.domain.UnauthorisedException;
-import eu.europa.ec.mare.usm.administration.domain.UserAccount;
+import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.authentication.service.impl.CreateLdapUser;
 import eu.europa.ec.mare.usm.authentication.service.impl.CreateLdapUserEvent;
 
@@ -50,7 +44,6 @@ public interface ManageUserService {
     UserAccount updateUser(ServiceRequest<UserAccount> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException;
 
-
     /**
      * Changes the password of an existing user.<br/>
      * May be used either by an administrator to change the password of
@@ -73,7 +66,6 @@ public interface ManageUserService {
      */
     void changePassword(ServiceRequest<ChangePassword> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException;
-
 
     /**
      * Get the challenge information of an existing user.<br/>

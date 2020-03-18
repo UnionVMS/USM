@@ -3,157 +3,135 @@ package eu.europa.ec.mare.usm.information.entity;
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * JPA Mapping for the END_POINT_T table.
- */
 @Entity
 @SequenceGenerator(name = "endPointSequence", sequenceName = "SQ_END_POINT", allocationSize = 1)
 @Table(name = "END_POINT_T")
 @NamedQueries({
-  @NamedQuery(name = "EndPointEntity.findByEndPointId", query = "SELECT e FROM EndPointEntity e left join fetch e.channel WHERE e.endPointId = :endPointId"),
-  @NamedQuery(name = "EndPointEntity.findByOrganisationId", query = "SELECT e FROM EndPointEntity e WHERE e.organisation.organisationId = :organisationId"),
-  @NamedQuery(name = "EndPointEntity.findByOrganisationName",query = "SELECT e FROM EndPointEntity e WHERE e.name=:endpointName and e.organisation.name = :organisationName")})
-public class EndPointEntity  extends AbstractAuditedEntity {
-  private static final long serialVersionUID = 1L;
-  
-  @Id
-  @Basic(optional = false)
-  @Column(name = "END_POINT_ID")
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "endPointSequence")
-  private Long endPointId;
+        @NamedQuery(name = "EndPointEntity.findByEndPointId", query = "SELECT e FROM EndPointEntity e left join fetch e.channel WHERE e.endPointId = :endPointId"),
+        @NamedQuery(name = "EndPointEntity.findByOrganisationId", query = "SELECT e FROM EndPointEntity e WHERE e.organisation.organisationId = :organisationId"),
+        @NamedQuery(name = "EndPointEntity.findByOrganisationName", query = "SELECT e FROM EndPointEntity e WHERE e.name=:endpointName and e.organisation.name = :organisationName")})
+public class EndPointEntity extends AbstractAuditedEntity {
+    private static final long serialVersionUID = 1L;
 
-  @Basic(optional = false)
-  @Column(name = "NAME")
-  private String name;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "END_POINT_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "endPointSequence")
+    private Long endPointId;
 
-  @Column(name = "DESCRIPTION")
-  private String description;
+    @Basic(optional = false)
+    @Column(name = "NAME")
+    private String name;
 
-  @Basic(optional = false)
-  @Column(name = "URI")
-  private String uri;
+    @Column(name = "DESCRIPTION")
+    private String description;
 
-  @Basic(optional = false)
-  @Column(name = "STATUS")
-  private String status;
-  
-  @Column(name="e_mail")
-  private String email;
+    @Basic(optional = false)
+    @Column(name = "URI")
+    private String uri;
 
-  @OneToMany(mappedBy="endPoint")
-  private List<EndPointContactEntity> endPointContact;
-  
-  @JoinColumn(name = "ORGANISATION_ID", referencedColumnName = "ORGANISATION_ID")
-  @ManyToOne(optional = false)
-  private OrganisationEntity organisation;
-  
-  @OneToMany(mappedBy="endPoint")
-  private List<ChannelEntity> channel;
+    @Basic(optional = false)
+    @Column(name = "STATUS")
+    private String status;
 
-  public EndPointEntity() {
-  }
+    @Column(name = "e_mail")
+    private String email;
 
-  public Long getEndPointId() {
-    return endPointId;
-  }
+    @OneToMany(mappedBy = "endPoint")
+    private List<EndPointContactEntity> endPointContact;
 
-  public void setEndPointId(Long endPointId) {
-    this.endPointId = endPointId;
-  }
+    @JoinColumn(name = "ORGANISATION_ID", referencedColumnName = "ORGANISATION_ID")
+    @ManyToOne(optional = false)
+    private OrganisationEntity organisation;
 
-  public String getName() {
-    return name;
-  }
+    @OneToMany(mappedBy = "endPoint")
+    private List<ChannelEntity> channel;
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public EndPointEntity() {
+    }
 
-  public String getDescription() {
-    return description;
-  }
+    public Long getEndPointId() {
+        return endPointId;
+    }
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+    public void setEndPointId(Long endPointId) {
+        this.endPointId = endPointId;
+    }
 
-  public String getUri() {
-    return uri;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setUri(String uri) {
-    this.uri = uri;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-   public String getStatus() {
-    return status;
-  }
+    public String getDescription() {
+        return description;
+    }
 
-  public void setStatus(String status) {
-    this.status = status;
-  }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-  public OrganisationEntity getOrganisation() {
-    return organisation;
-  }
+    public String getUri() {
+        return uri;
+    }
 
-  public void setOrganisation(OrganisationEntity organisation) {
-    this.organisation = organisation;
-  }
-  
-	  /**
-	 * @return the email
-	 */
-	public String getEmail() {
-		return email;
-	}
-	
-	/**
-	 * @param email the email to set
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
 
-	
-	/**
-	 * @return the endPointContact
-	 */
-	public List<EndPointContactEntity> getEndPointContact() {
-		return endPointContact;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	/**
-	 * @param endPointContact the endPointContact to set
-	 */
-	public void setEndPointContact(List<EndPointContactEntity> endPointContact) {
-		this.endPointContact = endPointContact;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	/**
-	 * @return the channel
-	 */
-	public List<ChannelEntity> getChannel() {
-		return channel;
-	}
+    public OrganisationEntity getOrganisation() {
+        return organisation;
+    }
 
-	/**
-	 * @param channel the channel to set
-	 */
-	public void setChannel(List<ChannelEntity> channel) {
-		this.channel = channel;
-	}
+    public void setOrganisation(OrganisationEntity organisation) {
+        this.organisation = organisation;
+    }
 
-@Override
-  public String toString() {
-    return "EndPointEntity{" + 
-            "endPointId=" + endPointId + 
-            ", name=" + name + 
-            ", description=" + description + 
-            ", uri=" + uri + 
-            ", status=" + status + 
-            ", organisation=" + organisation + 
-            ", email="+email+
-            '}';
-  }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<EndPointContactEntity> getEndPointContact() {
+        return endPointContact;
+    }
+
+    public void setEndPointContact(List<EndPointContactEntity> endPointContact) {
+        this.endPointContact = endPointContact;
+    }
+
+    public List<ChannelEntity> getChannel() {
+        return channel;
+    }
+
+    public void setChannel(List<ChannelEntity> channel) {
+        this.channel = channel;
+    }
+
+    @Override
+    public String toString() {
+        return "EndPointEntity{" +
+                "endPointId=" + endPointId +
+                ", name=" + name +
+                ", description=" + description +
+                ", uri=" + uri +
+                ", status=" + status +
+                ", organisation=" + organisation +
+                ", email=" + email +
+                '}';
+    }
 }

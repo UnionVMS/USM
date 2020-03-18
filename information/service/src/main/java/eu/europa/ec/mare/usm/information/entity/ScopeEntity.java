@@ -21,154 +21,150 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/**
- * JPA Mapping for the SCOPE_T table.
- */
 @Entity
 @SequenceGenerator(name = "scopeSequence", sequenceName = "SQ_SCOPE", allocationSize = 1)
 @Table(name = "SCOPE_T")
 @NamedQueries({
-	@NamedQuery(name = "ScopeEntity.findByScopeId", 
-			query = "SELECT s FROM ScopeEntity s WHERE s.scopeId = :scopeId")})
-public class ScopeEntity  extends AbstractAuditedEntity {
-  private static final long serialVersionUID = 1L;
-  
-  @Id
-  @Basic(optional = false)
-  @Column(name = "SCOPE_ID")
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scopeSequence")
-  private Long scopeId;
-  
-  @Basic(optional = false)
-  @Column(name = "NAME")
-  private String name;
-  
-  @Column(name = "DESCRIPTION")
-  private String description;
-  
-  @Basic(optional = false)
-  @Column(name = "STATUS")
-  private String status;
-  
-  @Column(name = "ACTIVE_FROM")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date activeFrom;
-  
-  @Column(name = "ACTIVE_TO")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date activeTo;
-  
-  @Column(name = "DATA_FROM")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date dataFrom;
-  
-  @Column(name = "DATA_TO")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date dataTo;
-  
-  @JoinTable(name = "SCOPE_DATASET_T", joinColumns = {
-		    @JoinColumn(name = "SCOPE_ID", referencedColumnName = "SCOPE_ID")}, inverseJoinColumns = {
-		    @JoinColumn(name = "DATASET_ID", referencedColumnName = "DATASET_ID")})
-  @ManyToMany
-  private List<DatasetEntity> datasetList;
+        @NamedQuery(name = "ScopeEntity.findByScopeId", query = "SELECT s FROM ScopeEntity s WHERE s.scopeId = :scopeId")})
+public class ScopeEntity extends AbstractAuditedEntity {
+    private static final long serialVersionUID = 1L;
 
-  @OneToMany(cascade=CascadeType.ALL,mappedBy = "scope")
-  private List<UserContextEntity> userContextList;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "SCOPE_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scopeSequence")
+    private Long scopeId;
 
-  public ScopeEntity() {
-  }
+    @Basic(optional = false)
+    @Column(name = "NAME")
+    private String name;
 
-  public Long getScopeId() {
-    return scopeId;
-  }
+    @Column(name = "DESCRIPTION")
+    private String description;
 
-  public void setScopeId(Long scopeId) {
-    this.scopeId = scopeId;
-  }
+    @Basic(optional = false)
+    @Column(name = "STATUS")
+    private String status;
 
-  public String getName() {
-    return name;
-  }
+    @Column(name = "ACTIVE_FROM")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date activeFrom;
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    @Column(name = "ACTIVE_TO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date activeTo;
 
-  public String getDescription() {
-    return description;
-  }
+    @Column(name = "DATA_FROM")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataFrom;
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+    @Column(name = "DATA_TO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataTo;
 
-  public String getStatus() {
-    return status;
-  }
+    @JoinTable(name = "SCOPE_DATASET_T", joinColumns = {
+            @JoinColumn(name = "SCOPE_ID", referencedColumnName = "SCOPE_ID")}, inverseJoinColumns = {
+            @JoinColumn(name = "DATASET_ID", referencedColumnName = "DATASET_ID")})
+    @ManyToMany
+    private List<DatasetEntity> datasetList;
 
-  public void setStatus(String status) {
-    this.status = status;
-  }
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "scope")
+    private List<UserContextEntity> userContextList;
 
-  public Date getActiveFrom() {
-    return activeFrom;
-  }
+    public ScopeEntity() {
+    }
 
-  public void setActiveFrom(Date activeFrom) {
-    this.activeFrom = activeFrom;
-  }
+    public Long getScopeId() {
+        return scopeId;
+    }
 
-  public Date getActiveTo() {
-    return activeTo;
-  }
+    public void setScopeId(Long scopeId) {
+        this.scopeId = scopeId;
+    }
 
-  public void setActiveTo(Date activeTo) {
-    this.activeTo = activeTo;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public Date getDataFrom() {
-    return dataFrom;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public void setDataFrom(Date dataFrom) {
-    this.dataFrom = dataFrom;
-  }
+    public String getDescription() {
+        return description;
+    }
 
-  public Date getDataTo() {
-    return dataTo;
-  }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-  public void setDataTo(Date dataTo) {
-    this.dataTo = dataTo;
-  }
+    public String getStatus() {
+        return status;
+    }
 
-  public List<DatasetEntity> getDatasetList() {
-    return datasetList;
-  }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-  public void setDatasetList(List<DatasetEntity> datasetList) {
-    this.datasetList = datasetList;
-  }
+    public Date getActiveFrom() {
+        return activeFrom;
+    }
 
-  public List<UserContextEntity> getUserContextList() {
-    return userContextList;
-  }
+    public void setActiveFrom(Date activeFrom) {
+        this.activeFrom = activeFrom;
+    }
 
-  public void setUserContextList(List<UserContextEntity> userContextList) {
-    this.userContextList = userContextList;
-  }
+    public Date getActiveTo() {
+        return activeTo;
+    }
 
-  @Override
-  public String toString() {
-    return "ScopeEntity{" + 
-            "scopeId=" + scopeId + 
-            ", name=" + name + 
-            ", description=" + description + 
-            ", status=" + status + 
-            ", activeFrom=" + activeFrom + 
-            ", activeTo=" + activeTo + 
-            ", dataFrom=" + dataFrom + 
-            ", dataTo=" + dataTo + 
-            '}';
-  }
+    public void setActiveTo(Date activeTo) {
+        this.activeTo = activeTo;
+    }
+
+    public Date getDataFrom() {
+        return dataFrom;
+    }
+
+    public void setDataFrom(Date dataFrom) {
+        this.dataFrom = dataFrom;
+    }
+
+    public Date getDataTo() {
+        return dataTo;
+    }
+
+    public void setDataTo(Date dataTo) {
+        this.dataTo = dataTo;
+    }
+
+    public List<DatasetEntity> getDatasetList() {
+        return datasetList;
+    }
+
+    public void setDatasetList(List<DatasetEntity> datasetList) {
+        this.datasetList = datasetList;
+    }
+
+    public List<UserContextEntity> getUserContextList() {
+        return userContextList;
+    }
+
+    public void setUserContextList(List<UserContextEntity> userContextList) {
+        this.userContextList = userContextList;
+    }
+
+    @Override
+    public String toString() {
+        return "ScopeEntity{" +
+                "scopeId=" + scopeId +
+                ", name=" + name +
+                ", description=" + description +
+                ", status=" + status +
+                ", activeFrom=" + activeFrom +
+                ", activeTo=" + activeTo +
+                ", dataFrom=" + dataFrom +
+                ", dataTo=" + dataTo +
+                '}';
+    }
 }

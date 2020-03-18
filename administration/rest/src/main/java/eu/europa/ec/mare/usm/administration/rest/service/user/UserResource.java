@@ -26,9 +26,6 @@ import javax.ws.rs.core.Response.Status;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * REST Web Service implementation of the View/Manage User services
- */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 @Path("users")
@@ -38,16 +35,16 @@ public class UserResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
 
     @EJB
-    ViewUsersService service;
+    private ViewUsersService service;
 
     @EJB
-    ManageUserService manageService;
+    private ManageUserService manageService;
 
     @EJB
-    UserContextService userContextService;
+    private UserContextService userContextService;
 
     @EJB
-    UserPreferenceService userPreferenceService;
+    private UserPreferenceService userPreferenceService;
 
     @Context
     private HttpServletRequest servletRequest;
@@ -767,7 +764,7 @@ public class UserResource {
 
         Response ret = null;
 
-        ServiceRequest<String> request = new ServiceRequest<String>();
+        ServiceRequest<String> request = new ServiceRequest<>();
         request.setRequester(userName);
         request.setBody(userName);
         try {
@@ -775,7 +772,7 @@ public class UserResource {
             ChallengeInformationResponse infoChallenge = manageService.getChallengeInformation(request);
             List<ChallengeInformation> challengeInformations = infoChallenge.getResults();
 
-            List<String> response = new ArrayList<String>();
+            List<String> response = new ArrayList<>();
 
             int countChallengeInformation = 0;
 
@@ -787,7 +784,6 @@ public class UserResource {
                     response.add(challengeInformation.getChallenge());
                 }
             }
-
 
             Status status_ok;
             Status status_nok;
@@ -843,7 +839,8 @@ public class UserResource {
 
     @PUT
     @Path("resetUserPassword")
-    public Response resetUserPassword(@HeaderParam("userName") String userName, @HeaderParam("isTemporaryPassword") Boolean isTemporaryPassword,
+    public Response resetUserPassword(@HeaderParam("userName") String userName,
+                                      @HeaderParam("isTemporaryPassword") Boolean isTemporaryPassword,
                                       ChallengeInformationResponse challengeInformationResponse) {
         LOGGER.info("resetUserPassword() - (ENTER)");
 
@@ -899,9 +896,6 @@ public class UserResource {
             } else {
                 status = Response.Status.OK;
             }
-      
-      /*List<String> results = new ArrayList<String>();
-      results.add(passwordPolicy);*/
 
             //ServiceArrayResponse<String> sar = new ServiceArrayResponse<>();
             ResponseWrapper<String> response = new ResponseWrapper<>();

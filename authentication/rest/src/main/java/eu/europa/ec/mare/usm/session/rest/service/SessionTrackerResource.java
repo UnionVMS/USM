@@ -15,9 +15,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-/**
- * REST service interface for the SessionTracker
- */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 @Path("sessions")

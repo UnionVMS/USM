@@ -4,16 +4,17 @@ import eu.europa.ec.mare.usm.policy.service.impl.PolicyProvider;
 import eu.europa.ec.mare.usm.service.impl.RequestValidator;
 import eu.europa.ec.mare.usm.session.domain.SessionInfo;
 import eu.europa.ec.mare.usm.session.service.SessionTracker;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Stateless Session Bean implementation of the SessionTracker interface.
@@ -21,121 +22,118 @@ import org.slf4j.LoggerFactory;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class SessionTrackerBean implements SessionTracker {
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(SessionTrackerBean.class);
-	private static final String POLICY_SUBJECT = "Account";
-	private static final long ONE_SECOND = 1000L;
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionTrackerBean.class);
 
-	@EJB
-	private PolicyProvider policyProvider;
+    private static final String POLICY_SUBJECT = "Account";
+    private static final long ONE_SECOND = 1000L;
 
-	@Inject
-	private RequestValidator validator;
+    @EJB
+    private PolicyProvider policyProvider;
 
-	@EJB
-	private SessionDao sessionDao;
+    @Inject
+    private RequestValidator validator;
 
-	@Override
-	public String startSession(SessionInfo sessionInfo)
-			throws IllegalStateException, IllegalArgumentException,
-			RuntimeException {
-		LOGGER.info("startSession(" + sessionInfo + ") - (ENTER)");
-		String ret = null;
-		validator.assertValid(sessionInfo);
-		try {
-			checkMaxSessionPolicy(sessionInfo);
+    @EJB
+    private SessionDao sessionDao;
 
-			UserSession session = new UserSession();
-			session.setCreationTime(new Date());
-			session.setUserName(sessionInfo.getUserName());
-			session.setUserSite(sessionInfo.getUserSite());
+    @Override
+    public String startSession(SessionInfo sessionInfo)
+			throws IllegalStateException, IllegalArgumentException, RuntimeException {
 
-			ret = sessionDao.createSession(session);
+        LOGGER.info("startSession(" + sessionInfo + ") - (ENTER)");
+        String ret = null;
+        validator.assertValid(sessionInfo);
+        try {
+            checkMaxSessionPolicy(sessionInfo);
 
-			LOGGER.info("startSession() - (LEAVE): " + ret);
-		} catch (IllegalStateException ex) {
-			LOGGER.warn("User exceeded the maximum number sessions!");
-		}
-		return ret;
-	}
+            UserSession session = new UserSession();
+            session.setCreationTime(new Date());
+            session.setUserName(sessionInfo.getUserName());
+            session.setUserSite(sessionInfo.getUserSite());
 
-	@Override
-	public SessionInfo getSession(String sessionId)
-			throws IllegalArgumentException, RuntimeException {
-		LOGGER.info("getSession(" + sessionId + ") - (ENTER)");
+            ret = sessionDao.createSession(session);
 
-		validator.assertNotEmpty("sessionId", sessionId);
+            LOGGER.info("startSession() - (LEAVE): " + ret);
+        } catch (IllegalStateException ex) {
+            LOGGER.warn("User exceeded the maximum number sessions!");
+        }
+        return ret;
+    }
 
-		UserSession session = sessionDao.readSession(sessionId);
-		SessionInfo ret = null;
-		if (session != null) {
-			ret = new SessionInfo();
-			ret.setUserName(session.getUserName());
-			ret.setUserSite(session.getUserSite());
-		}
+    @Override
+    public SessionInfo getSession(String sessionId) throws IllegalArgumentException, RuntimeException {
+        LOGGER.info("getSession(" + sessionId + ") - (ENTER)");
 
-		LOGGER.info("getSession() - (LEAVE): " + ret);
-		return ret;
-	}
+        validator.assertNotEmpty("sessionId", sessionId);
 
-	@Override
-	public void endSession(String sessionId) throws IllegalArgumentException,
-			RuntimeException {
-		LOGGER.info("endSession(" + sessionId + ") - (ENTER)");
+        UserSession session = sessionDao.readSession(sessionId);
+        SessionInfo ret = null;
+        if (session != null) {
+            ret = new SessionInfo();
+            ret.setUserName(session.getUserName());
+            ret.setUserSite(session.getUserSite());
+        }
 
-		validator.assertNotEmpty("sessionId", sessionId);
+        LOGGER.info("getSession() - (LEAVE): " + ret);
+        return ret;
+    }
 
-		sessionDao.deleteSession(sessionId);
+    @Override
+    public void endSession(String sessionId) throws IllegalArgumentException, RuntimeException {
+        LOGGER.info("endSession(" + sessionId + ") - (ENTER)");
 
-		LOGGER.info("endSession() - (LEAVE)");
-	}
+        validator.assertNotEmpty("sessionId", sessionId);
 
-	private void checkMaxSessionPolicy(SessionInfo sessionInfo)
-			throws NumberFormatException {
-		LOGGER.debug("checkMaxSessionPolicy(" + sessionInfo + ") - (ENTER)");
-		boolean isAllowed = true;
+        sessionDao.deleteSession(sessionId);
 
-		Properties policy = policyProvider.getProperties(POLICY_SUBJECT);
-		int maxOneSite = policyProvider.getIntProperty(policy,
-				"account.maxSessionOneSite", 0);
-		int maxAnySite = policyProvider.getIntProperty(policy,
-				"account.maxSessionAnySite", 0);
-		int ttlSession = policyProvider.getIntProperty(policy,
-				"account.maxSessionDuration", 0);
+        LOGGER.info("endSession() - (LEAVE)");
+    }
 
-		if (maxOneSite > 0 || maxAnySite > 0) {
-			int cntOneSite = 0;
-			int cntAnySite = 0;
-			Date earliestStartTime = new Date(System.currentTimeMillis()
-					- (ttlSession * ONE_SECOND));
+    private void checkMaxSessionPolicy(SessionInfo sessionInfo) throws NumberFormatException {
+        LOGGER.debug("checkMaxSessionPolicy(" + sessionInfo + ") - (ENTER)");
+        boolean isAllowed = true;
 
-			List<UserSession> lst = sessionDao.readSessions(
-					sessionInfo.getUserName(), earliestStartTime);
-			for (UserSession session : lst) {
-				if (sessionInfo.getUserSite().equals(session.getUserSite())) {
-					cntOneSite += 1;
-				}
-				cntAnySite += 1;
-			}
+        Properties policy = policyProvider.getProperties(POLICY_SUBJECT);
+        int maxOneSite = policyProvider.getIntProperty(policy,
+                "account.maxSessionOneSite", 0);
+        int maxAnySite = policyProvider.getIntProperty(policy,
+                "account.maxSessionAnySite", 0);
+        int ttlSession = policyProvider.getIntProperty(policy,
+                "account.maxSessionDuration", 0);
 
-			if ((maxOneSite > 0 && cntOneSite >= maxOneSite)) {
-				isAllowed = false;
-				LOGGER.warn("User " + sessionInfo.getUserName()
-						+ " exceeded the maximum number (" + maxOneSite
-						+ ") of user sessions for single site");
-			}
-			if ((maxAnySite > 0 && cntAnySite >= maxAnySite)) {
-				isAllowed = false;
-				LOGGER.warn("User " + sessionInfo.getUserName()
-						+ " exceeded the maximum number (" + maxAnySite
-						+ ") of user sessions for any site");
-			}
-		}
-		if (!isAllowed) {
-			throw new IllegalStateException(
-					"Maximum number of sessions exceeded");
-		}
+        if (maxOneSite > 0 || maxAnySite > 0) {
+            int cntOneSite = 0;
+            int cntAnySite = 0;
+            Date earliestStartTime = new Date(System.currentTimeMillis()
+                    - (ttlSession * ONE_SECOND));
 
-		LOGGER.debug("checkMaxSessionPolicy() - (LEAVE)");
-	}
+            List<UserSession> lst = sessionDao.readSessions(
+                    sessionInfo.getUserName(), earliestStartTime);
+            for (UserSession session : lst) {
+                if (sessionInfo.getUserSite().equals(session.getUserSite())) {
+                    cntOneSite += 1;
+                }
+                cntAnySite += 1;
+            }
+
+            if ((maxOneSite > 0 && cntOneSite >= maxOneSite)) {
+                isAllowed = false;
+                LOGGER.warn("User " + sessionInfo.getUserName()
+                        + " exceeded the maximum number (" + maxOneSite
+                        + ") of user sessions for single site");
+            }
+            if ((maxAnySite > 0 && cntAnySite >= maxAnySite)) {
+                isAllowed = false;
+                LOGGER.warn("User " + sessionInfo.getUserName()
+                        + " exceeded the maximum number (" + maxAnySite
+                        + ") of user sessions for any site");
+            }
+        }
+        if (!isAllowed) {
+            throw new IllegalStateException(
+                    "Maximum number of sessions exceeded");
+        }
+
+        LOGGER.debug("checkMaxSessionPolicy() - (LEAVE)");
+    }
 }

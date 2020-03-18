@@ -1,11 +1,8 @@
 package eu.europa.ec.mare.usm.authentication.service.impl;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Properties;
+import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.AuthenticationException;
 import javax.naming.Context;
@@ -17,11 +14,8 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
+import java.text.MessageFormat;
+import java.util.*;
 
 public class LDAP {
     private static final Logger LOGGER = LoggerFactory.getLogger(LDAP.class);

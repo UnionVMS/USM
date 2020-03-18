@@ -6,7 +6,6 @@ import javax.json.bind.config.BinaryDataStrategy;
 
 public class JsonBConfiguratorExtended extends JsonBConfigurator {
 
-
     public JsonBConfiguratorExtended() {
         super();
         withConfig();

@@ -6,25 +6,16 @@ import eu.europa.ec.mare.usm.administration.domain.USMFeature;
 import eu.europa.ec.mare.usm.administration.service.RequestValidator;
 
 /**
- * Provides operations for the validation and authorisation of Application 
+ * Provides operations for the validation and authorisation of Application
  * related service requests
  */
 public class ApplicationValidator extends RequestValidator {
 
-  /**
-   * Creates a new instance.
-   */
-  public ApplicationValidator() 
-  {
-  }
+    public ApplicationValidator() {
+    }
 
-  
-  public void assertValid(ServiceRequest<Application> request, 
-                          USMFeature feature, 
-                          boolean isCreate) 
-  {
-    assertValid(request, feature, "application");
-
-  }
+    public void assertValid(ServiceRequest<Application> request, USMFeature feature, boolean isCreate) {
+        assertValid(request, feature, "application");
+    }
 
 }

@@ -20,9 +20,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import java.util.List;
 
-/**
- * REST Web Service implementation of the Person services
- */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 @Path("persons")
@@ -238,7 +235,6 @@ public class PersonResource {
         LOGGER.info("isReviewContactDetailsEnabled() - (ENTER)");
 
         Response ret;
-
         try {
             Boolean flag = service.isReviewContactDetailsEnabled();
             ResponseWrapper<Boolean> response = new ResponseWrapper<>();
@@ -252,7 +248,6 @@ public class PersonResource {
         LOGGER.info("isReviewContactDetailsEnabled() - (LEAVE)");
         return ret;
     }
-
 
     /**
      * Retrieves the list of pending contact details.
@@ -399,7 +394,6 @@ public class PersonResource {
         LOGGER.info("acceptPendingContactDetails() - (LEAVE) ");
         return ret;
     }
-
 
     /**
      * Rejects the pending contact details update of the user with the

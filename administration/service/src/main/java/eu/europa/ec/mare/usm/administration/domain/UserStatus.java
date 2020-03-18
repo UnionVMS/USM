@@ -5,27 +5,27 @@ package eu.europa.ec.mare.usm.administration.domain;
  */
 public enum UserStatus {
 
-  /**
-   * The User is enabled and may hence use the system
-   */
-  ENABLED("E"),
-  /**
-   * The User is (permanently) disabled and may not use the system
-   */
-  DISABLED("D"),
-  /**
-   * The User is (temporarily) locked, probably due to consecutive
-   * authentication failures *
-   */
-  LOCKED("L");
+    /**
+     * The User is enabled and may hence use the system
+     */
+    ENABLED("E"),
+    /**
+     * The User is (permanently) disabled and may not use the system
+     */
+    DISABLED("D"),
+    /**
+     * The User is (temporarily) locked, probably due to consecutive
+     * authentication failures *
+     */
+    LOCKED("L");
 
-  private final String value;
+    private final String value;
 
-  UserStatus(String value) {
-    this.value = value;
-  }
+    UserStatus(String value) {
+        this.value = value;
+    }
 
-  public String getValue() {
-    return this.value;
-  }
+    public String getValue() {
+        return this.value;
+    }
 }

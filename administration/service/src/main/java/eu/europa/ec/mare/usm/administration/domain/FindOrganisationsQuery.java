@@ -2,7 +2,7 @@ package eu.europa.ec.mare.usm.administration.domain;
 
 import java.io.Serializable;
 
-public class FindOrganisationsQuery implements Serializable{
+public class FindOrganisationsQuery implements Serializable {
     private static final long serialVersionUID = 7199118791716052294L;
 
     private String name;
@@ -38,15 +38,10 @@ public class FindOrganisationsQuery implements Serializable{
         return paginator;
     }
 
-     public void setPaginator(Paginator paginator) {
+    public void setPaginator(Paginator paginator) {
         this.paginator = paginator;
     }
 
-    /**
-     * Formats a human-readable view of this instance.
-     *
-     * @return a human-readable view
-     */
     @Override
     public String toString() {
         return "FindOrganisationsQuery{" +
@@ -55,4 +50,5 @@ public class FindOrganisationsQuery implements Serializable{
                 ", status='" + status + '\'' +
                 '}';
     }
+
 }

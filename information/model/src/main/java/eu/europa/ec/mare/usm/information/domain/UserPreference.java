@@ -48,8 +48,6 @@ public class UserPreference {
 	public void setOptionName(String optionName) {
 		this.optionName = optionName;
 	}
-	
-	
 
 	public byte[] getOptionValue() {
 		return optionValue;

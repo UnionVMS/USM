@@ -1,25 +1,17 @@
 package eu.europa.ec.mare.usm.administration.service.user.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import eu.europa.ec.mare.usm.administration.domain.*;
+import eu.europa.ec.mare.usm.administration.service.role.impl.RoleValidator;
+import eu.europa.ec.mare.usm.administration.service.user.ViewUsersService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.europa.ec.mare.usm.administration.domain.FindUsersQuery;
-import eu.europa.ec.mare.usm.administration.domain.GetUserQuery;
-import eu.europa.ec.mare.usm.administration.domain.PaginationResponse;
-import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
-import eu.europa.ec.mare.usm.administration.domain.USMFeature;
-import eu.europa.ec.mare.usm.administration.domain.UserAccount;
-import eu.europa.ec.mare.usm.administration.service.role.impl.RoleValidator;
-import eu.europa.ec.mare.usm.administration.service.user.ViewUsersService;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Stateless session bean implementation of the UsersService
@@ -27,61 +19,60 @@ import eu.europa.ec.mare.usm.administration.service.user.ViewUsersService;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class ViewUsersServiceBean implements ViewUsersService {
-  private static final Logger LOGGER = LoggerFactory.getLogger(ViewUsersServiceBean.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ViewUsersServiceBean.class.getName());
 
-  @Inject
-  private UserJdbcDao userDao;
-  
-  @Inject
-  private RoleValidator validator;
+    @Inject
+    private UserJdbcDao userDao;
 
-  @Override
-  public PaginationResponse<UserAccount> findUsers(ServiceRequest<FindUsersQuery> request) {
-    LOGGER.info("findUsers(" + request + ") - (ENTER)");
-    HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
-    featureSet.add(USMFeature.viewUsers);
-    featureSet.add(USMFeature.manageUsers);
-    
-    validator.assertValid(request, "query", featureSet);
+    @Inject
+    private RoleValidator validator;
 
-    PaginationResponse<UserAccount> response = userDao.findUsers(request.getBody());
+    @Override
+    public PaginationResponse<UserAccount> findUsers(ServiceRequest<FindUsersQuery> request) {
+        LOGGER.info("findUsers(" + request + ") - (ENTER)");
+        HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
+        featureSet.add(USMFeature.viewUsers);
+        featureSet.add(USMFeature.manageUsers);
 
-    LOGGER.info("findUsers() - (LEAVE)");
-    return response;
-  }
+        validator.assertValid(request, "query", featureSet);
 
-  @Override
-  public UserAccount getUser(ServiceRequest<GetUserQuery> request) 
-  {
-    LOGGER.info("getUser(" + request + ") - (ENTER)");
+        PaginationResponse<UserAccount> response = userDao.findUsers(request.getBody());
 
-    HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
-    featureSet.add(USMFeature.viewUsers);
-    featureSet.add(USMFeature.manageUsers);
+        LOGGER.info("findUsers() - (LEAVE)");
+        return response;
+    }
 
-    validator.assertValid(request, "query", featureSet);
+    @Override
+    public UserAccount getUser(ServiceRequest<GetUserQuery> request) {
+        LOGGER.info("getUser(" + request + ") - (ENTER)");
 
-    UserAccount response = userDao.getUser(request.getBody());
+        HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
+        featureSet.add(USMFeature.viewUsers);
+        featureSet.add(USMFeature.manageUsers);
 
-    LOGGER.info("getUser() - (LEAVE)");
-    return response;
-  }
+        validator.assertValid(request, "query", featureSet);
 
-@Override
-public List<String> getUsersNames(ServiceRequest<String> request) {
-	LOGGER.info("getUsersNames(" + request + ") - (ENTER)");
+        UserAccount response = userDao.getUser(request.getBody());
 
-    HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
-    featureSet.add(USMFeature.viewUsers);
-    featureSet.add(USMFeature.manageUsers);
+        LOGGER.info("getUser() - (LEAVE)");
+        return response;
+    }
 
-    validator.assertValid(request, "query", featureSet);
+    @Override
+    public List<String> getUsersNames(ServiceRequest<String> request) {
+        LOGGER.info("getUsersNames(" + request + ") - (ENTER)");
 
-    List<String> response = userDao.getUsersNames();
+        HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
+        featureSet.add(USMFeature.viewUsers);
+        featureSet.add(USMFeature.manageUsers);
 
-    LOGGER.info("getUsersNames() - (LEAVE)");
-    return response;
+        validator.assertValid(request, "query", featureSet);
 
-}
+        List<String> response = userDao.getUsersNames();
+
+        LOGGER.info("getUsersNames() - (LEAVE)");
+        return response;
+
+    }
 
 }
