@@ -55,7 +55,7 @@ public class RoleResource {
     public Response getRoleNames(@HeaderParam("authorization") String jwtToken,
                                  @HeaderParam("roleName") String roleName,
                                  @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("getRoleNames() - (ENTER)");
+        LOGGER.debug("getRoleNames() - (ENTER)");
 
         ServiceRequest<RoleQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -80,7 +80,7 @@ public class RoleResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getRoleNames() - (LEAVE)");
+        LOGGER.debug("getRoleNames() - (LEAVE)");
         return ret;
     }
 
@@ -117,7 +117,7 @@ public class RoleResource {
                               @QueryParam("role") String nameOfRole,
                               @QueryParam("application") String applicationName,
                               @QueryParam("status") String status) {
-        LOGGER.info("findRoles() - (ENTER)");
+        LOGGER.debug("findRoles() - (ENTER)");
 
         // Setup paginator
         Paginator paginator = new Paginator();
@@ -152,7 +152,7 @@ public class RoleResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("findRoles() - (LEAVE)");
+        LOGGER.debug("findRoles() - (LEAVE)");
         return ret;
     }
 
@@ -177,7 +177,7 @@ public class RoleResource {
                             @HeaderParam("roleName") String roleName,
                             @HeaderParam("scopeName") String scopeName,
                             @PathParam("roleId") Long roleId) {
-        LOGGER.info("getRole(" + roleId + ") - (ENTER)");
+        LOGGER.debug("getRole(" + roleId + ") - (ENTER)");
 
         ServiceRequest<GetRoleQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -202,7 +202,7 @@ public class RoleResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getRole() - (LEAVE)");
+        LOGGER.debug("getRole() - (LEAVE)");
         return ret;
     }
 
@@ -227,7 +227,7 @@ public class RoleResource {
                                @HeaderParam("roleName") String roleName,
                                @HeaderParam("scopeName") String scopeName,
                                ComprehensiveRole role) {
-        LOGGER.info("createRole(" + role + ") - (ENTER)");
+        LOGGER.debug("createRole(" + role + ") - (ENTER)");
 
         ServiceRequest<ComprehensiveRole> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -251,7 +251,7 @@ public class RoleResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("createRole() - (LEAVE)");
+        LOGGER.debug("createRole() - (LEAVE)");
         return ret;
     }
 
@@ -276,7 +276,7 @@ public class RoleResource {
                                @HeaderParam("roleName") String roleName,
                                @HeaderParam("scopeName") String scopeName,
                                ComprehensiveRole role) {
-        LOGGER.info("updateRole(" + role + ") - (ENTER)");
+        LOGGER.debug("updateRole(" + role + ") - (ENTER)");
 
         ServiceRequest<ComprehensiveRole> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -303,7 +303,7 @@ public class RoleResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("updateRole() - (LEAVE)");
+        LOGGER.debug("updateRole() - (LEAVE)");
         return ret;
     }
 
@@ -329,7 +329,7 @@ public class RoleResource {
                                @HeaderParam("roleName") String roleName,
                                @HeaderParam("scopeName") String scopeName,
                                @PathParam("roleId") Long roleId) {
-        LOGGER.info("deleteRole(" + roleId + ") - (ENTER)");
+        LOGGER.debug("deleteRole(" + roleId + ") - (ENTER)");
 
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -347,7 +347,7 @@ public class RoleResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("deleteRole() - (ENTER)");
+        LOGGER.debug("deleteRole() - (LEAVE)");
         return ret;
     }
 
@@ -370,7 +370,7 @@ public class RoleResource {
     public Response getFeatureGroupNames(@HeaderParam("authorization") String jwtToken,
                                          @HeaderParam("roleName") String roleName,
                                          @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("getFeatureGroupNames() - (ENTER)");
+        LOGGER.debug("getFeatureGroupNames() - (ENTER)");
 
         ServiceRequest<String> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -395,7 +395,7 @@ public class RoleResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getFeatureGroupNames() - (LEAVE)");
+        LOGGER.debug("getFeatureGroupNames() - (LEAVE)");
         return ret;
     }
 
@@ -422,7 +422,7 @@ public class RoleResource {
                                     @HeaderParam("scopeName") String scopeName,
                                     @QueryParam("application") String application,
                                     @QueryParam("group") String group) {
-        LOGGER.info("findPermissions() - (ENTER)");
+        LOGGER.debug("findPermissions() - (ENTER)");
 
         ServiceRequest<FindPermissionsQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -450,7 +450,7 @@ public class RoleResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("findPermissions() - (LEAVE)");
+        LOGGER.debug("findPermissions() - (LEAVE)");
         return ret;
     }
 
@@ -473,7 +473,7 @@ public class RoleResource {
     public Response getRoles(@HeaderParam("authorization") String jwtToken,
                              @HeaderParam("roleName") String roleName,
                              @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("getRoles() - (ENTER)");
+        LOGGER.debug("getRoles() - (ENTER)");
 
         ServiceRequest<RoleQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -498,7 +498,7 @@ public class RoleResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getRoles() - (LEAVE)");
+        LOGGER.debug("getRoles() - (LEAVE)");
         return ret;
     }
 }

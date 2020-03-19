@@ -49,7 +49,7 @@ public class PreferenceJdbcDao extends BaseJdbcDao {
      */
     public List<PreferenceEntity> getContextPreferences(Long contextId) {
 
-        LOGGER.info("getContextPreferences(" + contextId + ") - (ENTER)");
+        LOGGER.debug("getContextPreferences(" + contextId + ") - (ENTER)");
 
         Query queryContextPreferencesQuery = getContextPreferencesQuery(contextId);
 
@@ -57,7 +57,7 @@ public class PreferenceJdbcDao extends BaseJdbcDao {
 
         List<PreferenceEntity> prefList = queryForList(queryContextPreferencesQuery, new PreferencesMapper());
 
-        LOGGER.info("getContextPreferences() - (LEAVE): " + prefList);
+        LOGGER.debug("getContextPreferences() - (LEAVE): " + prefList);
         return prefList;
     }
 
@@ -88,8 +88,7 @@ public class PreferenceJdbcDao extends BaseJdbcDao {
      * the retrieved list of preferences
      */
     public UserPreferenceResponse getUserPreferences(String userName, String groupName) {
-
-        LOGGER.info("getUserPreferences(" + userName + ") - (ENTER)");
+        LOGGER.debug("getUserPreferences(" + userName + ") - (ENTER)");
 
         Query userPreferencesQuery = getUserPreferencesQuery(userName, groupName);
 
@@ -99,7 +98,7 @@ public class PreferenceJdbcDao extends BaseJdbcDao {
         UserPreferenceResponse ret = new UserPreferenceResponse();
         ret.setResults(prefList);
 
-        LOGGER.info("getUserPreferences() - (LEAVE): " + prefList);
+        LOGGER.debug("getUserPreferences() - (LEAVE): " + prefList);
         return ret;
     }
 

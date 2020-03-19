@@ -56,7 +56,7 @@ public class EndpointResource {
                                 @HeaderParam("roleName") String roleName,
                                 @HeaderParam("scopeName") String scopeName,
                                 @PathParam("endPointId") Long endPointId) {
-        LOGGER.info("getEndPoint() - (ENTER)");
+        LOGGER.debug("getEndPoint() - (ENTER)");
 
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -79,7 +79,7 @@ public class EndpointResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getEndPoint() - (LEAVE)");
+        LOGGER.debug("getEndPoint() - (LEAVE)");
         return ret;
     }
 
@@ -104,7 +104,7 @@ public class EndpointResource {
                                    @HeaderParam("roleName") String roleName,
                                    @HeaderParam("scopeName") String scopeName,
                                    EndPoint endpoint) {
-        LOGGER.info("createEndpoint() - (ENTER)");
+        LOGGER.debug("createEndpoint() - (ENTER)");
 
         ServiceRequest<EndPoint> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -153,7 +153,7 @@ public class EndpointResource {
                                    @HeaderParam("roleName") String roleName,
                                    @HeaderParam("scopeName") String scopeName,
                                    EndPoint endpoint) {
-        LOGGER.info("updateEndpoint() - (ENTER)");
+        LOGGER.debug("updateEndpoint() - (ENTER)");
 
         ServiceRequest<EndPoint> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -198,7 +198,7 @@ public class EndpointResource {
                                    @HeaderParam("roleName") String roleName,
                                    @HeaderParam("scopeName") String scopeName,
                                    @PathParam("endpointId") String endpointId) {
-        LOGGER.info("deleteEndpoint(" + endpointId + ") - (ENTER)");
+        LOGGER.debug("deleteEndpoint(" + endpointId + ") - (ENTER)");
 
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -216,7 +216,7 @@ public class EndpointResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("deleteEndpoint() - (ENTER)");
+        LOGGER.debug("deleteEndpoint() - (LEAVE)");
 
         return ret;
     }
@@ -242,7 +242,7 @@ public class EndpointResource {
                                        @HeaderParam("roleName") String roleName,
                                        @HeaderParam("scopeName") String scopeName,
                                        @PathParam("endPointContactId") Long endPointContactId) {
-        LOGGER.info("getEndPointContact() - (ENTER)");
+        LOGGER.debug("getEndPointContact() - (ENTER)");
 
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -265,7 +265,7 @@ public class EndpointResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getEndPointContact() - (LEAVE)");
+        LOGGER.debug("getEndPointContact() - (LEAVE)");
         return ret;
     }
 }

@@ -41,7 +41,7 @@ public class PolicyDao extends AbstractJdbcDao {
      * @return the possibly-empty configuration/definition properties
      */
     public Properties getProperties(String subject) {
-        LOGGER.info("getProperties() - (ENTER)");
+        LOGGER.debug("getProperties() - (ENTER)");
 
         Properties ret = new Properties();
 
@@ -67,7 +67,7 @@ public class PolicyDao extends AbstractJdbcDao {
             closeStatement(ps);
             closeConnection(co);
         }
-        LOGGER.info("getProperties() - (LEAVE)");
+        LOGGER.debug("getProperties() - (LEAVE)");
         return ret;
     }
 

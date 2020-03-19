@@ -32,7 +32,7 @@ public class UserContextJdbcDao extends BaseJdbcDao {
      * @throws RuntimeException in case an internal error prevented fulfilling the request
      */
     public UserContextResponse findUserContexts(String userName) {
-        LOGGER.info("findUserContexts(" + userName + ") - (ENTER)");
+        LOGGER.debug("findUserContexts(" + userName + ") - (ENTER)");
 
         Query query = getFindContextsQuery(userName);
 
@@ -42,7 +42,7 @@ public class UserContextJdbcDao extends BaseJdbcDao {
         UserContextResponse ret = new UserContextResponse();
         ret.setResults(lst);
 
-        LOGGER.info("findUserContexts() - (LEAVE): " + ret);
+        LOGGER.debug("findUserContexts() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -107,7 +107,7 @@ public class UserContextJdbcDao extends BaseJdbcDao {
      * @return <i>true</i> if the userContext exists, <i>false</i> otherwise
      */
     public boolean userContextExists(Long userContextId) {
-        LOGGER.info("userContextExists(" + userContextId + ") - (ENTER)");
+        LOGGER.debug("userContextExists(" + userContextId + ") - (ENTER)");
 
         Query query = new Query("select 1 from USER_CONTEXT_T uc" +
                 " where  uc.USER_CONTEXT_ID=?");
@@ -115,13 +115,13 @@ public class UserContextJdbcDao extends BaseJdbcDao {
 
         boolean ret = queryForExistence(query);
 
-        LOGGER.info("userContextExists() - (LEAVE): " + ret);
+        LOGGER.debug("userContextExists() - (LEAVE): " + ret);
         return ret;
     }
 
     public boolean userContextExists(String userName, Long roleId, Long scopeId) {
 
-        LOGGER.info("userContextExists(" + userName + ", roleId=" + roleId + ", scopeId=" + scopeId + ") - (ENTER)");
+        LOGGER.debug("userContextExists(" + userName + ", roleId=" + roleId + ", scopeId=" + scopeId + ") - (ENTER)");
 
         String initialQuery = "select 1 from USER_CONTEXT_T uc, USER_T us" +
                 " where us.user_name=? and uc.USER_ID=us.user_id and uc.role_id=? ";
@@ -137,7 +137,7 @@ public class UserContextJdbcDao extends BaseJdbcDao {
         }
 
         boolean ret = queryForExistence(query);
-        LOGGER.info("userContextExists() - (LEAVE): " + ret);
+        LOGGER.debug("userContextExists() - (LEAVE): " + ret);
         return ret;
     }
 

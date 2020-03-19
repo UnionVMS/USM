@@ -36,7 +36,7 @@ public class ApplicationServiceBean implements ApplicationService {
     @Override
     public List<String> getApplicationNames(ServiceRequest<ApplicationQuery> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("getApplicationNames(" + request + ") - (ENTER)");
+        LOGGER.debug("getApplicationNames(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<>();
         featureSet.add(USMFeature.viewApplications);
@@ -45,31 +45,31 @@ public class ApplicationServiceBean implements ApplicationService {
         validator.assertValid(request, "query", featureSet);
         List<String> ret = jdbcDao.getApplicationNames();
 
-        LOGGER.info("getApplicationNames() - (LEAVE)");
+        LOGGER.debug("getApplicationNames() - (LEAVE)");
         return ret;
     }
 
     @Override
     public List<Feature> getFeatureApplicationNames(ServiceRequest<String> request)
 			throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("getFeatureApplicationNames(" + request + ") - (ENTER)");
+        LOGGER.debug("getFeatureApplicationNames(" + request + ") - (ENTER)");
 
         List<FeatureEntity> response = featureJpaDao.getFeaturesByApplication(request.getBody());
         List<Feature> ret = validateRequestAndAddFeaturesToResponse(request, response);
 
-        LOGGER.info("getFeatureApplicationNames() - (LEAVE)");
+        LOGGER.debug("getFeatureApplicationNames() - (LEAVE)");
         return ret;
     }
 
     @Override
     public List<Feature> getAllFeatures(ServiceRequest<String> request)
 			throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("getAllFeatures(" + request + ") - (ENTER)");
+        LOGGER.debug("getAllFeatures(" + request + ") - (ENTER)");
 
         List<FeatureEntity> response = featureJpaDao.getAllFeatures();
         List<Feature> ret = validateRequestAndAddFeaturesToResponse(request, response);
 
-        LOGGER.info("getAllFeatures() - (LEAVE)");
+        LOGGER.debug("getAllFeatures() - (LEAVE)");
         return ret;
     }
 
@@ -108,7 +108,7 @@ public class ApplicationServiceBean implements ApplicationService {
     @Override
     public PaginationResponse<Application> findApplications(ServiceRequest<FindApplicationQuery> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("findApplications(" + request + ") - (ENTER)");
+        LOGGER.debug("findApplications(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewApplications);
@@ -118,14 +118,14 @@ public class ApplicationServiceBean implements ApplicationService {
 
         PaginationResponse<Application> ret = jdbcDao.findApplications(request.getBody());
 
-        LOGGER.info("findApplications() - (LEAVE)");
+        LOGGER.debug("findApplications() - (LEAVE)");
         return ret;
     }
 
     @Override
     public List<String> getParentApplicationNames(ServiceRequest<GetParentApplicationQuery> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("getApplicationParentNames(" + request + ") - (ENTER)");
+        LOGGER.debug("getApplicationParentNames(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewApplications);
@@ -135,7 +135,7 @@ public class ApplicationServiceBean implements ApplicationService {
 
         List<String> ret = jdbcDao.getParentApplicationNames();
 
-        LOGGER.info("getApplicationParentNames() - (LEAVE)");
+        LOGGER.debug("getApplicationParentNames() - (LEAVE)");
         return ret;
     }
 

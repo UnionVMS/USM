@@ -28,7 +28,7 @@ public class PendingDetailsJpaDao {
      * @return the possibly-empty list of all Pending Contact Details
      */
     public List<PendingDetailsEntity> findAll() throws RuntimeException {
-        LOGGER.info("findAll() - (ENTER)");
+        LOGGER.debug("findAll() - (ENTER)");
         List<PendingDetailsEntity> ret = null;
 
         try {
@@ -40,7 +40,7 @@ public class PendingDetailsJpaDao {
             handleException("find", ex);
         }
 
-        LOGGER.info("findAll() - (LEAVE)");
+        LOGGER.debug("findAll() - (LEAVE)");
         return ret;
     }
 
@@ -51,7 +51,7 @@ public class PendingDetailsJpaDao {
      * @return the primary-key assigned to the Pending Contact Details
      */
     public Long create(PendingDetailsEntity entity) throws RuntimeException {
-        LOGGER.info("create() - (ENTER)");
+        LOGGER.debug("create() - (ENTER)");
 
         Long ret = null;
 
@@ -65,7 +65,7 @@ public class PendingDetailsJpaDao {
             handleException("create", ex);
         }
 
-        LOGGER.info("create() - (LEAVE): " + ret);
+        LOGGER.debug("create() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -76,7 +76,7 @@ public class PendingDetailsJpaDao {
      * @return the Pending Contact Details if they exist, null otherwise
      */
     public PendingDetailsEntity read(String userName) throws RuntimeException {
-        LOGGER.info("read() - (ENTER)");
+        LOGGER.debug("read() - (ENTER)");
 
         PendingDetailsEntity ret = null;
 
@@ -93,7 +93,7 @@ public class PendingDetailsJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE): " + ret);
+        LOGGER.debug("read() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -103,7 +103,7 @@ public class PendingDetailsJpaDao {
      * @param entity the Pending Contact Details entity to be updated
      */
     public void update(PendingDetailsEntity entity) throws RuntimeException {
-        LOGGER.info("update() - (ENTER)");
+        LOGGER.debug("update() - (ENTER)");
 
         try {
             em.merge(entity);
@@ -114,7 +114,7 @@ public class PendingDetailsJpaDao {
             handleException("update", ex);
         }
 
-        LOGGER.info("update() - (LEAVE)");
+        LOGGER.debug("update() - (LEAVE)");
     }
 
     /**
@@ -125,7 +125,7 @@ public class PendingDetailsJpaDao {
      * @return the deleted contact details if they existed, null otherwise
      */
     public PendingDetailsEntity delete(String userName) throws RuntimeException {
-        LOGGER.info("delete(" + userName + ") - (ENTER)");
+        LOGGER.debug("delete(" + userName + ") - (ENTER)");
 
         PendingDetailsEntity ret = read(userName);
         if (ret != null) {
@@ -134,7 +134,7 @@ public class PendingDetailsJpaDao {
             em.clear();
         }
 
-        LOGGER.info("delete() - (LEAVE)");
+        LOGGER.debug("delete() - (LEAVE)");
         return ret;
     }
 

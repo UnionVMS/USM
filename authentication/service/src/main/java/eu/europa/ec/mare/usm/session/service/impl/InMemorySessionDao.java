@@ -43,7 +43,7 @@ public class InMemorySessionDao implements SessionDao {
 
     @Timeout
     public void timeout(Timer timer) {
-        LOGGER.info("timeout() - (ENTER)");
+        LOGGER.debug("timeout() - (ENTER)");
 
         Properties policy = policyProvider.getProperties(POLICY_SUBJECT);
         int ttlSession = policyProvider.getIntProperty(policy, "account.maxSessionDuration", 0);
@@ -61,12 +61,12 @@ public class InMemorySessionDao implements SessionDao {
             }
         }
 
-        LOGGER.info("timeout() - (LEAVE)");
+        LOGGER.debug("timeout() - (LEAVE)");
     }
 
     @Override
     public String createSession(UserSession session) {
-        LOGGER.info("createSession(" + session + ") - (ENTER)");
+        LOGGER.debug("createSession(" + session + ") - (ENTER)");
 
         String ret = null;
 
@@ -78,13 +78,13 @@ public class InMemorySessionDao implements SessionDao {
             ret = session.getUniqueId();
         }
 
-        LOGGER.info("createSession() - (LEAVE): " + ret);
+        LOGGER.debug("createSession() - (LEAVE): " + ret);
         return ret;
     }
 
     @Override
     public UserSession readSession(String sessionId) {
-        LOGGER.info("readSession(" + sessionId + ") - (ENTER)");
+        LOGGER.debug("readSession(" + sessionId + ") - (ENTER)");
 
         UserSession ret = null;
 
@@ -92,13 +92,13 @@ public class InMemorySessionDao implements SessionDao {
             ret = doReadSession(sessionId);
         }
 
-        LOGGER.info("readSession() - (LEAVE): " + ret);
+        LOGGER.debug("readSession() - (LEAVE): " + ret);
         return ret;
     }
 
     @Override
     public List<UserSession> readSessions(String userName, Date startedAfter) {
-        LOGGER.info("readSessions(" + userName + ", " + startedAfter + ") - (ENTER)");
+        LOGGER.debug("readSessions(" + userName + ", " + startedAfter + ") - (ENTER)");
 
         List<UserSession> ret = new ArrayList<>();
 
@@ -117,28 +117,28 @@ public class InMemorySessionDao implements SessionDao {
             }
         }
 
-        LOGGER.info("readSessions() - (LEAVE)");
+        LOGGER.debug("readSessions() - (LEAVE)");
         return ret;
     }
 
     @Override
     public void deleteSession(String sessionId) {
-        LOGGER.info("deleteSession(" + sessionId + ") - (ENTER)");
+        LOGGER.debug("deleteSession(" + sessionId + ") - (ENTER)");
 
         if (sessionId != null) {
             doDelete(sessionId);
         }
 
-        LOGGER.info("deleteSession() - (LEAVE)");
+        LOGGER.debug("deleteSession() - (LEAVE)");
     }
 
     @Override
     public void deleteSessions() throws RuntimeException {
-        LOGGER.info("deleteSessions() - (ENTER)");
+        LOGGER.debug("deleteSessions() - (ENTER)");
 
         sessionMap.clear();
 
-        LOGGER.info("deleteSessions() - (LEAVE)");
+        LOGGER.debug("deleteSessions() - (LEAVE)");
     }
 
     private void doCreate(UserSession session) {

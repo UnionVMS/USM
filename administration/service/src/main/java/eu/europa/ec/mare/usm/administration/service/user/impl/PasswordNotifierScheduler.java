@@ -30,7 +30,7 @@ public class PasswordNotifierScheduler {
      */
     @Schedule(dayOfWeek = "*", hour = "*/6", minute = "0")
     public void triggerNotifications() {
-        LOGGER.info("triggerNotifications() - (ENTER)");
+        LOGGER.debug("triggerNotifications() - (ENTER)");
 
         List<String> userNames = expiryReminder.findUsersToNotify();
 
@@ -38,7 +38,7 @@ public class PasswordNotifierScheduler {
             expiryReminder.notifyUser(userName);
         }
 
-        LOGGER.info("triggerNotifications() - (LEAVE)");
+        LOGGER.debug("triggerNotifications() - (LEAVE)");
     }
 
 }

@@ -66,7 +66,7 @@ public class ApplicationResource {
                                      @DefaultValue("DESC") @QueryParam("sortDirection") String sortDirection,
                                      @QueryParam("name") String name,
                                      @QueryParam("parent") String parent) {
-        LOGGER.info("findApplications() - (ENTER)");
+        LOGGER.debug("findApplications() - (ENTER)");
 
         // Setup paginator
         Paginator paginator = new Paginator();
@@ -102,7 +102,7 @@ public class ApplicationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("findApplications() - (LEAVE)");
+        LOGGER.debug("findApplications() - (LEAVE)");
         return ret;
     }
 
@@ -112,7 +112,7 @@ public class ApplicationResource {
                                           @HeaderParam("roleName") String roleName,
                                           @HeaderParam("scopeName") String scopeName,
                                           @PathParam("applicationName") String applicationName) {
-        LOGGER.info("getApplicationDetails(" + applicationName + ") - (ENTER)");
+        LOGGER.debug("getApplicationDetails(" + applicationName + ") - (ENTER)");
 
         Response ret;
 
@@ -135,7 +135,7 @@ public class ApplicationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getApplicationDetails() - (LEAVE)");
+        LOGGER.debug("getApplicationDetails() - (LEAVE)");
         return ret;
     }
 
@@ -144,7 +144,7 @@ public class ApplicationResource {
     public Response getParentApplicationNames(@HeaderParam("authorization") String jwtToken,
                                               @HeaderParam("roleName") String roleName,
                                               @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("getParentApplicationNames() - (ENTER)");
+        LOGGER.debug("getParentApplicationNames() - (ENTER)");
 
         ServiceRequest<GetParentApplicationQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -168,7 +168,7 @@ public class ApplicationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getParentApplicationNames() - (LEAVE)");
+        LOGGER.debug("getParentApplicationNames() - (LEAVE)");
         return ret;
     }
 
@@ -177,7 +177,7 @@ public class ApplicationResource {
     public Response getApplicationNames(@HeaderParam("authorization") String jwtToken,
                                         @HeaderParam("roleName") String roleName,
                                         @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("getApplicationNames() - (ENTER)");
+        LOGGER.debug("getApplicationNames() - (ENTER)");
 
         Response ret;
         ServiceRequest<ApplicationQuery> request = new ServiceRequest<>();
@@ -201,7 +201,7 @@ public class ApplicationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getApplicationNames() - (LEAVE)");
+        LOGGER.debug("getApplicationNames() - (LEAVE)");
         return ret;
     }
 
@@ -211,7 +211,7 @@ public class ApplicationResource {
                                            @HeaderParam("roleName") String roleName,
                                            @HeaderParam("scopeName") String scopeName,
                                            @PathParam("applicationName") String applicationName) {
-        LOGGER.info("getApplicationFeatures() - (ENTER)");
+        LOGGER.debug("getApplicationFeatures() - (ENTER)");
 
         ServiceRequest<String> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -235,7 +235,7 @@ public class ApplicationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getApplicationFeatures() - (LEAVE)");
+        LOGGER.debug("getApplicationFeatures() - (LEAVE)");
         return ret;
     }
 
@@ -244,7 +244,7 @@ public class ApplicationResource {
     public Response getAllFeatures(@HeaderParam("authorization") String jwtToken,
                                    @HeaderParam("roleName") String roleName,
                                    @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("getAllFeatures() - (ENTER)");
+        LOGGER.debug("getAllFeatures() - (ENTER)");
 
         Response ret;
         ServiceRequest<String> request = new ServiceRequest<>();
@@ -268,7 +268,7 @@ public class ApplicationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getAllFeatures() - (LEAVE)");
+        LOGGER.debug("getAllFeatures() - (LEAVE)");
         return ret;
     }
 

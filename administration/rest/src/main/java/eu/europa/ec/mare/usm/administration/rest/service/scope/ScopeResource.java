@@ -56,7 +56,7 @@ public class ScopeResource {
                                 @HeaderParam("roleName") String roleName,
                                 @HeaderParam("scopeName") String scopeName,
                                 Scope scope) {
-        LOGGER.info("createScope() - (ENTER)");
+        LOGGER.debug("createScope() - (ENTER)");
 
         ServiceRequest<Scope> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -103,7 +103,7 @@ public class ScopeResource {
     public Response getDatasetCategoryNames(@HeaderParam("authorization") String jwtToken,
                                             @HeaderParam("roleName") String roleName,
                                             @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("getDatasetCategoryNames() - (ENTER)");
+        LOGGER.debug("getDatasetCategoryNames() - (ENTER)");
 
         ServiceRequest<String> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -128,7 +128,7 @@ public class ScopeResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getDatasetCategoryNames() - (LEAVE)");
+        LOGGER.debug("getDatasetCategoryNames() - (LEAVE)");
         return ret;
     }
 
@@ -155,7 +155,7 @@ public class ScopeResource {
                                  @HeaderParam("scopeName") String scopeName,
                                  @QueryParam("application") String application,
                                  @QueryParam("category") String category) {
-        LOGGER.info("findDatasets() - (ENTER)");
+        LOGGER.debug("findDatasets() - (ENTER)");
 
         ServiceRequest<FindDataSetQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -185,7 +185,7 @@ public class ScopeResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("findDatasets() - (LEAVE)");
+        LOGGER.debug("findDatasets() - (LEAVE)");
         return ret;
     }
 
@@ -221,7 +221,7 @@ public class ScopeResource {
                                @QueryParam("name") String nameOfScope,
                                @QueryParam("application") String applicationName,
                                @QueryParam("status") String status) {
-        LOGGER.info("findScopes() - (ENTER)");
+        LOGGER.debug("findScopes() - (ENTER)");
 
         // Setup paginator
         Paginator paginator = new Paginator();
@@ -258,7 +258,7 @@ public class ScopeResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("findScopes() - (LEAVE)");
+        LOGGER.debug("findScopes() - (LEAVE)");
         return ret;
     }
 
@@ -283,7 +283,7 @@ public class ScopeResource {
                              @HeaderParam("roleName") String roleName,
                              @HeaderParam("scopeName") String scopeName,
                              @PathParam("scopeId") Long scopeId) {
-        LOGGER.info("getScope() - (ENTER)");
+        LOGGER.debug("getScope() - (ENTER)");
 
         ServiceRequest<GetScopeQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -308,7 +308,7 @@ public class ScopeResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getScope() - (LEAVE)");
+        LOGGER.debug("getScope() - (LEAVE)");
         return ret;
     }
 
@@ -333,7 +333,7 @@ public class ScopeResource {
                                 @HeaderParam("roleName") String roleName,
                                 @HeaderParam("scopeName") String scopeName,
                                 Scope scope) {
-        LOGGER.info("updateScope() - (ENTER)");
+        LOGGER.debug("updateScope() - (ENTER)");
 
         ServiceRequest<Scope> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -378,7 +378,7 @@ public class ScopeResource {
                                 @HeaderParam("roleName") String roleName,
                                 @HeaderParam("scopeName") String scopeName,
                                 @PathParam("scopeId") Long scopeId) {
-        LOGGER.info("deleteScope(" + scopeId + ") - (ENTER)");
+        LOGGER.debug("deleteScope(" + scopeId + ") - (ENTER)");
 
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -396,7 +396,7 @@ public class ScopeResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("deleteScope() - (LEAVE)");
+        LOGGER.debug("deleteScope() - (LEAVE)");
         return ret;
     }
 
@@ -420,7 +420,7 @@ public class ScopeResource {
     public Response getScopes(@HeaderParam("authorization") String jwtToken,
                               @HeaderParam("roleName") String roleName,
                               @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("getScopes() - (ENTER)");
+        LOGGER.debug("getScopes() - (ENTER)");
 
         ServiceRequest<ScopeQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -445,7 +445,7 @@ public class ScopeResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getScopes() - (LEAVE)");
+        LOGGER.debug("getScopes() - (LEAVE)");
         return ret;
     }
 }

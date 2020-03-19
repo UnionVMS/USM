@@ -35,7 +35,7 @@ public class AdministrationResource {
     @Path("userSessions")
     @Produces("application/json")
     public Response deleteSessions() {
-        LOGGER.info("deleteSessions() - (ENTER)");
+        LOGGER.debug("deleteSessions() - (ENTER)");
 
         Response response;
         try {
@@ -45,7 +45,7 @@ public class AdministrationResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("deleteSessions() - (LEAVE)");
+        LOGGER.debug("deleteSessions() - (LEAVE)");
         return response;
     }
 
@@ -59,7 +59,7 @@ public class AdministrationResource {
     @Path("policyCache")
     @Produces("application/json")
     public Response clearPolicyCache() {
-        LOGGER.info("clearPolicyCache() - (ENTER)");
+        LOGGER.debug("clearPolicyCache() - (ENTER)");
 
         Response response;
         try {
@@ -69,7 +69,7 @@ public class AdministrationResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("clearPolicyCache() - (LEAVE)");
+        LOGGER.debug("clearPolicyCache() - (LEAVE)");
         return response;
     }
 

@@ -36,7 +36,7 @@ public class BaseJdbcDao {
      */
     @PostConstruct
     public void lookupDatasource() {
-        LOGGER.info("lookupDatasource() - (ENTER)");
+        LOGGER.debug("lookupDatasource() - (ENTER)");
 
         try {
             Context context = new InitialContext();
@@ -47,7 +47,7 @@ public class BaseJdbcDao {
             LOGGER.error(msg, ex);
             throw new RuntimeException(msg, ex);
         }
-        LOGGER.info("lookupDatasource() - (LEAVE)");
+        LOGGER.debug("lookupDatasource() - (LEAVE)");
     }
 
     protected Connection getConnection()
@@ -66,7 +66,7 @@ public class BaseJdbcDao {
      * @return the possibly-empty list of objects
      */
     public List queryForList(Query query, RowMapper rm) {
-        LOGGER.info("queryForList(" + query + ") - (ENTER)");
+        LOGGER.debug("queryForList(" + query + ") - (ENTER)");
 
         List ret = new ArrayList<>();
         Connection co = null;
@@ -89,7 +89,7 @@ public class BaseJdbcDao {
             closeStatement(ps);
             closeConnection(co);
         }
-        LOGGER.info("queryForList() - (LEAVE)");
+        LOGGER.debug("queryForList() - (LEAVE)");
         return ret;
     }
 
@@ -102,7 +102,7 @@ public class BaseJdbcDao {
      * <i>null</i> otherwise
      */
     public Object queryForObject(Query query, RowMapper rm) {
-        LOGGER.info("queryForObject(" + query + ") - (ENTER)");
+        LOGGER.debug("queryForObject(" + query + ") - (ENTER)");
 
         Object ret = null;
         Connection co = null;
@@ -131,7 +131,7 @@ public class BaseJdbcDao {
             closeStatement(ps);
             closeConnection(co);
         }
-        LOGGER.info("queryForObject() - (LEAVE)");
+        LOGGER.debug("queryForObject() - (LEAVE)");
         return ret;
     }
 
@@ -143,7 +143,7 @@ public class BaseJdbcDao {
      * <i>false</i> otherwise
      */
     public boolean queryForExistence(Query query) {
-        LOGGER.info("queryForExistence(" + query + ") - (ENTER)");
+        LOGGER.debug("queryForExistence(" + query + ") - (ENTER)");
 
         boolean ret = false;
         Connection co = null;
@@ -166,12 +166,12 @@ public class BaseJdbcDao {
             closeStatement(ps);
             closeConnection(co);
         }
-        LOGGER.info("queryForExistence() - (LEAVE)");
+        LOGGER.debug("queryForExistence() - (LEAVE)");
         return ret;
     }
 
     public int queryForCount(Query query) {
-        LOGGER.info("queryForCount(" + query + ") - (ENTER)");
+        LOGGER.debug("queryForCount(" + query + ") - (ENTER)");
         int ret = 0;
         Connection co = null;
         PreparedStatement ps = null;
@@ -194,7 +194,7 @@ public class BaseJdbcDao {
             closeStatement(ps);
             closeConnection(co);
         }
-        LOGGER.info("queryForCount() - (LEAVE)");
+        LOGGER.debug("queryForCount() - (LEAVE)");
         return ret;
     }
 
@@ -206,7 +206,7 @@ public class BaseJdbcDao {
      * @return the total number of records
      */
     public int queryForTotalRecords(Query query, RowMapper rm) {
-        LOGGER.info("queryForTotalRecords(" + query + ") - (ENTER)");
+        LOGGER.debug("queryForTotalRecords(" + query + ") - (ENTER)");
 
         int ret = 0;
         Connection co = null;
@@ -231,7 +231,7 @@ public class BaseJdbcDao {
             closeStatement(ps);
             closeConnection(co);
         }
-        LOGGER.info("queryForExistence() - (LEAVE)");
+        LOGGER.debug("queryForExistence() - (LEAVE)");
         return ret;
     }
 

@@ -54,7 +54,7 @@ public class PasswordPolicyEnforcerBean implements PasswordPolicyEnforcer {
 
     @Override
     public Date assertValid(ServiceRequest<ChangePassword> request) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("assertValid(" + request + ") - (ENTER)");
+        LOGGER.debug("assertValid(" + request + ") - (ENTER)");
 
         validator.assertValidChangePassword(request, null);
 
@@ -73,7 +73,7 @@ public class PasswordPolicyEnforcerBean implements PasswordPolicyEnforcer {
             ret = checkValidity(properties);
         }
 
-        LOGGER.info("assertValid() - (LEAVE): " + ret);
+        LOGGER.debug("assertValid() - (LEAVE): " + ret);
         return ret;
     }
 

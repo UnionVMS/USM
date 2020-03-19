@@ -28,7 +28,7 @@ public class UserContextJpaDao {
      * @return created userContext
      */
     public UserContextEntity create(UserContextEntity userContext) {
-        LOGGER.info("create(" + userContext + ") - (ENTER)");
+        LOGGER.debug("create(" + userContext + ") - (ENTER)");
 
         try {
             em.persist(userContext);
@@ -37,7 +37,7 @@ public class UserContextJpaDao {
             handleException("create", ex);
         }
 
-        LOGGER.info("create() - (LEAVE)");
+        LOGGER.debug("create() - (LEAVE)");
         return userContext;
     }
 
@@ -48,7 +48,7 @@ public class UserContextJpaDao {
      * @return the updated userContext
      */
     public UserContextEntity update(UserContextEntity userContext) {
-        LOGGER.info("update(" + userContext + ") - (ENTER)");
+        LOGGER.debug("update(" + userContext + ") - (ENTER)");
         UserContextEntity ret = null;
         try {
             ret = em.merge(userContext);
@@ -57,7 +57,7 @@ public class UserContextJpaDao {
             handleException("update", ex);
         }
 
-        LOGGER.info("update() - (LEAVE)");
+        LOGGER.debug("update() - (LEAVE)");
         return ret;
     }
 
@@ -68,7 +68,7 @@ public class UserContextJpaDao {
      * @return null if nothing was found otherwise the existing userContext
      */
     public UserContextEntity read(Long userContextId) {
-        LOGGER.info("read(" + userContextId + ") - (ENTER)");
+        LOGGER.debug("read(" + userContextId + ") - (ENTER)");
 
         UserContextEntity ret = null;
 
@@ -82,7 +82,7 @@ public class UserContextJpaDao {
             LOGGER.debug("No entity was found with userContextId " + userContextId);
         }
 
-        LOGGER.info("read() - (LEAVE)");
+        LOGGER.debug("read() - (LEAVE)");
         return ret;
     }
 
@@ -92,7 +92,7 @@ public class UserContextJpaDao {
      * @param userContextId the id of the userContext
      */
     public void delete(Long userContextId) {
-        LOGGER.info("delete(" + userContextId + ") - (ENTER)");
+        LOGGER.debug("delete(" + userContextId + ") - (ENTER)");
 
         try {
             UserContextEntity entity = read(userContextId);
@@ -104,7 +104,7 @@ public class UserContextJpaDao {
         } catch (Exception ex) {
             handleException("delete", ex);
         }
-        LOGGER.info("delete() - (LEAVE)");
+        LOGGER.debug("delete() - (LEAVE)");
     }
 
     private void handleException(String attribute, Exception ex) throws RuntimeException {

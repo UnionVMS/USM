@@ -31,7 +31,7 @@ public class ScopeJpaDao {
      * @return The created scope entity
      */
     public ScopeEntity create(ScopeEntity scope) {
-        LOGGER.info("create(" + scope + ") - (ENTER)");
+        LOGGER.debug("create(" + scope + ") - (ENTER)");
 
         try {
             em.persist(scope);
@@ -40,7 +40,7 @@ public class ScopeJpaDao {
             handleException("create", ex);
         }
 
-        LOGGER.info("create() - (LEAVE)");
+        LOGGER.debug("create() - (LEAVE)");
         return scope;
     }
 
@@ -51,7 +51,7 @@ public class ScopeJpaDao {
      * @return the updated entity
      */
     public ScopeEntity update(ScopeEntity scope) {
-        LOGGER.info("update(" + scope + ") - (ENTER)");
+        LOGGER.debug("update(" + scope + ") - (ENTER)");
 
         ScopeEntity ret = null;
         try {
@@ -61,7 +61,7 @@ public class ScopeJpaDao {
             handleException("update", ex);
         }
 
-        LOGGER.info("update() - (LEAVE)");
+        LOGGER.debug("update() - (LEAVE)");
         return ret;
     }
 
@@ -71,7 +71,7 @@ public class ScopeJpaDao {
      * @param scopeId the id of the scope to be deleted
      */
     public void delete(Long scopeId) {
-        LOGGER.info("delete(" + scopeId + ") - (ENTER)");
+        LOGGER.debug("delete(" + scopeId + ") - (ENTER)");
 
         try {
             ScopeEntity entity = read(scopeId);
@@ -84,7 +84,7 @@ public class ScopeJpaDao {
             handleException("delete", ex);
         }
 
-        LOGGER.info("delete() - (LEAVE)");
+        LOGGER.debug("delete() - (LEAVE)");
     }
 
     /**
@@ -94,7 +94,7 @@ public class ScopeJpaDao {
      * @return the matching Scope if it exists, null otherwise
      */
     public ScopeEntity read(Long scopeId) {
-        LOGGER.info("read(" + scopeId + ") - (ENTER)");
+        LOGGER.debug("read(" + scopeId + ") - (ENTER)");
         ScopeEntity ret = null;
 
         try {
@@ -107,12 +107,12 @@ public class ScopeJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE)");
+        LOGGER.debug("read() - (LEAVE)");
         return ret;
     }
 
     public List<DatasetEntity> findDatasets(FindDataSetQuery request) {
-        LOGGER.info("findDatasets(" + request + ") - (ENTER)");
+        LOGGER.debug("findDatasets(" + request + ") - (ENTER)");
 
         String application = request.getApplicationName();
         String category = request.getCategory();
@@ -138,7 +138,7 @@ public class ScopeJpaDao {
             handleException("findDatasets of", ex);
         }
 
-        LOGGER.info("findDatasets() - (LEAVE)");
+        LOGGER.debug("findDatasets() - (LEAVE)");
         return ret;
     }
 

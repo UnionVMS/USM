@@ -28,7 +28,7 @@ public class OrganisationJpaDao {
      * @return The created Organisation entity
      */
     public OrganisationEntity create(OrganisationEntity entity) {
-        LOGGER.info("create(" + entity + ") - (ENTER)");
+        LOGGER.debug("create(" + entity + ") - (ENTER)");
         try {
             em.persist(entity);
             em.flush();
@@ -36,7 +36,7 @@ public class OrganisationJpaDao {
             handleException("create", ex);
         }
 
-        LOGGER.info("create() - (LEAVE)");
+        LOGGER.debug("create() - (LEAVE)");
         return entity;
     }
 
@@ -47,7 +47,7 @@ public class OrganisationJpaDao {
      * @return the matching Organisation if it exists, null otherwise
      */
     public OrganisationEntity read(Long organisationId) {
-        LOGGER.info("read() - (ENTER)");
+        LOGGER.debug("read() - (ENTER)");
 
         OrganisationEntity ret = null;
 
@@ -64,7 +64,7 @@ public class OrganisationJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE)");
+        LOGGER.debug("read() - (LEAVE)");
         return ret;
     }
 
@@ -75,7 +75,7 @@ public class OrganisationJpaDao {
      * @return the matching Organisation if it exists, null otherwise
      */
     public OrganisationEntity read(String organisationName) {
-        LOGGER.info("read() - (ENTER)");
+        LOGGER.debug("read() - (ENTER)");
         OrganisationEntity ret = null;
 
         try {
@@ -90,7 +90,7 @@ public class OrganisationJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE)");
+        LOGGER.debug("read() - (LEAVE)");
         return ret;
     }
 
@@ -101,7 +101,7 @@ public class OrganisationJpaDao {
      * @return the updated Organisation
      */
     public OrganisationEntity update(OrganisationEntity entity) {
-        LOGGER.info("update() - (ENTER)");
+        LOGGER.debug("update() - (ENTER)");
         OrganisationEntity ret = null;
         try {
             ret = em.merge(entity);
@@ -110,7 +110,7 @@ public class OrganisationJpaDao {
             handleException("update", ex);
         }
 
-        LOGGER.info("update() - (LEAVE)");
+        LOGGER.debug("update() - (LEAVE)");
         return ret;
     }
 
@@ -120,7 +120,7 @@ public class OrganisationJpaDao {
      * @param organisationId the Organisation (internal) unique identifier
      */
     public void delete(Long organisationId) {
-        LOGGER.info("delete() - (ENTER)");
+        LOGGER.debug("delete() - (ENTER)");
 
         try {
             OrganisationEntity ret = em.find(OrganisationEntity.class,
@@ -133,7 +133,7 @@ public class OrganisationJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("delete() - (LEAVE)");
+        LOGGER.debug("delete() - (LEAVE)");
     }
 
     private void handleException(String operation, Exception ex)

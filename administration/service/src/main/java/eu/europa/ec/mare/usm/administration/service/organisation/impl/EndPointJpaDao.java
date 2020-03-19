@@ -30,7 +30,7 @@ public class EndPointJpaDao {
      * @return the matching end point if it exists, null otherwise
      */
     public EndPointEntity read(Long endPointId) {
-        LOGGER.info("read() - (ENTER)");
+        LOGGER.debug("read() - (ENTER)");
 
         EndPointEntity ret = null;
 
@@ -45,7 +45,7 @@ public class EndPointJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE)");
+        LOGGER.debug("read() - (LEAVE)");
         return ret;
     }
 
@@ -56,7 +56,7 @@ public class EndPointJpaDao {
      * @return the list of the associated end-points if there are any
      */
     public List<EndPointEntity> getEndPointsByOrganisationId(Long organisationId) {
-        LOGGER.info("getEndPointsByOrganisationId() - (ENTER)");
+        LOGGER.debug("getEndPointsByOrganisationId() - (ENTER)");
 
         List<EndPointEntity> ret = null;
 
@@ -72,7 +72,7 @@ public class EndPointJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("getEndPointsByOrganisationId() - (LEAVE)");
+        LOGGER.debug("getEndPointsByOrganisationId() - (LEAVE)");
         return ret;
     }
 
@@ -91,7 +91,7 @@ public class EndPointJpaDao {
      * @return the newly inserted end-point entity
      */
     public EndPointEntity create(EndPointEntity newEntity) {
-        LOGGER.info("create(" + newEntity + ") - (ENTER)");
+        LOGGER.debug("create(" + newEntity + ") - (ENTER)");
 
         try {
             em.persist(newEntity);
@@ -103,7 +103,7 @@ public class EndPointJpaDao {
             throw new RuntimeException(msg, ex);
         }
 
-        LOGGER.info("create() - (LEAVE)");
+        LOGGER.debug("create() - (LEAVE)");
         return newEntity;
     }
 
@@ -115,7 +115,7 @@ public class EndPointJpaDao {
      * @return the end-points if it exists, null otherwise
      */
     public EndPointEntity retrieveEndPointByOrganisation(String entityName, String organisationName) {
-        LOGGER.info("retrieveEndPointByOrganisation(" + entityName + "," + organisationName + ") - (ENTER)");
+        LOGGER.debug("retrieveEndPointByOrganisation(" + entityName + "," + organisationName + ") - (ENTER)");
 
         EndPointEntity ret = null;
 
@@ -132,7 +132,7 @@ public class EndPointJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("retrieveEndPointByOrganisation() - (LEAVE)");
+        LOGGER.debug("retrieveEndPointByOrganisation() - (LEAVE)");
         return ret;
     }
 
@@ -143,7 +143,7 @@ public class EndPointJpaDao {
      * @return the updated end-point entity
      */
     public EndPointEntity update(EndPointEntity endpoint) {
-        LOGGER.info("update(" + endpoint + ") - (ENTER)");
+        LOGGER.debug("update(" + endpoint + ") - (ENTER)");
 
         EndPointEntity ret = null;
         try {
@@ -154,7 +154,7 @@ public class EndPointJpaDao {
             LOGGER.error(msg, ex);
             throw new RuntimeException(msg, ex);
         }
-        LOGGER.info("update() - (LEAVE)");
+        LOGGER.debug("update() - (LEAVE)");
         return ret;
     }
 
@@ -164,7 +164,7 @@ public class EndPointJpaDao {
      * @param endpointId the id of the end point
      */
     public void delete(Long endpointId) {
-        LOGGER.info("delete(EndPoint with " + endpointId + ") - (ENTER)");
+        LOGGER.debug("delete(EndPoint with " + endpointId + ") - (ENTER)");
 
         try {
             EndPointEntity entity = read(endpointId);

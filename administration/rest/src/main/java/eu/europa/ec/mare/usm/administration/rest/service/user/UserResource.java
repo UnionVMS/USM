@@ -89,7 +89,7 @@ public class UserResource {
                               @QueryParam("activeFrom") String activeFrom,
                               @QueryParam("activeTo") String activeTo,
                               @QueryParam("status") String status) {
-        LOGGER.info("findUsers() - (ENTER)");
+        LOGGER.debug("findUsers() - (ENTER)");
 
         ServiceRequest<FindUsersQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -130,7 +130,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("findUsers() - (LEAVE)");
+        LOGGER.debug("findUsers() - (LEAVE)");
         return ret;
     }
 
@@ -155,7 +155,7 @@ public class UserResource {
                                @HeaderParam("roleName") String roleName,
                                @HeaderParam("scopeName") String scopeName,
                                UserAccount user) {
-        LOGGER.info("createUser() - (ENTER)");
+        LOGGER.debug("createUser() - (ENTER)");
 
         ServiceRequest<UserAccount> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -178,7 +178,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("createUser() - (LEAVE)");
+        LOGGER.debug("createUser() - (LEAVE)");
         return ret;
     }
 
@@ -202,7 +202,7 @@ public class UserResource {
                                @HeaderParam("roleName") String roleName,
                                @HeaderParam("scopeName") String scopeName,
                                UserAccount user) {
-        LOGGER.info("updateUser() - (ENTER)");
+        LOGGER.debug("updateUser() - (ENTER)");
 
         ServiceRequest<UserAccount> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -219,7 +219,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("updateUser() - (LEAVE)");
+        LOGGER.debug("updateUser() - (LEAVE)");
         return ret;
     }
 
@@ -251,7 +251,7 @@ public class UserResource {
                                    @HeaderParam("roleName") String roleName,
                                    @HeaderParam("scopeName") String scopeName,
                                    ChangePassword changePassword) {
-        LOGGER.info("changePassword() - (ENTER)");
+        LOGGER.debug("changePassword() - (ENTER)");
 
         ServiceRequest<ChangePassword> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -267,7 +267,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("changePassword() - (LEAVE)");
+        LOGGER.debug("changePassword() - (LEAVE)");
         return ret;
     }
 
@@ -292,7 +292,7 @@ public class UserResource {
                             @HeaderParam("roleName") String roleName,
                             @HeaderParam("scopeName") String scopeName,
                             @PathParam("userName") String userName) {
-        LOGGER.info("getUser() - (ENTER)");
+        LOGGER.debug("getUser() - (ENTER)");
 
         ServiceRequest<GetUserQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -317,7 +317,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getUser() - (LEAVE)");
+        LOGGER.debug("getUser() - (LEAVE)");
         return ret;
     }
 
@@ -341,7 +341,7 @@ public class UserResource {
                                     @HeaderParam("roleName") String roleName,
                                     @HeaderParam("scopeName") String scopeName,
                                     @PathParam("userName") String userName) {
-        LOGGER.info("getUserContexts() - (ENTER)");
+        LOGGER.debug("getUserContexts() - (ENTER)");
 
         ServiceRequest<FindUserContextsQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -366,7 +366,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getUserContexts() - (LEAVE)");
+        LOGGER.debug("getUserContexts() - (LEAVE)");
         return ret;
     }
 
@@ -394,7 +394,7 @@ public class UserResource {
                                       @HeaderParam("scopeName") String scopeName,
                                       @PathParam("userName") String userName,
                                       @PathParam("userContextId") String userContextId) {
-        LOGGER.info("deleteUserContext(" + userContextId + ") - (ENTER)");
+        LOGGER.debug("deleteUserContext(" + userContextId + ") - (ENTER)");
 
         ServiceRequest<String> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -410,7 +410,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("deleteUserContext() - (ENTER)");
+        LOGGER.debug("deleteUserContext() - (LEAVE)");
         return ret;
     }
 
@@ -438,7 +438,7 @@ public class UserResource {
                                       @HeaderParam("scopeName") String scopeName,
                                       @PathParam("userName") String userName,
                                       UserContext userContext) {
-        LOGGER.info("createUserContext() - (ENTER)");
+        LOGGER.debug("createUserContext() - (ENTER)");
 
         ServiceRequest<UserContext> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -462,7 +462,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("createUserContext() - (LEAVE)");
+        LOGGER.debug("createUserContext() - (LEAVE)");
         return ret;
     }
 
@@ -490,7 +490,7 @@ public class UserResource {
                                       @HeaderParam("scopeName") String scopeName,
                                       @PathParam("userName") String userName,
                                       UserContext userContext) {
-        LOGGER.info("updateUserContext() - (ENTER)");
+        LOGGER.debug("updateUserContext() - (ENTER)");
 
         ServiceRequest<UserContext> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -513,7 +513,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("updateUserContext() - (LEAVE)");
+        LOGGER.debug("updateUserContext() - (LEAVE)");
         return ret;
     }
 
@@ -539,7 +539,7 @@ public class UserResource {
     public Response getUsersNames(@HeaderParam("authorization") String jwtToken,
                                   @HeaderParam("roleName") String roleName,
                                   @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("getUsersNames() - (ENTER)");
+        LOGGER.debug("getUsersNames() - (ENTER)");
 
         ServiceRequest<String> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -565,7 +565,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("getUsersNames() - (LEAVE)");
+        LOGGER.debug("getUsersNames() - (LEAVE)");
         return ret;
     }
 
@@ -594,7 +594,7 @@ public class UserResource {
                                      @HeaderParam("scopeName") String scopeName,
                                      @PathParam("toUserName") String toUserName,
                                      List<ComprehensiveUserContext> userContextList) {
-        LOGGER.info("copyUserProfiles() - (ENTER)");
+        LOGGER.debug("copyUserProfiles() - (ENTER)");
 
         ServiceRequest<UserContextResponse> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -613,7 +613,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(ex);
         }
 
-        LOGGER.info("copyUserProfiles() - (LEAVE)");
+        LOGGER.debug("copyUserProfiles() - (LEAVE)");
         return ret;
     }
 
@@ -634,7 +634,7 @@ public class UserResource {
     @Path("{userName}/challenges")
     public Response getChallenges(@HeaderParam("authorization") String jwtToken,
                                   @PathParam("userName") String userName) {
-        LOGGER.info("getChallenges() - (ENTER)");
+        LOGGER.debug("getChallenges() - (ENTER)");
 
         ServiceRequest<String> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -656,7 +656,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(ex);
         }
 
-        LOGGER.info("getChallenges() - (LEAVE)");
+        LOGGER.debug("getChallenges() - (LEAVE)");
         return ret;
     }
 
@@ -679,7 +679,7 @@ public class UserResource {
     public Response setChallenges(@HeaderParam("authorization") String jwtToken,
                                   @PathParam("userName") String userName,
                                   ChallengeInformationResponse challengeInformationResponse) {
-        LOGGER.info("setChallenges() - (ENTER)");
+        LOGGER.debug("setChallenges() - (ENTER)");
 
         ServiceRequest<ChallengeInformationResponse> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -695,7 +695,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(ex);
         }
 
-        LOGGER.info("setChallenges() - (LEAVE)");
+        LOGGER.debug("setChallenges() - (LEAVE)");
         return ret;
     }
 
@@ -721,7 +721,7 @@ public class UserResource {
                                        @HeaderParam("scopeName") String scopeName,
                                        @PathParam("userName") String userName,
                                        @QueryParam("groupName") String groupName) {
-        LOGGER.info("getUserPreferences() - (ENTER)");
+        LOGGER.debug("getUserPreferences() - (ENTER)");
 
         ServiceRequest<FindUserPreferenceQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -747,7 +747,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getUserPreferences() - (LEAVE)");
+        LOGGER.debug("getUserPreferences() - (LEAVE)");
         return ret;
     }
 
@@ -760,7 +760,7 @@ public class UserResource {
     @Path("resetUserPassword")
     public Response resetUserPassword(@HeaderParam("userName") String userName)
             throws WebApplicationException {
-        LOGGER.info("resetUserPassword() - (ENTER)");
+        LOGGER.debug("resetUserPassword() - (ENTER)");
 
         Response ret = null;
 
@@ -833,7 +833,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("resetUserPassword() - (LEAVE)");
+        LOGGER.debug("resetUserPassword() - (LEAVE)");
         return ret;
     }
 
@@ -842,7 +842,7 @@ public class UserResource {
     public Response resetUserPassword(@HeaderParam("userName") String userName,
                                       @HeaderParam("isTemporaryPassword") Boolean isTemporaryPassword,
                                       ChallengeInformationResponse challengeInformationResponse) {
-        LOGGER.info("resetUserPassword() - (ENTER)");
+        LOGGER.debug("resetUserPassword() - (ENTER)");
 
         //System.out.format("POST: resetUserPassword: %s, %s\n", userName, challengeInformationResponse.getUserPassword());
         ServiceRequest<ChallengeInformationResponse> request = new ServiceRequest<>();
@@ -873,14 +873,14 @@ public class UserResource {
             ret = ExceptionHandler.handleException(ex);
         }
 
-        LOGGER.info("resetUserPassword() - (LEAVE)");
+        LOGGER.debug("resetUserPassword() - (LEAVE)");
         return ret;
     }
 
     @GET
     @Path("passpolicy")
     public Response getPasswordPolicy() {
-        LOGGER.info("getPasswordPolicy() - (ENTER)");
+        LOGGER.debug("getPasswordPolicy() - (ENTER)");
 
         ServiceRequest<String> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -907,7 +907,7 @@ public class UserResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("getPasswordPolicy() - (LEAVE)");
+        LOGGER.debug("getPasswordPolicy() - (LEAVE)");
         return ret;
     }
 

@@ -33,12 +33,12 @@ public class ApplicationJdbcDao extends BaseJdbcDao {
      * @return the application names
      */
     public List<String> getApplicationNames() {
-        LOGGER.info("getApplicationNames() - (ENTER)");
+        LOGGER.debug("getApplicationNames() - (ENTER)");
 
         Query query = new Query("select NAME from APPLICATION_T order by NAME");
         List<String> ret = queryForList(query, new StringMapper());
 
-        LOGGER.info("getApplicationNames() - (LEAVE)");
+        LOGGER.debug("getApplicationNames() - (LEAVE)");
         return ret;
     }
 
@@ -52,7 +52,7 @@ public class ApplicationJdbcDao extends BaseJdbcDao {
      */
     @SuppressWarnings("unchecked")
     public PaginationResponse<Application> findApplications(FindApplicationQuery request) {
-        LOGGER.info("findApplications(" + request + ") - (ENTER)");
+        LOGGER.debug("findApplications(" + request + ") - (ENTER)");
 
         Paginator rPaginator = request.getPaginator();
 
@@ -71,7 +71,7 @@ public class ApplicationJdbcDao extends BaseJdbcDao {
         ret.setResults(applicationsList);
         ret.setTotal(totalRecords);
 
-        LOGGER.info("findApplications() - (LEAVE): " + ret);
+        LOGGER.debug("findApplications() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -139,13 +139,13 @@ public class ApplicationJdbcDao extends BaseJdbcDao {
      * @return the application names
      */
     public List<String> getParentApplicationNames() {
-        LOGGER.info("getParentApplicationNames() - (ENTER)");
+        LOGGER.debug("getParentApplicationNames() - (ENTER)");
 
         Query query = new Query("select distinct p.NAME from APPLICATION_T a,APPLICATION_T p " +
                 "where a.PARENT_ID=p.APPLICATION_ID");
         List<String> ret = queryForList(query, new StringMapper());
 
-        LOGGER.info("getParentApplicationNames() - (LEAVE)");
+        LOGGER.debug("getParentApplicationNames() - (LEAVE)");
         return ret;
     }
 }

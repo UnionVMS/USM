@@ -32,7 +32,7 @@ public class ApplicationJpaDao {
      * @return the matching Application if it exists, null otherwise
      */
     ApplicationEntity read(Long applicationId) {
-        LOGGER.info("read(" + applicationId + ") - (ENTER)");
+        LOGGER.debug("read(" + applicationId + ") - (ENTER)");
 
         ApplicationEntity ret = null;
 
@@ -47,7 +47,7 @@ public class ApplicationJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE): " + ret);
+        LOGGER.debug("read() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -58,7 +58,7 @@ public class ApplicationJpaDao {
      * @return the matching Application if it exists, null otherwise
      */
     public ApplicationEntity read(String applicationName) {
-        LOGGER.info("read(" + applicationName + ") - (ENTER)");
+        LOGGER.debug("read(" + applicationName + ") - (ENTER)");
 
         ApplicationEntity ret = null;
 
@@ -73,7 +73,7 @@ public class ApplicationJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE): " + ret);
+        LOGGER.debug("read() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -85,7 +85,7 @@ public class ApplicationJpaDao {
      * @return the matching Application if it exists, null otherwise
      */
     public ApplicationEntity readApplication(String applicationName) {
-        LOGGER.info("readApplication(" + applicationName + ") - (ENTER)");
+        LOGGER.debug("readApplication(" + applicationName + ") - (ENTER)");
 
         ApplicationEntity ret = read(applicationName);
 
@@ -106,7 +106,7 @@ public class ApplicationJpaDao {
             }
         }
 
-        LOGGER.info("readApplication() - (LEAVE): " + ret);
+        LOGGER.debug("readApplication() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -117,7 +117,7 @@ public class ApplicationJpaDao {
      * @return the unique applicationId (PK) assigned to the application
      */
     public Long create(ApplicationEntity src) {
-        LOGGER.info("create(" + src + ") - (ENTER)");
+        LOGGER.debug("create(" + src + ") - (ENTER)");
 
         setValues(src);
 
@@ -126,7 +126,7 @@ public class ApplicationJpaDao {
 
         Long ret = src.getApplicationId();
 
-        LOGGER.info("create() - (LEAVE): " + ret);
+        LOGGER.debug("create() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -136,13 +136,13 @@ public class ApplicationJpaDao {
      * @param src the Application to be updated
      */
     public void update(ApplicationEntity src) {
-        LOGGER.info("update(" + src + ") - (ENTER)");
+        LOGGER.debug("update(" + src + ") - (ENTER)");
 
         setValues(src);
         em.merge(src);
         em.flush();
 
-        LOGGER.info("update() - (LEAVE)");
+        LOGGER.debug("update() - (LEAVE)");
     }
 
     private void setValues(ApplicationEntity src) {
@@ -169,7 +169,7 @@ public class ApplicationJpaDao {
      * @param applicationName the Application name
      */
     public void delete(String applicationName) {
-        LOGGER.info("delete(" + applicationName + ") - (ENTER)");
+        LOGGER.debug("delete(" + applicationName + ") - (ENTER)");
 
         ApplicationEntity entity = readApplication(applicationName);
         if (entity != null) {
@@ -180,7 +180,7 @@ public class ApplicationJpaDao {
                 handleException("delete", ex);
             }
         }
-        LOGGER.info("delete() - (LEAVE)");
+        LOGGER.debug("delete() - (LEAVE)");
     }
 
     /**
@@ -190,7 +190,7 @@ public class ApplicationJpaDao {
      * @param src the application details to be deleted
      */
     public void deleteDetails(ApplicationEntity src) {
-        LOGGER.info("deleteDetails(" + src + ") - (ENTER)");
+        LOGGER.debug("deleteDetails(" + src + ") - (ENTER)");
         int ret = 0;
 
         if (src != null) {
@@ -251,7 +251,7 @@ public class ApplicationJpaDao {
             }
         }
 
-        LOGGER.info("deleteDetails() - (LEAVE): " + ret);
+        LOGGER.debug("deleteDetails() - (LEAVE): " + ret);
     }
 
     private <T> List<T> readDetails(Long applicationId, String queryName, Class<T> type) {

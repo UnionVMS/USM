@@ -51,7 +51,7 @@ public class LdapUserResource {
                                 @HeaderParam("roleName") String roleName,
                                 @HeaderParam("scopeName") String scopeName,
                                 @PathParam("userName") String userName) {
-        LOGGER.info("getLdapUser() - (ENTER)");
+        LOGGER.debug("getLdapUser() - (ENTER)");
 
         ServiceRequest<GetUserQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -75,7 +75,7 @@ public class LdapUserResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getLdapUser() - (LEAVE)");
+        LOGGER.debug("getLdapUser() - (LEAVE)");
         return ret;
     }
 }

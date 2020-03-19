@@ -20,7 +20,7 @@ public class EndPointContactJpaDao {
     }
 
     public EndPointContactEntity read(Long endPointContactId) {
-        LOGGER.info(" read(" + endPointContactId + ") - (ENTER)");
+        LOGGER.debug(" read(" + endPointContactId + ") - (ENTER)");
         EndPointContactEntity ret = null;
 
         try {
@@ -34,12 +34,12 @@ public class EndPointContactJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info(" read() - (LEAVE)");
+        LOGGER.debug(" read() - (LEAVE)");
         return ret;
     }
 
     public List<EndPointContactEntity> findContactByEndPointId(Long endPointId) {
-        LOGGER.info(" read(" + endPointId + ") - (ENTER)");
+        LOGGER.debug(" read(" + endPointId + ") - (ENTER)");
         List<EndPointContactEntity> ret = null;
 
         try {
@@ -53,7 +53,7 @@ public class EndPointContactJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info(" read() - (LEAVE)");
+        LOGGER.debug(" read() - (LEAVE)");
         return ret;
     }
 
@@ -66,7 +66,7 @@ public class EndPointContactJpaDao {
     }
 
     public EndPointContactEntity create(EndPointContactEntity epcontact) {
-        LOGGER.info(" create(" + epcontact + ") - (ENTER)");
+        LOGGER.debug(" create(" + epcontact + ") - (ENTER)");
         try {
             em.persist(epcontact);
             em.flush();
@@ -75,12 +75,12 @@ public class EndPointContactJpaDao {
             LOGGER.error(msg, ex);
             throw new RuntimeException(msg, ex);
         }
-        LOGGER.info(" create() - (LEAVE)");
+        LOGGER.debug(" create() - (LEAVE)");
         return epcontact;
     }
 
     public void delete(EndPointContactEntity epcontact) {
-        LOGGER.info(" delete(" + epcontact + ") - (ENTER)");
+        LOGGER.debug(" delete(" + epcontact + ") - (ENTER)");
 
         try {
             em.remove(epcontact);
@@ -90,7 +90,7 @@ public class EndPointContactJpaDao {
             LOGGER.error(msg, ex);
             throw new RuntimeException(msg, ex);
         }
-        LOGGER.info(" delete() - (LEAVE)");
+        LOGGER.debug(" delete() - (LEAVE)");
 
     }
 }

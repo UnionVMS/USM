@@ -37,20 +37,20 @@ public class LdapUserInfoServiceBean implements LdapUserInfoService {
 
     @Override
     public boolean isEnabled() {
-        LOGGER.info("isEnabled() - (ENTER)");
+        LOGGER.debug("isEnabled() - (ENTER)");
 
         Properties props = getProperties();
 
         boolean ret = Boolean.parseBoolean(props.getProperty("ldap.enabled", "false"));
 
-        LOGGER.info("isEnabled() - (LEAVE): " + ret);
+        LOGGER.debug("isEnabled() - (LEAVE): " + ret);
         return ret;
     }
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public LdapUser getLdapUserInfo(ServiceRequest<GetUserQuery> request) {
-        LOGGER.info("getLdapUserInfo(" + request + ") - (ENTER)");
+        LOGGER.debug("getLdapUserInfo(" + request + ") - (ENTER)");
 
         validator.assertValid(request);
 
@@ -72,7 +72,7 @@ public class LdapUserInfoServiceBean implements LdapUserInfoService {
             }
         }
 
-        LOGGER.info("getLdapUserInfo() - (LEAVE): " + ret);
+        LOGGER.debug("getLdapUserInfo() - (LEAVE): " + ret);
         return ret;
     }
 

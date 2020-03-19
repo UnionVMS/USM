@@ -59,8 +59,7 @@ public class AuthenticationFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        LOGGER.info("doFilter(" + httpRequest.getMethod() + ", " +
-                httpRequest.getPathInfo() + ") - (ENTER)");
+        LOGGER.debug("doFilter(" + httpRequest.getMethod() + ", " + httpRequest.getPathInfo() + ") - (ENTER)");
 
         // if it's a preflighted requests just forward the request to the next filter
         if (httpRequest.getMethod().equals("OPTIONS")) {
@@ -132,7 +131,7 @@ public class AuthenticationFilter implements Filter {
                 }
             }
         }
-        LOGGER.info("doFilter() - (LEAVE)");
+        LOGGER.debug("doFilter() - (LEAVE)");
     }
 
     @Override

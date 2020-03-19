@@ -53,7 +53,7 @@ public class PasswordExpiryNotifier {
      */
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<String> findUsersToNotify() {
-        LOGGER.info("findUsersToNotify() - (ENTER)");
+        LOGGER.debug("findUsersToNotify() - (ENTER)");
 
         List<String> ret = Collections.EMPTY_LIST;
 
@@ -66,7 +66,7 @@ public class PasswordExpiryNotifier {
             ret = jdbcDao.findByPasswordExpiry(expiringBefore);
         }
 
-        LOGGER.info("findUsersToNotify() - (LEAVE)");
+        LOGGER.debug("findUsersToNotify() - (LEAVE)");
         return ret;
     }
 
@@ -78,7 +78,7 @@ public class PasswordExpiryNotifier {
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void notifyUser(String userName) {
-        LOGGER.info("remindUser(" + userName + ") - (ENTER)");
+        LOGGER.debug("remindUser(" + userName + ") - (ENTER)");
 
         UserEntity user = jpaDao.read(userName);
         if (user != null) {
@@ -89,7 +89,7 @@ public class PasswordExpiryNotifier {
             }
         }
 
-        LOGGER.info("remindUser() - (LEAVE)");
+        LOGGER.debug("remindUser() - (LEAVE)");
     }
 
     /**

@@ -26,7 +26,7 @@ public class PreferenceJpaDao {
      * @return the possibly-empty list of preferences
      */
     public List<PreferenceEntity> read(Long contextId) {
-        LOGGER.info("read(" + contextId + ") - (ENTER)");
+        LOGGER.debug("read(" + contextId + ") - (ENTER)");
 
         TypedQuery<PreferenceEntity> q = em.createNamedQuery("PreferenceEntity.findByContextId",
                 PreferenceEntity.class);
@@ -34,7 +34,7 @@ public class PreferenceJpaDao {
         q.setParameter("contextId", contextId);
         List<PreferenceEntity> ret = q.getResultList();
 
-        LOGGER.info("read() - (LEAVE)");
+        LOGGER.debug("read() - (LEAVE)");
         return ret;
     }
 }

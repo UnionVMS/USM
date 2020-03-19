@@ -26,13 +26,13 @@ public class PolicyJdbcDao extends BaseJdbcDao {
      * @return the possibly empty list of all user names
      */
     public List<String> getSubjects() {
-        LOGGER.info("getSubjects() - (ENTER)");
+        LOGGER.debug("getSubjects() - (ENTER)");
 
         Query query = new Query("select DISTINCT SUBJECT from POLICY_T order by 1");
 
         List<String> ret = queryForList(query, new StringMapper());
 
-        LOGGER.info("getSubjects() - (LEAVE)");
+        LOGGER.debug("getSubjects() - (LEAVE)");
         return ret;
     }
 }

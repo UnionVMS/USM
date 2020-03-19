@@ -8,6 +8,7 @@ import eu.europa.ec.mare.usm.administration.service.JsonBConfiguratorExtended;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationRequest;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
 import eu.europa.ec.mare.usm.authentication.domain.ChallengeResponse;
+import eu.europa.ec.mare.usm.session.domain.SessionInfo;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -739,20 +740,4 @@ public class AdministrationRestClient {
                 .get();
     }
 
-    public Response endSession(String jwtToken, String sessionId) {
-        return getWebTargetInternal()
-                .path("sessions")
-                .path(sessionId)
-                .request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, jwtToken)
-                .delete();
-    }
-
-    public Response getSession(String jwtToken) {
-        return getWebTargetInternal()
-                .path("sessions")
-                .request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, jwtToken)
-                .get();
-    }
 }

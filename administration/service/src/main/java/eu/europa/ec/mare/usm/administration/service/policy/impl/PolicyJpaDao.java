@@ -28,7 +28,7 @@ public class PolicyJpaDao {
      * @return the possibly-empty list of Policy entities
      */
     List<PolicyEntity> readPolicy(String subject) {
-        LOGGER.info("readPolicy(" + subject + ") - (ENTER)");
+        LOGGER.debug("readPolicy(" + subject + ") - (ENTER)");
 
         List<PolicyEntity> ret = null;
         try {
@@ -41,7 +41,7 @@ public class PolicyJpaDao {
             throw new RuntimeException(msg, ex);
         }
 
-        LOGGER.info("readPolicy() - (LEAVE): " + ret.size());
+        LOGGER.debug("readPolicy() - (LEAVE): " + ret.size());
         return ret;
     }
 
@@ -51,7 +51,7 @@ public class PolicyJpaDao {
      * @param entityList the policy definition
      */
     void updatePolicy(List<PolicyEntity> entityList) {
-        LOGGER.info("updatePolicy(" + entityList + ") - (ENTER)");
+        LOGGER.debug("updatePolicy(" + entityList + ") - (ENTER)");
 
         try {
             if (entityList != null && !entityList.isEmpty()) {
@@ -69,22 +69,22 @@ public class PolicyJpaDao {
             throw new RuntimeException(msg, ex);
         }
 
-        LOGGER.info("updatePolicy() - (LEAVE)");
+        LOGGER.debug("updatePolicy() - (LEAVE)");
     }
 
     public PolicyEntity updatePolicyProperty(PolicyEntity e) {
-        LOGGER.info("updatePolicyProperty(" + e + ") - (ENTER)");
+        LOGGER.debug("updatePolicyProperty(" + e + ") - (ENTER)");
 
         LOGGER.info("updating: " + e);
         em.merge(e);
         em.flush();
         LOGGER.info("updated: " + e.getName());
-        LOGGER.info("updatePolicyProperty() - (LEAVE)");
+        LOGGER.debug("updatePolicyProperty() - (LEAVE)");
         return e;
     }
 
     public List<PolicyEntity> findPolicies(FindPoliciesQuery request) {
-        LOGGER.info("findPolicies(" + request + ") - (ENTER)");
+        LOGGER.debug("findPolicies(" + request + ") - (ENTER)");
 
         String subject = request.getSubject();
         String name = request.getName();
@@ -110,7 +110,7 @@ public class PolicyJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("findPolicies() - (LEAVE)");
+        LOGGER.debug("findPolicies() - (LEAVE)");
         return ret;
     }
 

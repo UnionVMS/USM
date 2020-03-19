@@ -47,7 +47,7 @@ public class RoleServiceBean implements RoleService {
 
     @Override
     public List<String> getRoleNames(ServiceRequest<RoleQuery> request) {
-        LOGGER.info("getRoleNames(" + request + ") - (ENTER)");
+        LOGGER.debug("getRoleNames(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewRoles);
@@ -56,13 +56,13 @@ public class RoleServiceBean implements RoleService {
         validator.assertValid(request, "query", featureSet);
         List<String> names = roleJdbcDao.getRoleNames();
 
-        LOGGER.info("getRoleNames() - (LEAVE)");
+        LOGGER.debug("getRoleNames() - (LEAVE)");
         return names;
     }
 
     @Override
     public Role getRole(ServiceRequest<GetRoleQuery> request) {
-        LOGGER.info("getRole(" + request + ") - (ENTER)");
+        LOGGER.debug("getRole(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewRoles);
@@ -76,13 +76,13 @@ public class RoleServiceBean implements RoleService {
             role.setActiveUsers(activeUsers == null ? 0 : activeUsers.size());
         }
 
-        LOGGER.info("getRole() - (LEAVE)");
+        LOGGER.debug("getRole() - (LEAVE)");
         return role;
     }
 
     @Override
     public PaginationResponse<ComprehensiveRole> findRoles(ServiceRequest<FindRolesQuery> request) {
-        LOGGER.info("findRoles(" + request + ") - (ENTER)");
+        LOGGER.debug("findRoles(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewRoles);
@@ -92,7 +92,7 @@ public class RoleServiceBean implements RoleService {
 
         PaginationResponse<ComprehensiveRole> ret = roleJdbcDao.findRoles(request.getBody());
 
-        LOGGER.info("findRoles() - (LEAVE)");
+        LOGGER.debug("findRoles() - (LEAVE)");
         return ret;
     }
 
@@ -100,7 +100,7 @@ public class RoleServiceBean implements RoleService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ComprehensiveRole createRole(ServiceRequest<ComprehensiveRole> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("createRole( " + request + " ) - (ENTER)");
+        LOGGER.debug("createRole( " + request + " ) - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageRoles, true);
 
@@ -120,7 +120,7 @@ public class RoleServiceBean implements RoleService {
                         request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("createRole() - (LEAVE)");
+        LOGGER.debug("createRole() - (LEAVE)");
         return ret;
     }
 
@@ -128,7 +128,7 @@ public class RoleServiceBean implements RoleService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void updateRole(ServiceRequest<ComprehensiveRole> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("updateRole( " + request + " ) - (ENTER)");
+        LOGGER.debug("updateRole( " + request + " ) - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageRoles, false);
 
@@ -149,14 +149,14 @@ public class RoleServiceBean implements RoleService {
                         request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("updateRole() - (LEAVE)");
+        LOGGER.debug("updateRole() - (LEAVE)");
     }
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void deleteRole(ServiceRequest<Long> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("deleteRole( " + request + " ) - (ENTER)");
+        LOGGER.debug("deleteRole( " + request + " ) - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageRoles, "roleId");
         roleJpaDao.delete(request.getBody());
@@ -166,13 +166,13 @@ public class RoleServiceBean implements RoleService {
                         request.getBody(), "" + request.getBody(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("deleteRole() - (LEAVE)");
+        LOGGER.debug("deleteRole() - (LEAVE)");
     }
 
     @Override
     public List<Feature> findFeaturesByApplication(ServiceRequest<String> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("findFeaturesByApplication( " + request + " ) - (ENTER)");
+        LOGGER.debug("findFeaturesByApplication( " + request + " ) - (ENTER)");
 
         List<FeatureEntity> lst = featureJpaDao.getFeaturesByApplication(request.getBody());
 
@@ -181,13 +181,13 @@ public class RoleServiceBean implements RoleService {
             ret.add(converter.convertWithoutRoles(entity));
         }
 
-        LOGGER.info("findFeaturesByApplication() - (LEAVE)");
+        LOGGER.debug("findFeaturesByApplication() - (LEAVE)");
         return ret;
     }
 
     @Override
     public List<String> getGroupNames(ServiceRequest<String> request) {
-        LOGGER.info("getGroupNames(" + request + ") - (ENTER)");
+        LOGGER.debug("getGroupNames(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewRoles);
@@ -197,13 +197,13 @@ public class RoleServiceBean implements RoleService {
 
         List<String> ret = featureJdbcDao.getGroupNames();
 
-        LOGGER.info("getGroupNames() - (LEAVE)");
+        LOGGER.debug("getGroupNames() - (LEAVE)");
         return ret;
     }
 
     @Override
     public List<Feature> findPermissions(ServiceRequest<FindPermissionsQuery> request) {
-        LOGGER.info("findPermissions(" + request + ") - (ENTER)");
+        LOGGER.debug("findPermissions(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewRoles);
@@ -218,14 +218,14 @@ public class RoleServiceBean implements RoleService {
             ret.add(converter.convertWithRoles(feature));
         }
 
-        LOGGER.info("findPermissions() - (LEAVE)");
+        LOGGER.debug("findPermissions() - (LEAVE)");
         return ret;
     }
 
     @Override
     public List<ComprehensiveRole> getRoles(ServiceRequest<RoleQuery> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("getRoles(" + request + ") - (ENTER)");
+        LOGGER.debug("getRoles(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewRoles);
@@ -234,7 +234,7 @@ public class RoleServiceBean implements RoleService {
         validator.assertValid(request, "query", featureSet);
         List<ComprehensiveRole> ret = roleJdbcDao.getRoles();
 
-        LOGGER.info("getRoles() - (LEAVE)");
+        LOGGER.debug("getRoles() - (LEAVE)");
         return ret;
     }
 

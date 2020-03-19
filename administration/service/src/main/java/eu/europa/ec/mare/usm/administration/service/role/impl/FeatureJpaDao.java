@@ -27,7 +27,7 @@ public class FeatureJpaDao {
      * @return the matching FeatureEntity if it exists, null otherwise
      */
     public FeatureEntity read(Long featureId) {
-        LOGGER.info("read(" + featureId + ") - (ENTER)");
+        LOGGER.debug("read(" + featureId + ") - (ENTER)");
         FeatureEntity ret = null;
 
         try {
@@ -40,12 +40,12 @@ public class FeatureJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE)");
+        LOGGER.debug("read() - (LEAVE)");
         return ret;
     }
 
     public List<FeatureEntity> getFeaturesByApplication(String applicationName) {
-        LOGGER.info("getFeaturesByApplication(" + applicationName + ") - (ENTER)");
+        LOGGER.debug("getFeaturesByApplication(" + applicationName + ") - (ENTER)");
 
         List<FeatureEntity> ret = null;
 
@@ -57,12 +57,12 @@ public class FeatureJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("getFeaturesByApplication() - (LEAVE)");
+        LOGGER.debug("getFeaturesByApplication() - (LEAVE)");
         return ret;
     }
 
     public List<FeatureEntity> getAllFeatures() {
-        LOGGER.info("getAllFeatures() - (ENTER)");
+        LOGGER.debug("getAllFeatures() - (ENTER)");
 
         List<FeatureEntity> ret = null;
         try {
@@ -72,12 +72,12 @@ public class FeatureJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("getAllFeatures() - (LEAVE)");
+        LOGGER.debug("getAllFeatures() - (LEAVE)");
         return ret;
     }
 
     public List<FeatureEntity> findFeatures(FindPermissionsQuery request) {
-        LOGGER.info("findFeatures(" + request + ") - (ENTER)");
+        LOGGER.debug("findFeatures(" + request + ") - (ENTER)");
 
         String application = request.getApplication();
         String group = request.getGroup();
@@ -103,7 +103,7 @@ public class FeatureJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("findFeatures() - (LEAVE)");
+        LOGGER.debug("findFeatures() - (LEAVE)");
         return ret;
     }
 

@@ -34,7 +34,7 @@ public class ScopeJdbcDao extends BaseJdbcDao {
      */
     @SuppressWarnings("unchecked")
     public PaginationResponse<Scope> findScopes(FindScopesQuery request) {
-        LOGGER.info("findScopes(" + request + ") - (ENTER)");
+        LOGGER.debug("findScopes(" + request + ") - (ENTER)");
 
         Paginator rPaginator = request.getPaginator();
 
@@ -51,12 +51,12 @@ public class ScopeJdbcDao extends BaseJdbcDao {
         ret.setResults(scopesList);
         ret.setTotal(totalRecords);
 
-        LOGGER.info("findScopes() - (LEAVE): " + ret);
+        LOGGER.debug("findScopes() - (LEAVE): " + ret);
         return ret;
     }
 
     public List<DataSet> findDataSets(FindDataSetQuery request) {
-        LOGGER.info("findDataSets(" + request + ") - (ENTER)");
+        LOGGER.debug("findDataSets(" + request + ") - (ENTER)");
 
         Query query = new Query("select DISTINCT d.DATASET_ID ,d.NAME,d.DESCRIPTION,d.DISCRIMINATOR,d.CATEGORY, a.NAME as APPLICATION_NAME"
                 + " from DATASET_T d "
@@ -72,7 +72,7 @@ public class ScopeJdbcDao extends BaseJdbcDao {
 
         List<DataSet> ret = queryForList(query, new DataSetMapper());
 
-        LOGGER.info("findDataSets() - (LEAVE): " + ret.size());
+        LOGGER.debug("findDataSets() - (LEAVE): " + ret.size());
         return ret;
     }
 
@@ -84,7 +84,7 @@ public class ScopeJdbcDao extends BaseJdbcDao {
      * @throws RuntimeException in case an internal error prevented fulfilling the request
      */
     public Scope getScope(GetScopeQuery request) {
-        LOGGER.info("getScope(" + request + ") - (ENTER)");
+        LOGGER.debug("getScope(" + request + ") - (ENTER)");
 
         Long scopeId = request.getScopeId();
 
@@ -108,7 +108,7 @@ public class ScopeJdbcDao extends BaseJdbcDao {
             ret.setDataSets(dataSets);
         }
 
-        LOGGER.info("getScope() - (LEAVE): " + ret);
+        LOGGER.debug("getScope() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -154,7 +154,7 @@ public class ScopeJdbcDao extends BaseJdbcDao {
      * @return <i>true</i> if the scope exists, <i>false</i> otherwise
      */
     public boolean scopeExists(String scopeName) {
-        LOGGER.info("scopeExists(" + scopeName + ") - (ENTER)");
+        LOGGER.debug("scopeExists(" + scopeName + ") - (ENTER)");
 
         Query query = new Query("select 1 from SCOPE_T s" +
                 " where  s.NAME=?");
@@ -162,19 +162,19 @@ public class ScopeJdbcDao extends BaseJdbcDao {
 
         boolean ret = queryForExistence(query);
 
-        LOGGER.info("scopeExists() - (LEAVE): " + ret);
+        LOGGER.debug("scopeExists() - (LEAVE): " + ret);
         return ret;
     }
 
     @SuppressWarnings("unchecked")
     public List<String> getCategoryNames() {
-        LOGGER.info("getCategoryNames() - (ENTER)");
+        LOGGER.debug("getCategoryNames() - (ENTER)");
 
         Query query = new Query(
                 "SELECT DISTINCT category FROM dataset_t WHERE category is not null ORDER BY category ASC");
         List<String> names = queryForList(query, new StringMapper());
 
-        LOGGER.info("getCategoryNames() - (LEAVE)");
+        LOGGER.debug("getCategoryNames() - (LEAVE)");
         return names;
     }
 
@@ -258,12 +258,12 @@ public class ScopeJdbcDao extends BaseJdbcDao {
      * @throws RuntimeException in case an internal error prevented fulfilling the request
      */
     public List<ComprehensiveScope> getScopes() {
-        LOGGER.info("getScopes() - (ENTER)");
+        LOGGER.debug("getScopes() - (ENTER)");
 
         Query query = new Query("select SCOPE_ID,NAME,STATUS from SCOPE_T order by NAME");
         List<ComprehensiveScope> scopeNames = queryForList(query, new ScopesMapper());
 
-        LOGGER.info("getScopes() - (LEAVE)");
+        LOGGER.debug("getScopes() - (LEAVE)");
         return scopeNames;
     }
 

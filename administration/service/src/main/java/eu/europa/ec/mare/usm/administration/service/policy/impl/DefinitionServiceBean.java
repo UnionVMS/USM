@@ -39,7 +39,7 @@ public class DefinitionServiceBean implements DefinitionService {
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public PolicyDefinition getDefinition(String subject) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("getDefinition(" + subject + ") - (ENTER)");
+        LOGGER.debug("getDefinition(" + subject + ") - (ENTER)");
 
         validator.assertNotEmpty("subject", subject);
 
@@ -61,14 +61,14 @@ public class DefinitionServiceBean implements DefinitionService {
             }
         }
 
-        LOGGER.info("getDefinition() - (LEAVE)");
+        LOGGER.debug("getDefinition() - (LEAVE)");
         return ret;
     }
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public String getPolicyProperty(String subject, String property) {
-        LOGGER.info("getPolicyProperty(" + subject + ", " + property + ") - (ENTER)");
+        LOGGER.debug("getPolicyProperty(" + subject + ", " + property + ") - (ENTER)");
 
         validator.assertNotEmpty("property", property);
 
@@ -81,14 +81,14 @@ public class DefinitionServiceBean implements DefinitionService {
             propertyValue = props.getProperty(property);
         }
 
-        LOGGER.info("getPolicyProperty() - (LEAVE): " + propertyValue);
+        LOGGER.debug("getPolicyProperty() - (LEAVE): " + propertyValue);
         return propertyValue;
     }
 
     @Override
     public void setDefinition(ServiceRequest<PolicyDefinition> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("setDefinition(" + request + ") - (ENTER)");
+        LOGGER.debug("setDefinition(" + request + ") - (ENTER)");
 
         validator.assertValid(request);
         String subject = request.getBody().getSubject();
@@ -116,7 +116,7 @@ public class DefinitionServiceBean implements DefinitionService {
             jpaDao.updatePolicy(updated);
         }
 
-        LOGGER.info("setDefinition() - (LEAVE)");
+        LOGGER.debug("setDefinition() - (LEAVE)");
     }
 
     private void cacheDefinition(String subject, PolicyDefinition ret) {

@@ -82,7 +82,7 @@ public class ManageUserServiceBean implements ManageUserService {
 
     @Override
     public UserAccount createUser(ServiceRequest<UserAccount> request) {
-        LOGGER.info("createUser(" + request + ") - (ENTER)");
+        LOGGER.debug("createUser(" + request + ") - (ENTER)");
 
         validator.assertValidUser(request, USMFeature.manageUsers);
 
@@ -103,7 +103,7 @@ public class ManageUserServiceBean implements ManageUserService {
                         request.getBody().getUserName(), request.getBody().getNotes(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("createUser() - (LEAVE)");
+        LOGGER.debug("createUser() - (LEAVE)");
         return convert(user);
     }
 
@@ -127,7 +127,7 @@ public class ManageUserServiceBean implements ManageUserService {
 
     @Override
     public UserAccount updateUser(ServiceRequest<UserAccount> request) {
-        LOGGER.info("updateUser(" + request + ") - (ENTER)");
+        LOGGER.debug("updateUser(" + request + ") - (ENTER)");
 
         validator.assertValidUser(request, USMFeature.manageUsers);
         UserEntity entity = userDao.read(request.getBody().getUserName());
@@ -147,13 +147,13 @@ public class ManageUserServiceBean implements ManageUserService {
                         request.getBody().getUserName(), request.getBody().getNotes(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("updateUser() - (LEAVE)");
+        LOGGER.debug("updateUser() - (LEAVE)");
         return userAccount;
     }
 
     @Override
     public void changePassword(ServiceRequest<ChangePassword> request) throws RuntimeException {
-        LOGGER.info("changePassword(" + request + ") - (ENTER)");
+        LOGGER.debug("changePassword(" + request + ") - (ENTER)");
 
         // Sanity check
         validator.assertValidChangePassword(request, null);
@@ -189,7 +189,7 @@ public class ManageUserServiceBean implements ManageUserService {
                 AuditObjectTypeEnum.PASSWORD.getValue() + " " + request.getBody().getUserName(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("changePassword() - (LEAVE)");
+        LOGGER.debug("changePassword() - (LEAVE)");
     }
 
     private void authenticateUser(String userName, String password) throws IllegalArgumentException {
@@ -368,7 +368,7 @@ public class ManageUserServiceBean implements ManageUserService {
 
     @Override
     public ChallengeInformationResponse getChallengeInformation(ServiceRequest<String> request) throws RuntimeException {
-        LOGGER.info("getChallengeInformation(" + request + ") - (ENTER)");
+        LOGGER.debug("getChallengeInformation(" + request + ") - (ENTER)");
 
         String userName = request.getBody();
         validator.assertValidChallengeUSer(request, null, userName);
@@ -406,7 +406,7 @@ public class ManageUserServiceBean implements ManageUserService {
             throw new UnauthorisedException(USER_UNAUTHENTICATED);
         }
 
-        LOGGER.info("getChallengeInformation() - (LEAVE)");
+        LOGGER.debug("getChallengeInformation() - (LEAVE)");
 
         return response;
     }
@@ -444,7 +444,7 @@ public class ManageUserServiceBean implements ManageUserService {
 
     @Override
     public ChallengeInformationResponse setChallengeInformation(ServiceRequest<ChallengeInformationResponse> request, String userName) throws RuntimeException {
-        LOGGER.info("setChallengeInformation(" + request + ") - (ENTER)");
+        LOGGER.debug("setChallengeInformation(" + request + ") - (ENTER)");
 
         validator.assertValidChallengeUSer(request, null, userName);
         validator.assertValidChallengeInformation(request, null);
@@ -499,13 +499,13 @@ public class ManageUserServiceBean implements ManageUserService {
             challengeInformation.setChallengeId(challengeEntity.getChallengeId());
         }
 
-        LOGGER.info("setChallengeInformation() - (LEAVE)");
+        LOGGER.debug("setChallengeInformation() - (LEAVE)");
         return challengeInformationResponse;
     }
 
     @Override
     public void resetPassword(ServiceRequest<ResetPasswordQuery> request) throws RuntimeException {
-        LOGGER.info("resetPassword(" + request + ") - (ENTER)");
+        LOGGER.debug("resetPassword(" + request + ") - (ENTER)");
 
         String userName = request.getBody().getUserName();
 
@@ -533,7 +533,7 @@ public class ManageUserServiceBean implements ManageUserService {
         String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.RESET.getValue(),
                 AuditObjectTypeEnum.PASSWORD.getValue() + " " + userName, userName, request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
-        LOGGER.info("resetPassword() - (LEAVE)");
+        LOGGER.debug("resetPassword() - (LEAVE)");
     }
 
     private boolean verifySecurityAnswers(List<ChallengeInformation> userChallenges, List<ChallengeEntity> challengesStroredInDB) {
@@ -566,7 +566,7 @@ public class ManageUserServiceBean implements ManageUserService {
     @Override
     public void resetPasswordAndNotify(ServiceRequest<NotificationQuery> request)
             throws IllegalArgumentException, UnauthorisedException {
-        LOGGER.info("resetPasswordAndNotify(" + request + ") - (ENTER)");
+        LOGGER.debug("resetPasswordAndNotify(" + request + ") - (ENTER)");
 
         String userName = request.getBody().getUserName();
 
@@ -607,14 +607,14 @@ public class ManageUserServiceBean implements ManageUserService {
         String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.RESET.getValue(),
                 AuditObjectTypeEnum.PASSWORD.getValue() + " " + userName, userName, request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
-        LOGGER.info("resetPasswordAndNotify() - (LEAVE)");
+        LOGGER.debug("resetPasswordAndNotify() - (LEAVE)");
     }
 
     @Override
     public String getPasswordPolicy(ServiceRequest<String> request) {
-        LOGGER.info("getPasswordPolicy(" + request + ") - (ENTER)");
+        LOGGER.debug("getPasswordPolicy(" + request + ") - (ENTER)");
         String policy = policyEnforcer.getPasswordPolicy();
-        LOGGER.info("getPasswordPolicy() - (LEAVE)");
+        LOGGER.debug("getPasswordPolicy() - (LEAVE)");
         return policy;
     }
 }

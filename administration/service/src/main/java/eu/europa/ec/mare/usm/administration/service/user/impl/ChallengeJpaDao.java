@@ -29,7 +29,7 @@ public class ChallengeJpaDao {
      * @return challengeEntity the new challenge entity
      */
     public ChallengeEntity create(ChallengeEntity challengeEntity) {
-        LOGGER.info("create(" + challengeEntity + ") - (ENTER)");
+        LOGGER.debug("create(" + challengeEntity + ") - (ENTER)");
 
         try {
             em.persist(challengeEntity);
@@ -39,7 +39,7 @@ public class ChallengeJpaDao {
             throw new RuntimeException(msg, ex);
         }
 
-        LOGGER.info("create() - (LEAVE)");
+        LOGGER.debug("create() - (LEAVE)");
         return challengeEntity;
     }
 
@@ -50,7 +50,7 @@ public class ChallengeJpaDao {
      * @return the updated challenge entity
      */
     public ChallengeEntity update(ChallengeEntity challengeEntity) {
-        LOGGER.info("update(" + challengeEntity + ") - (ENTER)");
+        LOGGER.debug("update(" + challengeEntity + ") - (ENTER)");
 
         ChallengeEntity ret = null;
         try {
@@ -61,7 +61,7 @@ public class ChallengeJpaDao {
             throw new RuntimeException(msg, ex);
         }
 
-        LOGGER.info("update() - (LEAVE)");
+        LOGGER.debug("update() - (LEAVE)");
         return ret;
     }
 
@@ -72,7 +72,7 @@ public class ChallengeJpaDao {
      * @return null if nothing was found otherwise a list of challenge entities
      */
     public List<ChallengeEntity> getChallenges(String userName) {
-        LOGGER.info("getChallenges(" + userName + ") - (ENTER)");
+        LOGGER.debug("getChallenges(" + userName + ") - (ENTER)");
 
         List<ChallengeEntity> ret = null;
 
@@ -85,7 +85,7 @@ public class ChallengeJpaDao {
             LOGGER.debug("No challenge entity was found with userName " + userName);
         }
 
-        LOGGER.info("getChallenges() - (LEAVE)");
+        LOGGER.debug("getChallenges() - (LEAVE)");
         return ret;
     }
 
