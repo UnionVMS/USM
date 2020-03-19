@@ -1,15 +1,13 @@
 package eu.europa.ec.mare.usm.administration.rest.service.authentication;
 
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.GenericType;
 import eu.europa.ec.mare.usm.administration.domain.AuthenticationJwtResponse;
-import eu.europa.ec.mare.usm.administration.domain.FindPoliciesQuery;
 import eu.europa.ec.mare.usm.administration.domain.Policy;
-import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
+import eu.europa.ec.mare.usm.administration.rest.common.StatusResponse;
 import eu.europa.ec.mare.usm.administration.rest.service.AdministrationRestClient;
 import eu.europa.ec.mare.usm.administration.rest.service.BuildAdministrationDeployment;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
 import eu.europa.ec.mare.usm.authentication.domain.ChallengeResponse;
+import eu.europa.ec.mare.usm.information.domain.UserContext;
 import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
@@ -19,6 +17,7 @@ import javax.ejb.EJB;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+import static javax.ws.rs.core.Response.Status.OK;
 import static org.junit.Assert.*;
 
 @RunWith(Arquillian.class)
@@ -38,9 +37,9 @@ public class AuthenticationResourceIT extends BuildAdministrationDeployment {
     public void testAuthenticateUserREST() {
         AuthenticationJwtResponse result = restClient.authenticateUser(USER_VMS_ADMIN, PASSWORD);
 
-        assertNotNull("Unexpected null result", result);
+        assertNotNull(result);
         assertTrue(result.isAuthenticated());
-        assertEquals("Unexpected 'statusCode' value", AuthenticationResponse.SUCCESS, result.getStatusCode());
+        assertEquals(AuthenticationResponse.SUCCESS, result.getStatusCode());
     }
 
     @Test
@@ -49,8 +48,8 @@ public class AuthenticationResourceIT extends BuildAdministrationDeployment {
         AuthenticationJwtResponse response = restClient.authenticateUser(USER_VMS, PASSWORD);
         ChallengeResponse result = restClient.getUserChallenge(response.getJwtoken());
 
-        assertNotNull("Unexpected null result", result);
-        assertEquals("Unexpected 'challenge' value", CHALLENGE, result.getChallenge());
+        assertNotNull(result);
+        assertEquals(CHALLENGE, result.getChallenge());
     }
 
     @Test
@@ -62,29 +61,29 @@ public class AuthenticationResourceIT extends BuildAdministrationDeployment {
         request.setResponse(RESPONSE);
         AuthenticationResponse result = restClient.authenticateByChallenge(request);
 
-        assertNotNull("Unexpected null result", result);
+        assertNotNull(result);
         assertTrue(result.isAuthenticated());
-        assertEquals("Unexpected 'statusCode' value", AuthenticationResponse.SUCCESS, result.getStatusCode());
+        assertEquals(AuthenticationResponse.SUCCESS, result.getStatusCode());
     }
 
     @Test
     @OperateOnDeployment("normal")
     public void testAuthenticateUserSuccess() {
-        AuthenticationResponse response = restClient.authenticateUser("quota_man_com", "password");
+        AuthenticationResponse response = restClient.authenticateUser("quota_man_com", PASSWORD);
 
-        assertNotNull("Unexpected null response", response);
+        assertNotNull(response);
         assertTrue(response.isAuthenticated());
-        assertEquals("Unexpected response StatusCode", AuthenticationResponse.SUCCESS, response.getStatusCode());
+        assertEquals(AuthenticationResponse.SUCCESS, response.getStatusCode());
     }
 
     @Test
     @OperateOnDeployment("normal")
     public void testAuthenticateUserFailureAccountLocked() {
-        AuthenticationResponse response = restClient.authenticateUser("lockout", "password");
+        AuthenticationResponse response = restClient.authenticateUser("lockout", PASSWORD);
 
-        assertNotNull("Unexpected null response", response);
-        assertFalse("Unexpected Authenticated response", response.isAuthenticated());
-        assertEquals("Unexpected response StatusCode", AuthenticationResponse.ACCOUNT_LOCKED, response.getStatusCode());
+        assertNotNull(response);
+        assertFalse(response.isAuthenticated());
+        assertEquals(AuthenticationResponse.ACCOUNT_LOCKED, response.getStatusCode());
     }
 
     @Test
@@ -92,31 +91,61 @@ public class AuthenticationResourceIT extends BuildAdministrationDeployment {
     public void testAuthenticateUserFailureInvalidCredentials() {
         AuthenticationResponse response = restClient.authenticateUser("quota_usr_com", "wrong password");
 
-        assertNotNull("Unexpected null response", response);
-        assertFalse("Unexpected Authenticated response", response.isAuthenticated());
-        assertEquals("Unexpected response StatusCode", AuthenticationResponse.INVALID_CREDENTIALS, response.getStatusCode());
-
+        assertNotNull(response);
+        assertFalse(response.isAuthenticated());
+        assertEquals(AuthenticationResponse.INVALID_CREDENTIALS, response.getStatusCode());
     }
 
-    /** Helper Methods */
+    @Test
+    @OperateOnDeployment("normal")
+    public void testGetContexts() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USER_VMS, PASSWORD);
+
+        Response response = restClient.getContexts(auth.getJwtoken());
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        UserContext userContext = response.readEntity(UserContext.class);
+        assertNotNull(userContext);
+        assertFalse(userContext.getContextSet().getContexts().isEmpty());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testGetPing() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(USER_VMS, PASSWORD);
+
+        Response response = restClient.getPing(auth.getJwtoken());
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        StatusResponse statusResponse = response.readEntity(StatusResponse.class);
+        assertNotNull(statusResponse);
+        assertEquals(OK.toString(), statusResponse.getMessage());
+    }
+
+    /**
+     * Helper Methods
+     */
     public int getMaxSessionAnySite() {
         AuthenticationJwtResponse auth = restClient.authenticateUser(USER_VMS_ADMIN, PASSWORD);
         Response findResp = restClient.findPolicies(auth.getJwtoken(), "account.maxSessionAnySite", "Account");
-        List<Policy> policiesFound = findResp.readEntity(new javax.ws.rs.core.GenericType<>(){});
+        List<Policy> policiesFound = findResp.readEntity(new javax.ws.rs.core.GenericType<>() {
+        });
         return Integer.parseInt(policiesFound.get(0).getValue());
     }
 
     public int getMaxSessionOneSite() {
         AuthenticationJwtResponse auth = restClient.authenticateUser(USER_VMS_ADMIN, PASSWORD);
         Response findResp = restClient.findPolicies(auth.getJwtoken(), "account.maxSessionOneSite", "Account");
-        List<Policy> policiesFound = findResp.readEntity(new javax.ws.rs.core.GenericType<>(){});
+        List<Policy> policiesFound = findResp.readEntity(new javax.ws.rs.core.GenericType<>() {
+        });
         return Integer.parseInt(policiesFound.get(0).getValue());
     }
 
     public void setMaxSessionAnySite(int newValue) {
         AuthenticationJwtResponse auth = restClient.authenticateUser(USER_VMS_ADMIN, PASSWORD);
         Response findResp = restClient.findPolicies(auth.getJwtoken(), "account.maxSessionAnySite", "Account");
-        List<Policy> policiesFound = findResp.readEntity(new javax.ws.rs.core.GenericType<>(){});
+        List<Policy> policiesFound = findResp.readEntity(new javax.ws.rs.core.GenericType<>() {
+        });
 
         Policy uPolicy = policiesFound.get(0);
         uPolicy.setValue("" + newValue);
@@ -126,7 +155,8 @@ public class AuthenticationResourceIT extends BuildAdministrationDeployment {
     public void setMaxSessionOneSite(int newValue) {
         AuthenticationJwtResponse auth = restClient.authenticateUser(USER_VMS_ADMIN, PASSWORD);
         Response findResp = restClient.findPolicies(auth.getJwtoken(), "account.maxSessionOneSite", "Account");
-        List<Policy> policiesFound = findResp.readEntity(new javax.ws.rs.core.GenericType<>(){});
+        List<Policy> policiesFound = findResp.readEntity(new javax.ws.rs.core.GenericType<>() {
+        });
 
         Policy uPolicy = policiesFound.get(0);
         uPolicy.setValue("" + newValue);

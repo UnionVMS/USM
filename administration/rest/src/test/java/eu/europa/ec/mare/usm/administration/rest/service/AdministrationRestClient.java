@@ -722,4 +722,37 @@ public class AdministrationRestClient {
                 .header(HttpHeaders.AUTHORIZATION, jwtToken)
                 .delete();
     }
+
+    public Response getContexts(String jwtToken) {
+        return getWebTargetInternal()
+                .path("userContexts")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response getPing(String jwtToken) {
+        return getWebTargetInternal()
+                .path("ping")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response endSession(String jwtToken, String sessionId) {
+        return getWebTargetInternal()
+                .path("sessions")
+                .path(sessionId)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .delete();
+    }
+
+    public Response getSession(String jwtToken) {
+        return getWebTargetInternal()
+                .path("sessions")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
 }

@@ -262,30 +262,4 @@ public class AuthenticationResource {
         return response;
     }
 
-    /**
-     * Informs the tracker that a user session is terminating.
-     *
-     * @param sessionId the unique identifier of the terminating user session
-     * @return an empty response with OK status, or a BAD_REQUEST status if the
-     * provided service request is invalid; or an INTERNAL_SERVER_ERROR
-     * status in case an internal error prevented processing the
-     * request.
-     */
-    @DELETE
-    @Path("sessions/{sessionId}")
-    public Response endSession(@PathParam("sessionId") String sessionId) {
-        LOGGER.info("endSession() - (ENTER)");
-
-        Response response;
-        try {
-            sessionTracker.endSession(sessionId);
-            response = Response.ok().build();
-        } catch (Exception exc) {
-            response = ExceptionHandler.handleException(exc);
-        }
-
-        LOGGER.info("endSession() - (LEAVE)");
-        return response;
-    }
-
 }
