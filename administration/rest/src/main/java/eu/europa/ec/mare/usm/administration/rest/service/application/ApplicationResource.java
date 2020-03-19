@@ -126,11 +126,9 @@ public class ApplicationResource {
             eu.europa.ec.mare.usm.information.domain.deployment.Application dd = deploymentService.getDeploymentDescriptor(applicationName);
 
             if (dd != null) {
-                ret = Response.status(Response.Status.OK).
-                        entity(dd).
-                        build();
+                ret = Response.ok(dd).build();
             } else {
-                ret = Response.status(Response.Status.NO_CONTENT).build();
+                ret = Response.noContent().build();
             }
 
         } catch (Exception exc) {
@@ -243,10 +241,10 @@ public class ApplicationResource {
 
     @GET
     @Path("features")
-    public Response getAllfeatures(@HeaderParam("authorization") String jwtToken,
+    public Response getAllFeatures(@HeaderParam("authorization") String jwtToken,
                                    @HeaderParam("roleName") String roleName,
                                    @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("getAllfeatures() - (ENTER)");
+        LOGGER.info("getAllFeatures() - (ENTER)");
 
         Response ret;
         ServiceRequest<String> request = new ServiceRequest<>();
@@ -270,7 +268,7 @@ public class ApplicationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getAllfeatures() - (LEAVE)");
+        LOGGER.info("getAllFeatures() - (LEAVE)");
         return ret;
     }
 

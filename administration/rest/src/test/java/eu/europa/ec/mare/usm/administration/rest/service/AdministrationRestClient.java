@@ -152,14 +152,32 @@ public class AdministrationRestClient {
                 .get();
     }
 
-    public Response findApplications(String jwtToken, String... applicationName) {
+    public Response findApplications(String jwtToken, String applicationName) {
         return getWebTargetInternal()
                 .path("applications")
-                .queryParam("name", applicationName == null ? "" : applicationName[0])
+                .queryParam("name", applicationName)
                 .queryParam("limit", "8")
                 .queryParam("offset", "0")
                 .queryParam("sortColumn", "name")
                 .queryParam("sortDirection", "desc")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response getApplicationDetails(String jwtToken, String applicationName) {
+        return getWebTargetInternal()
+                .path("applications")
+                .path(applicationName)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response getParentApplicationNames(String jwtToken) {
+        return getWebTargetInternal()
+                .path("applications")
+                .path("parent/names")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, jwtToken)
                 .get();
@@ -178,6 +196,15 @@ public class AdministrationRestClient {
         return getWebTargetInternal()
                 .path("applications")
                 .path(applicationName)
+                .path("features")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response getAllFeatures(String jwtToken) {
+        return getWebTargetInternal()
+                .path("applications")
                 .path("features")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, jwtToken)

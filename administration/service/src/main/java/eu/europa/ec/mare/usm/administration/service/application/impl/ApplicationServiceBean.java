@@ -54,36 +54,37 @@ public class ApplicationServiceBean implements ApplicationService {
 			throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("getFeatureApplicationNames(" + request + ") - (ENTER)");
 
-		List<Feature> ret = getFeatures(request);
+        List<FeatureEntity> response = featureJpaDao.getFeaturesByApplication(request.getBody());
+        List<Feature> ret = validateRequestAndAddFeaturesToResponse(request, response);
 
-		LOGGER.info("getFeatureApplicationNames() - (LEAVE)");
+        LOGGER.info("getFeatureApplicationNames() - (LEAVE)");
         return ret;
     }
 
-	@Override
+    @Override
     public List<Feature> getAllFeatures(ServiceRequest<String> request)
 			throws IllegalArgumentException, UnauthorisedException, RuntimeException {
         LOGGER.info("getAllFeatures(" + request + ") - (ENTER)");
 
-		List<Feature> ret = getFeatures(request);
+        List<FeatureEntity> response = featureJpaDao.getAllFeatures();
+        List<Feature> ret = validateRequestAndAddFeaturesToResponse(request, response);
 
         LOGGER.info("getAllFeatures() - (LEAVE)");
         return ret;
     }
 
-	private List<Feature> getFeatures(ServiceRequest<String> request) {
-		HashSet<USMFeature> featureSet = new HashSet<>();
-		featureSet.add(USMFeature.viewApplications);
-		featureSet.add(USMFeature.manageApplications);
+    private List<Feature> validateRequestAndAddFeaturesToResponse(ServiceRequest<String> request, List<FeatureEntity> response) {
+        HashSet<USMFeature> featureSet = new HashSet<>();
+        featureSet.add(USMFeature.viewApplications);
+        featureSet.add(USMFeature.manageApplications);
 
-		validator.assertValid(request, "query", featureSet);
-		List<FeatureEntity> response = featureJpaDao.getFeaturesByApplication(request.getBody());
-		List<Feature> ret = new ArrayList<>();
-		for (FeatureEntity feature : response) {
-			ret.add(convertEntityToFeatureDomain(feature));
-		}
-		return ret;
-	}
+        validator.assertValid(request, "query", featureSet);
+        List<Feature> ret = new ArrayList<>();
+        for (FeatureEntity feature : response) {
+            ret.add(convertEntityToFeatureDomain(feature));
+        }
+        return ret;
+    }
 
     private Feature convertEntityToFeatureDomain(FeatureEntity entity) {
         Feature feature = new Feature();

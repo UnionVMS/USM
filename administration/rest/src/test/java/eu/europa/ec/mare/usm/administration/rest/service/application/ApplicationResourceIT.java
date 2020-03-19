@@ -17,6 +17,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+import static javax.ws.rs.core.Response.Status.OK;
 import static org.junit.Assert.*;
 
 @RunWith(Arquillian.class)
@@ -35,26 +36,65 @@ public class ApplicationResourceIT extends BuildAdministrationDeployment {
     @OperateOnDeployment("normal")
     public void testFindApplications() {
         AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
-        Response response = restClient.findApplications(auth.getJwtoken(), APPLICATION_USM);
-        PaginationResponse<Application> paginationResponse = response.readEntity(new GenericType<>() {});
+        Response response = restClient.findApplications(auth.getJwtoken(), null);
+        assertEquals(OK.getStatusCode(), response.getStatus());
 
-        assertNotNull("Unexpected null result", response);
+        PaginationResponse<Application> paginationResponse = response.readEntity(new GenericType<>() {});
         List<Application> applications = paginationResponse.getResults();
-        assertNotNull("Expected Scope " + APPLICATION_USM + " not found", getApplication(applications, APPLICATION_USM));
+        assertFalse(applications.isEmpty());
     }
 
     @Test
     @OperateOnDeployment("normal")
-    public void testApplicationNames() {
+    public void testFindApplicationsWithNameParam() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        Response response = restClient.findApplications(auth.getJwtoken(), APPLICATION_USM);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        PaginationResponse<Application> paginationResponse = response.readEntity(new GenericType<>() {});
+        List<Application> applications = paginationResponse.getResults();
+        assertEquals(1, applications.size());
+        assertEquals(APPLICATION_USM, applications.get(0).getName());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testGetApplicationDetails() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        Response response = restClient.getApplicationDetails(auth.getJwtoken(), APPLICATION_USM);
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        eu.europa.ec.mare.usm.information.domain.deployment.Application application =
+                response.readEntity(eu.europa.ec.mare.usm.information.domain.deployment.Application.class);
+
+        assertNotNull(application);
+        assertEquals(APPLICATION_USM, application.getName());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testGetParentApplicationNames() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        Response response = restClient.getParentApplicationNames(auth.getJwtoken());
+        assertEquals(OK.getStatusCode(), response.getStatus());
+
+        ServiceArrayResponse<String> sar = response.readEntity(new GenericType<>() {});
+        List<String> appNames = sar.getResults();
+        assertFalse(appNames.isEmpty());
+    }
+
+    @Test
+    @OperateOnDeployment("normal")
+    public void testGetApplicationNames() {
         AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
         Response response = restClient.getApplicationNames(auth.getJwtoken());
-        ServiceArrayResponse<String> sar = response.readEntity(new GenericType<>() {});
+        assertEquals(OK.getStatusCode(), response.getStatus());
 
-        assertNotNull("Unexpected null result", response);
+        ServiceArrayResponse<String> sar = response.readEntity(new GenericType<>() {});
         List<String> appNames = sar.getResults();
-        assertEquals("Unexpected 'orgName' value", APPLICATION_USM, getAppName(appNames, APPLICATION_USM));
-        assertEquals("Unexpected 'orgName' value", APPLICATION_QUOTA, getAppName(appNames, APPLICATION_QUOTA));
-        assertEquals("Unexpected 'orgName' value", APPLICATION_UVMS, getAppName(appNames, APPLICATION_UVMS));
+        assertEquals(APPLICATION_USM, getAppName(appNames, APPLICATION_USM));
+        assertEquals(APPLICATION_QUOTA, getAppName(appNames, APPLICATION_QUOTA));
+        assertEquals(APPLICATION_UVMS, getAppName(appNames, APPLICATION_UVMS));
     }
 
     @Test
@@ -62,28 +102,33 @@ public class ApplicationResourceIT extends BuildAdministrationDeployment {
     public void testGetApplicationFeatures() {
         AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
         Response response = restClient.getApplicationFeatures(auth.getJwtoken(), APPLICATION_USM);
-        ServiceArrayResponse<Feature> sar = response.readEntity(new GenericType<>() {});
+        assertEquals(OK.getStatusCode(), response.getStatus());
 
-        assertNotNull("Unexpected null result", response);
+        ServiceArrayResponse<Feature> sar = response.readEntity(new GenericType<>() {});
         List<Feature> featureNames = sar.getResults();
 
-        assertFalse("List of application features is empty", featureNames.isEmpty());
+        assertFalse(featureNames.isEmpty());
     }
 
-    /* HELPER METHODS */
+    @Test
+    @OperateOnDeployment("normal")
+    public void testGetAllFeatures() {
+        AuthenticationJwtResponse auth = restClient.authenticateUser(VMS_ADMIN_COM_USER, PASSWORD);
+        Response response = restClient.getAllFeatures(auth.getJwtoken());
+        assertEquals(OK.getStatusCode(), response.getStatus());
 
+        ServiceArrayResponse<Feature> sar = response.readEntity(new GenericType<>() {});
+        List<Feature> featureNames = sar.getResults();
+
+        assertFalse(featureNames.isEmpty());
+    }
+
+
+    /* HELPER METHODS */
     private String getAppName(List<String> aNames, String expected) {
         return aNames.stream()
                 .filter(n -> n.equals(expected))
                 .findAny()
-                .orElse(null);
-    }
-
-    private String getApplication(List<Application> applications, String expected) {
-        return applications.stream()
-                .filter(app -> app.getName().equals(expected))
-                .findAny()
-                .map(Application::getName)
                 .orElse(null);
     }
 }
