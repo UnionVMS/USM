@@ -40,7 +40,7 @@ public class InformationJpaDao {
     }
 
     public PreferenceEntity readUserPreference(UserPreference userPreference) {
-        LOGGER.info("readUserPreference(" + userPreference + ") - (ENTER)");
+        LOGGER.debug("readUserPreference(" + userPreference + ") - (ENTER)");
         PreferenceEntity entity = null;
         try {
             LOGGER.debug(">>>>>>>>>>>>>>>>>>>>>>>readUserPreference begin select ");
@@ -78,12 +78,12 @@ public class InformationJpaDao {
         } catch (Exception ex) {
             handleException("readUserPreference", ex);
         }
-        LOGGER.info("readUserPreference() - (LEAVE): " + entity);
+        LOGGER.debug("readUserPreference() - (LEAVE): " + entity);
         return entity;
     }
 
     public void updateUserPreference(UserPreference userPreference) {
-        LOGGER.info("updateUserPreference(" + userPreference + ") - (ENTER)");
+        LOGGER.debug("updateUserPreference(" + userPreference + ") - (ENTER)");
         try {
             PreferenceEntity entity = readUserPreference(userPreference);
             LOGGER.info("---> entity : " + entity);
@@ -96,11 +96,11 @@ public class InformationJpaDao {
         } catch (Exception ex) {
             handleException("updateUserPreference", ex);
         }
-        LOGGER.info("updateUserPreference() - (LEAVE): ");
+        LOGGER.debug("updateUserPreference() - (LEAVE): ");
     }
 
     public void createUserPreference(UserPreference userPreference) {
-        LOGGER.info("createUserPreference(" + userPreference + ") - (ENTER)");
+        LOGGER.debug("createUserPreference(" + userPreference + ") - (ENTER)");
         try {
             PreferenceEntity entity = readUserPreference(userPreference);
             LOGGER.info("---> entity : " + entity);
@@ -133,7 +133,7 @@ public class InformationJpaDao {
         } catch (Exception ex) {
             handleException("createUserPreference", ex);
         }
-        LOGGER.info("createUserPreference() - (LEAVE): ");
+        LOGGER.debug("createUserPreference() - (LEAVE): ");
     }
 
     private UserContextEntity getUserContextByScopeAndRole(String userName, String scopeName, String roleName) {
@@ -172,7 +172,7 @@ public class InformationJpaDao {
     }
 
     public void deleteUserPreference(UserPreference userPreference) {
-        LOGGER.info("deleteUserPreference(" + userPreference + ") - (ENTER)");
+        LOGGER.debug("deleteUserPreference(" + userPreference + ") - (ENTER)");
 
         try {
             PreferenceEntity entity = readUserPreference(userPreference);
@@ -185,7 +185,7 @@ public class InformationJpaDao {
         } catch (Exception ex) {
             handleException("deleteUserPreference", ex);
         }
-        LOGGER.info("deleteUserPreference() - (LEAVE)");
+        LOGGER.debug("deleteUserPreference() - (LEAVE)");
     }
 
 }

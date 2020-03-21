@@ -69,7 +69,7 @@ public class AuthenticationResource {
     @POST
     @Path("authenticate")
     public AuthenticationJwtResponse authenticate(AuthenticationRequest request) throws WebApplicationException {
-        LOGGER.info("authenticate() - (ENTER)");
+        LOGGER.debug("authenticate() - (ENTER)");
 
         AuthenticationJwtResponse ret = new AuthenticationJwtResponse();
         try {
@@ -103,7 +103,7 @@ public class AuthenticationResource {
                     Response.Status.INTERNAL_SERVER_ERROR);
         }
 
-        LOGGER.info("authenticate() - (LEAVE)");
+        LOGGER.debug("authenticate() - (LEAVE)");
         return ret;
     }
 
@@ -123,7 +123,7 @@ public class AuthenticationResource {
     @GET
     @Path("challenge")
     public ChallengeResponse getUserChallenge(@HeaderParam("authorization") String token) throws WebApplicationException {
-        LOGGER.info("getUserChallenge() - (ENTER)");
+        LOGGER.debug("getUserChallenge() - (ENTER)");
 
         ChallengeResponse challengeResponse;
 
@@ -144,7 +144,7 @@ public class AuthenticationResource {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
 
-        LOGGER.info("getUserChallenge() - (LEAVE)");
+        LOGGER.debug("getUserChallenge() - (LEAVE)");
         return challengeResponse;
     }
 
@@ -164,7 +164,7 @@ public class AuthenticationResource {
     @POST
     @Path("challengeauth")
     public AuthenticationResponse authenticate(ChallengeResponse request) throws WebApplicationException {
-        LOGGER.info("authenticate() - (ENTER)");
+        LOGGER.debug("authenticate() - (ENTER)");
 
         AuthenticationResponse ret;
         try {
@@ -181,7 +181,7 @@ public class AuthenticationResource {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
 
-        LOGGER.info("authenticate() - (LEAVE)");
+        LOGGER.debug("authenticate() - (LEAVE)");
         return ret;
     }
 
@@ -198,7 +198,7 @@ public class AuthenticationResource {
     @GET
     @Path("userContexts")
     public Response getContexts(@HeaderParam("authorization") String token) {
-        LOGGER.info("getContexts() - (ENTER)");
+        LOGGER.debug("getContexts() - (ENTER)");
 
         Response response;
         Status status;
@@ -224,7 +224,7 @@ public class AuthenticationResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getContexts() - (LEAVE)");
+        LOGGER.debug("getContexts() - (LEAVE)");
         return response;
     }
 
@@ -240,7 +240,7 @@ public class AuthenticationResource {
     @GET
     @Path("ping")
     public Response getPing(@HeaderParam("authorization") String token) {
-        LOGGER.info("getPing() - (ENTER)");
+        LOGGER.debug("getPing() - (ENTER)");
 
         Response response;
 
@@ -258,33 +258,7 @@ public class AuthenticationResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getPing() - (LEAVE)");
-        return response;
-    }
-
-    /**
-     * Informs the tracker that a user session is terminating.
-     *
-     * @param sessionId the unique identifier of the terminating user session
-     * @return an empty response with OK status, or a BAD_REQUEST status if the
-     * provided service request is invalid; or an INTERNAL_SERVER_ERROR
-     * status in case an internal error prevented processing the
-     * request.
-     */
-    @DELETE
-    @Path("sessions/{sessionId}")
-    public Response endSession(@PathParam("sessionId") String sessionId) {
-        LOGGER.info("endSession() - (ENTER)");
-
-        Response response;
-        try {
-            sessionTracker.endSession(sessionId);
-            response = Response.ok().build();
-        } catch (Exception exc) {
-            response = ExceptionHandler.handleException(exc);
-        }
-
-        LOGGER.info("endSession() - (LEAVE)");
+        LOGGER.debug("getPing() - (LEAVE)");
         return response;
     }
 

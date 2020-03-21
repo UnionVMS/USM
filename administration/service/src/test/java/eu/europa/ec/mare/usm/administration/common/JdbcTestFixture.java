@@ -45,7 +45,7 @@ public class JdbcTestFixture extends BaseJdbcDao {
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void update(String sql, Object[] parameters) {
-        LOGGER.info("update(" + sql + ", " + parameters + ") - (ENTER)");
+        LOGGER.debug("update(" + sql + ", " + parameters + ") - (ENTER)");
 
         Connection co = null;
         PreparedStatement upd = null;
@@ -68,7 +68,7 @@ public class JdbcTestFixture extends BaseJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("update() - (LEAVE)");
+        LOGGER.debug("update() - (LEAVE)");
     }
 
     protected void handleException(Exception ex)

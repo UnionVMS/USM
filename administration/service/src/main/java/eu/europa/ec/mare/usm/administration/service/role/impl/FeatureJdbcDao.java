@@ -27,13 +27,13 @@ public class FeatureJdbcDao extends BaseJdbcDao {
      */
     @SuppressWarnings("unchecked")
     public List<String> getGroupNames() {
-        LOGGER.info("getGroupNames() - (ENTER)");
+        LOGGER.debug("getGroupNames() - (ENTER)");
 
         Query query = new Query(
                 "SELECT DISTINCT group_name FROM feature_t WHERE group_name is not null ORDER BY group_name ASC");
         List<String> names = queryForList(query, new StringMapper());
 
-        LOGGER.info("getGroupNames() - (LEAVE)");
+        LOGGER.debug("getGroupNames() - (LEAVE)");
         return names;
     }
 

@@ -33,7 +33,7 @@ public class ApplicationJpaDao {
      * @return the matching Application if it exists, null otherwise
      */
     ApplicationEntity read(Long applicationId) {
-        LOGGER.info("read(" + applicationId + ") - (ENTER)");
+        LOGGER.debug("read(" + applicationId + ") - (ENTER)");
 
         ApplicationEntity ret = null;
 
@@ -48,7 +48,7 @@ public class ApplicationJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE): " + ret);
+        LOGGER.debug("read() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -59,7 +59,7 @@ public class ApplicationJpaDao {
      * @return the matching Application if it exists, null otherwise
      */
     ApplicationEntity read(String applicationName) {
-        LOGGER.info("read(" + applicationName + ") - (ENTER)");
+        LOGGER.debug("read(" + applicationName + ") - (ENTER)");
 
         ApplicationEntity ret = null;
 
@@ -74,7 +74,7 @@ public class ApplicationJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE): " + ret);
+        LOGGER.debug("read() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -86,7 +86,7 @@ public class ApplicationJpaDao {
      * @return the matching Application if it exists, null otherwise
      */
     ApplicationEntity readApplication(String applicationName) {
-        LOGGER.info("readApplication(" + applicationName + ") - (ENTER)");
+        LOGGER.debug("readApplication(" + applicationName + ") - (ENTER)");
 
         ApplicationEntity ret = read(applicationName);
 
@@ -107,7 +107,7 @@ public class ApplicationJpaDao {
             }
         }
 
-        LOGGER.info("readApplication() - (LEAVE): " + ret);
+        LOGGER.debug("readApplication() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -118,7 +118,7 @@ public class ApplicationJpaDao {
      * @return the unique applicationId (PK) assigned to the application
      */
     Long create(ApplicationEntity src) {
-        LOGGER.info("create(" + src + ") - (ENTER)");
+        LOGGER.debug("create(" + src + ") - (ENTER)");
 
         if (src.getFeatureList() != null) {
             for (FeatureEntity fe : src.getFeatureList()) {
@@ -140,7 +140,7 @@ public class ApplicationJpaDao {
 
         Long ret = src.getApplicationId();
 
-        LOGGER.info("create() - (LEAVE): " + ret);
+        LOGGER.debug("create() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -150,7 +150,7 @@ public class ApplicationJpaDao {
      * @param src the Application to be updated
      */
     void update(ApplicationEntity src) {
-        LOGGER.info("update(" + src + ") - (ENTER)");
+        LOGGER.debug("update(" + src + ") - (ENTER)");
 
         if (src.getFeatureList() != null) {
             for (FeatureEntity fe : src.getFeatureList()) {
@@ -170,7 +170,7 @@ public class ApplicationJpaDao {
         em.merge(src);
         em.flush();
 
-        LOGGER.info("update() - (LEAVE)");
+        LOGGER.debug("update() - (LEAVE)");
     }
 
     /**
@@ -179,7 +179,7 @@ public class ApplicationJpaDao {
      * @param applicationName the Application name
      */
     void delete(String applicationName) {
-        LOGGER.info("delete(" + applicationName + ") - (ENTER)");
+        LOGGER.debug("delete(" + applicationName + ") - (ENTER)");
 
         ApplicationEntity entity = readApplication(applicationName);
         if (entity != null) {
@@ -191,7 +191,7 @@ public class ApplicationJpaDao {
             }
         }
 
-        LOGGER.info("delete() - (LEAVE)");
+        LOGGER.debug("delete() - (LEAVE)");
     }
 
     /**
@@ -201,7 +201,7 @@ public class ApplicationJpaDao {
      * @param src the application details to be deleted
      */
     void deleteDetails(ApplicationEntity src) {
-        LOGGER.info("deleteDetails(" + src + ") - (ENTER)");
+        LOGGER.debug("deleteDetails(" + src + ") - (ENTER)");
         int ret = 0;
 
         if (src != null) {
@@ -258,7 +258,7 @@ public class ApplicationJpaDao {
             }
         }
 
-        LOGGER.info("deleteDetails() - (LEAVE): " + ret);
+        LOGGER.debug("deleteDetails() - (LEAVE): " + ret);
     }
 
     private <T> List<T> readDetails(Long applicationId, String queryName, Class<T> type) {

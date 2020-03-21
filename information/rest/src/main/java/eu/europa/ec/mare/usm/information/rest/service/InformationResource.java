@@ -50,7 +50,7 @@ public class InformationResource {
     @Path("userContext/{applicationName}/{userName}")
     public Response getUserContext(@PathParam("applicationName") String applicationName,
                                    @PathParam("userName") String userName) {
-        LOGGER.info("getUserContext(" + applicationName + "," + userName + ") - (ENTER)");
+        LOGGER.debug("getUserContext(" + applicationName + "," + userName + ") - (ENTER)");
 
         UserContextQuery query = new UserContextQuery();
         query.setApplicationName(applicationName);
@@ -70,7 +70,7 @@ public class InformationResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getUserContext() - (LEAVE)");
+        LOGGER.debug("getUserContext() - (LEAVE)");
         return response;
     }
 
@@ -86,7 +86,7 @@ public class InformationResource {
     @GET
     @Path("userContext/{userName}")
     public Response getUserContext(@PathParam("userName") String userName) {
-        LOGGER.info("getUserContext(" + userName + ") - (ENTER)");
+        LOGGER.debug("getUserContext(" + userName + ") - (ENTER)");
 
         UserContextQuery query = new UserContextQuery();
         query.setUserName(userName);
@@ -105,7 +105,7 @@ public class InformationResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getUserContext() - (LEAVE)");
+        LOGGER.debug("getUserContext() - (LEAVE)");
         return response;
     }
 
@@ -121,7 +121,7 @@ public class InformationResource {
     @PUT
     @Path("userContext")
     public Response putUserContext(UserContext content) {
-        LOGGER.info("putUserContext(" + content + ") - (ENTER)");
+        LOGGER.debug("putUserContext(" + content + ") - (ENTER)");
 
         Response response;
         try {
@@ -131,7 +131,7 @@ public class InformationResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("putUserContext() - (LEAVE)");
+        LOGGER.debug("putUserContext() - (LEAVE)");
         return response;
     }
 
@@ -149,7 +149,7 @@ public class InformationResource {
     @GET
     @Path("organisation/nation/{nation}")
     public Response findOrganisations(@PathParam("nation") String nation) {
-        LOGGER.info("findOrganisations(" + nation + ") - (ENTER)");
+        LOGGER.debug("findOrganisations(" + nation + ") - (ENTER)");
 
         Response response;
         try {
@@ -165,7 +165,7 @@ public class InformationResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("findOrganisations() - (LEAVE)");
+        LOGGER.debug("findOrganisations() - (LEAVE)");
         return response;
     }
 
@@ -180,7 +180,7 @@ public class InformationResource {
     @GET
     @Path("organisation/{organisationName}")
     public Response getOrganisation(@PathParam("organisationName") String organisationName) {
-        LOGGER.info("getOrganisation(" + organisationName + ") - (ENTER)");
+        LOGGER.debug("getOrganisation(" + organisationName + ") - (ENTER)");
 
         Response response;
         try {
@@ -196,7 +196,7 @@ public class InformationResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getOrganisation() - (LEAVE)");
+        LOGGER.debug("getOrganisation() - (LEAVE)");
         return response;
     }
 
@@ -211,7 +211,7 @@ public class InformationResource {
     @GET
     @Path("contactDetails/{userName}")
     public Response getContactDetails(@PathParam("userName") String userName) {
-        LOGGER.info("getContactDetails(" + userName + ") - (ENTER)");
+        LOGGER.debug("getContactDetails(" + userName + ") - (ENTER)");
 
         Response response;
 
@@ -228,7 +228,7 @@ public class InformationResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getContactDetails() - (LEAVE)");
+        LOGGER.debug("getContactDetails() - (LEAVE)");
         return response;
     }
 

@@ -33,7 +33,7 @@ public class OrganisationJdbcDao extends BaseJdbcDao {
      * @return the possibly empty list of organisation names
      */
     public List<String> getOrganisationParentNames(Long childOrgId) {
-        LOGGER.info("getOrganisationParentNames(" + childOrgId + ") - (ENTER)");
+        LOGGER.debug("getOrganisationParentNames(" + childOrgId + ") - (ENTER)");
 
         Query query = new Query("select name from organisation_t where 1=1");
         if (childOrgId != null) {
@@ -48,7 +48,7 @@ public class OrganisationJdbcDao extends BaseJdbcDao {
 
         List<String> ret = queryForList(query, new StringMapper());
 
-        LOGGER.info("getOrganisationParentNames() - (LEAVE)");
+        LOGGER.debug("getOrganisationParentNames() - (LEAVE)");
         return ret;
     }
 
@@ -58,7 +58,7 @@ public class OrganisationJdbcDao extends BaseJdbcDao {
      * @return the possibly empty list of organisation names
      */
     public List<OrganisationNameResponse> getOrganisationNames() {
-        LOGGER.info("getOrganistionNames() - (ENTER)");
+        LOGGER.debug("getOrganistionNames() - (ENTER)");
 
         Query query = new Query("SELECT COALESCE ((SELECT org2.NAME || ' / ' "
                 + "FROM organisation_t org2 "
@@ -70,7 +70,7 @@ public class OrganisationJdbcDao extends BaseJdbcDao {
         List<OrganisationNameResponse> ret = queryForList(query,
                 new OrganisationNameMapper());
 
-        LOGGER.info("getOrganistionNames() - (LEAVE)");
+        LOGGER.debug("getOrganistionNames() - (LEAVE)");
         return ret;
     }
 
@@ -93,14 +93,14 @@ public class OrganisationJdbcDao extends BaseJdbcDao {
      * @return the possibly empty list of nations
      */
     public List<String> getNationNames() {
-        LOGGER.info("getNationNames() - (ENTER)");
+        LOGGER.debug("getNationNames() - (ENTER)");
 
         Query query = new Query("SELECT DISTINCT(ISOA3CODE) "
                 + " FROM ORGANISATION_T ORDER BY 1");
 
         List<String> ret = queryForList(query, new StringMapper());
 
-        LOGGER.info("getNationNames() - (LEAVE)");
+        LOGGER.debug("getNationNames() - (LEAVE)");
         return ret;
     }
 
@@ -113,7 +113,7 @@ public class OrganisationJdbcDao extends BaseJdbcDao {
      * @throws RuntimeException in case an internal error prevented fulfilling the request
      */
     public PaginationResponse<Organisation> findOrganisations(FindOrganisationsQuery request) {
-        LOGGER.info("findOrganisations(" + request + ") - (ENTER)");
+        LOGGER.debug("findOrganisations(" + request + ") - (ENTER)");
 
         Paginator rPaginator = request.getPaginator();
 
@@ -131,7 +131,7 @@ public class OrganisationJdbcDao extends BaseJdbcDao {
         ret.setResults(scopesList);
         ret.setTotal(totalRecords);
 
-        LOGGER.info("findOrganisations() - (LEAVE): " + ret);
+        LOGGER.debug("findOrganisations() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -143,7 +143,7 @@ public class OrganisationJdbcDao extends BaseJdbcDao {
      * @return <i>true</i> if the organisation exists, <i>false</i> otherwise
      */
     public boolean organisationNameExists(String orgName) {
-        LOGGER.info("organisationNameExists(" + orgName + ") - (ENTER)");
+        LOGGER.debug("organisationNameExists(" + orgName + ") - (ENTER)");
 
         Query query = new Query("select 1 from ORGANISATION_T o"
                 + " where o.NAME=?");
@@ -151,7 +151,7 @@ public class OrganisationJdbcDao extends BaseJdbcDao {
 
         boolean ret = queryForExistence(query);
 
-        LOGGER.info("organisationNameExists() - (LEAVE): " + ret);
+        LOGGER.debug("organisationNameExists() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -244,7 +244,7 @@ public class OrganisationJdbcDao extends BaseJdbcDao {
     }
 
     public int getAssociatedUsers(long organisationId) {
-        LOGGER.info("getAssociatedUsers(" + organisationId + ") - (ENTER)");
+        LOGGER.debug("getAssociatedUsers(" + organisationId + ") - (ENTER)");
 
         Query query = new Query("select count(*) from USER_T u"
                 + " where  u.organisation_id=?");
@@ -252,7 +252,7 @@ public class OrganisationJdbcDao extends BaseJdbcDao {
 
         int ret = queryForCount(query);
 
-        LOGGER.info("getAssociatedUsers() - (LEAVE): " + ret);
+        LOGGER.debug("getAssociatedUsers() - (LEAVE): " + ret);
         return ret;
     }
 

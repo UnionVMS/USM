@@ -31,9 +31,9 @@ public class PolicyProvider {
     }
 
     public void reset() {
-        LOGGER.info("reset() - (ENTER)");
+        LOGGER.debug("reset() - (ENTER)");
         clear();
-        LOGGER.info("reset() - (LEAVE)");
+        LOGGER.debug("reset() - (LEAVE)");
     }
 
     /**
@@ -44,7 +44,7 @@ public class PolicyProvider {
      * @return the possibly-empty configuration/definition properties
      */
     public Properties getProperties(String subject) {
-        LOGGER.info("getProperties(" + subject + ") - (ENTER)");
+        LOGGER.debug("getProperties(" + subject + ") - (ENTER)");
 
         PolicyDefinition def = null;
 
@@ -65,7 +65,7 @@ public class PolicyProvider {
 
         Properties ret = def.getProperties();
 
-        LOGGER.info("getProperties() - (LEAVE)");
+        LOGGER.debug("getProperties() - (LEAVE)");
         return ret;
     }
 
@@ -78,7 +78,7 @@ public class PolicyProvider {
      * @return the previously defined configuration/definition properties
      */
     public Properties setProperties(String subject, Properties properties) {
-        LOGGER.info("setProperties(" + properties + ") - (ENTER)");
+        LOGGER.debug("setProperties(" + properties + ") - (ENTER)");
 
         PolicyDefinition def = new PolicyDefinition();
         def.setSubject(subject);
@@ -87,7 +87,7 @@ public class PolicyProvider {
 
         Properties ret = properties;
 
-        LOGGER.info("setProperties() - (LEAVE)");
+        LOGGER.debug("setProperties() - (LEAVE)");
         return ret;
     }
 

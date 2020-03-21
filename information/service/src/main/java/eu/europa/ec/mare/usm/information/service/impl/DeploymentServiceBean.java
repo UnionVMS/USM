@@ -43,7 +43,7 @@ public class DeploymentServiceBean implements DeploymentService {
 
     @Override
     public void deployApplication(Application request) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("deployApplication(" + request + ") - (ENTER)");
+        LOGGER.debug("deployApplication(" + request + ") - (ENTER)");
 
         validator.assertValid(request, true);
 
@@ -63,12 +63,12 @@ public class DeploymentServiceBean implements DeploymentService {
 
         jpaDao.create(entity);
 
-        LOGGER.info("deployApplication() - (LEAVE)");
+        LOGGER.debug("deployApplication() - (LEAVE)");
     }
 
     @Override
     public void redeployApplication(Application request) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("redeployApplication(" + request + ") - (ENTER)");
+        LOGGER.debug("redeployApplication(" + request + ") - (ENTER)");
 
         validator.assertValid(request, true);
 
@@ -91,12 +91,12 @@ public class DeploymentServiceBean implements DeploymentService {
             jpaDao.update(entity);
             jpaDao.deleteDetails(obsolete);
         }
-        LOGGER.info("redeployApplication() - (LEAVE)");
+        LOGGER.debug("redeployApplication() - (LEAVE)");
     }
 
     @Override
     public void deployDatasets(Application request) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("deployDatasets(" + request + ") - (ENTER)");
+        LOGGER.debug("deployDatasets(" + request + ") - (ENTER)");
 
         validator.assertValidDatasets(request);
 
@@ -112,12 +112,12 @@ public class DeploymentServiceBean implements DeploymentService {
 
         jpaDao.update(entity);
 
-        LOGGER.info("deployDatasets() - (LEAVE)");
+        LOGGER.debug("deployDatasets() - (LEAVE)");
     }
 
     @Override
     public void undeployApplication(String appName) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("undeployApplication(" + appName + ") - (ENTER)");
+        LOGGER.debug("undeployApplication(" + appName + ") - (ENTER)");
 
         validator.assertValidApplication(appName);
 
@@ -133,13 +133,13 @@ public class DeploymentServiceBean implements DeploymentService {
         }
         jpaDao.delete(appName);
 
-        LOGGER.info("undeployApplication() - (LEAVE)");
+        LOGGER.debug("undeployApplication() - (LEAVE)");
     }
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public Application getDeploymentDescriptor(String appName) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("getDeploymentDescriptor(" + appName + ") - (ENTER)");
+        LOGGER.debug("getDeploymentDescriptor(" + appName + ") - (ENTER)");
 
         validator.assertValidApplication(appName);
 
@@ -150,7 +150,7 @@ public class DeploymentServiceBean implements DeploymentService {
             ret = convert(entity);
         }
 
-        LOGGER.info("getDeploymentDescriptor() - (LEAVE)");
+        LOGGER.debug("getDeploymentDescriptor() - (LEAVE)");
         return ret;
     }
 

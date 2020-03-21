@@ -33,12 +33,12 @@ public class RoleJdbcDao extends BaseJdbcDao {
      * @return the possibly-empty list of role names
      */
     public List<String> getRoleNames() {
-        LOGGER.info("getRoleNames() - (ENTER)");
+        LOGGER.debug("getRoleNames() - (ENTER)");
 
         Query query = new Query("select NAME from ROLE_T order by NAME");
         List<String> names = queryForList(query, new StringMapper());
 
-        LOGGER.info("getRoleNames() - (LEAVE)");
+        LOGGER.debug("getRoleNames() - (LEAVE)");
         return names;
     }
 
@@ -53,7 +53,7 @@ public class RoleJdbcDao extends BaseJdbcDao {
      */
     @SuppressWarnings("unchecked")
     public PaginationResponse<ComprehensiveRole> findRoles(FindRolesQuery request) {
-        LOGGER.info("findRoles(" + request + ") - (ENTER)");
+        LOGGER.debug("findRoles(" + request + ") - (ENTER)");
 
         Paginator rPaginator = request.getPaginator();
 
@@ -70,7 +70,7 @@ public class RoleJdbcDao extends BaseJdbcDao {
         ret.setResults(rolesList);
         ret.setTotal(totalRecords);
 
-        LOGGER.info("findRoles() - (LEAVE): " + ret);
+        LOGGER.debug("findRoles() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -82,7 +82,7 @@ public class RoleJdbcDao extends BaseJdbcDao {
      * @return <i>true</i> if the role exists, <i>false</i> otherwise
      */
     public boolean roleExists(String roleName) {
-        LOGGER.info("roleExists(" + roleName + ") - (ENTER)");
+        LOGGER.debug("roleExists(" + roleName + ") - (ENTER)");
 
         Query query = new Query("select 1 from ROLE_T r" +
                 " where  r.NAME=?");
@@ -90,7 +90,7 @@ public class RoleJdbcDao extends BaseJdbcDao {
 
         boolean ret = queryForExistence(query);
 
-        LOGGER.info("roleExists() - (LEAVE): " + ret);
+        LOGGER.debug("roleExists() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -180,12 +180,12 @@ public class RoleJdbcDao extends BaseJdbcDao {
      * @throws RuntimeException in case an internal error prevented fulfilling the request
      */
     public List<ComprehensiveRole> getRoles() {
-        LOGGER.info("getRoles() - (ENTER)");
+        LOGGER.debug("getRoles() - (ENTER)");
 
         Query query = new Query("select ROLE_ID,NAME,STATUS from ROLE_T order by NAME");
         List<ComprehensiveRole> scopeNames = queryForList(query, new RolesMapper());
 
-        LOGGER.info("getRoles() - (LEAVE)");
+        LOGGER.debug("getRoles() - (LEAVE)");
         return scopeNames;
     }
 

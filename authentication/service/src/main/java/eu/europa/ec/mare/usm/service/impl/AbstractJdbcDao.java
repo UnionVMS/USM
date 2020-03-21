@@ -57,7 +57,7 @@ public class AbstractJdbcDao {
      * @throws RuntimeException in case the JNDI lookup fails
      */
     protected void lookupDatasource()  throws RuntimeException {
-        LOGGER.info("lookupDatasource() - (ENTER)");
+        LOGGER.debug("lookupDatasource() - (ENTER)");
         try {
             Context context = new InitialContext();
             dataSource = (DataSource) context.lookup(dataSourceName);
@@ -67,7 +67,7 @@ public class AbstractJdbcDao {
             LOGGER.error(msg, ex);
             throw new RuntimeException(msg, ex);
         }
-        LOGGER.info("lookupDatasource() - (LEAVE)");
+        LOGGER.debug("lookupDatasource() - (LEAVE)");
     }
 
     protected Connection getConnection()

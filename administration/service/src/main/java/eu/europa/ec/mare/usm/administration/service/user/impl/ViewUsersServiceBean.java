@@ -29,7 +29,7 @@ public class ViewUsersServiceBean implements ViewUsersService {
 
     @Override
     public PaginationResponse<UserAccount> findUsers(ServiceRequest<FindUsersQuery> request) {
-        LOGGER.info("findUsers(" + request + ") - (ENTER)");
+        LOGGER.debug("findUsers(" + request + ") - (ENTER)");
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewUsers);
         featureSet.add(USMFeature.manageUsers);
@@ -38,13 +38,13 @@ public class ViewUsersServiceBean implements ViewUsersService {
 
         PaginationResponse<UserAccount> response = userDao.findUsers(request.getBody());
 
-        LOGGER.info("findUsers() - (LEAVE)");
+        LOGGER.debug("findUsers() - (LEAVE)");
         return response;
     }
 
     @Override
     public UserAccount getUser(ServiceRequest<GetUserQuery> request) {
-        LOGGER.info("getUser(" + request + ") - (ENTER)");
+        LOGGER.debug("getUser(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewUsers);
@@ -54,13 +54,13 @@ public class ViewUsersServiceBean implements ViewUsersService {
 
         UserAccount response = userDao.getUser(request.getBody());
 
-        LOGGER.info("getUser() - (LEAVE)");
+        LOGGER.debug("getUser() - (LEAVE)");
         return response;
     }
 
     @Override
     public List<String> getUsersNames(ServiceRequest<String> request) {
-        LOGGER.info("getUsersNames(" + request + ") - (ENTER)");
+        LOGGER.debug("getUsersNames(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewUsers);
@@ -70,7 +70,7 @@ public class ViewUsersServiceBean implements ViewUsersService {
 
         List<String> response = userDao.getUsersNames();
 
-        LOGGER.info("getUsersNames() - (LEAVE)");
+        LOGGER.debug("getUsersNames() - (LEAVE)");
         return response;
 
     }

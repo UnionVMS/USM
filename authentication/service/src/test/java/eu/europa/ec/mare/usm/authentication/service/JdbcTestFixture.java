@@ -28,7 +28,7 @@ public class JdbcTestFixture extends AbstractJdbcDao {
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public String select(String sql, Object[] parameters) {
-        LOGGER.info("select(" + sql + ", " + parameters + ") - (ENTER)");
+        LOGGER.debug("select(" + sql + ", " + parameters + ") - (ENTER)");
 
         String ret = null;
 
@@ -53,13 +53,13 @@ public class JdbcTestFixture extends AbstractJdbcDao {
             closeStatement(sel);
             closeConnection(co);
         }
-        LOGGER.info("select() - (LEAVE)");
+        LOGGER.debug("select() - (LEAVE)");
         return ret;
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Integer selectID(String sql, String parameter) {
-        LOGGER.info("select(" + sql + ", " + parameter + ") - (ENTER)");
+        LOGGER.debug("select(" + sql + ", " + parameter + ") - (ENTER)");
 
         Integer ret = null;
 
@@ -80,7 +80,7 @@ public class JdbcTestFixture extends AbstractJdbcDao {
             closeStatement(sel);
             closeConnection(co);
         }
-        LOGGER.info("select() - (LEAVE)");
+        LOGGER.debug("select() - (LEAVE)");
         return ret;
     }
 
@@ -103,7 +103,7 @@ public class JdbcTestFixture extends AbstractJdbcDao {
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void update(String sql, Object[] parameters) {
-        LOGGER.info("update(" + sql + ", " + parameters + ") - (ENTER)");
+        LOGGER.debug("update(" + sql + ", " + parameters + ") - (ENTER)");
 
         Connection co = null;
         PreparedStatement upd = null;
@@ -126,12 +126,12 @@ public class JdbcTestFixture extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("update() - (LEAVE)");
+        LOGGER.debug("update() - (LEAVE)");
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void delete(String sql, Object[] parameters) {
-        LOGGER.info("delete(" + sql + ", " + parameters + ") - (ENTER)");
+        LOGGER.debug("delete(" + sql + ", " + parameters + ") - (ENTER)");
 
         Connection co = null;
         PreparedStatement del = null;
@@ -154,7 +154,7 @@ public class JdbcTestFixture extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("delete() - (LEAVE)");
+        LOGGER.debug("delete() - (LEAVE)");
     }
 
     /**

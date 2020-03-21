@@ -28,7 +28,7 @@ public class RoleJpaDao {
      * @return The created role entity
      */
     public RoleEntity create(RoleEntity role) {
-        LOGGER.info("create(" + role + ") - (ENTER)");
+        LOGGER.debug("create(" + role + ") - (ENTER)");
 
         try {
             em.persist(role);
@@ -37,7 +37,7 @@ public class RoleJpaDao {
             handleException("create", ex);
         }
 
-        LOGGER.info("create() - (LEAVE)");
+        LOGGER.debug("create() - (LEAVE)");
         return role;
     }
 
@@ -47,7 +47,7 @@ public class RoleJpaDao {
      * @param role the role to be updated
      */
     public void update(RoleEntity role) {
-        LOGGER.info("update(" + role + ") - (ENTER)");
+        LOGGER.debug("update(" + role + ") - (ENTER)");
 
         try {
             em.merge(role);
@@ -56,7 +56,7 @@ public class RoleJpaDao {
             handleException("update", ex);
         }
 
-        LOGGER.info("update() - (LEAVE)");
+        LOGGER.debug("update() - (LEAVE)");
     }
 
     /**
@@ -65,7 +65,7 @@ public class RoleJpaDao {
      * @param roleId the id of the role
      */
     public void delete(Long roleId) {
-        LOGGER.info("delete(" + roleId + ") - (ENTER)");
+        LOGGER.debug("delete(" + roleId + ") - (ENTER)");
 
         try {
             RoleEntity entity = read(roleId);
@@ -78,7 +78,7 @@ public class RoleJpaDao {
             handleException("delete", ex);
         }
 
-        LOGGER.info("delete() - (LEAVE)");
+        LOGGER.debug("delete() - (LEAVE)");
     }
 
     /**
@@ -88,7 +88,7 @@ public class RoleJpaDao {
      * @return the matching Role if it exists, null otherwise
      */
     public RoleEntity read(Long roleId) {
-        LOGGER.info("read() - (ENTER)");
+        LOGGER.debug("read() - (ENTER)");
         RoleEntity ret = null;
 
         try {
@@ -101,7 +101,7 @@ public class RoleJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE)");
+        LOGGER.debug("read() - (LEAVE)");
         return ret;
     }
 

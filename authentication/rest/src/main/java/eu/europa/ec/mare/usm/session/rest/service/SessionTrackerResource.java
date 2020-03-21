@@ -38,7 +38,7 @@ public class SessionTrackerResource {
     @POST
     @Path("")
     public Response startSession(SessionInfo request) {
-        LOGGER.info("startSession() - (ENTER)");
+        LOGGER.debug("startSession() - (ENTER)");
 
         Response response;
         try {
@@ -54,7 +54,7 @@ public class SessionTrackerResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("startSession() - (LEAVE)");
+        LOGGER.debug("startSession() - (LEAVE)");
         return response;
     }
 
@@ -72,7 +72,7 @@ public class SessionTrackerResource {
     @GET
     @Path("{sessionId}")
     public Response getSession(@PathParam("sessionId") String sessionId) {
-        LOGGER.info("getSession() - (ENTER)");
+        LOGGER.debug("getSession() - (ENTER)");
 
         Response response;
         try {
@@ -86,7 +86,7 @@ public class SessionTrackerResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getSession() - (LEAVE)");
+        LOGGER.debug("getSession() - (LEAVE)");
         return response;
     }
 
@@ -102,7 +102,7 @@ public class SessionTrackerResource {
     @DELETE
     @Path("{sessionId}")
     public Response endSession(@PathParam("sessionId") String sessionId) {
-        LOGGER.info("endSession() - (ENTER)");
+        LOGGER.debug("endSession() - (ENTER)");
 
         Response response;
         try {
@@ -112,7 +112,7 @@ public class SessionTrackerResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("endSession() - (LEAVE)");
+        LOGGER.debug("endSession() - (LEAVE)");
         return response;
     }
 }

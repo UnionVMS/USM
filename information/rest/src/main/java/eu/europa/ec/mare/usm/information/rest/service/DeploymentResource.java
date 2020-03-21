@@ -58,7 +58,7 @@ public class DeploymentResource {
     @GET
     @Path("{applicationName}")
     public Response getDeployment(@PathParam("applicationName") String applicationName) {
-        LOGGER.info("getDeployment(" + applicationName + ") - (ENTER)");
+        LOGGER.debug("getDeployment(" + applicationName + ") - (ENTER)");
 
         Response response;
         try {
@@ -73,7 +73,7 @@ public class DeploymentResource {
             response = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("getDeployment() - (LEAVE)");
+        LOGGER.debug("getDeployment() - (LEAVE)");
         return response;
     }
 
@@ -91,7 +91,7 @@ public class DeploymentResource {
     @POST
     @Path("")
     public Response deployApplication(Application application) {
-        LOGGER.info("deployApplication(" + application + ") - (ENTER)");
+        LOGGER.debug("deployApplication(" + application + ") - (ENTER)");
 
         Response response;
         try {
@@ -118,7 +118,7 @@ public class DeploymentResource {
     @PUT
     @Path("")
     public Response redeployApplication(Application application) {
-        LOGGER.info("redeployApplication(" + application + ") - (ENTER)");
+        LOGGER.debug("redeployApplication(" + application + ") - (ENTER)");
 
         Response response;
         try {
@@ -145,7 +145,7 @@ public class DeploymentResource {
     @PUT
     @Path("datasets")
     public Response deployDatasets(Application application) {
-        LOGGER.info("deployDatasets(" + application + ") - (ENTER)");
+        LOGGER.debug("deployDatasets(" + application + ") - (ENTER)");
 
         Response response;
         try {
@@ -173,7 +173,7 @@ public class DeploymentResource {
     @DELETE
     @Path("{applicationName}")
     public Response undeployApplication(@PathParam("applicationName") String applicationName) {
-        LOGGER.info("undeployApplication(" + applicationName + ") - (ENTER)");
+        LOGGER.debug("undeployApplication(" + applicationName + ") - (ENTER)");
 
         Response response;
         try {
@@ -182,7 +182,7 @@ public class DeploymentResource {
         } catch (Exception e) {
             response = ExceptionHandler.handleException(e);
         }
-        LOGGER.info("undeployApplication() - (ENTER)");
+        LOGGER.debug("undeployApplication() - (ENTER)");
         return response;
     }
 }

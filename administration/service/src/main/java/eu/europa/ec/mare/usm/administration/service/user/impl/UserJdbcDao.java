@@ -33,7 +33,7 @@ public class UserJdbcDao extends BaseJdbcDao {
      * @throws RuntimeException in case an internal error prevented fulfilling the request
      */
     public PaginationResponse<UserAccount> findUsers(FindUsersQuery request) {
-        LOGGER.info("findUsers(" + request + ") - (ENTER)");
+        LOGGER.debug("findUsers(" + request + ") - (ENTER)");
 
         Paginator rPaginator = request.getPaginator();
 
@@ -50,7 +50,7 @@ public class UserJdbcDao extends BaseJdbcDao {
         ret.setResults(cuList);
         ret.setTotal(totalRecords);
 
-        LOGGER.info("findUsers() - (LEAVE): " + ret);
+        LOGGER.debug("findUsers() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -62,7 +62,7 @@ public class UserJdbcDao extends BaseJdbcDao {
      * @throws RuntimeException in case an internal error prevented fulfilling the request
      */
     public UserAccount getUser(GetUserQuery request) {
-        LOGGER.info("getUser(" + request + ") - (ENTER)");
+        LOGGER.debug("getUser(" + request + ") - (ENTER)");
 
         Query query = new Query("select USER_NAME,ACTIVE_FROM,ACTIVE_TO,"
                 + "u.STATUS,LAST_LOGON,LOCKOUT_TO,PASSWORD_EXPIRY,LOCKOUT_REASON,"
@@ -77,7 +77,7 @@ public class UserJdbcDao extends BaseJdbcDao {
 
         UserAccount ret = (UserAccount) queryForObject(query, new UserMapper());
 
-        LOGGER.info("getUser() - (LEAVE): " + ret);
+        LOGGER.debug("getUser() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -88,13 +88,13 @@ public class UserJdbcDao extends BaseJdbcDao {
      * @return the possibly empty list of all user names
      */
     public List<String> getUsersNames() {
-        LOGGER.info("getUsersNames() - (ENTER)");
+        LOGGER.debug("getUsersNames() - (ENTER)");
 
         Query query = new Query("select USER_NAME from USER_T order by 1");
 
         List<String> ret = queryForList(query, new StringMapper());
 
-        LOGGER.info("getUsersNames() - (LEAVE)");
+        LOGGER.debug("getUsersNames() - (LEAVE)");
         return ret;
     }
 
@@ -106,7 +106,7 @@ public class UserJdbcDao extends BaseJdbcDao {
      * @return the possibly empty list of the matching user names
      */
     public List<String> findByPasswordExpiry(Date expiringBefore) {
-        LOGGER.info("findByPasswordExpiry() - (ENTER)");
+        LOGGER.debug("findByPasswordExpiry() - (ENTER)");
 
         Query query = new Query("select u.user_name" +
                 " from active_user_v a,user_t u,person_t p" +
@@ -119,7 +119,7 @@ public class UserJdbcDao extends BaseJdbcDao {
 
         List<String> ret = queryForList(query, new StringMapper());
 
-        LOGGER.info("findByPasswordExpiry() - (LEAVE)");
+        LOGGER.debug("findByPasswordExpiry() - (LEAVE)");
         return ret;
     }
 

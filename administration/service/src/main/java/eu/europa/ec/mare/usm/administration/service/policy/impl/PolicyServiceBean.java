@@ -43,7 +43,7 @@ public class PolicyServiceBean implements PolicyService {
     @Override
     public Policy updatePolicy(ServiceRequest<Policy> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("updatePolicy(" + request + ") - (ENTER)");
+        LOGGER.debug("updatePolicy(" + request + ") - (ENTER)");
 
         validator.assertValidPolicyProperty(request);
 
@@ -71,14 +71,14 @@ public class PolicyServiceBean implements PolicyService {
             }
         }
 
-        LOGGER.info("updatePolicy() - (LEAVE)");
+        LOGGER.debug("updatePolicy() - (LEAVE)");
         return null;
     }
 
     @Override
     public List<Policy> findPolicies(ServiceRequest<FindPoliciesQuery> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("findPolicies(" + request + ") - (ENTER)");
+        LOGGER.debug("findPolicies(" + request + ") - (ENTER)");
 
         validator.assertValid(request, USMFeature.configurePolicies, "query");
 
@@ -89,19 +89,19 @@ public class PolicyServiceBean implements PolicyService {
             ret.add(convertToDomain(e));
         }
 
-        LOGGER.info("findPolicies() - (LEAVE)");
+        LOGGER.debug("findPolicies() - (LEAVE)");
         return ret;
     }
 
     @Override
     public List<String> getSubjects(ServiceRequest<NoBody> request) {
-        LOGGER.info("getSubjects(" + request + ") - (ENTER)");
+        LOGGER.debug("getSubjects(" + request + ") - (ENTER)");
 
         validator.assertValid(request, USMFeature.configurePolicies);
 
         List<String> ret = policyJdbcDao.getSubjects();
 
-        LOGGER.info("getSubjects() - (LEAVE)");
+        LOGGER.debug("getSubjects() - (LEAVE)");
         return ret;
     }
 

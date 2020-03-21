@@ -34,7 +34,7 @@ public class DataSetJpaDao {
     private ApplicationJpaDao applicationDao;
 
     public List<DatasetEntity> findDataSet(String applicationName, String category) {
-        LOGGER.info("findDataSet(" + applicationName + "," + category + ")- ENTER");
+        LOGGER.debug("findDataSet(" + applicationName + "," + category + ")- ENTER");
 
         List<DatasetEntity> ret = null;
 
@@ -62,7 +62,7 @@ public class DataSetJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("findDataSet ()- LEAVE");
+        LOGGER.debug("findDataSet ()- LEAVE");
         return ret;
     }
 
@@ -73,7 +73,7 @@ public class DataSetJpaDao {
      * @return the matching dataset if it exists, null otherwise
      */
     public DatasetEntity read(Long datasetId) {
-        LOGGER.info("read(" + datasetId + ") - (ENTER)");
+        LOGGER.debug("read(" + datasetId + ") - (ENTER)");
 
         DatasetEntity ret = null;
         try {
@@ -87,7 +87,7 @@ public class DataSetJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE)");
+        LOGGER.debug("read() - (LEAVE)");
         return ret;
     }
 
@@ -100,7 +100,7 @@ public class DataSetJpaDao {
     }
 
     public void createDataSet(DataSet dataSet) {
-        LOGGER.info("createDataSet(" + dataSet + ") - (ENTER)");
+        LOGGER.debug("createDataSet(" + dataSet + ") - (ENTER)");
         try {
             DatasetEntity entity = findDataSetByNameAndApplication(dataSet.getName(), dataSet.getApplicationName());
             LOGGER.info("---> entity : " + entity);
@@ -126,12 +126,12 @@ public class DataSetJpaDao {
         } catch (Exception ex) {
             handleException("createDataSet", ex);
         }
-        LOGGER.info("createDataSet() - (LEAVE): ");
+        LOGGER.debug("createDataSet() - (LEAVE): ");
 
     }
 
     public void updateDataSet(DataSet dataSet) {
-        LOGGER.info("updateDataSet(" + dataSet + ") - (ENTER)");
+        LOGGER.debug("updateDataSet(" + dataSet + ") - (ENTER)");
         try {
             DatasetEntity entity = findDataSetByNameAndApplication(dataSet.getName(), dataSet.getApplicationName());
             LOGGER.info("---> entity : " + entity);
@@ -152,11 +152,11 @@ public class DataSetJpaDao {
         } catch (Exception ex) {
             handleException("updateDataSet", ex);
         }
-        LOGGER.info("updateDataSet() - (LEAVE): ");
+        LOGGER.debug("updateDataSet() - (LEAVE): ");
     }
 
     public void deleteDataSet(DataSet dataSet) {
-        LOGGER.info("deleteDataSet(" + dataSet + ") - (ENTER)");
+        LOGGER.debug("deleteDataSet(" + dataSet + ") - (ENTER)");
 
         try {
             DatasetEntity entity = findDataSetByNameAndApplication(dataSet.getName(), dataSet.getApplicationName());
@@ -171,11 +171,11 @@ public class DataSetJpaDao {
             handleException("deleteUserPreference", ex);
         }
 
-        LOGGER.info("deleteDataSet() - (LEAVE)");
+        LOGGER.debug("deleteDataSet() - (LEAVE)");
     }
 
     public DatasetEntity findDataSetByNameAndApplication(String name, String applicationName) {
-        LOGGER.info("findDataSetByNameAndApplication(" + name + "," + applicationName + ")- ENTER");
+        LOGGER.debug("findDataSetByNameAndApplication(" + name + "," + applicationName + ")- ENTER");
 
         DatasetEntity entity = null;
 
@@ -199,12 +199,12 @@ public class DataSetJpaDao {
             handleException("findDataSetByNameAndApplication", ex);
         }
 
-        LOGGER.info("findDataSetByNameAndApplication ()- LEAVE");
+        LOGGER.debug("findDataSetByNameAndApplication ()- LEAVE");
         return entity;
     }
 
     public List<DatasetEntity> findDataSets(DataSetFilter dataSetFilter) {
-        LOGGER.info("findDataSets(" + dataSetFilter.getName() + "," + dataSetFilter.getApplicationName() + ")- ENTER");
+        LOGGER.debug("findDataSets(" + dataSetFilter.getName() + "," + dataSetFilter.getApplicationName() + ")- ENTER");
 
         if (dataSetFilter.getApplicationName() == null || dataSetFilter.getApplicationName().length() <= 0) {
             throw new IllegalArgumentException(APPLICATION_NAME_NOT_SPECIFIED);
@@ -238,7 +238,7 @@ public class DataSetJpaDao {
             handleException("findDataSets", ex);
         }
 
-        LOGGER.info("findDataSets ()- LEAVE");
+        LOGGER.debug("findDataSets ()- LEAVE");
         return entityList;
     }
 

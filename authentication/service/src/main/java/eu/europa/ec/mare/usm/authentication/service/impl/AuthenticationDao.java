@@ -54,7 +54,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
      * otherwise.
      */
     public Long getActiveUserId(String userName, String password) {
-        LOGGER.info("getActiveUserId(" + userName + ") - (ENTER)");
+        LOGGER.debug("getActiveUserId(" + userName + ") - (ENTER)");
 
         Long ret = null;
 
@@ -81,7 +81,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("getActiveUserId() - (LEAVE)");
+        LOGGER.debug("getActiveUserId() - (LEAVE)");
         return ret;
     }
 
@@ -93,7 +93,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
      * locked-out, and has the given password; or null otherwise.
      */
     public String getLockoutReason(String userName) {
-        LOGGER.info("getLockoutReason(" + userName + ") - (ENTER)");
+        LOGGER.debug("getLockoutReason(" + userName + ") - (ENTER)");
 
         String ret = null;
 
@@ -119,7 +119,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("getLockoutReason() - (LEAVE)");
+        LOGGER.debug("getLockoutReason() - (LEAVE)");
         return ret;
     }
 
@@ -130,7 +130,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
      * @return the user status, if it exists, null otherwise
      */
     public String getUserStatus(String userName) {
-        LOGGER.info("getUserStatus(" + userName + ") - (ENTER)");
+        LOGGER.debug("getUserStatus(" + userName + ") - (ENTER)");
 
         String ret = null;
 
@@ -156,7 +156,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("getUserStatus() - (LEAVE)");
+        LOGGER.debug("getUserStatus() - (LEAVE)");
         return ret;
     }
 
@@ -170,7 +170,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
      * or null otherwise.
      */
     public Long getActiveUserId(ChallengeResponse request) {
-        LOGGER.info("getActiveUserId() - (ENTER)");
+        LOGGER.debug("getActiveUserId() - (ENTER)");
 
         Long ret = null;
 
@@ -203,7 +203,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("getActiveUserId() - (LEAVE)");
+        LOGGER.debug("getActiveUserId() - (LEAVE)");
         return ret;
     }
 
@@ -214,7 +214,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
      * @return the possibly-empty list of defined challenges
      */
     public List<ChallengeResponse> getUserChallenges(String userName) {
-        LOGGER.info("getUserChallenges(" + userName + ") - (ENTER)");
+        LOGGER.debug("getUserChallenges(" + userName + ") - (ENTER)");
 
         List<ChallengeResponse> ret = new ArrayList<>();
 
@@ -246,7 +246,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("getUserChallenges() - (LEAVE)");
+        LOGGER.debug("getUserChallenges() - (LEAVE)");
         return ret;
     }
 
@@ -257,7 +257,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void recordLoginSuccess(String userName) {
-        LOGGER.info("recordLoginSuccess(" + userName + ") - (ENTER)");
+        LOGGER.debug("recordLoginSuccess(" + userName + ") - (ENTER)");
 
         Connection co = null;
         PreparedStatement ps = null;
@@ -281,7 +281,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("recordLoginSuccess() - (LEAVE)");
+        LOGGER.debug("recordLoginSuccess() - (LEAVE)");
     }
 
     /**
@@ -291,7 +291,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
      * @return the password expiry time of the user
      */
     public Date getPasswordExpiry(String userName) {
-        LOGGER.info("getPasswordExpiry(" + userName + ") - (ENTER)");
+        LOGGER.debug("getPasswordExpiry(" + userName + ") - (ENTER)");
 
         Connection co = null;
         PreparedStatement ps = null;
@@ -314,7 +314,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("getPasswordExpiry() - (LEAVE)");
+        LOGGER.debug("getPasswordExpiry() - (LEAVE)");
         return ret;
     }
 
@@ -325,7 +325,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void recordLoginFailure(String userName) {
-        LOGGER.info("recordLoginFailure(" + userName + ") - (ENTER)");
+        LOGGER.debug("recordLoginFailure(" + userName + ") - (ENTER)");
 
         Connection co = null;
         PreparedStatement upd = null;
@@ -345,7 +345,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("recordLoginFailure() - (LEAVE)");
+        LOGGER.debug("recordLoginFailure() - (LEAVE)");
     }
 
     /**
@@ -356,7 +356,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
      * @return the number of consecutive failed login attempts
      */
     public int getLoginFailures(String userName) {
-        LOGGER.info("getLoginFailures(" + userName + ") - (ENTER)");
+        LOGGER.debug("getLoginFailures(" + userName + ") - (ENTER)");
 
         Connection co = null;
         PreparedStatement ps = null;
@@ -379,7 +379,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("getLoginFailures() - (LEAVE): " + ret);
+        LOGGER.debug("getLoginFailures() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -391,7 +391,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void lockUser(String userName, Date lockoutExpiry) {
-        LOGGER.info("lockUser(" + userName + ") - (ENTER)");
+        LOGGER.debug("lockUser(" + userName + ") - (ENTER)");
 
         Connection co = null;
         PreparedStatement upd = null;
@@ -412,7 +412,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("lockUser() - (LEAVE)");
+        LOGGER.debug("lockUser() - (LEAVE)");
     }
 
     /**
@@ -422,7 +422,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
      * @return the id of person for the given user
      */
     public int getPersonId(String userName) {
-        LOGGER.info("getPersonId(" + userName + ") - (ENTER)");
+        LOGGER.debug("getPersonId(" + userName + ") - (ENTER)");
 
         Connection co = null;
         PreparedStatement ps = null;
@@ -445,7 +445,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("getPersonId() - (LEAVE)");
+        LOGGER.debug("getPersonId() - (LEAVE)");
         return ret;
     }
 
@@ -457,7 +457,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void createPersonForUser(Map<String, Object> userMap, String userName) {
-        LOGGER.info("createPersonForUser(" + userName + ") - (ENTER)");
+        LOGGER.debug("createPersonForUser(" + userName + ") - (ENTER)");
 
         Connection connection = null;
         PreparedStatement select = null;
@@ -520,7 +520,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             closeConnection(connection);
         }
 
-        LOGGER.info("createPersonForUser() - (LEAVE)");
+        LOGGER.debug("createPersonForUser() - (LEAVE)");
     }
 
     /**
@@ -531,7 +531,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
      * @return true if sync took place or false if the values was identical
      */
     public boolean syncPerson(Map<String, Object> map, int personId) {
-        LOGGER.info("syncPerson(" + personId + ") - (ENTER)");
+        LOGGER.debug("syncPerson(" + personId + ") - (ENTER)");
 
         Connection co = null;
         PreparedStatement ps = null;
@@ -604,7 +604,7 @@ public class AuthenticationDao extends AbstractJdbcDao {
             closeConnection(co);
         }
 
-        LOGGER.info("syncPerson() - (LEAVE)");
+        LOGGER.debug("syncPerson() - (LEAVE)");
         return identical;
     }
 

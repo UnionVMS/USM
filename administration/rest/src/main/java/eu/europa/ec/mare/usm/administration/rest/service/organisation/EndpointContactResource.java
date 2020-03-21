@@ -52,7 +52,7 @@ public class EndpointContactResource {
                                   @HeaderParam("roleName") String roleName,
                                   @HeaderParam("scopeName") String scopeName,
                                   EndPointContact endPointContact) {
-        LOGGER.info("assignContact() - (ENTER)");
+        LOGGER.debug("assignContact() - (ENTER)");
 
         Response ret;
 
@@ -102,7 +102,7 @@ public class EndpointContactResource {
                                   @HeaderParam("roleName") String roleName,
                                   @HeaderParam("scopeName") String scopeName,
                                   @PathParam("endpointcontactId") Long endpointcontactId) {
-        LOGGER.info("removeContact(" + endpointcontactId + ") - (ENTER)");
+        LOGGER.debug("removeContact(" + endpointcontactId + ") - (ENTER)");
 
         Response ret;
 
@@ -124,7 +124,7 @@ public class EndpointContactResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("removeContact() - (ENTER)");
+        LOGGER.debug("removeContact() - (LEAVE)");
 
         return ret;
     }

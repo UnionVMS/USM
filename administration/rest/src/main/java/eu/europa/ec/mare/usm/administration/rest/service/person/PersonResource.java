@@ -51,7 +51,7 @@ public class PersonResource {
     public Response getPersons(@HeaderParam("Authorization") String credential,
                                @HeaderParam("roleName") String roleName,
                                @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("getPersons() - (ENTER)");
+        LOGGER.debug("getPersons() - (ENTER)");
 
         Response ret;
         try {
@@ -69,7 +69,7 @@ public class PersonResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getPersons() - (LEAVE)");
+        LOGGER.debug("getPersons() - (LEAVE)");
         return ret;
     }
 
@@ -96,7 +96,7 @@ public class PersonResource {
                               @HeaderParam("roleName") String roleName,
                               @HeaderParam("scopeName") String scopeName,
                               @PathParam("personId") Long personId) {
-        LOGGER.info("getPerson() - (ENTER)");
+        LOGGER.debug("getPerson() - (ENTER)");
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
         request.setRoleName(roleName);
@@ -116,7 +116,7 @@ public class PersonResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getPerson() - (LEAVE) ");
+        LOGGER.debug("getPerson() - (LEAVE) ");
         return ret;
     }
 
@@ -137,7 +137,7 @@ public class PersonResource {
     @Path("contactDetails")
     public Response updateContactDetails(@HeaderParam("Authorization") String credential,
                                          ContactDetailsRequest details) {
-        LOGGER.info("updateContactDetails(" + details + ") - (ENTER)");
+        LOGGER.debug("updateContactDetails(" + details + ") - (ENTER)");
 
         ServiceRequest<ContactDetails> request = new ServiceRequest<>();
         request.setRequester(details.getUserName());
@@ -175,7 +175,7 @@ public class PersonResource {
     @Path("contactDetails/{userName}")
     public Response getContactDetails(@HeaderParam("Authorization") String credential,
                                       @PathParam("userName") String userName) {
-        LOGGER.info("getContactDetails() - (ENTER)");
+        LOGGER.debug("getContactDetails() - (ENTER)");
 
         ServiceRequest<String> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -190,7 +190,7 @@ public class PersonResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getContactDetails() - (LEAVE)");
+        LOGGER.debug("getContactDetails() - (LEAVE)");
         return ret;
     }
 
@@ -204,7 +204,7 @@ public class PersonResource {
     @GET
     @Path("isUpdateContactDetailsEnabled")
     public Response isUpdateContactDetailsEnabled(@HeaderParam("Authorization") String credential) {
-        LOGGER.info("isUpdateContactDetailsEnabled() - (ENTER)");
+        LOGGER.debug("isUpdateContactDetailsEnabled() - (ENTER)");
 
         Response ret;
 
@@ -218,7 +218,7 @@ public class PersonResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("isUpdateContactDetailsEnabled() - (LEAVE)");
+        LOGGER.debug("isUpdateContactDetailsEnabled() - (LEAVE)");
         return ret;
     }
 
@@ -232,7 +232,7 @@ public class PersonResource {
     @GET
     @Path("isReviewContactDetailsEnabled")
     public Response isReviewContactDetailsEnabled(@HeaderParam("Authorization") String credential) {
-        LOGGER.info("isReviewContactDetailsEnabled() - (ENTER)");
+        LOGGER.debug("isReviewContactDetailsEnabled() - (ENTER)");
 
         Response ret;
         try {
@@ -245,7 +245,7 @@ public class PersonResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("isReviewContactDetailsEnabled() - (LEAVE)");
+        LOGGER.debug("isReviewContactDetailsEnabled() - (LEAVE)");
         return ret;
     }
 
@@ -270,7 +270,7 @@ public class PersonResource {
     public Response findPendingContactDetails(@HeaderParam("Authorization") String credential,
                                               @HeaderParam("roleName") String roleName,
                                               @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("findPendingContactDetails() - (ENTER)");
+        LOGGER.debug("findPendingContactDetails() - (ENTER)");
 
         ServiceRequest<NoBody> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -293,7 +293,7 @@ public class PersonResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("findPendingContactDetails() - (LEAVE)");
+        LOGGER.debug("findPendingContactDetails() - (LEAVE)");
         return ret;
     }
 
@@ -322,7 +322,7 @@ public class PersonResource {
                                              @HeaderParam("roleName") String roleName,
                                              @HeaderParam("scopeName") String scopeName,
                                              @PathParam("userName") String userName) {
-        LOGGER.info("getPendingContactDetails() - (ENTER)");
+        LOGGER.debug("getPendingContactDetails() - (ENTER)");
         ServiceRequest<String> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
         request.setRoleName(roleName);
@@ -342,7 +342,7 @@ public class PersonResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getPendingContactDetails() - (LEAVE) ");
+        LOGGER.debug("getPendingContactDetails() - (LEAVE) ");
         return ret;
     }
 
@@ -371,7 +371,7 @@ public class PersonResource {
                                                 @HeaderParam("roleName") String roleName,
                                                 @HeaderParam("scopeName") String scopeName,
                                                 @PathParam("userName") String userName) {
-        LOGGER.info("acceptPendingContactDetails() - (ENTER)");
+        LOGGER.debug("acceptPendingContactDetails() - (ENTER)");
         ServiceRequest<String> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
         request.setRoleName(roleName);
@@ -391,7 +391,7 @@ public class PersonResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("acceptPendingContactDetails() - (LEAVE) ");
+        LOGGER.debug("acceptPendingContactDetails() - (LEAVE) ");
         return ret;
     }
 
@@ -420,7 +420,7 @@ public class PersonResource {
                                                 @HeaderParam("roleName") String roleName,
                                                 @HeaderParam("scopeName") String scopeName,
                                                 @PathParam("userName") String userName) {
-        LOGGER.info("rejectPendingContactDetails() - (ENTER)");
+        LOGGER.debug("rejectPendingContactDetails() - (ENTER)");
 
         ServiceRequest<String> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -441,7 +441,7 @@ public class PersonResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("rejectPendingContactDetails() - (LEAVE) ");
+        LOGGER.debug("rejectPendingContactDetails() - (LEAVE) ");
         return ret;
     }
 

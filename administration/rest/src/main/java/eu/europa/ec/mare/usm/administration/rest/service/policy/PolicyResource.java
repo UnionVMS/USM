@@ -52,7 +52,7 @@ public class PolicyResource {
     @PUT
     public Response updatePolicy(@HeaderParam("authorization") String jwtToken,
                                  Policy policy) {
-        LOGGER.info("updatePolicy(" + policy + ") - (ENTER)");
+        LOGGER.debug("updatePolicy(" + policy + ") - (ENTER)");
 
         ServiceRequest<Policy> req = new ServiceRequest<>();
         req.setRequester(servletRequest.getRemoteUser());
@@ -67,7 +67,7 @@ public class PolicyResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("updatePolicy() - (LEAVE)");
+        LOGGER.debug("updatePolicy() - (LEAVE)");
         return ret;
     }
 
@@ -88,7 +88,7 @@ public class PolicyResource {
     public Response findPolicies(@HeaderParam("authorization") String jwtToken,
                                  @QueryParam("name") String name,
                                  @QueryParam("subject") String subject) {
-        LOGGER.info("findPolicies() - (ENTER)");
+        LOGGER.debug("findPolicies() - (ENTER)");
 
         ServiceRequest<FindPoliciesQuery> req = new ServiceRequest<>();
         req.setRequester(servletRequest.getRemoteUser());
@@ -112,7 +112,7 @@ public class PolicyResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("findPolicies() - (LEAVE)");
+        LOGGER.debug("findPolicies() - (LEAVE)");
         return ret;
     }
 
@@ -129,7 +129,7 @@ public class PolicyResource {
     @GET
     @Path("subjects")
     public Response getSubjects(@HeaderParam("authorization") String jwtToken) {
-        LOGGER.info("getSubjects() - (ENTER)");
+        LOGGER.debug("getSubjects() - (ENTER)");
 
         ServiceRequest<NoBody> req = new ServiceRequest<>();
         req.setRequester(servletRequest.getRemoteUser());
@@ -151,7 +151,7 @@ public class PolicyResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("getSubjects() - (LEAVE)");
+        LOGGER.debug("getSubjects() - (LEAVE)");
         return ret;
     }
 }

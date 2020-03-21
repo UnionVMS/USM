@@ -40,7 +40,7 @@ public class AuthenticationResource {
     @Path("authenticate")
     @Produces(MediaType.APPLICATION_JSON)
     public Response authenticateUser(AuthenticationRequest request) {
-        LOGGER.info("authenticateUser() - (ENTER)");
+        LOGGER.debug("authenticateUser() - (ENTER)");
 
         Response response;
         try {
@@ -50,7 +50,7 @@ public class AuthenticationResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("authenticateUser() - (LEAVE)");
+        LOGGER.debug("authenticateUser() - (LEAVE)");
         return response;
     }
 
@@ -70,7 +70,7 @@ public class AuthenticationResource {
     @Path("challenge")
     @Produces("application/json")
     public Response getUserChallenge(@HeaderParam("Authorization") String userName) {
-        LOGGER.info("getUserChallenge() - (ENTER)");
+        LOGGER.debug("getUserChallenge() - (ENTER)");
 
         AuthenticationQuery query = new AuthenticationQuery();
         query.setUserName(userName);
@@ -87,7 +87,7 @@ public class AuthenticationResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getUserChallenge() - (LEAVE)");
+        LOGGER.debug("getUserChallenge() - (LEAVE)");
         return response;
     }
 
@@ -106,7 +106,7 @@ public class AuthenticationResource {
     @Path("challengeauth")
     @Produces("application/json")
     public Response authenticateUserByChallenge(ChallengeResponse request) throws WebApplicationException {
-        LOGGER.info("authenticateUserByChallenge() - (ENTER)");
+        LOGGER.debug("authenticateUserByChallenge() - (ENTER)");
 
         Response response;
         try {
@@ -120,7 +120,7 @@ public class AuthenticationResource {
             response = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("authenticateUserByChallenge() - (LEAVE)");
+        LOGGER.debug("authenticateUserByChallenge() - (LEAVE)");
         return response;
     }
 

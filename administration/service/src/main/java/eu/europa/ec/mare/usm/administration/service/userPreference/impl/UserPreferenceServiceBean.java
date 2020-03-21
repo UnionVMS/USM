@@ -28,7 +28,7 @@ public class UserPreferenceServiceBean implements UserPreferenceService {
     @Override
     public UserPreferenceResponse getUserPrefernces(ServiceRequest<FindUserPreferenceQuery> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("getUserPrefernces(" + request + ") - (ENTER)");
+        LOGGER.debug("getUserPrefernces(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewUsers);
@@ -38,7 +38,7 @@ public class UserPreferenceServiceBean implements UserPreferenceService {
         UserPreferenceResponse ret = userPreferenceJdbcDao.getUserPreferences(request.getBody().getUserName(),
                 request.getBody().getGroupName());
 
-        LOGGER.info("getUserPrefernces() - (LEAVE)");
+        LOGGER.debug("getUserPrefernces() - (LEAVE)");
         return ret;
     }
 

@@ -37,7 +37,7 @@ public class ExceptionHandlerFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        LOGGER.info("doFilter(" + httpRequest.getMethod() + ", " + httpRequest.getPathInfo() + ") - (ENTER)");
+        LOGGER.debug("doFilter(" + httpRequest.getMethod() + ", " + httpRequest.getPathInfo() + ") - (ENTER)");
 
         try {
             chain.doFilter(request, response);
@@ -62,7 +62,7 @@ public class ExceptionHandlerFilter implements Filter {
             httpResponse.getWriter().print(sb.toString());
         }
 
-        LOGGER.info("doFilter() - (LEAVE)");
+        LOGGER.debug("doFilter() - (LEAVE)");
     }
 
     private String getExceptionName(Throwable e) {

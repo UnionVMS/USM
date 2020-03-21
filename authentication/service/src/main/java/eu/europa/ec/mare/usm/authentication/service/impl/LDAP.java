@@ -51,7 +51,7 @@ public class LDAP {
      * response 'statusCode' in case of failed authentication.
      */
     public Map<String, Object> authenticate(String userName, String password) {
-        LOGGER.info("authenticate(" + userName + ") - (ENTER)");
+        LOGGER.debug("authenticate(" + userName + ") - (ENTER)");
 
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
@@ -141,7 +141,7 @@ public class LDAP {
             cleanUp(ctx, answer, attributeNamingEnumeration);
         }
 
-        LOGGER.info("authenticate() - (LEAVE): " + returnMap);
+        LOGGER.debug("authenticate() - (LEAVE): " + returnMap);
         return returnMap;
     }
 

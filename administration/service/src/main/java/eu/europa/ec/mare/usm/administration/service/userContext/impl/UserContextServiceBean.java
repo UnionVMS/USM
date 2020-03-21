@@ -54,7 +54,7 @@ public class UserContextServiceBean implements UserContextService {
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public UserContextResponse getUserContexts(ServiceRequest<FindUserContextsQuery> request) {
-        LOGGER.info("getUserContexts(" + request + ") - (ENTER)");
+        LOGGER.debug("getUserContexts(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewUsers);
@@ -64,14 +64,14 @@ public class UserContextServiceBean implements UserContextService {
 
         UserContextResponse ret = userContextJdbcDao.findUserContexts(request.getBody().getUserName());
 
-        LOGGER.info("getUserContexts() - (LEAVE)");
+        LOGGER.debug("getUserContexts() - (LEAVE)");
         return ret;
     }
 
     @Override
     public UserContext createUserContext(ServiceRequest<UserContext> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("createUserContext( " + request + " ) - (ENTER)");
+        LOGGER.debug("createUserContext( " + request + " ) - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageUsers, true);
 
@@ -90,13 +90,13 @@ public class UserContextServiceBean implements UserContextService {
                         request.getBody().getUserName(), request.getBody().getUserName(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("createUserContext() - (LEAVE)");
+        LOGGER.debug("createUserContext() - (LEAVE)");
         return convert(entity);
     }
 
     @Override
     public UserContext updateUserContext(ServiceRequest<UserContext> request) {
-        LOGGER.info("updateUserContext(" + request + ") - (ENTER)");
+        LOGGER.debug("updateUserContext(" + request + ") - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageUsers, false);
 
@@ -113,14 +113,14 @@ public class UserContextServiceBean implements UserContextService {
                         request.getBody().getUserName(), request.getBody().getUserName(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("updateUserContext() - (LEAVE)");
+        LOGGER.debug("updateUserContext() - (LEAVE)");
         return convert(updatedUserContext);
     }
 
     @Override
     public void deleteUserContext(ServiceRequest<String> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("deleteUserContext( " + request + " ) - (ENTER)");
+        LOGGER.debug("deleteUserContext( " + request + " ) - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageUsers, "role");
 
@@ -131,13 +131,13 @@ public class UserContextServiceBean implements UserContextService {
                         request.getBody(), request.getBody(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("deleteUserContext() - (LEAVE)");
+        LOGGER.debug("deleteUserContext() - (LEAVE)");
     }
 
     @Override
     public void copyUserProfiles(ServiceRequest<UserContextResponse> request, String toUserName)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("copyUserProfiles(" + request + ", " + toUserName + ") - (ENTER)");
+        LOGGER.debug("copyUserProfiles(" + request + ", " + toUserName + ") - (ENTER)");
 
         validator.assertValidCopy(request, USMFeature.copyUserProfile, toUserName);
 
@@ -174,7 +174,7 @@ public class UserContextServiceBean implements UserContextService {
                         toUserName, toUserName, request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("copyUserProfiles() - (LEAVE)");
+        LOGGER.debug("copyUserProfiles() - (LEAVE)");
     }
 
     private UserContextEntity convert(ComprehensiveUserContext src) {

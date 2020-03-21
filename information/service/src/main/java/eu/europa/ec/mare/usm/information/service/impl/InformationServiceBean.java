@@ -35,45 +35,45 @@ public class InformationServiceBean implements InformationService {
 
     @Override
     public ContactDetails getContactDetails(String userName) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("getContactDetails(" + userName + ") - (ENTER)");
+        LOGGER.debug("getContactDetails(" + userName + ") - (ENTER)");
 
         assertNotEmpty("userName", userName);
         ContactDetails ret = dao.getContactDetails(userName);
 
-        LOGGER.info("getContactDetails() - (LEAVE)");
+        LOGGER.debug("getContactDetails() - (LEAVE)");
         return ret;
     }
 
     @Override
     public List<Organisation> findOrganisations(String nation) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("findOrganisations(" + nation + ") - (ENTER)");
+        LOGGER.debug("findOrganisations(" + nation + ") - (ENTER)");
 
         assertNotEmpty("nation", nation);
         List<Organisation> ret = dao.findOrganisations(nation);
 
-        LOGGER.info("findOrganisations() - (LEAVE)");
+        LOGGER.debug("findOrganisations() - (LEAVE)");
         return ret;
     }
 
     @Override
     public Organisation getOrganisation(String organisationName) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("getOrganisation(" + organisationName + ") - (ENTER)");
+        LOGGER.debug("getOrganisation(" + organisationName + ") - (ENTER)");
 
         assertNotEmpty("organisationName", organisationName);
         Organisation ret = dao.getOrganisation(organisationName);
 
-        LOGGER.info("getOrganisation() - (LEAVE)");
+        LOGGER.debug("getOrganisation() - (LEAVE)");
         return ret;
     }
 
     @Override
     public UserContext getUserContext(UserContextQuery query) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("getUserContext(" + query + ") - (ENTER)");
+        LOGGER.debug("getUserContext(" + query + ") - (ENTER)");
 
         assertValid(query);
         UserContext ret = dao.getUserContext(query);
 
-        LOGGER.info("getUserContext() - (LEAVE)");
+        LOGGER.debug("getUserContext() - (LEAVE)");
         return ret;
     }
 
@@ -85,7 +85,7 @@ public class InformationServiceBean implements InformationService {
 
     @Override
     public void updateUserPreferences(UserContext userContext) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("updateUserContext(" + userContext + ") - (ENTER)");
+        LOGGER.debug("updateUserContext(" + userContext + ") - (ENTER)");
 
         // Validate input
         assertValid(userContext);
@@ -98,36 +98,36 @@ public class InformationServiceBean implements InformationService {
             }
         }
 
-        LOGGER.info("updateUserContext() - (LEAVE)");
+        LOGGER.debug("updateUserContext() - (LEAVE)");
     }
 
     @Override
     public void createUserPreference(UserPreference userPreference) {
-        LOGGER.info("createUserPreference(" + userPreference + ") - (ENTER)");
+        LOGGER.debug("createUserPreference(" + userPreference + ") - (ENTER)");
         informationJpaDao.createUserPreference(userPreference);
-        LOGGER.info("createUserPreference() - (LEAVE)");
+        LOGGER.debug("createUserPreference() - (LEAVE)");
     }
 
     @Override
     public void updateUserPreference(UserPreference userPreference) {
-        LOGGER.info("updateUserPreference(" + userPreference + ") - (ENTER)");
+        LOGGER.debug("updateUserPreference(" + userPreference + ") - (ENTER)");
         informationJpaDao.updateUserPreference(userPreference);
-        LOGGER.info("updateUserPreference() - (LEAVE)");
+        LOGGER.debug("updateUserPreference() - (LEAVE)");
     }
 
     @Override
     public void deleteUserPreference(UserPreference userPreference) {
-        LOGGER.info("deleteUserPreference(" + userPreference + ") - (ENTER)");
+        LOGGER.debug("deleteUserPreference(" + userPreference + ") - (ENTER)");
         informationJpaDao.deleteUserPreference(userPreference);
-        LOGGER.info("deleteUserPreference() - (LEAVE)");
+        LOGGER.debug("deleteUserPreference() - (LEAVE)");
     }
 
     @Override
     public UserPreference getUserPreference(UserPreference userPreference) {
-        LOGGER.info("getUserPreference(" + userPreference + ") - (ENTER)");
+        LOGGER.debug("getUserPreference(" + userPreference + ") - (ENTER)");
         PreferenceEntity entity = informationJpaDao.readUserPreference(userPreference);
         UserPreference preference = convertUserPreference(entity);
-        LOGGER.info("getUserPreference() - (LEAVE)");
+        LOGGER.debug("getUserPreference() - (LEAVE)");
         return preference;
     }
 
@@ -148,39 +148,38 @@ public class InformationServiceBean implements InformationService {
 
     @Override
     public void createDataSet(DataSet dataSet) {
-        LOGGER.info("createDataSet(" + dataSet + ") - (ENTER)");
+        LOGGER.debug("createDataSet(" + dataSet + ") - (ENTER)");
         dataSetDao.createDataSet(dataSet);
-        LOGGER.info("createDataSet() - (LEAVE)");
+        LOGGER.debug("createDataSet() - (LEAVE)");
     }
 
     @Override
     public void updateDataSet(DataSet dataSet) {
-        LOGGER.info("updateDataSet(" + dataSet + ") - (ENTER)");
+        LOGGER.debug("updateDataSet(" + dataSet + ") - (ENTER)");
         dataSetDao.updateDataSet(dataSet);
-        LOGGER.info("updateDataSet() - (LEAVE)");
+        LOGGER.debug("updateDataSet() - (LEAVE)");
     }
 
     @Override
     public void deleteDataSet(DataSet dataSet) {
-        LOGGER.info("deleteDataSet(" + dataSet + ") - (ENTER)");
+        LOGGER.debug("deleteDataSet(" + dataSet + ") - (ENTER)");
         dataSetDao.deleteDataSet(dataSet);
-        LOGGER.info("deleteDataSet() - (LEAVE)");
+        LOGGER.debug("deleteDataSet() - (LEAVE)");
     }
 
     @Override
     public DataSet getDataSet(String name, String applicationName) {
-        LOGGER.info("deleteDataSet(" + name + ", " + applicationName + " ) - (ENTER)");
+        LOGGER.debug("deleteDataSet(" + name + ", " + applicationName + " ) - (ENTER)");
         DatasetEntity entity = dataSetDao.findDataSetByNameAndApplication(name, applicationName);
-        LOGGER.info("deleteDataSet() - (LEAVE)");
+        LOGGER.debug("deleteDataSet() - (LEAVE)");
         return convertDataSet(entity);
     }
 
     @Override
     public List<DataSet> getDataSets(DataSetFilter dataSetFilter) {
-        LOGGER.info("getDataSet(" + dataSetFilter.getName() + ", "
-                + dataSetFilter.getApplicationName() + " ) - (ENTER)");
+        LOGGER.debug("getDataSet(" + dataSetFilter.getName() + ", " + dataSetFilter.getApplicationName() + " ) - (ENTER)");
         List<DatasetEntity> entity = dataSetDao.findDataSets(dataSetFilter);
-        LOGGER.info("getDataSet() - (LEAVE)");
+        LOGGER.debug("getDataSet() - (LEAVE)");
         return convertDataSets(entity);
     }
 

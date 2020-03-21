@@ -290,7 +290,7 @@ public class InformationDao {
      *                          the request
      */
     public void updateUserContext(String userName, Context ctx) {
-        LOGGER.info("updateUserContext(" + ctx + ") - (ENTER)");
+        LOGGER.debug("updateUserContext(" + ctx + ") - (ENTER)");
 
         Connection connection = null;
         PreparedStatement stmt_delete = null;

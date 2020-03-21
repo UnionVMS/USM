@@ -25,7 +25,7 @@ public class PersonJpaDao {
      * @return the List of all persons from the database, null if any error encountered
      */
     public List<PersonEntity> findAll() {
-        LOGGER.info("findAll() - (ENTER)");
+        LOGGER.debug("findAll() - (ENTER)");
 
         List<PersonEntity> ret = null;
 
@@ -38,7 +38,7 @@ public class PersonJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("findAll() - (LEAVE)" + ret);
+        LOGGER.debug("findAll() - (LEAVE)" + ret);
         return ret;
     }
 
@@ -56,7 +56,7 @@ public class PersonJpaDao {
      * @return the matching end point if it exists, null otherwise
      */
     public PersonEntity read(Long personId) {
-        LOGGER.info("read() - (ENTER)");
+        LOGGER.debug("read() - (ENTER)");
 
         PersonEntity ret = null;
 
@@ -68,7 +68,7 @@ public class PersonJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE)" + ret);
+        LOGGER.debug("read() - (LEAVE)" + ret);
         return ret;
     }
 
@@ -79,7 +79,7 @@ public class PersonJpaDao {
      * @return the updated contact details
      */
     public PersonEntity update(PersonEntity person) {
-        LOGGER.info("update(" + person + ") - (ENTER)");
+        LOGGER.debug("update(" + person + ") - (ENTER)");
 
         PersonEntity ret = null;
         try {
@@ -91,7 +91,7 @@ public class PersonJpaDao {
             throw new RuntimeException(msg, ex);
         }
 
-        LOGGER.info("update() - (LEAVE)");
+        LOGGER.debug("update() - (LEAVE)");
         return ret;
     }
 

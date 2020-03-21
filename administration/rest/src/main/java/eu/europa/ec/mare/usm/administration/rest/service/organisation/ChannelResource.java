@@ -52,7 +52,7 @@ public class ChannelResource {
                                @HeaderParam("roleName") String roleName,
                                @HeaderParam("scopeName") String scopeName,
                                @PathParam("channelId") Long channelId) {
-        LOGGER.info("getChannel() - (ENTER)");
+        LOGGER.debug("getChannel() - (ENTER)");
 
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -75,7 +75,7 @@ public class ChannelResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getChannel() - (LEAVE)");
+        LOGGER.debug("getChannel() - (LEAVE)");
         return ret;
     }
 
@@ -100,7 +100,7 @@ public class ChannelResource {
                                   @HeaderParam("roleName") String roleName,
                                   @HeaderParam("scopeName") String scopeName,
                                   Channel channel) {
-        LOGGER.info("createChannel() - (ENTER)");
+        LOGGER.debug("createChannel() - (ENTER)");
 
         ServiceRequest<Channel> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -147,7 +147,7 @@ public class ChannelResource {
                                   @HeaderParam("roleName") String roleName,
                                   @HeaderParam("scopeName") String scopeName,
                                   Channel channel) {
-        LOGGER.info("updateChannel() - (ENTER)");
+        LOGGER.debug("updateChannel() - (ENTER)");
 
         ServiceRequest<Channel> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -191,7 +191,7 @@ public class ChannelResource {
                                   @HeaderParam("roleName") String roleName,
                                   @HeaderParam("scopeName") String scopeName,
                                   @PathParam("channelId") String channelId) {
-        LOGGER.info("deleteChannel(" + channelId + ") - (ENTER)");
+        LOGGER.debug("deleteChannel(" + channelId + ") - (ENTER)");
 
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -210,7 +210,7 @@ public class ChannelResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("deleteChannel() - (ENTER)");
+        LOGGER.debug("deleteChannel() - (LEAVE)");
 
         return ret;
     }

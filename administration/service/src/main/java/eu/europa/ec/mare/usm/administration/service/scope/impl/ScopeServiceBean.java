@@ -50,7 +50,7 @@ public class ScopeServiceBean implements ScopeService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Scope createScope(ServiceRequest<Scope> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("createScope(" + request + ") - (ENTER)");
+        LOGGER.debug("createScope(" + request + ") - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageScopes, true);
 
@@ -70,7 +70,7 @@ public class ScopeServiceBean implements ScopeService {
                         request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("createScope() - (LEAVE)");
+        LOGGER.debug("createScope() - (LEAVE)");
         return ret;
     }
 
@@ -78,7 +78,7 @@ public class ScopeServiceBean implements ScopeService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Scope updateScope(ServiceRequest<Scope> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("updateScope(" + request + ") - (ENTER)");
+        LOGGER.debug("updateScope(" + request + ") - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageScopes, false);
 
@@ -98,7 +98,7 @@ public class ScopeServiceBean implements ScopeService {
                         request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("updateScope() - (LEAVE)");
+        LOGGER.debug("updateScope() - (LEAVE)");
         return ret;
     }
 
@@ -106,7 +106,7 @@ public class ScopeServiceBean implements ScopeService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void deleteScope(ServiceRequest<Long> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("deleteScope(" + request + ") - (ENTER)");
+        LOGGER.debug("deleteScope(" + request + ") - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageScopes, "scopeId");
         jpaDao.delete(request.getBody());
@@ -116,13 +116,13 @@ public class ScopeServiceBean implements ScopeService {
                         request.getBody(), "" + request.getBody(), request.getRequester());
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("deleteScope() - (LEAVE)");
+        LOGGER.debug("deleteScope() - (LEAVE)");
     }
 
     @Override
     public Scope getScope(ServiceRequest<GetScopeQuery> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("getScope(" + request + ") - (ENTER)");
+        LOGGER.debug("getScope(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewScopes);
@@ -135,14 +135,14 @@ public class ScopeServiceBean implements ScopeService {
             List<UserContextEntity> activeUsers = userJpaDao.findActiveUsersForScope(request.getBody().getScopeId());
             ret.setActiveUsers(activeUsers == null ? 0 : activeUsers.size());
         }
-        LOGGER.info("getScope() - (LEAVE)");
+        LOGGER.debug("getScope() - (LEAVE)");
         return ret;
     }
 
     @Override
     public PaginationResponse<Scope> findScopes(ServiceRequest<FindScopesQuery> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("findScopes(" + request + ") - (ENTER)");
+        LOGGER.debug("findScopes(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewScopes);
@@ -152,7 +152,7 @@ public class ScopeServiceBean implements ScopeService {
 
         PaginationResponse<Scope> ret = jdbcDao.findScopes(request.getBody());
 
-        LOGGER.info("findScopes() - (LEAVE)");
+        LOGGER.debug("findScopes() - (LEAVE)");
         return ret;
     }
 
@@ -160,7 +160,7 @@ public class ScopeServiceBean implements ScopeService {
     public List<DataSet> findDataSet(ServiceRequest<FindDataSetQuery> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
 
-        LOGGER.info("findDataSet(" + request + ") - (ENTER)");
+        LOGGER.debug("findDataSet(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewScopes);
@@ -170,7 +170,7 @@ public class ScopeServiceBean implements ScopeService {
 
         List<DataSet> ret = jdbcDao.findDataSets(request.getBody());
 
-        LOGGER.info("findDataSet() - (LEAVE)");
+        LOGGER.debug("findDataSet() - (LEAVE)");
         return ret;
     }
 
@@ -253,7 +253,7 @@ public class ScopeServiceBean implements ScopeService {
     @Override
     public List<String> getCategoryNames(ServiceRequest<String> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("getCategoryNames(" + request + ") - (ENTER)");
+        LOGGER.debug("getCategoryNames(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewScopes);
@@ -262,14 +262,14 @@ public class ScopeServiceBean implements ScopeService {
         validator.assertValid(request, "query", featureSet);
         List<String> names = jdbcDao.getCategoryNames();
 
-        LOGGER.info("getCategoryNames() - (LEAVE)");
+        LOGGER.debug("getCategoryNames() - (LEAVE)");
         return names;
     }
 
     @Override
     public List<DataSet> findDataSets(ServiceRequest<FindDataSetQuery> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("findDataSets(" + request + ") - (ENTER)");
+        LOGGER.debug("findDataSets(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewScopes);
@@ -283,7 +283,7 @@ public class ScopeServiceBean implements ScopeService {
             ret.add(convertEntytyToDatasetDomain(dataset));
         }
 
-        LOGGER.info("findDataSets() - (LEAVE)");
+        LOGGER.debug("findDataSets() - (LEAVE)");
         return ret;
     }
 
@@ -309,7 +309,7 @@ public class ScopeServiceBean implements ScopeService {
     @Override
     public List<ComprehensiveScope> getScopes(ServiceRequest<ScopeQuery> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("getScopes(" + request + ") - (ENTER)");
+        LOGGER.debug("getScopes(" + request + ") - (ENTER)");
 
         HashSet<USMFeature> featureSet = new HashSet<USMFeature>();
         featureSet.add(USMFeature.viewScopes);
@@ -318,7 +318,7 @@ public class ScopeServiceBean implements ScopeService {
         validator.assertValid(request, "query", featureSet);
         List<ComprehensiveScope> ret = jdbcDao.getScopes();
 
-        LOGGER.info("getScopes() - (LEAVE)");
+        LOGGER.debug("getScopes() - (LEAVE)");
         return ret;
     }
 }

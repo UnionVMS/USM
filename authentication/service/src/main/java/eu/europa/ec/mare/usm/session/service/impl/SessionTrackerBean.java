@@ -40,7 +40,7 @@ public class SessionTrackerBean implements SessionTracker {
     public String startSession(SessionInfo sessionInfo)
 			throws IllegalStateException, IllegalArgumentException, RuntimeException {
 
-        LOGGER.info("startSession(" + sessionInfo + ") - (ENTER)");
+        LOGGER.debug("startSession(" + sessionInfo + ") - (ENTER)");
         String ret = null;
         validator.assertValid(sessionInfo);
         try {
@@ -53,7 +53,7 @@ public class SessionTrackerBean implements SessionTracker {
 
             ret = sessionDao.createSession(session);
 
-            LOGGER.info("startSession() - (LEAVE): " + ret);
+            LOGGER.debug("startSession() - (LEAVE): " + ret);
         } catch (IllegalStateException ex) {
             LOGGER.warn("User exceeded the maximum number sessions!");
         }
@@ -62,7 +62,7 @@ public class SessionTrackerBean implements SessionTracker {
 
     @Override
     public SessionInfo getSession(String sessionId) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("getSession(" + sessionId + ") - (ENTER)");
+        LOGGER.debug("getSession(" + sessionId + ") - (ENTER)");
 
         validator.assertNotEmpty("sessionId", sessionId);
 
@@ -74,19 +74,19 @@ public class SessionTrackerBean implements SessionTracker {
             ret.setUserSite(session.getUserSite());
         }
 
-        LOGGER.info("getSession() - (LEAVE): " + ret);
+        LOGGER.debug("getSession() - (LEAVE): " + ret);
         return ret;
     }
 
     @Override
     public void endSession(String sessionId) throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("endSession(" + sessionId + ") - (ENTER)");
+        LOGGER.debug("endSession(" + sessionId + ") - (ENTER)");
 
         validator.assertNotEmpty("sessionId", sessionId);
 
         sessionDao.deleteSession(sessionId);
 
-        LOGGER.info("endSession() - (LEAVE)");
+        LOGGER.debug("endSession() - (LEAVE)");
     }
 
     private void checkMaxSessionPolicy(SessionInfo sessionInfo) throws NumberFormatException {

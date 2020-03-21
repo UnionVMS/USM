@@ -56,7 +56,7 @@ public class OrganisationResource {
                                        @HeaderParam("roleName") String roleName,
                                        @HeaderParam("scopeName") String scopeName,
                                        Organisation organisation) {
-        LOGGER.info("createOrganisation() - (ENTER)");
+        LOGGER.debug("createOrganisation() - (ENTER)");
 
         ServiceRequest<Organisation> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -105,7 +105,7 @@ public class OrganisationResource {
                                        @HeaderParam("roleName") String roleName,
                                        @HeaderParam("scopeName") String scopeName,
                                        Organisation organisation) {
-        LOGGER.info("updateOrganisation() - (ENTER)");
+        LOGGER.debug("updateOrganisation() - (ENTER)");
 
         ServiceRequest<Organisation> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -149,7 +149,7 @@ public class OrganisationResource {
                                        @HeaderParam("roleName") String roleName,
                                        @HeaderParam("scopeName") String scopeName,
                                        @PathParam("organisationId") String organisationId) {
-        LOGGER.info("deleteOrganisation(" + organisationId + ") - (ENTER)");
+        LOGGER.debug("deleteOrganisation(" + organisationId + ") - (ENTER)");
 
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -166,7 +166,7 @@ public class OrganisationResource {
             ret = ExceptionHandler.handleException(e);
         }
 
-        LOGGER.info("deleteOrganisation() - (ENTER)");
+        LOGGER.debug("deleteOrganisation() - (LEAVE)");
         return ret;
     }
 
@@ -189,7 +189,7 @@ public class OrganisationResource {
     public Response getOrganisationNames(@HeaderParam("authorization") String jwtToken,
                                          @HeaderParam("roleName") String roleName,
                                          @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("getOrganisationNames() - (ENTER)");
+        LOGGER.debug("getOrganisationNames() - (ENTER)");
 
         ServiceRequest<OrganisationQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -214,7 +214,7 @@ public class OrganisationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getOrganisationNames() - (LEAVE)");
+        LOGGER.debug("getOrganisationNames() - (LEAVE)");
         return ret;
     }
 
@@ -241,7 +241,7 @@ public class OrganisationResource {
                                                @HeaderParam("roleName") String roleName,
                                                @HeaderParam("scopeName") String scopeName,
                                                @PathParam("organisationId") Long organisationId) {
-        LOGGER.info("getOrganisationParentNames() - (ENTER)");
+        LOGGER.debug("getOrganisationParentNames() - (ENTER)");
 
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -266,7 +266,7 @@ public class OrganisationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getOrganisationParentNames() - (LEAVE)");
+        LOGGER.debug("getOrganisationParentNames() - (LEAVE)");
         return ret;
     }
 
@@ -289,7 +289,7 @@ public class OrganisationResource {
     public Response getNationNames(@HeaderParam("authorization") String jwtToken,
                                    @HeaderParam("roleName") String roleName,
                                    @HeaderParam("scopeName") String scopeName) {
-        LOGGER.info("getNationNames() - (ENTER)");
+        LOGGER.debug("getNationNames() - (ENTER)");
 
         ServiceRequest<OrganisationQuery> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -314,7 +314,7 @@ public class OrganisationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getNationNames() - (LEAVE)");
+        LOGGER.debug("getNationNames() - (LEAVE)");
         return ret;
     }
 
@@ -350,7 +350,7 @@ public class OrganisationResource {
                                       @QueryParam("name") String name,
                                       @QueryParam("nation") String nation,
                                       @QueryParam("status") String status) {
-        LOGGER.info("findOrganisations() - (ENTER)");
+        LOGGER.debug("findOrganisations() - (ENTER)");
 
         // Setup paginator
         Paginator paginator = new Paginator();
@@ -387,7 +387,7 @@ public class OrganisationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("findOrganisations() - (LEAVE)");
+        LOGGER.debug("findOrganisations() - (LEAVE)");
         return ret;
     }
 
@@ -412,7 +412,7 @@ public class OrganisationResource {
                                         @HeaderParam("roleName") String roleName,
                                         @HeaderParam("scopeName") String scopeName,
                                         @PathParam("organisationId") Long organisationId) {
-        LOGGER.info("getOrganisation() - (ENTER)");
+        LOGGER.debug("getOrganisation() - (ENTER)");
 
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -435,7 +435,7 @@ public class OrganisationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getOrganisation() - (LEAVE)");
+        LOGGER.debug("getOrganisation() - (LEAVE)");
         return ret;
     }
 
@@ -462,7 +462,7 @@ public class OrganisationResource {
                                 @HeaderParam("roleName") String roleName,
                                 @HeaderParam("scopeName") String scopeName,
                                 @PathParam("endPointId") Long endPointId) {
-        LOGGER.info("getEndPoint() - (ENTER)");
+        LOGGER.debug("getEndPoint() - (ENTER)");
 
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -485,7 +485,7 @@ public class OrganisationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getEndPoint() - (LEAVE)");
+        LOGGER.debug("getEndPoint() - (LEAVE)");
         return ret;
     }
 
@@ -512,7 +512,7 @@ public class OrganisationResource {
                                @HeaderParam("roleName") String roleName,
                                @HeaderParam("scopeName") String scopeName,
                                @PathParam("channelId") Long channelId) {
-        LOGGER.info("getChannel() - (ENTER)");
+        LOGGER.debug("getChannel() - (ENTER)");
 
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -535,7 +535,7 @@ public class OrganisationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getChannel() - (LEAVE)");
+        LOGGER.debug("getChannel() - (LEAVE)");
         return ret;
     }
 
@@ -562,7 +562,7 @@ public class OrganisationResource {
                                        @HeaderParam("roleName") String roleName,
                                        @HeaderParam("scopeName") String scopeName,
                                        @PathParam("endPointContactId") Long endPointContactId) {
-        LOGGER.info("getEndPointContact() - (ENTER)");
+        LOGGER.debug("getEndPointContact() - (ENTER)");
 
         ServiceRequest<Long> request = new ServiceRequest<>();
         request.setRequester(servletRequest.getRemoteUser());
@@ -585,7 +585,7 @@ public class OrganisationResource {
             ret = ExceptionHandler.handleException(exc);
         }
 
-        LOGGER.info("getEndPointContact() - (LEAVE)");
+        LOGGER.debug("getEndPointContact() - (LEAVE)");
         return ret;
     }
 

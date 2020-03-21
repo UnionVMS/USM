@@ -8,6 +8,7 @@ import eu.europa.ec.mare.usm.administration.service.JsonBConfiguratorExtended;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationRequest;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
 import eu.europa.ec.mare.usm.authentication.domain.ChallengeResponse;
+import eu.europa.ec.mare.usm.session.domain.SessionInfo;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -152,14 +153,32 @@ public class AdministrationRestClient {
                 .get();
     }
 
-    public Response findApplications(String jwtToken, String... applicationName) {
+    public Response findApplications(String jwtToken, String applicationName) {
         return getWebTargetInternal()
                 .path("applications")
-                .queryParam("name", applicationName == null ? "" : applicationName[0])
+                .queryParam("name", applicationName)
                 .queryParam("limit", "8")
                 .queryParam("offset", "0")
                 .queryParam("sortColumn", "name")
                 .queryParam("sortDirection", "desc")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response getApplicationDetails(String jwtToken, String applicationName) {
+        return getWebTargetInternal()
+                .path("applications")
+                .path(applicationName)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response getParentApplicationNames(String jwtToken) {
+        return getWebTargetInternal()
+                .path("applications")
+                .path("parent/names")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, jwtToken)
                 .get();
@@ -178,6 +197,15 @@ public class AdministrationRestClient {
         return getWebTargetInternal()
                 .path("applications")
                 .path(applicationName)
+                .path("features")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response getAllFeatures(String jwtToken) {
+        return getWebTargetInternal()
+                .path("applications")
                 .path("features")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, jwtToken)
@@ -695,4 +723,21 @@ public class AdministrationRestClient {
                 .header(HttpHeaders.AUTHORIZATION, jwtToken)
                 .delete();
     }
+
+    public Response getContexts(String jwtToken) {
+        return getWebTargetInternal()
+                .path("userContexts")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
+    public Response getPing(String jwtToken) {
+        return getWebTargetInternal()
+                .path("ping")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .get();
+    }
+
 }

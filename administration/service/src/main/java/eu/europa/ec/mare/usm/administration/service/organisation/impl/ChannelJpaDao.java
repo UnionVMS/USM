@@ -32,7 +32,7 @@ public class ChannelJpaDao {
      * @return the matching channel if it exists, null otherwise
      */
     public ChannelEntity findByDataFlowServiceEndPoint(String dataflow, String service, Long endPointId) {
-        LOGGER.info(" findByDataFlowServiceEndPoint(" + dataflow + ", " + service + " , " + endPointId + ") - (ENTER)");
+        LOGGER.debug(" findByDataFlowServiceEndPoint(" + dataflow + ", " + service + " , " + endPointId + ") - (ENTER)");
         ChannelEntity ret = null;
 
         try {
@@ -49,7 +49,7 @@ public class ChannelJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info(" findByDataFlowServiceEndPoint() - (LEAVE)");
+        LOGGER.debug(" findByDataFlowServiceEndPoint() - (LEAVE)");
         return ret;
     }
 
@@ -60,7 +60,7 @@ public class ChannelJpaDao {
      * @return the matching channel if it exists, null otherwise
      */
     public ChannelEntity read(Long channelId) {
-        LOGGER.info("read(" + channelId + ") - (ENTER)");
+        LOGGER.debug("read(" + channelId + ") - (ENTER)");
 
         ChannelEntity ret = null;
 
@@ -72,7 +72,7 @@ public class ChannelJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info("read() - (LEAVE)");
+        LOGGER.debug("read() - (LEAVE)");
         return ret;
     }
 
@@ -83,7 +83,7 @@ public class ChannelJpaDao {
      * @return the list of the associated channels if there are any, null otherwise
      */
     public List<ChannelEntity> findByEndPointId(Long endPointId) {
-        LOGGER.info(" findByEndPointId(" + endPointId + ") - (ENTER)");
+        LOGGER.debug(" findByEndPointId(" + endPointId + ") - (ENTER)");
         List<ChannelEntity> ret = null;
 
         try {
@@ -96,7 +96,7 @@ public class ChannelJpaDao {
             handleException("read", ex);
         }
 
-        LOGGER.info(" findByEndPointId() - (LEAVE) + ret");
+        LOGGER.debug(" findByEndPointId() - (LEAVE)");
         return ret;
     }
 
@@ -115,7 +115,7 @@ public class ChannelJpaDao {
      * @return the identifier of the newly inserted channel
      */
     public ChannelEntity create(ChannelEntity newEntity) {
-        LOGGER.info("create(" + newEntity + ") - (ENTER)");
+        LOGGER.debug("create(" + newEntity + ") - (ENTER)");
 
         try {
             em.persist(newEntity);
@@ -126,7 +126,7 @@ public class ChannelJpaDao {
             throw new RuntimeException(msg, ex);
         }
 
-        LOGGER.info("create() - (LEAVE)");
+        LOGGER.debug("create() - (LEAVE)");
         return newEntity;
     }
 
@@ -137,7 +137,7 @@ public class ChannelJpaDao {
      * @return the updated channel
      */
     public ChannelEntity update(ChannelEntity channel) {
-        LOGGER.info("update(" + channel + ") - (ENTER)");
+        LOGGER.debug("update(" + channel + ") - (ENTER)");
 
         ChannelEntity ret = null;
         try {
@@ -148,7 +148,7 @@ public class ChannelJpaDao {
             LOGGER.error(msg, ex);
             throw new RuntimeException(msg, ex);
         }
-        LOGGER.info("update() - (LEAVE)");
+        LOGGER.debug("update() - (LEAVE)");
         return ret;
     }
 
@@ -158,7 +158,7 @@ public class ChannelJpaDao {
      * @param channelId the id of the channel
      */
     public void delete(Long channelId) {
-        LOGGER.info("delete(channel with " + channelId + ") - (ENTER)");
+        LOGGER.debug("delete(channel with " + channelId + ") - (ENTER)");
 
         try {
             ChannelEntity entity = read(channelId);
@@ -173,7 +173,7 @@ public class ChannelJpaDao {
             throw new RuntimeException(msg, ex);
         }
 
-        LOGGER.info("delete() - (LEAVE)");
+        LOGGER.debug("delete() - (LEAVE)");
     }
 
 }

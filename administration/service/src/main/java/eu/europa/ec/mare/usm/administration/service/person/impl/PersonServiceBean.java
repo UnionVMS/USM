@@ -65,7 +65,7 @@ public class PersonServiceBean implements PersonService {
     @Override
     public Person getPerson(ServiceRequest<Long> personRequest)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("getPerson(" + personRequest + ") - (ENTER)");
+        LOGGER.debug("getPerson(" + personRequest + ") - (ENTER)");
 
         validator.assertValid(personRequest, null, "personId");
 
@@ -73,13 +73,13 @@ public class PersonServiceBean implements PersonService {
 
         Person response = converter.convertPerson(ret);
 
-        LOGGER.info("getPerson() - (LEAVE) " + response);
+        LOGGER.debug("getPerson() - (LEAVE) " + response);
         return response;
     }
 
     @Override
     public List<Person> getPersons() {
-        LOGGER.info("getPersons() - (ENTER)");
+        LOGGER.debug("getPersons() - (ENTER)");
 
         List<PersonEntity> lst = personJpaDao.findAll();
 
@@ -88,7 +88,7 @@ public class PersonServiceBean implements PersonService {
             ret.add(converter.convertPerson(person));
         }
 
-        LOGGER.info("getPersons() - (LEAVE) " + ret.size());
+        LOGGER.debug("getPersons() - (LEAVE) " + ret.size());
         return ret;
     }
 
@@ -96,7 +96,7 @@ public class PersonServiceBean implements PersonService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContactDetails updateContactDetails(ServiceRequest<ContactDetails> request)
             throws IllegalArgumentException, RuntimeException, IllegalStateException {
-        LOGGER.info("updateContactDetails(" + request + ") - (ENTER)");
+        LOGGER.debug("updateContactDetails(" + request + ") - (ENTER)");
 
         // Ensure feature is enabled
         if (!isUpdateContactDetailsEnabled()) {
@@ -158,7 +158,7 @@ public class PersonServiceBean implements PersonService {
                 AuditObjectTypeEnum.CONTACT_DETAILS.getValue() + " " + requester, requester, requester);
         auditProducer.sendModuleMessage(auditLog);
 
-        LOGGER.info("updateContactDetails() - (LEAVE)");
+        LOGGER.debug("updateContactDetails() - (LEAVE)");
         return ret;
     }
 
@@ -190,7 +190,7 @@ public class PersonServiceBean implements PersonService {
 
     @Override
     public ContactDetails getContactDetails(ServiceRequest<String> request) throws RuntimeException {
-        LOGGER.info("getContactDetails(" + request + ") - (ENTER)");
+        LOGGER.debug("getContactDetails(" + request + ") - (ENTER)");
 
         validator.assertValid(request, null, "userName");
         validator.assertNotEmpty("userName", request.getBody());
@@ -208,7 +208,7 @@ public class PersonServiceBean implements PersonService {
             ret = new ContactDetails();
         }
 
-        LOGGER.info("getContactDetails() - (LEAVE): " + ret);
+        LOGGER.debug("getContactDetails() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -220,7 +220,7 @@ public class PersonServiceBean implements PersonService {
     @Override
     public List<PendingContactDetails> findPendingContactDetails(ServiceRequest<NoBody> request)
             throws RuntimeException {
-        LOGGER.info("findPendingContactDetails(" + request + ") - (ENTER)");
+        LOGGER.debug("findPendingContactDetails(" + request + ") - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageUsers);
         List<PendingContactDetails> ret = new ArrayList<>();
@@ -230,14 +230,14 @@ public class PersonServiceBean implements PersonService {
             ret.add(converter.convertContactDetails(e));
         }
 
-        LOGGER.info("findPendingContactDetails() - (LEAVE): " + ret);
+        LOGGER.debug("findPendingContactDetails() - (LEAVE): " + ret);
         return ret;
     }
 
     @Override
     public PendingContactDetails getPendingContactDetails(ServiceRequest<String> request)
             throws IllegalArgumentException, RuntimeException {
-        LOGGER.info("getPendingContactDetails(" + request + ") - (ENTER)");
+        LOGGER.debug("getPendingContactDetails(" + request + ") - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageUsers, "userName");
         validator.assertNotEmpty("userName", request.getBody());
@@ -245,7 +245,7 @@ public class PersonServiceBean implements PersonService {
         PendingDetailsEntity pending = pendingJpaDao.read(request.getBody());
         PendingContactDetails ret = converter.convertContactDetails(pending);
 
-        LOGGER.info("getPendingContactDetails() - (LEAVE): " + ret);
+        LOGGER.debug("getPendingContactDetails() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -253,7 +253,7 @@ public class PersonServiceBean implements PersonService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContactDetails acceptPendingContactDetails(ServiceRequest<String> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("accepPendingContactDetails(" + request + ") - (ENTER)");
+        LOGGER.debug("accepPendingContactDetails(" + request + ") - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageUsers, "userName");
         validator.assertNotEmpty("userName", request.getBody());
@@ -276,7 +276,7 @@ public class PersonServiceBean implements PersonService {
         // Delete the now accepted pending update
         pendingJpaDao.delete(request.getBody());
 
-        LOGGER.info("accepPendingContactDetails() - (LEAVE): " + ret);
+        LOGGER.debug("accepPendingContactDetails() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -284,7 +284,7 @@ public class PersonServiceBean implements PersonService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContactDetails rejectPendingContactDetails(ServiceRequest<String> request)
             throws IllegalArgumentException, UnauthorisedException, RuntimeException {
-        LOGGER.info("rejectPendingContactDetails(" + request + ") - (ENTER)");
+        LOGGER.debug("rejectPendingContactDetails(" + request + ") - (ENTER)");
 
         validator.assertValid(request, USMFeature.manageUsers, "userName");
         validator.assertNotEmpty("userName", request.getBody());
@@ -293,7 +293,7 @@ public class PersonServiceBean implements PersonService {
 
         ContactDetails ret = getContactDetails(request);
 
-        LOGGER.info("rejectPendingContactDetails() - (LEAVE): " + ret);
+        LOGGER.debug("rejectPendingContactDetails() - (LEAVE): " + ret);
         return ret;
     }
 
@@ -325,7 +325,7 @@ public class PersonServiceBean implements PersonService {
     }
 
     private boolean isFeatureEnabled(String feature, boolean defaultValue) {
-        LOGGER.info("isFeatureEnabled(" + feature + ", " + defaultValue + ") - (ENTER)");
+        LOGGER.debug("isFeatureEnabled(" + feature + ", " + defaultValue + ") - (ENTER)");
         boolean ret = defaultValue;
 
         PolicyDefinition def = definition.getDefinition(FEATURE_POLICY);
@@ -338,7 +338,7 @@ public class PersonServiceBean implements PersonService {
             }
         }
 
-        LOGGER.info("isFeatureEnabled() - (LEAVE): " + ret);
+        LOGGER.debug("isFeatureEnabled() - (LEAVE): " + ret);
         return ret;
     }
 }
