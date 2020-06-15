@@ -3,7 +3,7 @@ package eu.europa.ec.mare.usm.jwt.test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
-
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import javax.ejb.EJB;
@@ -16,6 +16,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -41,9 +42,12 @@ public class JwtTokenHandlerTest {
                 .addClass(JwtTokenHandler.class)
                 .addClass(JndiUtil.class)
                 .addClass(DefaultJwtTokenHandler.class)
-                .addPackages(true, "io.jsonwebtoken")
-                .addPackages(true, "com.fasterxml.jackson")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+        war.addAsLibraries(Maven.configureResolver().loadPomFromFile("pom.xml")
+                .resolve("io.jsonwebtoken:jjwt-api",
+                         "io.jsonwebtoken:jjwt-impl",
+                         "io.jsonwebtoken:jjwt-jackson")
+                .withTransitivity().asFile());
         return war;
     }
     
@@ -53,8 +57,12 @@ public class JwtTokenHandlerTest {
                 .addClass(JwtTokenHandler.class)
                 .addClass(JndiUtil.class)
                 .addClass(DefaultJwtTokenHandler.class)
-                .addPackages(true, "io.jsonwebtoken")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+        war.addAsLibraries(Maven.configureResolver().loadPomFromFile("pom.xml")
+                .resolve("io.jsonwebtoken:jjwt-api",
+                         "io.jsonwebtoken:jjwt-impl",
+                         "io.jsonwebtoken:jjwt-jackson")
+                .withTransitivity().asFile());
         return war;
     }
 
