@@ -19,7 +19,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 
-import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -28,7 +28,7 @@ import java.io.File;
 @ArquillianSuiteDeployment
 public abstract class BuildAuthenticationRestDeployment {
 
-    @EJB
+    @Inject
     private InternalRestTokenHandler tokenHandler;
 
     private static final String INTERNAL_TARGET_URL = "http://localhost:8080/test/rest/";
