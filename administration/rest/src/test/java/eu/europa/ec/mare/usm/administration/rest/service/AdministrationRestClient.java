@@ -8,10 +8,9 @@ import eu.europa.ec.mare.usm.administration.service.JsonBConfiguratorExtended;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationRequest;
 import eu.europa.ec.mare.usm.authentication.domain.AuthenticationResponse;
 import eu.europa.ec.mare.usm.authentication.domain.ChallengeResponse;
-import eu.europa.ec.mare.usm.session.domain.SessionInfo;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -23,7 +22,7 @@ import static eu.europa.ec.mare.usm.administration.rest.common.ExceptionHandler.
 @Stateless
 public class AdministrationRestClient {
 
-    @EJB
+    @Inject
     private InternalRestTokenHandler tokenHandler;
 
     private static final String INTERNAL_TARGET_URL = "http://localhost:8080/test/rest/";
