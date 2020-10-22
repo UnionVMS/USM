@@ -22,6 +22,7 @@ import java.io.IOException;
 public class AuthenticationFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
     private static final String AUTHORIZATION = "Authorization";
+    private static final String HTTP_HEADER_ACCESS_CONTROL_EXPOSE_HEADERS = "Access-Control-Expose-Headers";
     private static final String CHALLENGEAUTH = "/challengeauth";
     private static final String AUTHENTICATE = "/authenticate";
     private static final String RESETPWD = "/users/resetUserPassword";
@@ -105,6 +106,7 @@ public class AuthenticationFilter implements Filter {
                 }
 
                 httpResponse.addHeader(AUTHORIZATION, extendedToken);
+                httpResponse.addHeader(HTTP_HEADER_ACCESS_CONTROL_EXPOSE_HEADERS, AUTHORIZATION);
 
                 if (PING.equals(httpRequest.getPathInfo())) {
                     if (httpRequest.getUserPrincipal() != null &&
