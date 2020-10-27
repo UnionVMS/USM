@@ -10,6 +10,7 @@ import eu.europa.ec.mare.usm.administration.domain.Paginator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.Stateless;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
  * It uses a (container provided) JDBC data-source retrieved from the JNDI
  * context using JNDI name 'jdbc/USM2'.
  */
+@Stateless
 public class ApplicationJdbcDao extends BaseJdbcDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationJdbcDao.class);
 

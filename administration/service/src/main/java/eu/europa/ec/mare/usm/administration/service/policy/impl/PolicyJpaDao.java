@@ -5,6 +5,7 @@ import eu.europa.ec.mare.usm.information.entity.PolicyEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -14,6 +15,7 @@ import java.util.List;
  * JPA based data-access-object for the retrieval and storage of Policy
  * definition/configuration properties.
  */
+@Stateless
 public class PolicyJpaDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(PolicyJpaDao.class);
 

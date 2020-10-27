@@ -4,12 +4,14 @@ import eu.europa.ec.mare.usm.information.entity.PersonEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
+@Stateless
 public class PersonJpaDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonJpaDao.class);
 

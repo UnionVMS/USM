@@ -4,6 +4,7 @@ import eu.europa.ec.mare.usm.information.entity.EndPointEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * JPA based data access of End-Point data.
  */
+@Stateless
 public class EndPointJpaDao {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(EndPointJpaDao.class);

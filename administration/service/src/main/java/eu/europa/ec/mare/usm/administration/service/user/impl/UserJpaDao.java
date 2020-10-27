@@ -6,12 +6,14 @@ import eu.europa.ec.mare.usm.information.entity.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.Stateless;
 import javax.persistence.*;
 import java.util.List;
 
 /**
  * JPA based data access of user data.
  */
+@Stateless
 public class UserJpaDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserJpaDao.class);
 

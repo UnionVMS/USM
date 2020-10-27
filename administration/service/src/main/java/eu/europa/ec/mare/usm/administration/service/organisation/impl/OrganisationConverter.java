@@ -9,6 +9,7 @@ import eu.europa.ec.mare.usm.information.entity.EndPointContactEntity;
 import eu.europa.ec.mare.usm.information.entity.EndPointEntity;
 import eu.europa.ec.mare.usm.information.entity.OrganisationEntity;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
  * Provides operations for the conversion of Organisations between their
  * domain-object and JPA entity representation
  */
+@Stateless
 public class OrganisationConverter {
 
     @Inject

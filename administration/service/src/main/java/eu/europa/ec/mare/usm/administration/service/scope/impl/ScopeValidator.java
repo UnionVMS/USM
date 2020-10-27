@@ -5,10 +5,13 @@ import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
 import eu.europa.ec.mare.usm.administration.domain.USMFeature;
 import eu.europa.ec.mare.usm.administration.service.RequestValidator;
 
+import javax.ejb.Stateless;
+
 /**
  * Provides operations for the validation and authorisation of Scope related
  * service requests
  */
+@Stateless
 public class ScopeValidator extends RequestValidator {
 
     public ScopeValidator() {

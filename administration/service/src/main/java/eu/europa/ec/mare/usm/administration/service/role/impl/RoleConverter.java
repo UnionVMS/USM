@@ -6,6 +6,7 @@ import eu.europa.ec.mare.usm.administration.domain.Role;
 import eu.europa.ec.mare.usm.information.entity.FeatureEntity;
 import eu.europa.ec.mare.usm.information.entity.RoleEntity;
 
+import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * Provides operations for the conversion of Roles between their domain-object
  * and JPA entity representation
  */
+@Stateless
 public class RoleConverter {
 
     public RoleConverter() {

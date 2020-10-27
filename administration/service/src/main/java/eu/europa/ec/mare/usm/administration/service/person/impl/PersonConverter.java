@@ -6,9 +6,12 @@ import eu.europa.ec.mare.usm.administration.domain.Person;
 import eu.europa.ec.mare.usm.information.entity.PendingDetailsEntity;
 import eu.europa.ec.mare.usm.information.entity.PersonEntity;
 
+import javax.ejb.Stateless;
+
 /**
  * Converts entity to domain objects and vice-versa
  */
+@Stateless
 public class PersonConverter {
 
     public PersonConverter() {
