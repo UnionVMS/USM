@@ -22,7 +22,7 @@ import java.util.Set;
 /**
  * Provides operations for the validation and authorisation of service requests
  */
-@Stateless
+//@Stateless
 public class RequestValidator {
     protected static final Logger LOGGER = LoggerFactory.getLogger(RequestValidator.class);
 

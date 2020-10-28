@@ -26,7 +26,7 @@ public class PersonValidator extends RequestValidator {
         }
     }
 
-    void assertValid(ServiceRequest<ContactDetails> request) {
+    public void assertValid(ServiceRequest<ContactDetails> request) {
         assertNotNull("request", request);
         assertNotEmpty("userName", request.getRequester());
         assertNotEmpty("password", request.getPassword());

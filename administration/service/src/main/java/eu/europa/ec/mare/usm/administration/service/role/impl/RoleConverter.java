@@ -20,7 +20,7 @@ public class RoleConverter {
     public RoleConverter() {
     }
 
-    void updateEntity(RoleEntity entity, ComprehensiveRole role) {
+    public void updateEntity(RoleEntity entity, ComprehensiveRole role) {
         // create Role
         entity.setName(role.getName());
         entity.setStatus(role.getStatus());
@@ -96,7 +96,7 @@ public class RoleConverter {
      * @param src the entity
      * @return the domain-object
      */
-    Role convert(RoleEntity src) {
+    public Role convert(RoleEntity src) {
         Role ret = null;
 
         if (src != null) {
@@ -111,7 +111,7 @@ public class RoleConverter {
         return ret;
     }
 
-    ComprehensiveRole convertComprehensively(RoleEntity role) {
+    public ComprehensiveRole convertComprehensively(RoleEntity role) {
         ComprehensiveRole ret = new ComprehensiveRole();
 
         ret.setStatus(role.getStatus());

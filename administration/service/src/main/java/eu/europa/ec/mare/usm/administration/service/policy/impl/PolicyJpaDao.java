@@ -29,7 +29,7 @@ public class PolicyJpaDao {
      * @param subject the policy subject
      * @return the possibly-empty list of Policy entities
      */
-    List<PolicyEntity> readPolicy(String subject) {
+    public List<PolicyEntity> readPolicy(String subject) {
         LOGGER.debug("readPolicy(" + subject + ") - (ENTER)");
 
         List<PolicyEntity> ret = null;
@@ -52,7 +52,7 @@ public class PolicyJpaDao {
      *
      * @param entityList the policy definition
      */
-    void updatePolicy(List<PolicyEntity> entityList) {
+    public void updatePolicy(List<PolicyEntity> entityList) {
         LOGGER.debug("updatePolicy(" + entityList + ") - (ENTER)");
 
         try {
