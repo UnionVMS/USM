@@ -3,10 +3,13 @@ package eu.europa.ec.mare.usm.administration.service.organisation.impl;
 import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.service.RequestValidator;
 
+import javax.ejb.Stateless;
+
 /**
  * Provides operations for the validation and authorisation of Organisation
  * related service requests
  */
+@Stateless
 public class OrganisationValidator extends RequestValidator {
     private static final String ENABLED = "E";
     private static final String DISABLED = "D";

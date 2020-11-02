@@ -6,6 +6,7 @@ import eu.europa.ec.mare.usm.information.entity.ScopeEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * JPA based data access of Scope data.
  */
+@Stateless
 public class ScopeJpaDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScopeJpaDao.class);
 

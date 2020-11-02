@@ -3,10 +3,13 @@ package eu.europa.ec.mare.usm.administration.service.userContext.impl;
 import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.service.RequestValidator;
 
+import javax.ejb.Stateless;
+
 /**
  * Provides operations for the validation and authorisation of UserContext
  * related service requests
  */
+@Stateless
 public class UserContextValidator extends RequestValidator {
 
     public UserContextValidator() {

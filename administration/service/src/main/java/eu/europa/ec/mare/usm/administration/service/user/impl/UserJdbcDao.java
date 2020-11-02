@@ -7,6 +7,7 @@ import eu.europa.ec.mare.usm.administration.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.Stateless;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -18,6 +19,7 @@ import java.util.List;
  * It uses a (container provided) JDBC data-source retrieved from the JNDI
  * context using JNDI name 'jdbc/USM2'.
  */
+@Stateless
 public class UserJdbcDao extends BaseJdbcDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserJdbcDao.class);
 

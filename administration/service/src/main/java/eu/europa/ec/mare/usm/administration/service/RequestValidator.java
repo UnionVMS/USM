@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.Set;
 /**
  * Provides operations for the validation and authorisation of service requests
  */
+//@Stateless
 public class RequestValidator {
     protected static final Logger LOGGER = LoggerFactory.getLogger(RequestValidator.class);
 

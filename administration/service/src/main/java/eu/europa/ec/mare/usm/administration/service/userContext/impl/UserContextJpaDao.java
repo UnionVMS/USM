@@ -4,6 +4,7 @@ import eu.europa.ec.mare.usm.information.entity.UserContextEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -12,6 +13,7 @@ import javax.persistence.TypedQuery;
 /**
  * JPA based data access of user context data.
  */
+@Stateless
 public class UserContextJpaDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserContextJpaDao.class);
 

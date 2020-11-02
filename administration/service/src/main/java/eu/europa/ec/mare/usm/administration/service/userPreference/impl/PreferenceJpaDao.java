@@ -4,11 +4,13 @@ import eu.europa.ec.mare.usm.information.entity.PreferenceEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
+@Stateless
 public class PreferenceJpaDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PreferenceJpaDao.class);

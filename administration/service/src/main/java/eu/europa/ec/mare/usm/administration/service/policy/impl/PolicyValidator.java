@@ -3,12 +3,14 @@ package eu.europa.ec.mare.usm.administration.service.policy.impl;
 import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.service.RequestValidator;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.Properties;
 
 /**
  * Validates Policy related service requests.
  */
+@Stateless
 public class PolicyValidator extends RequestValidator {
     private static final int MAX_VALUE_LEN = 128;
 

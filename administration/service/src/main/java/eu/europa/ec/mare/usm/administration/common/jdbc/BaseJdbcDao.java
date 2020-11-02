@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -19,6 +20,7 @@ import java.util.List;
  * It uses a (container provided) JDBC data-source retrieved from the JNDI
  * context using JNDI name 'jdbc/USM2'.
  */
+@Stateless
 public class BaseJdbcDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseJdbcDao.class);
     private static final String FAILED_TO_EXECUTE_QUERY = "Failed to execute query: ";

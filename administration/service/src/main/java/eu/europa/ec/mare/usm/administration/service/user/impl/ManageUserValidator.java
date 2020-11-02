@@ -3,6 +3,7 @@ package eu.europa.ec.mare.usm.administration.service.user.impl;
 import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.service.RequestValidator;
 
+import javax.ejb.Stateless;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
  * Provides operations for the validation and authorisation of manage user
  * related service requests
  */
+@Stateless
 public class ManageUserValidator extends RequestValidator {
 
     public ManageUserValidator() {

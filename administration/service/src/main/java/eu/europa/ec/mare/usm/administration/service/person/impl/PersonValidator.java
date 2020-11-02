@@ -6,10 +6,13 @@ import eu.europa.ec.mare.usm.administration.domain.ServiceRequest;
 import eu.europa.ec.mare.usm.administration.domain.USMFeature;
 import eu.europa.ec.mare.usm.administration.service.RequestValidator;
 
+import javax.ejb.Stateless;
+
 /**
  * Provides operations for the validation and authorisation of Person
  * related service requests
  */
+@Stateless
 public class PersonValidator extends RequestValidator {
 
     public PersonValidator() {
@@ -23,7 +26,7 @@ public class PersonValidator extends RequestValidator {
         }
     }
 
-    void assertValid(ServiceRequest<ContactDetails> request) {
+    public void assertValid(ServiceRequest<ContactDetails> request) {
         assertNotNull("request", request);
         assertNotEmpty("userName", request.getRequester());
         assertNotEmpty("password", request.getPassword());

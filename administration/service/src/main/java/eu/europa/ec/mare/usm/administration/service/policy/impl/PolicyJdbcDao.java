@@ -6,6 +6,7 @@ import eu.europa.ec.mare.usm.administration.service.user.impl.UserJdbcDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.Stateless;
 import java.util.List;
 
 /**
@@ -14,6 +15,7 @@ import java.util.List;
  * It uses a (container provided) JDBC data-source retrieved from the JNDI
  * context using JNDI name 'jdbc/USM2'.
  */
+@Stateless
 public class PolicyJdbcDao extends BaseJdbcDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserJdbcDao.class);
 

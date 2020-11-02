@@ -1,8 +1,10 @@
 package eu.europa.ec.mare.usm.administration.service;
 
+import javax.ejb.Stateless;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+@Stateless
 public class PasswordDigester {
     private static final String MD5 = "MD5";
 
