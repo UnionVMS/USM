@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fish.focus.uvms.maven</groupId>
 		<artifactId>uvms-pom</artifactId>
-		<version>3.4</version>
+		<version>3.5</version>
 	</parent>
 
 	<groupId>eu.europa.ec.mare.usm</groupId>
