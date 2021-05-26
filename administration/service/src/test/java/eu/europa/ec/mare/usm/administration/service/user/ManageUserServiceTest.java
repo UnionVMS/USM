@@ -270,7 +270,7 @@ public class ManageUserServiceTest extends DeploymentFactory {
         user.setNotes("testing status data");
 
         user.setActiveFrom(DateParser.parseDate("activeFrom", "2015-01-01T01:01:01.001+0000"));
-        user.setActiveTo(DateParser.parseDate("activeTo", "2020-12-31T23:59:59.059+0000"));
+        user.setActiveTo(DateParser.parseDate("activeTo", "2030-12-31T23:59:59.059+0000"));
         request.setBody(user);
         return request;
     }
