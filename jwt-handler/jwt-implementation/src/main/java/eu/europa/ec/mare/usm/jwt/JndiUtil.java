@@ -42,7 +42,7 @@ public class JndiUtil {
             }
 
         } catch (Exception e) {
-            LOGGER.warn("Could not lookup jndi: {}", jndiName);
+            LOGGER.debug("Could not lookup jndi: {}", jndiName);
         }
         return value;
     }
