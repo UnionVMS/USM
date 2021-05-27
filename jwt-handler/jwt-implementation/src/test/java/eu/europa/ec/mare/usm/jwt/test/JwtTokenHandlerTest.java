@@ -45,8 +45,7 @@ public class JwtTokenHandlerTest {
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         war.addAsLibraries(Maven.configureResolver().loadPomFromFile("pom.xml")
                 .resolve("io.jsonwebtoken:jjwt-api",
-                         "io.jsonwebtoken:jjwt-impl",
-                         "io.jsonwebtoken:jjwt-jackson")
+                         "io.jsonwebtoken:jjwt-impl")
                 .withTransitivity().asFile());
         return war;
     }
@@ -60,8 +59,7 @@ public class JwtTokenHandlerTest {
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         war.addAsLibraries(Maven.configureResolver().loadPomFromFile("pom.xml")
                 .resolve("io.jsonwebtoken:jjwt-api",
-                         "io.jsonwebtoken:jjwt-impl",
-                         "io.jsonwebtoken:jjwt-jackson")
+                         "io.jsonwebtoken:jjwt-impl")
                 .withTransitivity().asFile());
         return war;
     }
