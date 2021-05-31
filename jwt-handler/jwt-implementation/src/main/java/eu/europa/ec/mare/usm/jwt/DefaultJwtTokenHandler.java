@@ -302,10 +302,6 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
         return secretKey;
     }
 
-    public static long getDefaultTtl() {
-        return DEFAULT_TTL;
-    }
-
     class JsonbSerializer<T> implements Serializer<T> {
         @Override
         public byte[] serialize(T t) {
