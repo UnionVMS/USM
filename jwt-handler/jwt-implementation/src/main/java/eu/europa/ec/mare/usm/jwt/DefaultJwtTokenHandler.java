@@ -12,6 +12,8 @@ import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.jsonwebtoken.Claims;
@@ -22,6 +24,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Deserializer;
+import io.jsonwebtoken.io.Serializer;
+import io.jsonwebtoken.lang.Strings;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 
@@ -32,13 +37,15 @@ import io.jsonwebtoken.security.SecurityException;
 @Singleton
 @Startup
 public class DefaultJwtTokenHandler implements JwtTokenHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenHandler.class);
+
+    public static final long DEFAULT_TTL = 8 * 60 * 60 * 1000L;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultJwtTokenHandler.class);
     private static final String PROPERTIES_FILE = "/jwt.properties";
     private static final String SIGNATURE_KEY_PROPERTY_NAME = "secretKey";
     private static final String PROP_SUBJECT = "subject";
     private static final String PROP_ISSUER = "issuer";
     private static final String PROP_ID = "id";
-    private static final long DEFAULT_TTL = 8 * 60 * 60 * 1000;
     private static final String TTL_PROPERTY_NAME = "timeToLiveInMinutes";
     private static final String DEFAULT_KEY = "usmSecretKey";
     private static final String DEFAULT_ID = "usm/authentication";
@@ -51,6 +58,8 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
     private byte[] secretKey;
 
     private Properties properties = new Properties();
+
+    private Jsonb jsonb = JsonbBuilder.create();
 
     @PostConstruct
     public void init() {
@@ -195,7 +204,12 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
         // Signature key
         SecretKey key = Keys.hmacShaKeyFor(getSecretKey());
 
-        return Jwts.builder().setHeader(header).setClaims(claims).signWith(key, signatureAlgorithm).compact();
+        return Jwts.builder()
+                .setHeader(header)
+                .setClaims(claims)
+                .signWith(key, signatureAlgorithm)
+                .serializeToJsonWith(new JsonbSerializer<>())
+                .compact();
     }
 
     private Claims parseClaims(String token) {
@@ -204,7 +218,11 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
         if (token != null && !token.trim().isEmpty()) {
             try {
                 SecretKey key = Keys.hmacShaKeyFor(getSecretKey());
-                ret = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+                ret = Jwts.parserBuilder()
+                        .setSigningKey(key)
+                        .deserializeJsonWith(new JsonbDeserializer<>())
+                        .build()
+                        .parseClaimsJws(token).getBody();
             } catch (ExpiredJwtException e) {
                 LOGGER.error("Token expired", e);
             } catch (UnsupportedJwtException | MalformedJwtException | SecurityException
@@ -251,28 +269,6 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
         return key;
     }
 
-    private void removeKey() {
-        // get the key from properties if set
-        String key = properties.getProperty(SIGNATURE_KEY_PROPERTY_NAME);
-        String jndikey = "USM/" + SIGNATURE_KEY_PROPERTY_NAME;
-        // let's look if a key exist in JNDI
-        try {
-            key = (String) JndiUtil.lookup(jndikey);
-            LOGGER.debug("Key bound to JNDI name {}", SIGNATURE_KEY_PROPERTY_NAME);
-            try {
-                JndiUtil.unbind(jndikey);
-                LOGGER.debug("Unbound JNDI name {}", SIGNATURE_KEY_PROPERTY_NAME);
-            } catch (Exception e) {
-                LOGGER.error("Error unbinding key", e);
-            }
-
-        } catch (Exception e) {
-            LOGGER.error("Error looking up key", e);
-        }
-
-        secretKey = null;
-    }
-
     private String getConfigValue(String key) {
         // get the value from properties if set
         String value = System.getProperty("USM." + key);
@@ -308,5 +304,20 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
 
     public static long getDefaultTtl() {
         return DEFAULT_TTL;
+    }
+
+    class JsonbSerializer<T> implements Serializer<T> {
+        @Override
+        public byte[] serialize(T t) {
+            return jsonb.toJson(t).getBytes(Strings.UTF_8);
+        }
+    }
+
+    class JsonbDeserializer<T> implements Deserializer<T> {
+        @SuppressWarnings("unchecked")
+        @Override
+        public T deserialize(byte[] bytes) {
+            return jsonb.fromJson(new String(bytes, Strings.UTF_8), (Class<T>) Object.class);
+        }
     }
 }
