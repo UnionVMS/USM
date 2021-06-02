@@ -140,5 +140,7 @@ public class JwtTokenHandlerTest {
 
         List<Integer> parsedFeatures = testSubject.parseTokenFeatures(token);
         assertThat(parsedFeatures.size(), CoreMatchers.is(features.size()));
+        assertThat(parsedFeatures.contains(1), is(true));
+        assertThat(parsedFeatures.contains(2), is(true));
     }
 }
