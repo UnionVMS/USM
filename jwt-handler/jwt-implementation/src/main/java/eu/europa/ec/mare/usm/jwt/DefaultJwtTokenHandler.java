@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import javax.ejb.Singleton;
@@ -188,7 +189,10 @@ public class DefaultJwtTokenHandler implements JwtTokenHandler {
 
         Claims claims = parseClaims(token);
         if (claims != null) {
-            ret = claims.get(FEATURES, List.class);
+            List<Number> features = claims.get(FEATURES, List.class);
+            ret = features.stream()
+                    .map(Number::intValue)
+                    .collect(Collectors.toList());
         }
 
         LOGGER.debug("parseToken() - (LEAVE)");
