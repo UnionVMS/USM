@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>fish.focus.uvms.maven</groupId>
-		<artifactId>uvms-pom</artifactId>
-		<version>1.24</version>
+		<groupId>eu.europa.ec.fisheries.uvms</groupId>
+		<artifactId>mare-pom</artifactId>
+		<version>1.6.0-MARE-SNAPSHOT</version>
 	</parent>
 
 	<groupId>eu.europa.ec.mare.usm</groupId>
-	<version>2.1.11</version>
+	<version>${uvms.usm.version}</version>
 	<artifactId>backend-modules</artifactId>
 	<packaging>pom</packaging>
 
@@ -19,24 +19,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>fish.focus.uvms.maven</groupId>
-				<artifactId>uvms-pom-gis-deps</artifactId>
-				<version>1.24</version>
-				<type>pom</type>
-			</dependency>
-			<dependency>
-				<groupId>fish.focus.uvms.maven</groupId>
-				<artifactId>uvms-pom-logging-deps</artifactId>
-				<version>1.24</version>
-				<type>pom</type>
-			</dependency>
-			<dependency>
-				<groupId>fish.focus.uvms.maven</groupId>
-				<artifactId>uvms-pom-monitoring-deps</artifactId>
-				<version>1.24</version>
-				<type>pom</type>
-			</dependency>
 			<dependency>
 				<groupId>fish.focus.uvms.maven</groupId>
 				<artifactId>uvms-pom-test-deps</artifactId>
@@ -56,11 +38,6 @@
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>fish.focus.uvms.maven</groupId>
-			<artifactId>uvms-pom-logging-deps</artifactId>
-			<type>pom</type>
 		</dependency>
 	</dependencies>
 

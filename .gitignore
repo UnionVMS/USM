@@ -16,3 +16,4 @@ web/administration/src/main/webapp/testresults/
 *.pydevproject
 *arquillian.launch_file
 directory/
+**/.flattened-pom.xml

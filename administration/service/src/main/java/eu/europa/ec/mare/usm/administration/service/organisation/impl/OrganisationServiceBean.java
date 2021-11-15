@@ -1,6 +1,7 @@
 package eu.europa.ec.mare.usm.administration.service.organisation.impl;
 
-import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogModelMapper;
+import eu.europa.ec.fisheries.uvms.audit.model.exception.AuditModelMarshallException;
+import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogMapper;
 import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.service.AuditProducer;
 import eu.europa.ec.mare.usm.administration.service.organisation.OrganisationService;
@@ -47,7 +48,7 @@ public class OrganisationServiceBean implements OrganisationService {
 
     @Inject
     private PersonJpaDao personJpaDao;
-    
+
     @Inject
     private AuditProducer auditProducer;
 
@@ -71,8 +72,13 @@ public class OrganisationServiceBean implements OrganisationService {
         entity.setCreatedBy(request.getRequester());
         entity.setCreatedOn(new Date());
         entity = jpaDao.create(entity);
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+
+        String auditLog = null;
+        try {
+            auditLog = AuditLogMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+        } catch (AuditModelMarshallException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("createOrganisation() - (LEAVE)");
@@ -107,8 +113,13 @@ public class OrganisationServiceBean implements OrganisationService {
             entity.setParentOrganisation(null);
         }
         entity = jpaDao.update(entity);
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+
+        String auditLog = null;
+        try {
+            auditLog = AuditLogMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+        } catch (AuditModelMarshallException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("updateOrganisation() - (LEAVE)");
@@ -129,8 +140,13 @@ public class OrganisationServiceBean implements OrganisationService {
             throw new IllegalArgumentException("This organisation is parent to some organisations and cannot be deleted.");
         }
         jpaDao.delete(request.getBody());
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+
+        String auditLog = null;
+        try {
+            auditLog = AuditLogMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.ORGANISATION.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+        } catch (AuditModelMarshallException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("deleteOrganisation() - (LEAVE)");
@@ -285,8 +301,13 @@ public class OrganisationServiceBean implements OrganisationService {
         entity.setCreatedBy(request.getRequester());
         entity.setCreatedOn(new Date());
         entity = endPointJpaDao.create(entity);
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+
+        String auditLog = null;
+        try {
+            auditLog = AuditLogMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+        } catch (AuditModelMarshallException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("createEndPoint() - (LEAVE)");
@@ -308,8 +329,13 @@ public class OrganisationServiceBean implements OrganisationService {
         entity.setModifiedBy(request.getRequester());
         entity.setModifiedOn(new Date());
         ret = converter.convertEndPointEntityToDomain(endPointJpaDao.update(entity), false);
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+
+        String auditLog = null;
+        try {
+            auditLog = AuditLogMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody().getName(), request.getBody().getDescription(), request.getRequester());
+        } catch (AuditModelMarshallException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("updateEndPoint() - (LEAVE)");
@@ -323,8 +349,13 @@ public class OrganisationServiceBean implements OrganisationService {
 
         validator.assertValid(request, USMFeature.manageOrganisations, "endpointId");
         endPointJpaDao.delete(request.getBody());
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+
+        String auditLog = null;
+        try {
+            auditLog = AuditLogMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.ENDPOINT.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+        } catch (AuditModelMarshallException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("deleteEndPoint() - (LEAVE)");
@@ -364,8 +395,13 @@ public class OrganisationServiceBean implements OrganisationService {
         entity.setCreatedBy(request.getRequester());
         entity.setCreatedOn(new Date());
         entity = channelJpaDao.create(entity);
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " + request.getBody().getEndpointId(), "" + request.getBody().getEndpointId(), request.getRequester());
+
+        String auditLog = null;
+        try {
+            auditLog = AuditLogMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.CREATE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " + request.getBody().getEndpointId(), "" + request.getBody().getEndpointId(), request.getRequester());
+        } catch (AuditModelMarshallException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         auditProducer.sendModuleMessage(auditLog);
         LOGGER.info("createChannel() - (LEAVE)");
         return converter.convertChannelEntityToDomain(entity);
@@ -397,8 +433,13 @@ public class OrganisationServiceBean implements OrganisationService {
         entity.setModifiedOn(new Date());
 
         ret = converter.convertChannelEntityToDomain(channelJpaDao.update(entity));
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " + request.getBody().getEndpointId(), "" + request.getBody().getEndpointId(), request.getRequester());
+
+        String auditLog = null;
+        try {
+            auditLog = AuditLogMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " + request.getBody().getEndpointId(), "" + request.getBody().getEndpointId(), request.getRequester());
+        } catch (AuditModelMarshallException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         auditProducer.sendModuleMessage(auditLog);
 
         LOGGER.info("updateChannel() - (LEAVE)");
@@ -412,10 +453,15 @@ public class OrganisationServiceBean implements OrganisationService {
 
         validator.assertValid(request, USMFeature.manageOrganisations, "channelId");
         channelJpaDao.delete(request.getBody());
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+
+        String auditLog = null;
+        try {
+            auditLog = AuditLogMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.DELETE.getValue(), AuditObjectTypeEnum.CHANNEL.getValue() + " " + request.getBody(), "" + request.getBody(), request.getRequester());
+        } catch (AuditModelMarshallException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         auditProducer.sendModuleMessage(auditLog);
-        
+
         LOGGER.info("deleteChannel() - (LEAVE)");
     }
 
@@ -468,8 +514,13 @@ public class OrganisationServiceBean implements OrganisationService {
         if (epcontact != null) {
             endPointContactJpaDao.delete(epcontact);
         }
-        
-        String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.REMOVE.getValue(), AuditObjectTypeEnum.ENDPOINT_CONTACT.getValue() + " " + request.getBody().getEndPointContactId(), "" + request.getBody().getEndPointContactId(), request.getRequester());
+
+        String auditLog = null;
+        try {
+            auditLog = AuditLogMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.REMOVE.getValue(), AuditObjectTypeEnum.ENDPOINT_CONTACT.getValue() + " " + request.getBody().getEndPointContactId(), "" + request.getBody().getEndPointContactId(), request.getRequester());
+        } catch (AuditModelMarshallException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         auditProducer.sendModuleMessage(auditLog);
         LOGGER.info("removeContact() - (LEAVE)");
     }

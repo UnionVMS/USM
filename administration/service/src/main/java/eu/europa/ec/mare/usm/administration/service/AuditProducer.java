@@ -12,12 +12,12 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.mare.usm.administration.service;
 
 import eu.europa.ec.fisheries.uvms.commons.message.api.MessageConstants;
+import eu.europa.ec.fisheries.uvms.commons.message.api.MessageException;
 import eu.europa.ec.fisheries.uvms.commons.message.impl.AbstractProducer;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.jms.Destination;
-import javax.jms.JMSException;
 import javax.jms.Queue;
 
 @Stateless
@@ -26,19 +26,24 @@ public class AuditProducer extends AbstractProducer {
     @Resource(mappedName = "java:/" + MessageConstants.QUEUE_USER_RESPONSE)
     private Queue replyToQueue;
 
-    @Resource(mappedName =  "java:/" + MessageConstants.QUEUE_AUDIT_EVENT)
+    @Resource(mappedName = "java:/" + MessageConstants.QUEUE_AUDIT_EVENT)
     private Queue destination;
 
     public String sendModuleMessage(String text) {
         try {
             return sendModuleMessage(text, replyToQueue);
-        }catch (JMSException e){
+        } catch (MessageException e) {
             throw new RuntimeException("Error while sending log to audit", e);
         }
     }
-    
+
     @Override
     public Destination getDestination() {
         return destination;
+    }
+
+    @Override
+    public String getDestinationName() {
+        return MessageConstants.QUEUE_USER_RESPONSE;
     }
 }

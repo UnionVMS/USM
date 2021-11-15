@@ -1,6 +1,7 @@
 package eu.europa.ec.mare.usm.administration.service.person.impl;
 
-import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogModelMapper;
+import eu.europa.ec.fisheries.uvms.audit.model.exception.AuditModelMarshallException;
+import eu.europa.ec.fisheries.uvms.audit.model.mapper.AuditLogMapper;
 import eu.europa.ec.mare.usm.administration.domain.*;
 import eu.europa.ec.mare.usm.administration.service.AuditProducer;
 import eu.europa.ec.mare.usm.administration.service.person.PersonService;
@@ -28,339 +29,331 @@ import java.util.Properties;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class PersonServiceBean implements PersonService {
-  private static final Logger LOGGER = LoggerFactory.getLogger(PersonServiceBean.class);
-  private static final String UPDATE_CONTACT_DETAILS = "update.contact.details.enabled";
-  private static final String REVIEW_CONTACT_DETAILS = "review.contact.details.enabled";
-  private static final String FEATURE_POLICY = "Feature";
-  private static final String TRUE = "true";
-  private static final String FALSE = "false";
-  private static final String USER_UNAUTHENTICATED = "Authentication failed";
-  private static final String USER_DOES_NOT_EXIST = "User does not exist";
-  private static final String CHANGES_DO_NOT_EXIST = "Pending changes do not exist";
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersonServiceBean.class);
+    private static final String UPDATE_CONTACT_DETAILS = "update.contact.details.enabled";
+    private static final String REVIEW_CONTACT_DETAILS = "review.contact.details.enabled";
+    private static final String FEATURE_POLICY = "Feature";
+    private static final String TRUE = "true";
+    private static final String FALSE = "false";
+    private static final String USER_UNAUTHENTICATED = "Authentication failed";
+    private static final String USER_DOES_NOT_EXIST = "User does not exist";
+    private static final String CHANGES_DO_NOT_EXIST = "Pending changes do not exist";
 
 
-  @Inject
-  private PersonJpaDao personJpaDao;
+    @Inject
+    private PersonJpaDao personJpaDao;
 
-  @Inject
-  private PendingDetailsJpaDao pendingJpaDao;
-  
-  @Inject
-  private PersonValidator validator;
+    @Inject
+    private PendingDetailsJpaDao pendingJpaDao;
 
-  @Inject
-  private PersonConverter converter;
+    @Inject
+    private PersonValidator validator;
 
-  @Inject
-  private UserJpaDao userJpaDao;
+    @Inject
+    private PersonConverter converter;
 
-  @EJB
-  AuthenticationService authService;
+    @Inject
+    private UserJpaDao userJpaDao;
 
-  @EJB
-  DefinitionService definition;
+    @EJB
+    AuthenticationService authService;
 
-  @Inject
-  private AuditProducer auditProducer;
+    @EJB
+    DefinitionService definition;
 
-  @Override
-  public Person getPerson(ServiceRequest<Long> personRequest)
-  throws IllegalArgumentException, UnauthorisedException, RuntimeException 
-  {
-    LOGGER.info("getPerson(" + personRequest + ") - (ENTER)");
+    @Inject
+    private AuditProducer auditProducer;
 
-    validator.assertValid(personRequest, null, "personId");
+    @Override
+    public Person getPerson(ServiceRequest<Long> personRequest)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+        LOGGER.info("getPerson(" + personRequest + ") - (ENTER)");
 
-    PersonEntity ret = personJpaDao.read(personRequest.getBody());
+        validator.assertValid(personRequest, null, "personId");
 
-    Person response = converter.convertPerson(ret);
+        PersonEntity ret = personJpaDao.read(personRequest.getBody());
 
-    LOGGER.info("getPerson() - (LEAVE) " + response);
-    return response;
-  }
+        Person response = converter.convertPerson(ret);
 
-  @Override
-  public List<Person> getPersons() 
-  {
-    LOGGER.info("getPersons() - (ENTER)");
-
-    List<PersonEntity> lst = personJpaDao.findAll();
-
-    List<Person> ret = new ArrayList<>();
-    for (PersonEntity person : lst) {
-      ret.add(converter.convertPerson(person));
+        LOGGER.info("getPerson() - (LEAVE) " + response);
+        return response;
     }
 
-    LOGGER.info("getPersons() - (LEAVE) " + ret.size());
-    return ret;
-  }
+    @Override
+    public List<Person> getPersons() {
+        LOGGER.info("getPersons() - (ENTER)");
 
-  @Override
-  @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public ContactDetails updateContactDetails(ServiceRequest<ContactDetails> request)
-  throws IllegalArgumentException, RuntimeException, IllegalStateException 
-  {
-    LOGGER.info("updateContactDetails(" + request + ") - (ENTER)");
+        List<PersonEntity> lst = personJpaDao.findAll();
 
-    // Ensure feature is enabled
-    if (!isUpdateContactDetailsEnabled()) {
-      throw new IllegalStateException("This feature is disabled");
-    }
-    // Ensure request is valid
-    validator.assertValid(request);
-    
-    // Ensure target user exists
-    UserEntity user = userJpaDao.read(request.getRequester());
-    if (user == null) {
-      throw new IllegalArgumentException(USER_DOES_NOT_EXIST);
+        List<Person> ret = new ArrayList<>();
+        for (PersonEntity person : lst) {
+            ret.add(converter.convertPerson(person));
+        }
+
+        LOGGER.info("getPersons() - (LEAVE) " + ret.size());
+        return ret;
     }
 
-    // Authenticate the requester
-    AuthenticationRequest authRequest = new AuthenticationRequest();
-    authRequest.setUserName(request.getRequester());
-    authRequest.setPassword(request.getPassword());
-    AuthenticationResponse serviceResponse = authService.authenticateUser(authRequest);
-    if (!serviceResponse.isAuthenticated()) {
-      String msg;
-      
-      switch (serviceResponse.getStatusCode()) {
-        case AuthenticationResponse.ACCOUNT_DISABLED:
-          msg = "Account disabled";
-          break;
-        case AuthenticationResponse.ACCOUNT_LOCKED:
-          msg = "Account locked";
-          break;
-        case AuthenticationResponse.INTERNAL_ERROR:
-          msg = "Internal error";
-          break;
-        case AuthenticationResponse.INVALID_CREDENTIALS:
-          msg = "Invalid credentials";
-          break;
-        case AuthenticationResponse.INVALID_TIME:
-          msg = "Invalid time";
-          break;
-        case AuthenticationResponse.OTHER:
-          // Fall through
-        default:
-          msg = USER_UNAUTHENTICATED;
-          break;
-      }
-      
-      throw new IllegalArgumentException(msg);
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public ContactDetails updateContactDetails(ServiceRequest<ContactDetails> request)
+            throws IllegalArgumentException, RuntimeException, IllegalStateException {
+        LOGGER.info("updateContactDetails(" + request + ") - (ENTER)");
+
+        // Ensure feature is enabled
+        if (!isUpdateContactDetailsEnabled()) {
+            throw new IllegalStateException("This feature is disabled");
+        }
+        // Ensure request is valid
+        validator.assertValid(request);
+
+        // Ensure target user exists
+        UserEntity user = userJpaDao.read(request.getRequester());
+        if (user == null) {
+            throw new IllegalArgumentException(USER_DOES_NOT_EXIST);
+        }
+
+        // Authenticate the requester
+        AuthenticationRequest authRequest = new AuthenticationRequest();
+        authRequest.setUserName(request.getRequester());
+        authRequest.setPassword(request.getPassword());
+        AuthenticationResponse serviceResponse = authService.authenticateUser(authRequest);
+        if (!serviceResponse.isAuthenticated()) {
+            String msg;
+
+            switch (serviceResponse.getStatusCode()) {
+                case AuthenticationResponse.ACCOUNT_DISABLED:
+                    msg = "Account disabled";
+                    break;
+                case AuthenticationResponse.ACCOUNT_LOCKED:
+                    msg = "Account locked";
+                    break;
+                case AuthenticationResponse.INTERNAL_ERROR:
+                    msg = "Internal error";
+                    break;
+                case AuthenticationResponse.INVALID_CREDENTIALS:
+                    msg = "Invalid credentials";
+                    break;
+                case AuthenticationResponse.INVALID_TIME:
+                    msg = "Invalid time";
+                    break;
+                case AuthenticationResponse.OTHER:
+                    // Fall through
+                default:
+                    msg = USER_UNAUTHENTICATED;
+                    break;
+            }
+
+            throw new IllegalArgumentException(msg);
+        }
+
+        ContactDetails ret;
+        if (isReviewContactDetailsEnabled()) {
+            ret = createPendingDetails(user, request);
+        } else {
+            PersonEntity entity = updatePerson(user, request);
+            ret = converter.convertContactDetails(entity);
+        }
+
+        String requester = request.getRequester();
+        String auditLog = null;
+        try {
+            auditLog = AuditLogMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.CONTACT_DETAILS.getValue() + " " + requester, requester, requester);
+        } catch (AuditModelMarshallException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        auditProducer.sendModuleMessage(auditLog);
+
+        LOGGER.info("updateContactDetails() - (LEAVE)");
+        return ret;
     }
 
-    ContactDetails ret;
-    if (isReviewContactDetailsEnabled()) {
-      ret  = createPendingDetails(user, request);
-    } else {
-      PersonEntity  entity = updatePerson(user, request);
-      ret = converter.convertContactDetails(entity);
-    }
-    
-		String requester = request.getRequester();
-    String auditLog = AuditLogModelMapper.mapToAuditLog(USMApplication.USM.name(), AuditOperationEnum.UPDATE.getValue(), AuditObjectTypeEnum.CONTACT_DETAILS.getValue() + " " + requester, requester, requester);
-    auditProducer.sendModuleMessage(auditLog);
+    private PersonEntity updatePerson(UserEntity user,
+                                      ServiceRequest<ContactDetails> request) {
+        PersonEntity ret;
+        if (user.getPerson() != null) {
+            ret = personJpaDao.read(user.getPerson().getPersonId());
+            converter.update(ret, request.getBody());
+            ret.setModifiedBy(request.getRequester());
+            ret.setModifiedOn(new Date());
 
-    LOGGER.info("updateContactDetails() - (LEAVE)");
-    return ret;
-  }
+            ret = personJpaDao.update(ret);
+        } else {
+            ret = new PersonEntity();
+            converter.update(ret, request.getBody());
+            ret.setCreatedBy(request.getRequester());
+            ret.setCreatedOn(new Date());
 
-  private PersonEntity updatePerson(UserEntity user, 
-                                      ServiceRequest<ContactDetails> request) 
-  {
-    PersonEntity ret;
-    if (user.getPerson() != null) {
-      ret = personJpaDao.read(user.getPerson().getPersonId());
-      converter.update(ret, request.getBody());
-      ret.setModifiedBy(request.getRequester());
-      ret.setModifiedOn(new Date());
+            user.setPerson(ret);
+            userJpaDao.update(user);
+        }
 
-      ret = personJpaDao.update(ret);
-    } else {
-      ret = new PersonEntity();
-      converter.update(ret, request.getBody());
-      ret.setCreatedBy(request.getRequester());
-      ret.setCreatedOn(new Date());
-      
-      user.setPerson(ret);
-      userJpaDao.update(user);
-    }
-    
-    return ret;
-  }
-
-  @Override
-  public boolean isUpdateContactDetailsEnabled()
-  {
-    return isFeatureEnabled(UPDATE_CONTACT_DETAILS, true);
-  }
-  
-  @Override
-  public ContactDetails getContactDetails(ServiceRequest<String> request) 
-  throws RuntimeException 
-  {
-    LOGGER.info("getContactDetails(" + request + ") - (ENTER)");
-    
-    validator.assertValid(request, null, "userName");
-    validator.assertNotEmpty("userName", request.getBody());
-
-    UserEntity user = userJpaDao.read(request.getBody());
-    if (user == null) {
-      throw new IllegalArgumentException(USER_DOES_NOT_EXIST);
-    }
-    
-    ContactDetails ret;
-    if (user.getPerson() != null) {
-      PersonEntity entity = personJpaDao.read(user.getPerson().getPersonId());
-      ret = converter.convertContactDetails(entity);
-    } else {
-      ret = new ContactDetails();
+        return ret;
     }
 
-    LOGGER.info("getContactDetails() - (LEAVE): " + ret);
-    return ret;
-  }
-
-  @Override
-  public boolean isReviewContactDetailsEnabled() 
-  {
-    return isFeatureEnabled(REVIEW_CONTACT_DETAILS, false);
-  }
-
-  
-  @Override
-  public List<PendingContactDetails> findPendingContactDetails(ServiceRequest<NoBody> request) 
-  throws RuntimeException 
-  {
-    LOGGER.info("findPendingContactDetails(" + request + ") - (ENTER)");
-    
-    validator.assertValid(request, USMFeature.manageUsers);
-    List<PendingContactDetails> ret = new ArrayList<>();
-
-    List<PendingDetailsEntity> lst = pendingJpaDao.findAll();
-    for (PendingDetailsEntity e : lst) {
-      ret.add(converter.convertContactDetails(e));
+    @Override
+    public boolean isUpdateContactDetailsEnabled() {
+        return isFeatureEnabled(UPDATE_CONTACT_DETAILS, true);
     }
-    
-    LOGGER.info("findPendingContactDetails() - (LEAVE): " + ret);
-    return ret;
-  }
 
-  
-  @Override
-  public PendingContactDetails getPendingContactDetails(ServiceRequest<String> request) 
-  throws IllegalArgumentException, RuntimeException 
-  {
-    LOGGER.info("getPendingContactDetails(" + request + ") - (ENTER)");
-    
-    validator.assertValid(request, USMFeature.manageUsers, "userName");
-    validator.assertNotEmpty("userName", request.getBody());
-    
-    PendingDetailsEntity pending = pendingJpaDao.read(request.getBody());
-    PendingContactDetails ret = converter.convertContactDetails(pending);
-    
-    LOGGER.info("getPendingContactDetails() - (LEAVE): " + ret);
-    return ret;
-  }
+    @Override
+    public ContactDetails getContactDetails(ServiceRequest<String> request)
+            throws RuntimeException {
+        LOGGER.info("getContactDetails(" + request + ") - (ENTER)");
 
-  @Override
-  @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public ContactDetails acceptPendingContactDetails(ServiceRequest<String> request) 
-  throws IllegalArgumentException, UnauthorisedException, RuntimeException 
-  {
-    LOGGER.info("accepPendingContactDetails(" + request + ") - (ENTER)");
-    
-    validator.assertValid(request, USMFeature.manageUsers, "userName");
-    validator.assertNotEmpty("userName", request.getBody());
-    UserEntity user = userJpaDao.read(request.getBody());
-    if (user == null) {
-      throw new IllegalArgumentException(USER_DOES_NOT_EXIST);
+        validator.assertValid(request, null, "userName");
+        validator.assertNotEmpty("userName", request.getBody());
+
+        UserEntity user = userJpaDao.read(request.getBody());
+        if (user == null) {
+            throw new IllegalArgumentException(USER_DOES_NOT_EXIST);
+        }
+
+        ContactDetails ret;
+        if (user.getPerson() != null) {
+            PersonEntity entity = personJpaDao.read(user.getPerson().getPersonId());
+            ret = converter.convertContactDetails(entity);
+        } else {
+            ret = new ContactDetails();
+        }
+
+        LOGGER.info("getContactDetails() - (LEAVE): " + ret);
+        return ret;
     }
-    PendingDetailsEntity pending = pendingJpaDao.read(request.getBody());
-    if (pending == null) {
-      throw new IllegalArgumentException(CHANGES_DO_NOT_EXIST);
+
+    @Override
+    public boolean isReviewContactDetailsEnabled() {
+        return isFeatureEnabled(REVIEW_CONTACT_DETAILS, false);
     }
-    
-    // Apply accepted update to Person 
-    ServiceRequest<ContactDetails> updatePerson = new ServiceRequest<>();
-    updatePerson.setRequester(request.getRequester());
-    updatePerson.setBody(converter.convertContactDetails(pending));
-    PersonEntity person = updatePerson(user, updatePerson);
-    ContactDetails ret = converter.convertContactDetails(person);
-
-    // Delete the now accepted pending update
-    pendingJpaDao.delete(request.getBody());
-    
-    LOGGER.info("accepPendingContactDetails() - (LEAVE): " + ret);
-    return ret;
-  }
-
-  @Override
-  @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public ContactDetails rejectPendingContactDetails(ServiceRequest<String> request) 
-  throws IllegalArgumentException, UnauthorisedException, RuntimeException 
-  {
-    LOGGER.info("rejectPendingContactDetails(" + request + ") - (ENTER)");
-    
-    validator.assertValid(request, USMFeature.manageUsers, "userName");
-    validator.assertNotEmpty("userName", request.getBody());
-    
-    pendingJpaDao.delete(request.getBody());
-    
-    ContactDetails ret = getContactDetails(request);
-    
-    LOGGER.info("rejectPendingContactDetails() - (LEAVE): " + ret);
-    return ret;
-
-  }
 
 
-  private ContactDetails createPendingDetails(UserEntity user, 
-                                                 ServiceRequest<ContactDetails> request) 
-  {
-    PendingDetailsEntity pending = pendingJpaDao.read(user.getUserName());
-    if (pending == null) {
-      pending = new PendingDetailsEntity();
-      pending.setUserName(user.getUserName());
-      pending.setCreatedBy(request.getRequester());
-      pending.setCreatedOn(new Date());
-    } else {
-      pending.setModifiedBy(request.getRequester());
-      pending.setModifiedOn(new Date());
+    @Override
+    public List<PendingContactDetails> findPendingContactDetails(ServiceRequest<NoBody> request)
+            throws RuntimeException {
+        LOGGER.info("findPendingContactDetails(" + request + ") - (ENTER)");
+
+        validator.assertValid(request, USMFeature.manageUsers);
+        List<PendingContactDetails> ret = new ArrayList<>();
+
+        List<PendingDetailsEntity> lst = pendingJpaDao.findAll();
+        for (PendingDetailsEntity e : lst) {
+            ret.add(converter.convertContactDetails(e));
+        }
+
+        LOGGER.info("findPendingContactDetails() - (LEAVE): " + ret);
+        return ret;
     }
-    pending.setEMail(request.getBody().getEmail());
-    pending.setFaxNumber(request.getBody().getFaxNumber());
-    pending.setFirstName(request.getBody().getFirstName());
-    pending.setLastName(request.getBody().getLastName());
-    pending.setMobileNumber(request.getBody().getMobileNumber());
-    pending.setPhoneNumber(request.getBody().getPhoneNumber());
-    
-    if (pending.getPendingDetailsId() != null) {
-      pendingJpaDao.update(pending);
-    } else {
-      pendingJpaDao.create(pending);
-    }
-    
-    PendingContactDetails ret = converter.convertContactDetails(pending);
-    return ret;
-  }
 
-  private boolean isFeatureEnabled(String feature, boolean defaultValue)
-  {
-    LOGGER.info("isFeatureEnabled(" + feature +", " + defaultValue + ") - (ENTER)");
-    Boolean ret = defaultValue;
-    
-    PolicyDefinition def = definition.getDefinition(FEATURE_POLICY);
-    if (def != null) {
-      Properties props = def.getProperties();
-      if (defaultValue) {
-        ret = Boolean.parseBoolean(props.getProperty(feature, TRUE));
-      } else {
-        ret = Boolean.parseBoolean(props.getProperty(feature, FALSE));
-      }
+
+    @Override
+    public PendingContactDetails getPendingContactDetails(ServiceRequest<String> request)
+            throws IllegalArgumentException, RuntimeException {
+        LOGGER.info("getPendingContactDetails(" + request + ") - (ENTER)");
+
+        validator.assertValid(request, USMFeature.manageUsers, "userName");
+        validator.assertNotEmpty("userName", request.getBody());
+
+        PendingDetailsEntity pending = pendingJpaDao.read(request.getBody());
+        PendingContactDetails ret = converter.convertContactDetails(pending);
+
+        LOGGER.info("getPendingContactDetails() - (LEAVE): " + ret);
+        return ret;
     }
-    
-    LOGGER.info("isFeatureEnabled() - (LEAVE): " + ret);
-    return ret;
-  }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public ContactDetails acceptPendingContactDetails(ServiceRequest<String> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+        LOGGER.info("accepPendingContactDetails(" + request + ") - (ENTER)");
+
+        validator.assertValid(request, USMFeature.manageUsers, "userName");
+        validator.assertNotEmpty("userName", request.getBody());
+        UserEntity user = userJpaDao.read(request.getBody());
+        if (user == null) {
+            throw new IllegalArgumentException(USER_DOES_NOT_EXIST);
+        }
+        PendingDetailsEntity pending = pendingJpaDao.read(request.getBody());
+        if (pending == null) {
+            throw new IllegalArgumentException(CHANGES_DO_NOT_EXIST);
+        }
+
+        // Apply accepted update to Person
+        ServiceRequest<ContactDetails> updatePerson = new ServiceRequest<>();
+        updatePerson.setRequester(request.getRequester());
+        updatePerson.setBody(converter.convertContactDetails(pending));
+        PersonEntity person = updatePerson(user, updatePerson);
+        ContactDetails ret = converter.convertContactDetails(person);
+
+        // Delete the now accepted pending update
+        pendingJpaDao.delete(request.getBody());
+
+        LOGGER.info("accepPendingContactDetails() - (LEAVE): " + ret);
+        return ret;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public ContactDetails rejectPendingContactDetails(ServiceRequest<String> request)
+            throws IllegalArgumentException, UnauthorisedException, RuntimeException {
+        LOGGER.info("rejectPendingContactDetails(" + request + ") - (ENTER)");
+
+        validator.assertValid(request, USMFeature.manageUsers, "userName");
+        validator.assertNotEmpty("userName", request.getBody());
+
+        pendingJpaDao.delete(request.getBody());
+
+        ContactDetails ret = getContactDetails(request);
+
+        LOGGER.info("rejectPendingContactDetails() - (LEAVE): " + ret);
+        return ret;
+
+    }
+
+
+    private ContactDetails createPendingDetails(UserEntity user,
+                                                ServiceRequest<ContactDetails> request) {
+        PendingDetailsEntity pending = pendingJpaDao.read(user.getUserName());
+        if (pending == null) {
+            pending = new PendingDetailsEntity();
+            pending.setUserName(user.getUserName());
+            pending.setCreatedBy(request.getRequester());
+            pending.setCreatedOn(new Date());
+        } else {
+            pending.setModifiedBy(request.getRequester());
+            pending.setModifiedOn(new Date());
+        }
+        pending.setEMail(request.getBody().getEmail());
+        pending.setFaxNumber(request.getBody().getFaxNumber());
+        pending.setFirstName(request.getBody().getFirstName());
+        pending.setLastName(request.getBody().getLastName());
+        pending.setMobileNumber(request.getBody().getMobileNumber());
+        pending.setPhoneNumber(request.getBody().getPhoneNumber());
+
+        if (pending.getPendingDetailsId() != null) {
+            pendingJpaDao.update(pending);
+        } else {
+            pendingJpaDao.create(pending);
+        }
+
+        PendingContactDetails ret = converter.convertContactDetails(pending);
+        return ret;
+    }
+
+    private boolean isFeatureEnabled(String feature, boolean defaultValue) {
+        LOGGER.info("isFeatureEnabled(" + feature + ", " + defaultValue + ") - (ENTER)");
+        Boolean ret = defaultValue;
+
+        PolicyDefinition def = definition.getDefinition(FEATURE_POLICY);
+        if (def != null) {
+            Properties props = def.getProperties();
+            if (defaultValue) {
+                ret = Boolean.parseBoolean(props.getProperty(feature, TRUE));
+            } else {
+                ret = Boolean.parseBoolean(props.getProperty(feature, FALSE));
+            }
+        }
+
+        LOGGER.info("isFeatureEnabled() - (LEAVE): " + ret);
+        return ret;
+    }
 }
