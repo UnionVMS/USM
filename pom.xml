@@ -15,7 +15,7 @@
 
 	<properties>
 		<cas.client.core>3.6.1</cas.client.core>
-		<docker.dev.version>3.43.0</docker.dev.version>
+		<docker.dev.version>4.1.0</docker.dev.version>
 		<uvms.pom.version>3.6</uvms.pom.version>
 		<uvms.commons.version>4.1.11</uvms.commons.version>
 		<sun.jersey.version>1.19.4</sun.jersey.version>
