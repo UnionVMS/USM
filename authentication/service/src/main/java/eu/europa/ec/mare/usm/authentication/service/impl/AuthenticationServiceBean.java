@@ -253,13 +253,13 @@ public class AuthenticationServiceBean implements AuthenticationService {
             return authenticationResponse;
         }
 
-        if (userDoesNotExistInDatabase(username)) {
-            createUserInDatabaseFromLdap(username);
-        }
-
-        if (personDoesNotExistInDatabase(username)) {
-            createPersonInDatabaseFromLdap(username, userMap);
-        }
+//        if (userDoesNotExistInDatabase(username)) {
+//            createUserInDatabaseFromLdap(username);
+//        }
+//
+//        if (personDoesNotExistInDatabase(username)) {
+//            createPersonInDatabaseFromLdap(username, userMap);
+//        }
 
         String status = dao.getUserStatus(username);
         if (ENABLED.equals(status)) {
